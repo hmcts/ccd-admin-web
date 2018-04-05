@@ -50,6 +50,12 @@ Run:
 $ gulp
 ```
 
+or
+```
+# For Azure
+$ node server.js 
+```
+
 The applications's home page will be available at https://localhost:3100
 
 ### Running with Docker

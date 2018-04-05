@@ -5,10 +5,10 @@ import * as cookieParser from "cookie-parser";
 import * as csrf from "csurf";
 import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
-import { Helmet, IConfig as HelmetConfig } from "modules/helmet";
 import * as path from "path";
-import { RouterFinder } from "router/routerFinder";
 import * as favicon from "serve-favicon";
+import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
+import { RouterFinder } from "./router/routerFinder";
 
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
