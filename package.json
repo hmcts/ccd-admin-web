@@ -11,7 +11,7 @@
     "sass": "gulp sass copy-files",
     "test": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*' ! -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-admin-web-unit",
     "test:routes": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=routes,inlineAssets=true,reportTitle=ccd-admin-web-routes",
-    "test:a11y": "NODE_ENV=mocha LOG_LEVEL=ERROR mocha --compilers ts:ts-node/register -r tsconfig-paths/register src/test/a11y --timeout 60000 --reporter mochawesome --reporter-options reportFilename=a11y,inlineAssets=true,reportTitle=ccd-admin-web-a11y",
+    "test:a11y": "NODE_PATH=.",
     "test:nsp": "nsp check",
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter spec --recursive",
     "test:coverage": "remap-istanbul -i coverage/json/coverage-final.json -o coverage/html -t html",
