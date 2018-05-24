@@ -12,7 +12,7 @@ export const oauth2redirect = (req, res, next) => {
       .replace("https://", "").split("?", 1)[0];
     accessTokenRequest(req)
       .then((result) => {
-        res.cookie(COOKIE_ACCESS_TOKEN, result.access_token, {maxAge: result.expires_in * 1000, httpOnly: true});
+        res.cookie(COOKIE_ACCESS_TOKEN, result.access_token, { httpOnly: true, maxAge: result.expires_in * 1000 });
         // Redirect to / (index)
         res.redirect(302, "/");
       })

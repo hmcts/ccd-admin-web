@@ -26,7 +26,7 @@ export const serviceTokenGenerator = () => {
         "Content-Type": "application/json",
       };
 
-      return fetch(`${idamS2SUrl}/lease`, {method: "POST", body: JSON.stringify(form), headers})
+      return fetch(`${idamS2SUrl}/lease`, { body: JSON.stringify(form), headers, method: "POST" })
           .then((res) => res.text())
           .then((token) => {
             const tokenData = jwtDecode(token);
