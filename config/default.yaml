@@ -1,0 +1,22 @@
+useCSRFProtection: true
+security:
+  referrerPolicy: origin
+  hpkp:
+    maxAge: 2592000
+    sha256s:
+      - TODO
+      - Set-proper-SHA256s
+idam:
+  base_url: http://localhost:4501
+  s2s_url: http://localhost:4502
+  admin_web_service_key: AAAAAAAAAAAAAAAA
+  service_name: ccd_gw
+  logout_url: https://localhost:3501/login/logout
+  oauth2:
+    token_endpoint: http://localhost:4501/oauth2/token
+    client_id: ccd_admin
+adminWeb:
+  login_url: https://idam.dev.ccidam.reform.hmcts.net/login
+  import_url: http://localhost:4451/import
+appInsights:
+  instrumentationKey: "some-key"

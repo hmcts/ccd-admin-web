@@ -27,7 +27,7 @@ export class Helmet {
 
     this.setContentSecurityPolicy(app);
     this.setReferrerPolicy(app, this.config.referrerPolicy);
-    this.setHttpPublicKeyPinning(app, this.config.hpkp);
+    // this.setHttpPublicKeyPinning(app, this.config.hpkp);
   }
 
   private setContentSecurityPolicy(app) {
@@ -54,10 +54,10 @@ export class Helmet {
     app.use(helmet.referrerPolicy({policy}));
   }
 
-  private setHttpPublicKeyPinning(app, hpkpConfig) {
-    app.use(helmet.hpkp({
-      maxAge: hpkpConfig.maxAge,
-      sha256s: hpkpConfig.sha256s,
-    }));
-  }
+  // private setHttpPublicKeyPinning(app, hpkpConfig) {
+  //   app.use(helmet.hpkp({
+  //     maxAge: hpkpConfig.maxAge,
+  //     sha256s: hpkpConfig.sha256s,
+  //   }));
+  // }
 }

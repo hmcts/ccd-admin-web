@@ -1,3 +1,8 @@
 {
-  "extends": "tslint:recommended"
+  "extends": "tslint:recommended",
+  "rules": {
+    "no-unused-expression": false,
+    "ordered-imports": false,
+    "no-var-requires": false
+  }
 }

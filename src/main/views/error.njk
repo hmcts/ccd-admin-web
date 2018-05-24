@@ -3,6 +3,11 @@
   </head>
   <body>
     <h1>Something went wrong</h1>
-    <p>TODO: replace with a proper template in your application</p>
+    {% if error.status %}
+      <p>{{ error }} ({{ error.status }})</p>
+    {% else %}
+      <p>{{ error }}</p>
+    {% endif %}
+    <p>{{ error.response.text if error.response else error.text }}</p>
   </body>
 </html>
