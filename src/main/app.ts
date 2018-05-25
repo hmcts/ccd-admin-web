@@ -72,7 +72,7 @@ app.use(unless("/oauth2redirect", serviceFilter));
 app.use("/", RouterFinder.findAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router
-app.use((req, res, next) => { // eslint-disable-line no-unused-vars
+app.use((req, res) => {
   res.status(404);
   res.render("not-found");
 });
