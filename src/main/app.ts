@@ -44,14 +44,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 expressNunjucks(app);
 
-const unless = (pathToExclude, ...middleware) => {
-  for (const mw of middleware) {
-    return (req, res, next) => {
-      return pathToExclude === req.path ? next() : mw(req, res, next);
-    };
-  }
-};
-
 if (config.useCSRFProtection === true) {
   const csrfOptions = {
     cookie: {
@@ -61,14 +53,14 @@ if (config.useCSRFProtection === true) {
     },
   };
 
-  app.use(unless("/import", csrf(csrfOptions), (req, res, next) => {
+  app.all(/^\/(?!import).*$/, csrf(csrfOptions), (req, res, next) => {
     res.locals.csrfToken = req.csrfToken();
     next();
-  }));
+  });
 }
 
-app.use(unless("/oauth2redirect", authCheckerUserOnlyFilter));
-app.use(unless("/oauth2redirect", serviceFilter));
+app.all(/^\/(?!oauth2redirect|health).*$/, authCheckerUserOnlyFilter);
+app.all(/^\/(?!oauth2redirect|health).*$/, serviceFilter);
 app.use("/", RouterFinder.findAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router
