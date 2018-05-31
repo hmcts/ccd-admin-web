@@ -87,7 +87,12 @@
     ],
     "exclude": [
       "**/*.d.ts",
-      "src/main/public"
+      "src/main/public",
+      "src/main/modules",
+      "src/main/router",
+      "src/main/util",
+      "src/main/app.ts",
+      "src/main/server.ts"
     ],
     "reporter": [
       "lcov",
