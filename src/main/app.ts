@@ -1,4 +1,4 @@
-import * as logging from "@hmcts/nodejs-logging";
+import { Express, Logger } from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
 import * as config from "config";
 import * as cookieParser from "cookie-parser";
@@ -7,24 +7,26 @@ import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
+import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { RouterFinder } from "./router/routerFinder";
+import { serviceFilter } from "./service/service-filter";
 
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
 app.locals.ENV = env;
 
 // TODO: adjust these values to your application
-logging.config({
+Logger.config({
   environment: process.env.NODE_ENV,
-  microservice: "expressjs-template",
-  team: "platform-engineering",
+  microservice: "ccd-admin-web",
+  team: "CCD",
 });
 
 // setup logging of HTTP requests
-app.use(logging.express.accessLogger());
+app.use(Express.accessLogger());
 
-const logger = logging.getLogger("app");
+const logger = Logger.getLogger("app");
 
 // secure the application by adding various HTTP headers to its responses
 new Helmet(config.get<HelmetConfig>("security")).enableFor(app);
@@ -51,22 +53,24 @@ if (config.useCSRFProtection === true) {
     },
   };
 
-  app.use(csrf(csrfOptions), (req, res, next) => {
+  app.all(/^\/(?!import).*$/, csrf(csrfOptions), (req, res, next) => {
     res.locals.csrfToken = req.csrfToken();
     next();
   });
 }
 
+app.all(/^\/(?!oauth2redirect|health).*$/, authCheckerUserOnlyFilter);
+app.all(/^\/(?!oauth2redirect|health).*$/, serviceFilter);
 app.use("/", RouterFinder.findAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404);
   res.render("not-found");
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   logger.error(`${err.stack || err}`);
 
   // set locals, only providing error in development
