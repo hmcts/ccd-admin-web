@@ -9,7 +9,7 @@
     "start": "node server.js",
     "lint": "tslint --project tsconfig.json --type-check && sass-lint -v -q",
     "sass": "gulp sass copy-files",
-    "test": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*' ! -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-admin-web-unit",
+    "test": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --code-coverage --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*' ! -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-admin-web-unit",
     "test:routes": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=routes,inlineAssets=true,reportTitle=ccd-admin-web-routes",
     "test:a11y": "NODE_PATH=.",
     "test:nsp": "nsp check",
