@@ -20,3 +20,8 @@ npm-debug.log.*
 
 .project
 .settings/
+
+package-lock.json
+
+coverage/
+.scannerwork/
