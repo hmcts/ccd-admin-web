@@ -14,7 +14,7 @@
     "test:a11y": "NODE_PATH=.",
     "test:nsp": "nsp check",
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter spec --recursive",
-    "test:coverage": "remap-istanbul -i coverage/json/coverage-final.json -o coverage/html -t html",
+    "test:coverage": "NODE_ENV=mocha LOG_LEVEL=OFF nyc mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*' ! -path '*/routes/*')",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/**,coverage/** -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info"
@@ -62,15 +62,14 @@
     "gulp-sass": "^3.1.0",
     "jsonwebtoken": "^8.2.1",
     "karma": "1.4.1",
-    "karma-remap-istanbul": "0.2.1",
     "mocha": "^3.5.3",
     "mochawesome": "^2.3.1",
     "mock-express": "^1.2.0",
     "nock": "^9.1.4",
     "nsp": "^2.8.0",
+    "nyc": "^11.8.0",
     "pa11y": "^4.13.2",
     "proxyquire": "^2.0.1",
-    "remap-istanbul": "^0.9.6",
     "sass-lint": "^1.11.1",
     "sinon": "^3.3.0",
     "sinon-chai": "^2.13.0",
@@ -78,5 +77,23 @@
     "sonar-scanner": "^3.0.3",
     "supertest": "^3.0.0",
     "tslint": "^5.7.0"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/main"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "src/main/public"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "report-dir": "coverage",
+    "all": true
   }
 }
