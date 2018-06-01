@@ -26,6 +26,7 @@ module "ccd-admin-web" {
   subscription = "${var.subscription}"
   is_frontend = "${local.is_frontend}"
   additional_host_name = "${local.external_host_name}"
+  capacity = "${var.capacity}"
 
   app_settings = {
     // Node specific vars

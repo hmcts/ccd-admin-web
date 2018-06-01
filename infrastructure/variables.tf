@@ -64,3 +64,7 @@ variable "hpkp_max_age" {
 variable "hpkp_sha256s" {
   default = "Set-proper-SHA256s"
 }
+
+variable "capacity" {
+  default = "1"
+}
