@@ -44,6 +44,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 expressNunjucks(app);
 
+// Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
+app.enable("trust proxy");
+
 if (config.useCSRFProtection === true) {
   const csrfOptions = {
     cookie: {
