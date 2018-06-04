@@ -15,6 +15,7 @@ idam:
   oauth2:
     token_endpoint: http://localhost:4501/oauth2/token
     client_id: ccd_admin
+    client_secret:
 adminWeb:
   login_url: https://idam.dev.ccidam.reform.hmcts.net/login
   import_url: http://localhost:4451/import
