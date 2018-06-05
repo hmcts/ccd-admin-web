@@ -13,8 +13,10 @@ locals {
   local_env = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
   local_ase = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "core-compute-aat" : "core-compute-saat" : local.ase_name}"
 
-  s2s_url = "http://rpe-service-auth-provider-${local.local_env}.service.${local.local_ase}.internal"
-  def_store_import_url = "http://ccd-definition-store-api-${local.local_env}.service.${local.local_ase}.internal"
+  env_ase_url = "${local.local_env}.service.${local.local_ase}.internal"
+
+  s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
+  def_store_url = "http://ccd-definition-store-api-${local.env_ase_url}"
 }
 
 data "vault_generic_secret" "idam_service_key" {
@@ -65,6 +67,6 @@ module "ccd-admin-web" {
     IDAM_OAUTH2_AW_CLIENT_SECRET = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
 
     ADMINWEB_LOGIN_URL = "${var.authentication_web_url}/login"
-    ADMINWEB_IMPORT_URL = "${local.def_store_import_url}/import"
+    ADMINWEB_IMPORT_URL = "${local.def_store_url}/import"
   }
 }
