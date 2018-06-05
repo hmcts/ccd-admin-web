@@ -1,11 +1,11 @@
-# ccd admin web
+# ccd-admin-web
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Greenkeeper badge](https://badges.greenkeeper.io/hmcts/ccd-admin-web.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/hmcts/ccd-admin-web.svg?branch=master)](https://travis-ci.org/hmcts/ccd-admin-web)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5c0dfce11536414bb2e35ad15b010875)](https://www.codacy.com/app/adr1ancho/ccd-admin-web?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hmcts/ccd-admin-web&amp;utm_campaign=Badge_Grade)
 [![Known Vulnerabilities](https://snyk.io/test/github/hmcts/ccd-admin-web/badge.svg)](https://snyk.io/test/github/hmcts/ccd-admin-web)
-[![HitCount](http://hits.dwyl.io/hmcts/ccd-admin-web.svg)]()
+[![HitCount](http://hits.dwyl.io/hmcts/ccd-admin-web.svg)](#ccd-admin-web)
 [![Issue Stats](http://issuestats.com/github/hmcts/ccd-admin-web/badge/pr)](http://issuestats.com/github/hmcts/ccd-admin-web)
 
 
