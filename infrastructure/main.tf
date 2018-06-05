@@ -65,6 +65,6 @@ module "ccd-admin-web" {
     IDAM_OAUTH2_AW_CLIENT_SECRET = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
 
     ADMINWEB_LOGIN_URL = "${var.authentication_web_url}/login"
-    ADMINWEB_IMPORT_URL = "${local.def_store_import_url}"
+    ADMINWEB_IMPORT_URL = "${local.def_store_import_url}/import"
   }
 }
