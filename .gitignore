@@ -20,3 +20,9 @@ npm-debug.log.*
 
 .project
 .settings/
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Sonar directory
+.scannerwork/
