@@ -11,6 +11,3 @@ script:
   - yarn test:routes
   - yarn test:a11y
   - yarn test:nsp
-# needed for newer yarn for a little bit: https://github.com/travis-ci/travis-ci/issues/7566#issuecomment-324138144
-group: edge
-sudo: required
