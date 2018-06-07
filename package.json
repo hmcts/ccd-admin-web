@@ -75,6 +75,7 @@
     "sass-lint": "^1.11.1",
     "sinon": "^3.3.0",
     "sinon-chai": "^2.13.0",
+    "sinon-express-mock": "^2.0.4",
     "sonar-scanner": "^3.0.3",
     "supertest": "^3.0.0",
     "tslint": "^5.7.0"

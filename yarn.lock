@@ -6208,6 +6208,10 @@ sinon-chai@^2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/sinon-chai/-/sinon-chai-2.13.0.tgz#b9a42e801c20234bfc2f43b29e6f4f61b60990c4"
 
+sinon-express-mock@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/sinon-express-mock/-/sinon-express-mock-2.0.4.tgz#a7ad82e33b772d327a6852cbf8371fe108845b2b"
+
 sinon@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/sinon/-/sinon-3.3.0.tgz#9132111b4bbe13c749c2848210864250165069b1"
