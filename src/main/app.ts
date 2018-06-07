@@ -76,9 +76,9 @@ app.use((req, res) => {
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   logger.error(`${err.stack || err}`);
 
-  // set locals, only providing error in development
+  // set locals
   res.locals.message = err.message;
-  res.locals.error = env === "development" ? err : {};
+  res.locals.error = err;
 
   res.status(err.status || 500);
   res.render("error");
