@@ -1,13 +1,6 @@
-<html>
-  <head>
-  </head>
-  <body>
-    <h1>Something went wrong</h1>
-    {% if error.status %}
-      <p>{{ error }} ({{ error.status }})</p>
-    {% else %}
-      <p>{{ error }}</p>
-    {% endif %}
-    <p>{{ error.response.text if error.response else error.text }}</p>
-  </body>
-</html>
+{% if error.status %}
+  <p>{{ error }} ({{ error.status }})</p>
+{% else %}
+  <p>{{ error }}</p>
+{% endif %}
+<p>{{ error.response.text if error.response else error.text }}</p>
