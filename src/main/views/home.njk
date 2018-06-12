@@ -7,8 +7,8 @@
     <h1>Import Case Definition</h1>
     <form action="/import" method="post" enctype="multipart/form-data">
       <div class="form-group">
-        {% include "message.njk" %}
-        {% include "error.njk" %}
+        {% include "response.njk" %}
+        {% include "error-message.njk" %}
         <input type="file" id="file" name="file" accept=".xlsx"/>
       </div>
 

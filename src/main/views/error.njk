@@ -1,6 +1,8 @@
-{% if error.status %}
-  <p>{{ error }} ({{ error.status }})</p>
-{% else %}
-  <p>{{ error }}</p>
-{% endif %}
-<p>{{ error.response.text if error.response else error.text }}</p>
+<html>
+  <head>
+  </head>
+  <body>
+    <h2>Authentication failure</h2>
+    {% include "error-message.njk" %}
+  </body>
+</html>

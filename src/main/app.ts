@@ -81,5 +81,5 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   res.locals.error = err;
 
   res.status(err.status || 500);
-  res.render("home");
+  req.authentication ? res.render("home") : res.render("error");
 });
