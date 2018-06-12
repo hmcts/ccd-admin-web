@@ -3,8 +3,13 @@ import * as express from "express";
 const router = express.Router();
 
 /* GET home page. */
-router.get("/", (req, res, next) => {
+router.get("/import", (req, res, next) => {
   res.render("home");
 });
 
-module.exports = router;
+router.get("/", (req, res, next) => {
+  res.redirect(302, "/import");
+});
+
+/* tslint:disable:no-default-export */
+export default router;
