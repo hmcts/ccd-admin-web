@@ -1,4 +1,5 @@
 FROM node:8.1.4
+MAINTAINER https://github.com/hmcts/ccd-admin-web
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
