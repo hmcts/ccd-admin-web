@@ -21,9 +21,7 @@ npm-debug.log.*
 .project
 .settings/
 
-# Sonar directory
-.scannerwork/
-
 package-lock.json
 
 coverage/
+.scannerwork/
