@@ -5,12 +5,10 @@ cache: yarn
 script:
   - yarn --version
   - yarn sass
-  - yarn check
+# Commented out because of problems introduced by nyc
+#  - yarn check
   - yarn lint
   - yarn test
   - yarn test:routes
   - yarn test:a11y
   - yarn test:nsp
-# needed for newer yarn for a little bit: https://github.com/travis-ci/travis-ci/issues/7566#issuecomment-324138144
-group: edge
-sudo: required
