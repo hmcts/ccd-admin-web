@@ -9,7 +9,6 @@ Web application for administration of Case Definition data (initially for import
 [![HitCount](http://hits.dwyl.io/hmcts/ccd-admin-web.svg)](#ccd-admin-web)
 [![Issue Stats](http://issuestats.com/github/hmcts/ccd-admin-web/badge/pr)](http://issuestats.com/github/hmcts/ccd-admin-web)
 
-
 ## Overview
 [Express](http://expressjs.com) application that allows an authorised user to import Case Definitions in the form of an Excel spreadsheet.
 
