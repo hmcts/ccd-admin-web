@@ -27,7 +27,9 @@ export class Helmet {
 
     this.setContentSecurityPolicy(app);
     this.setReferrerPolicy(app, this.config.referrerPolicy);
-    this.setHttpPublicKeyPinning(app, this.config.hpkp);
+    // HTTP public key pinning (HPKP) disabled; see
+    // https://www.zdnet.com/article/google-chrome-is-backing-away-from-public-key-pinning-and-heres-why/
+    // this.setHttpPublicKeyPinning(app, this.config.hpkp);
   }
 
   private setContentSecurityPolicy(app) {
@@ -54,10 +56,11 @@ export class Helmet {
     app.use(helmet.referrerPolicy({policy}));
   }
 
-  private setHttpPublicKeyPinning(app, hpkpConfig) {
-    app.use(helmet.hpkp({
-      maxAge: hpkpConfig.maxAge,
-      sha256s: hpkpConfig.sha256s,
-    }));
-  }
+  // Method commented out to avoid linting error caused by unused method, due to HPKP being disabled above
+  // private setHttpPublicKeyPinning(app, hpkpConfig) {
+  //   app.use(helmet.hpkp({
+  //     maxAge: hpkpConfig.maxAge,
+  //     sha256s: hpkpConfig.sha256s,
+  //   }));
+  // }
 }

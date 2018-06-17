@@ -1,24 +1,28 @@
 {
-  "name": "expressjs-template",
-  "version": "0.0.1",
+  "name": "ccd-admin-web",
+  "version": "1.0.0",
   "private": true,
   "engines": {
     "node": ">=7.10.1"
   },
   "scripts": {
-    "start": "./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
+    "start": "node server.js",
     "lint": "tslint --project tsconfig.json --type-check && sass-lint -v -q",
     "sass": "gulp sass copy-files",
-    "test": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*' ! -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=expressjs-template-unit",
-    "test:routes": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=routes,inlineAssets=true,reportTitle=expressjs-template-routes",
-    "test:a11y": "NODE_ENV=mocha LOG_LEVEL=ERROR mocha --compilers ts:ts-node/register -r tsconfig-paths/register src/test/a11y --timeout 60000 --reporter mochawesome --reporter-options reportFilename=a11y,inlineAssets=true,reportTitle=expressjs-template-a11y",
-    "test:nsp": "nsp check"
+    "test": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*' ! -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-admin-web-unit",
+    "test:routes": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=routes,inlineAssets=true,reportTitle=ccd-admin-web-routes",
+    "test:a11y": "NODE_PATH=.",
+    "test:nsp": "nsp check",
+    "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter spec --recursive",
+    "test:coverage": "NODE_ENV=mocha LOG_LEVEL=OFF nyc mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*' ! -path '*/routes/*')",
+    "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
+    "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
+    "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/**,coverage/**,src/main/modules/**,src/main/router/**,src/main/util/**,src/main/app.ts,src/main/server.ts -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info"
   },
   "dependencies": {
-    "@hmcts/info-provider": "^1.0.0",
-    "@hmcts/nodejs-healthcheck": "^1.4.3",
-    "@hmcts/nodejs-logging": "^1.2.3",
-    "@types/node": "^8.0.28",
+    "@hmcts/nodejs-healthcheck": "^1.4.5",
+    "@hmcts/nodejs-logging": "^2.0.0",
+    "@types/node": "^8.10.11",
     "body-parser": "^1.18.1",
     "config": "^1.26.2",
     "cookie-parser": "^1.4.3",
@@ -29,34 +33,74 @@
     "govuk_template_jinja": "^0.23.0",
     "helmet": "^3.8.1",
     "jquery": "^3.2.1",
+    "jwt-decode": "^2.2.0",
+    "multer": "^1.3.0",
+    "node-fetch": "^2.1.2",
     "nunjucks": "^3.0.1",
+    "otp": "^0.1.3",
     "require-directory": "^2.1.1",
     "serve-favicon": "^2.4.4",
+    "superagent": "^3.8.3",
     "ts-node": "^3.3.0",
-    "tsconfig-paths": "^2.3.0",
-    "typescript": "^2.5.2"
+    "tsconfig-paths": "^2.6.0",
+    "typescript": "^2.6.2"
   },
   "devDependencies": {
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^2.2.43",
+    "@types/sinon-chai": "^2.7.31",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "debug": "^3.0.1",
+    "cookie": "^0.3.1",
+    "debug": "^3.1.0",
+    "eslint": "^4.19.1",
+    "eslint-plugin-mocha": "^5.0.0",
+    "fetch-mock": "^6.4.2",
     "gulp": "^3.9.1",
     "gulp-livereload": "^3.8.1",
     "gulp-nodemon": "^2.2.1",
     "gulp-plumber": "^1.1.0",
     "gulp-replace": "^0.6.1",
     "gulp-sass": "^3.1.0",
+    "http-status-codes": "^1.3.0",
+    "jsonwebtoken": "^8.2.1",
+    "karma": "1.4.1",
     "mocha": "^3.5.3",
     "mochawesome": "^2.3.1",
-    "nock": "^9.0.16",
+    "nock": "^9.1.4",
     "nsp": "^2.8.0",
-    "pa11y": "^4.13.0",
+    "nyc": "^12.0.2",
+    "pa11y": "^4.13.2",
+    "proxyquire": "^2.0.1",
     "sass-lint": "^1.11.1",
     "sinon": "^3.3.0",
     "sinon-chai": "^2.13.0",
+    "sinon-express-mock": "^2.0.4",
+    "sonar-scanner": "^3.0.3",
     "supertest": "^3.0.0",
     "tslint": "^5.7.0"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/main"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "src/main/public",
+      "src/main/modules",
+      "src/main/router",
+      "src/main/util",
+      "src/main/app.ts",
+      "src/main/server.ts"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "report-dir": "coverage",
+    "all": true
   }
 }
