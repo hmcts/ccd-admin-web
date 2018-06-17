@@ -1,4 +1,5 @@
 # ccd-admin-web
+Web application for administration of Case Definition data (initially for importing definitions).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Greenkeeper badge](https://badges.greenkeeper.io/hmcts/ccd-admin-web.svg)](https://greenkeeper.io/)
