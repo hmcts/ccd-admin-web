@@ -64,3 +64,7 @@ variable "hpkp_sha256s" {
 variable "capacity" {
   default = "1"
 }
+
+variable "https_only" {
+  default = "true"
+}
