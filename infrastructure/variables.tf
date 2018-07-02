@@ -68,3 +68,7 @@ variable "capacity" {
 variable "https_only" {
   default = "true"
 }
+
+variable "common_tags" {
+  type = "map"
+}
