@@ -10,7 +10,9 @@ import * as favicon from "serve-favicon";
 import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { RouterFinder } from "./router/routerFinder";
+
 import { serviceFilter } from "./service/service-filter";
+
 
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
@@ -29,18 +31,18 @@ app.use(Express.accessLogger());
 const logger = Logger.getLogger("app");
 
 // secure the application by adding various HTTP headers to its responses
-new Helmet(config.get<HelmetConfig>("security")).enableFor(app);
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "njk");
+app.set("view engine", "html");
+app.set("views", [path.join(__dirname, "views"), path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+new Helmet(config.get<HelmetConfig>("security")).enableFor(app);
 
 expressNunjucks(app);
 
@@ -75,7 +77,6 @@ app.use((req, res) => {
 // error handler
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   logger.error(`${err.stack || err}`);
-
   // set locals
   res.locals.message = err.message;
   res.locals.error = err;

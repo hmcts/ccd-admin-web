@@ -6,18 +6,26 @@ security:
     sha256s:
       - TODO
       - Set-proper-SHA256s
+  directives:
+    fontSrc: 'self data:'
+    scriptSrc: ['self', 'unsafe-inline', 'www.google-analytics.com', 'hmctspiwik.useconnect.co.uk']
+    connectSrc: 'self'
+    mediaSrc: 'self'
+    frameSrc: 'none'
+    imgSrc: ['self', 'www.google-analytics.com', 'hmctspiwik.useconnect.co.uk']
 idam:
   base_url: http://localhost:4501
   s2s_url: http://localhost:4502
-  admin_web_service_key: AAAAAAAAAAAAAAAA
+  admin_web_service_key: AAAAAAAAAAAAAAAD
   service_name: ccd_admin
   logout_url: https://localhost:3501/login/logout
   oauth2:
     token_endpoint: http://localhost:4501/oauth2/token
     client_id: ccd_admin
-    client_secret:
+    client_secret: OOOOOOOOOOOOOOOO
 adminWeb:
-  login_url: https://idam.dev.ccidam.reform.hmcts.net/login
+  login_url: https://localhost:3501/login
   import_url: http://localhost:4451/import
+  jurisdiction_url: http://localhost:4451/api/data/jurisdictions
 appInsights:
   instrumentationKey: "some-key"
