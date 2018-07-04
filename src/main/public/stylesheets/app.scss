@@ -1,0 +1,102 @@
+$path: "/assets/";
+
+@import "./node_modules/govuk-elements-sass/public/sass/_govuk-elements.scss";
+
+$fa-font-path: "./node_modules/font-awesome/fonts";
+$govuk-frontend-toolkit-image-path: "/assets";
+$govuk-template-image-path: "/assets";
+$pdk-image-path: "/assets";
+$nta-font-path: "/node_modules/@govuk/platform-template/assets/fonts";
+
+
+// PDK's footer fix
+#footer .footer-meta {
+
+  .footer-meta-inner .open-government-licence .logo a {
+    background: url('#{$govuk-template-image-path}/open-government-licence.png') no-repeat;
+  }
+
+}
+
+pre.error-message {
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.descr {
+  margin-bottom: 11px;
+}
+
+.choseBtn {
+  line-height: 0;
+  width: 700px;
+}
+
+.def-error {
+  margin-bottom: 18px;
+}
+
+.def-succ {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 991px) {
+
+  // Add bottom margin when column are stacked up
+  [class*="col-md"] {
+    margin-bottom: 30px;
+  }
+
+}
+// Start new In house GOV Template
+.padding {
+  padding: 15px;
+}
+
+.Rectangle-2-Copy {
+  width: 1024px;
+  height: 693px;
+  border: solid 1px #979797;
+}
+
+.Fill-5 {
+  width: 1024px;
+  height: 55px;
+  background-color: #000000;
+  color: #000;
+}
+.CCD-configuration-UI {
+  width: 359px;
+  height: 23px;
+  font-family: LucidaGrande;
+  font-size: 20px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
+.Rectangle-18 {
+  width: 1024px;
+  height: 54.8px;
+  background-color: #0074b4;
+}
+
+.Admin-UI {
+  width: 77px;
+  height: 25.5px;
+  font-family: GDSTransportWebsite;
+  font-size: 18px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.39;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
