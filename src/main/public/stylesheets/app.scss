@@ -1,17 +1,16 @@
-$path: "/assets/";
+$path: '/assets/';
 
-@import "./node_modules/govuk-elements-sass/public/sass/_govuk-elements.scss";
+@import './node_modules/govuk-elements-sass/public/sass/_govuk-elements.scss';
 
-$fa-font-path: "./node_modules/font-awesome/fonts";
-$govuk-frontend-toolkit-image-path: "/assets";
-$govuk-template-image-path: "/assets";
-$pdk-image-path: "/assets";
-$nta-font-path: "/node_modules/@govuk/platform-template/assets/fonts";
+$fa-font-path: './node_modules/font-awesome/fonts';
+$govuk-frontend-toolkit-image-path: '/assets';
+$govuk-template-image-path: '/assets';
+$pdk-image-path: '/assets';
+$nta-font-path: '/node_modules/@govuk/platform-template/assets/fonts';
 
 
 // PDK's footer fix
 #footer .footer-meta {
-
   .footer-meta-inner .open-government-licence .logo a {
     background: url('#{$govuk-template-image-path}/open-government-licence.png') no-repeat;
   }
@@ -46,29 +45,30 @@ pre.error-message {
 @media (max-width: 991px) {
 
   // Add bottom margin when column are stacked up
-  [class*="col-md"] {
+  [class*='col-md'] {
     margin-bottom: 30px;
   }
-
 }
+
 // Start new In house GOV Template
 .padding {
   padding: 15px;
 }
 
-.Rectangle-2-Copy {
+.rectangle-2-copy {
   width: 1024px;
   height: 693px;
   border: solid 1px #979797;
 }
 
-.Fill-5 {
+.fill-5 {
   width: 1024px;
   height: 55px;
   background-color: #000000;
   color: #000;
 }
-.CCD-configuration-UI {
+
+.ccd-configuration-ui {
   width: 359px;
   height: 23px;
   font-family: LucidaGrande;
@@ -81,13 +81,14 @@ pre.error-message {
   text-align: left;
   color: #ffffff;
 }
-.Rectangle-18 {
-  width: 1024px;
-  height: 54.8px;
+
+.rectangle-18 {
   background-color: #0074b4;
+  height: 54.8px;
+  width: 1024px;
 }
 
-.Admin-UI {
+.admin-ui {
   width: 77px;
   height: 25.5px;
   font-family: GDSTransportWebsite;
