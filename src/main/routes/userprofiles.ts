@@ -18,10 +18,8 @@ router.use((req, res, next) => {
 
 /* GET home page. */
 router.post("/userprofiles", (req, res, next) => {
-
   const user: Jurisdiction = fetchUsers(new Jurisdiction(req.body.jurisdictionName, "AAAAA"));
   res.render("jurisdictions", { jurisdictionName: user.id });
-
 });
 
 /* tslint:disable:no-default-export */
