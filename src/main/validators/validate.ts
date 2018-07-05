@@ -1,9 +1,9 @@
 export class Validator {
-    field: string;
+    private field: string;
     constructor(field: string) {
         this.field = field;
     }
-    isEmpty() {
-        return !this.field ? true:false;
+    public isEmpty() {
+        return !this.field ? true : false;
     }
 }

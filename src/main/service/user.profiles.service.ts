@@ -1,6 +1,5 @@
-import {User} from 'domain/User';
+import { User } from "domain/User";
 
-    
-export function  fetchUsers(user: User){
+export function fetchUsers(user: User) {
         return user;
 }

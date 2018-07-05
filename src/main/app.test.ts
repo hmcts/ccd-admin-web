@@ -7,11 +7,7 @@ import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
-//import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
-//import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { RouterFinder } from "./router/routerFinder";
-//import { serviceFilter } from "./service/service-filter";
-
 
 const env = process.env.NODE_ENV || "development";
 export const appTest: express.Express = express();
@@ -33,22 +29,21 @@ const logger = Logger.getLogger("appTest");
 
 // view engine setup
 appTest.set("view engine", "html");
-appTest.set("views", [path.join(__dirname, "views"), path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
+appTest.set("views", [path.join(__dirname, "views"),
+path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
 
 appTest.use(express.static(path.join(__dirname, "public")));
 appTest.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 appTest.use(bodyParser.json());
-appTest.use(bodyParser.urlencoded({extended: false}));
+appTest.use(bodyParser.urlencoded({ extended: false }));
 appTest.use(cookieParser());
 appTest.use(express.static(path.join(__dirname, "public")));
-//new Helmet(config.get<HelmetConfig>("security")).enableFor(appTest);
 
 expressNunjucks(appTest);
 
 // Allow appTestlication to work correctly behind a proxy (needed to pick up correct request protocol)
 appTest.enable("trust proxy");
 
-//TODO CHANGE TO true again
 if (config.useCSRFProtection === false) {
   const csrfOptions = {
     cookie: {
@@ -64,8 +59,6 @@ if (config.useCSRFProtection === false) {
   });
 }
 
-//appTest.all(/^\/(?!oauth2redirect|health).*$/, authCheckerUserOnlyFilter);
-//appTest.all(/^\/(?!oauth2redirect|health).*$/, serviceFilter);
 appTest.use("/", RouterFinder.findAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router

@@ -11,11 +11,9 @@ describe("userprofileService", () => {
 
   const importUrl = "http://localhost:9999/userprofiles";
 
- 
   let fetchUsers;
 
   beforeEach(() => {
-  
     const config = {
       get: sinon.stub(),
     };
@@ -28,10 +26,9 @@ describe("userprofileService", () => {
 
   describe("successful call to fetchUser", () => {
     it("should return a user object", () => {
-      let user:User =  fetchUsers(new User("10001","jurdictionname"));
+      const user: User = fetchUsers(new User("10001", "jurdictionname"));
       expect(user.id).to.equal("10001");
       expect(user.jurisdictionname).to.equal("jurdictionname");
-    
     });
   });
 

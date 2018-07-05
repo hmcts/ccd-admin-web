@@ -13,7 +13,6 @@ import { RouterFinder } from "./router/routerFinder";
 
 import { serviceFilter } from "./service/service-filter";
 
-
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
 app.locals.ENV = env;
@@ -34,7 +33,8 @@ const logger = Logger.getLogger("app");
 
 // view engine setup
 app.set("view engine", "html");
-app.set("views", [path.join(__dirname, "views"), path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
+app.set("views", [path.join(__dirname, "views"),
+path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
