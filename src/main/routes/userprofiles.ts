@@ -6,7 +6,7 @@ import { Validator } from "../validators/validate";
 const router = express.Router();
 
 // Validate
-router.use((req, res, next) => {
+function validate(req, res, next) {
   const jurisdictionName = new Validator(req.body.jurisdictionName);
   if (jurisdictionName.isEmpty()) {
     req.session.error = { status: 401, text: "Please select jurisdiction name" };
@@ -14,12 +14,17 @@ router.use((req, res, next) => {
   } else {
     next();
   }
+}
+
+/* GET home page. */
+router.post("/userprofiles", validate, (req, res, next) => {
+  const user: Jurisdiction = fetchUsers(new Jurisdiction(req.body.jurisdictionName, "AAAAA"));
+  res.render("jurisdictions", { jurisdictionName: user.id });
 });
 
 /* GET home page. */
-router.post("/userprofiles", (req, res, next) => {
-  const user: Jurisdiction = fetchUsers(new Jurisdiction(req.body.jurisdictionName, "AAAAA"));
-  res.render("jurisdictions", { jurisdictionName: user.id });
+router.get("/createuser", (req, res, next) => {
+  res.render("user-profiles/create-user-form");
 });
 
 /* tslint:disable:no-default-export */

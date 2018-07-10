@@ -34,7 +34,10 @@ const logger = Logger.getLogger("app");
 // view engine setup
 app.set("view engine", "html");
 app.set("views", [path.join(__dirname, "views"),
-path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
+path.join(__dirname, "/../../node_modules/govuk-frontend/"),
+path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/"),
+path.join(__dirname, "/../../node_modules/govuk-frontend/components"),
+path.join(__dirname, "/../../lib/")]);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));

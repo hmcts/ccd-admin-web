@@ -101,3 +101,34 @@ pre.error-message {
   text-align: left;
   color: #ffffff;
 }
+table, tbody, td, tr
+{
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+  padding-top: 0px;
+  border: none !important;
+  border-style: none;
+  margin: 0px;
+}
+
+.tableCSS {
+  width: 100px; }
+
+.tdCSS {
+  width: 25px;
+  border: 1;
+  margin: 0px; }
+
+.rightAlign {
+  float: right; }
+
+.date {
+  width: 50px; }
+
+  .rightAlign {
+    float: right;
+  }
+  .date{
+    width: 50px
+  }

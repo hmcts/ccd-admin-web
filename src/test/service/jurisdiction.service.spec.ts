@@ -38,8 +38,8 @@ describe("jurisdictionService", () => {
   describe("successful jurisdiction lookup", () => {
     it("should return an HTTP 201 status and success message", (done) => {
       const expectedResult = {
-        jurisdictions: [{ id: "JD_1", name: "Jurisdiction 1" },
-        { id: "JD_2", name: "Jurisdiction 2" }]};
+        jurisdictions: [{ id: "JD_1", name: "Jurisdiction 1" }, { id: "JD_2", name: "Jurisdiction 2" }]
+      };
 
       nock("http://localhost:9999")
         .get("/jurisdiction")
@@ -47,6 +47,7 @@ describe("jurisdictionService", () => {
 
       fetchAll(req).then((res) => {
         try {
+          expect(JSON.parse(res).jurisdictions.length).to.equal(2);
           expect(res).to.equal(JSON.stringify(expectedResult));
           done();
         } catch (e) {

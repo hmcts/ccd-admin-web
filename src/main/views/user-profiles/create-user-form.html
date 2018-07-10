@@ -1,0 +1,32 @@
+{% extends "layout_template.html" %}
+{% from "../macros/formElements.html" import jurisdictionList %}
+{% from "../macros/formElements.html" import dateMacro %}
+{% block page_title %}
+  CCD Admin Web
+{% endblock %}
+
+ {% block content %}
+ {% include "menu.html" %}
+<h2 class="heading-large padding">Create User profile</h2>
+
+<div class="padding">
+    <form>
+    <div class="form-group">
+        <label class="form-label" for="first-name-2">User Idams ID</label>
+        <input class="form-control" id="first-name-2" name="first-name-2" type="text"><br><br>  
+       <label class="form-label">Live from</label>
+          {{ dateMacro() }}
+          <label class="form-label">Live to</label>
+           {{ dateMacro() }}
+        <label class="form-label" >Work basket default jurisdiction</label>
+          {{  jurisdictionList(jurisdictions) }}
+        <label class="form-label">Work basket default case type</label>
+          {{  jurisdictionList(jurisdictions) }}
+        <label class="form-label">Work basket default state</label>
+          {{  jurisdictionList(jurisdictions) }}
+    </div> 
+     <button type="submit" class="button" value="Submit">Create</button>
+    </form>
+    </div>
+  {% endblock %}
+
