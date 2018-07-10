@@ -3,6 +3,7 @@ import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
+import { get } from "config";
 
 describe("Jurisdiction page", () => {
   beforeEach(() => {
@@ -10,6 +11,14 @@ describe("Jurisdiction page", () => {
   });
 
   describe("on Get /jurisdiction", () => {
+    it("Jurisdiction should redirect to IdAM login page when not authenticated", () => {
+      return request(app)
+        .get("/jurisdiction")
+        .then((res) => {
+          expect(res.statusCode).to.equal(302);
+          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        });
+    });
 
     it("should return jurisdiction list", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");

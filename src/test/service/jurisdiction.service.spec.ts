@@ -47,6 +47,7 @@ describe("jurisdictionService", () => {
 
       fetchAll(req).then((res) => {
         try {
+          expect(JSON.parse(res).jurisdictions.length).to.equal(2);
           expect(res).to.equal(JSON.stringify(expectedResult));
           done();
         } catch (e) {
