@@ -16,6 +16,13 @@
         </select> 
 </div> 
 {%- endmacro %}    
+{% macro dropdown(name) -%}
+<div class="form-group">
+       <select id="{{name}}" name="{{name}}" class="form-control">
+                <option value="" selected>--Select a value--</option>
+        </select> 
+</div> 
+{%- endmacro %} 
 {% macro dateMacro() -%}
     <table class="tableCSS">
 

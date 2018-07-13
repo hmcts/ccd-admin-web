@@ -22,10 +22,5 @@ router.post("/userprofiles", validate, (req, res, next) => {
   res.render("jurisdictions", { jurisdictionName: user.id });
 });
 
-/* GET home page. */
-router.get("/createuser", (req, res, next) => {
-  res.render("user-profiles/create-user-form");
-});
-
 /* tslint:disable:no-default-export */
 export default router;

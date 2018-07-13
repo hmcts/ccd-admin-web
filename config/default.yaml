@@ -26,6 +26,6 @@ idam:
 adminWeb:
   login_url: https://localhost:3501/login
   import_url: http://localhost:4451/import
-  jurisdiction_url: http://localhost:4451/api/data/jurisdictions
+  jurisdiction_url: https://my-json-server.typicode.com/mohammedanas/ccdadmin/jurisdictions
 appInsights:
   instrumentationKey: "some-key"

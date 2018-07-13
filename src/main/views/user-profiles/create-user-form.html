@@ -1,32 +1,112 @@
 {% extends "layout_template.html" %}
-{% from "../macros/formElements.html" import jurisdictionList %}
+{% from "../macros/formElements.html" import dropdown %}
 {% from "../macros/formElements.html" import dateMacro %}
 {% block page_title %}
   CCD Admin Web
 {% endblock %}
+{% block head%}
+  {{super()}}
+  <script type="text/javascript">
+  var jurisdictionString = {{jurisdictions |safe }}
+  var jurisdictionLookups = $.parseJSON(jurisdictionString);
+  console.log(jurisdictionLookups)
+  var updateCaseTypeBasedOn = function(make) {
+    console.log('updating with', make);
+   var listItems= "<option value=''  selected>--Select a value--</option>";
+    var case_types = jurisdictionLookups[make].case_types;
+    for (var i = 0; i < jurisdictionLookups[make].case_types.length; i++){
+        listItems+= "<option value='" + case_types[i].id + "'>" + case_types[i].name + "</option>";
+    }
+    $("select#caseTypeDropdown").html(listItems);
+  }
 
+  $(document).ready(function(){
+     $('#createuserform').validate({ // initialize the plugin
+       errorPlacement: function (error, element) {
+           console.log()
+            error.insertBefore(element);
+        },
+        errorElement : 'div',
+        errorElementClass: 'error',
+        errorClass: 'govuk-error-message',
+        rules: {
+            idamsId: {
+                required: true
+            },
+            jurisdictionDropdown: {
+                required: true
+            }
+        },
+        messages :{
+        "idamsId" : {
+            required : 'Enter Idams Id'
+        },
+        "jurisdictionDropdown": {
+            required : 'Choose a jurisdiction'
+        }
+    }
+    });
+
+
+    var listItems= "<option value='' selected>--Select a value--</option>";
+    for (var i = 0; i < jurisdictionLookups.length; i++){
+        listItems+= "<option value='" + jurisdictionLookups[i].id + "'>" + jurisdictionLookups[i].name + "</option>";
+    }
+    $("select#jurisdictionDropdown").html(listItems);
+    $("select#jurisdictionDropdown").on('change',function(){
+        var str = "";
+        $( "select#jurisdictionDropdown option:selected" ).each(function() {
+            updateCaseTypeBasedOn($("select#jurisdictionDropdown")[0].selectedIndex -1);
+      
+        });
+     });
+      $("select#caseTypeDropdown").on('change',function(){
+       var jurisdictionIndex = $("select#jurisdictionDropdown")[0].selectedIndex -1;
+       var caseTypeIndex = $("select#caseTypeDropdown")[0].selectedIndex -1;
+       var stateTypes = jurisdictionLookups[jurisdictionIndex].case_types[caseTypeIndex].states;
+        var listItems= "<option value='' selected>--Select a value--</option>";
+        for (var i = 0; i < stateTypes.length; i++){
+          listItems+= "<option value='" + stateTypes[i].id + "'>" + stateTypes[i].name + "</option>";
+        }
+         $("select#stateDropdown").html(listItems);
+      });
+  });
+   /**   window.onload = function() {
+          if (window.jQuery) {  
+              // jQuery is loaded  
+              alert("Yeah!");
+          } else {
+              // jQuery is not loaded
+              alert("Doesn't Work");
+          }
+      }*/
+</script>
+{%endblock%}
  {% block content %}
  {% include "menu.html" %}
 <h2 class="heading-large padding">Create User profile</h2>
 
 <div class="padding">
-    <form>
+    <form id="createuserform" name="createuserform">
     <div class="form-group">
+       
         <label class="form-label" for="first-name-2">User Idams ID</label>
-        <input class="form-control" id="first-name-2" name="first-name-2" type="text"><br><br>  
+        <input class="form-control" id="idamsId" name="idamsId" type="text"><br><br>  
        <label class="form-label">Live from</label>
           {{ dateMacro() }}
           <label class="form-label">Live to</label>
            {{ dateMacro() }}
         <label class="form-label" >Work basket default jurisdiction</label>
-          {{  jurisdictionList(jurisdictions) }}
+          {{  dropdown("jurisdictionDropdown") }}
         <label class="form-label">Work basket default case type</label>
-          {{  jurisdictionList(jurisdictions) }}
+          {{   dropdown("caseTypeDropdown") }}
         <label class="form-label">Work basket default state</label>
-          {{  jurisdictionList(jurisdictions) }}
+          {{  dropdown("stateDropdown")}}
     </div> 
      <button type="submit" class="button" value="Submit">Create</button>
     </form>
     </div>
+  
   {% endblock %}
+
 

@@ -132,3 +132,20 @@ table, tbody, td, tr
   .date{
     width: 50px
   }
+  .govuk-error-message {
+    font-family: "nta", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    display: block;
+    margin-bottom: 15px;
+    clear: both;
+    color: #b10e1e; }
+
+  .error {
+    display:block;
+    border: 5px solid #ffdddd;
+    color: red
+}
