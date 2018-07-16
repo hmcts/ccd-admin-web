@@ -36,6 +36,7 @@ module "ccd-admin-web" {
   additional_host_name = "${local.external_host_name}"
   capacity = "${var.capacity}"
   https_only = "${var.https_only}"
+  common_tags  = "${var.common_tags}"
 
   app_settings = {
     // Node specific vars
