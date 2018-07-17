@@ -68,5 +68,6 @@ module "ccd-admin-web" {
 
     ADMINWEB_LOGIN_URL = "${var.authentication_web_url}/login"
     ADMINWEB_IMPORT_URL = "${local.def_store_url}/import"
+    ADMINWEB_JURISDICTIONS_URL = "${local.def_store_url}/api/data/jurisdictions"
   }
 }

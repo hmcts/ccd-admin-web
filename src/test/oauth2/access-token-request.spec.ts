@@ -10,7 +10,7 @@ const expect = chai.expect;
 chai.use(sinonChai);
 
 describe("Access Token Request", () => {
-  const CLIENT_ID = "ccd_gateway";
+  const CLIENT_ID = "ccd_admin";
   const CLIENT_SECRET = "abc123def456";
   const TOKEN_ENDPOINT = "http://localhost:1234/oauth2/token";
   const REDIRECT_URN = "localhost/redirect/to";
