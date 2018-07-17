@@ -1,29 +1,36 @@
 {% extends "layout_template.html" %}
 {% from "../macros/formElements.html" import dropdown %}
 {% from "../macros/formElements.html" import dateMacro %}
+{% from "../macros/csrf.html" import csrfProtection %}
 {% block page_title %}
   CCD Admin Web
 {% endblock %}
 {% block head%}
   {{super()}}
+
   <script type="text/javascript">
   var jurisdictionString = {{jurisdictions |safe }}
   var jurisdictionLookups = $.parseJSON(jurisdictionString);
-  console.log(jurisdictionLookups)
-  var updateCaseTypeBasedOn = function(make) {
-    console.log('updating with', make);
-   var listItems= "<option value=''  selected>--Select a value--</option>";
-    var case_types = jurisdictionLookups[make].case_types;
-    for (var i = 0; i < jurisdictionLookups[make].case_types.length; i++){
-        listItems+= "<option value='" + case_types[i].id + "'>" + case_types[i].name + "</option>";
+  
+  var updateCaseTypeBasedOn = function(index) {
+
+    var listItems= "<option value=''  selected>--Select a value--</option>";
+    if(index > -1){
+        var case_types = jurisdictionLookups[index].case_types;
+        for (var i = 0; i < jurisdictionLookups[index].case_types.length; i++){
+            listItems+= "<option value='" + case_types[i].id + "'>" + case_types[i].name + "</option>";
+        }
     }
     $("select#caseTypeDropdown").html(listItems);
+    $("select#stateDropdown").html("<option value=''  selected>--Select a value--</option>");
   }
 
   $(document).ready(function(){
      $('#createuserform').validate({ // initialize the plugin
+        onkeyup: false,
+        onclick: false,
+        onfocusout: false,
        errorPlacement: function (error, element) {
-           console.log()
             error.insertBefore(element);
         },
         errorElement : 'div',
@@ -35,16 +42,28 @@
             },
             jurisdictionDropdown: {
                 required: true
+            },
+            caseTypeDropdown: {
+                required: true
+            },
+            stateDropdown: {
+                required: true
             }
         },
         messages :{
-        "idamsId" : {
-            required : 'Enter Idams Id'
-        },
-        "jurisdictionDropdown": {
-            required : 'Choose a jurisdiction'
+            "idamsId" : {
+                required : 'Enter Idams Id'
+            },
+            "jurisdictionDropdown": {
+                required : 'Choose a jurisdiction'
+            },
+            "caseTypeDropdown": {
+                required : 'Choose a case type'
+            },
+            "stateDropdown": {
+                required : 'Choose a state'
+            }
         }
-    }
     });
 
 
@@ -63,10 +82,13 @@
       $("select#caseTypeDropdown").on('change',function(){
        var jurisdictionIndex = $("select#jurisdictionDropdown")[0].selectedIndex -1;
        var caseTypeIndex = $("select#caseTypeDropdown")[0].selectedIndex -1;
-       var stateTypes = jurisdictionLookups[jurisdictionIndex].case_types[caseTypeIndex].states;
         var listItems= "<option value='' selected>--Select a value--</option>";
-        for (var i = 0; i < stateTypes.length; i++){
-          listItems+= "<option value='" + stateTypes[i].id + "'>" + stateTypes[i].name + "</option>";
+        if(caseTypeIndex > -1){
+            var stateTypes = jurisdictionLookups[jurisdictionIndex].case_types[caseTypeIndex].states;
+ 
+            for (var i = 0; i < stateTypes.length; i++){
+            listItems+= "<option value='" + stateTypes[i].id + "'>" + stateTypes[i].name + "</option>";
+            }
         }
          $("select#stateDropdown").html(listItems);
       });
@@ -87,23 +109,24 @@
 <h2 class="heading-large padding">Create User profile</h2>
 
 <div class="padding">
-    <form id="createuserform" name="createuserform">
-    <div class="form-group">
-       
-        <label class="form-label" for="first-name-2">User Idams ID</label>
-        <input class="form-control" id="idamsId" name="idamsId" type="text"><br><br>  
-       <label class="form-label">Live from</label>
-          {{ dateMacro() }}
-          <label class="form-label">Live to</label>
-           {{ dateMacro() }}
-        <label class="form-label" >Work basket default jurisdiction</label>
-          {{  dropdown("jurisdictionDropdown") }}
-        <label class="form-label">Work basket default case type</label>
-          {{   dropdown("caseTypeDropdown") }}
-        <label class="form-label">Work basket default state</label>
-          {{  dropdown("stateDropdown")}}
-    </div> 
-     <button type="submit" class="button" value="Submit">Create</button>
+    <form id="createuserform" name="createuserform" method="POST">
+      {{ csrfProtection(csrfToken) }}
+        <div class="form-group">
+        
+            <label class="form-label" for="first-name-2">User Idams ID</label>
+            <input class="form-control" id="idamsId" name="idamsId" type="text"><br><br>  
+        <label class="form-label">Live from</label>
+            {{ dateMacro() }}
+            <label class="form-label">Live to</label>
+            {{ dateMacro() }}
+            <label class="form-label" >Work basket default jurisdiction</label>
+            {{  dropdown("jurisdictionDropdown") }}
+            <label class="form-label">Work basket default case type</label>
+            {{   dropdown("caseTypeDropdown") }}
+            <label class="form-label">Work basket default state</label>
+            {{  dropdown("stateDropdown")}}
+        </div> 
+        <button type="submit" class="button" value="Submit">Create</button>
     </form>
     </div>
   
