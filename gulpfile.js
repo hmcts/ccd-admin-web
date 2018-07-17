@@ -52,7 +52,7 @@ gulp.task('copy-files', () => {
     './node_modules/govuk_template_jinja/assets/stylesheets/**/*'
   ])
     .pipe(replace('images/', '/stylesheets/lib/images/', { skipBinary: true }))
-    .pipe(gulp.dest(`${assetsDirectory}/stylesheets/lib/`));
+    .pipe(gulp.dest(`${assetsDirectory}/stylesheets/`));
 });
 
 // compile scss files whenever they're changed
