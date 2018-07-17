@@ -15,6 +15,8 @@ locals {
 
   s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
   def_store_url = "http://ccd-definition-store-api-${local.env_ase_url}"
+
+  def_store_url = "http://ccd-definition-store-api-${local.env_ase_url}"
 }
 
 data "vault_generic_secret" "idam_service_key" {
@@ -68,5 +70,6 @@ module "ccd-admin-web" {
 
     ADMINWEB_LOGIN_URL = "${var.authentication_web_url}/login"
     ADMINWEB_IMPORT_URL = "${local.def_store_url}/import"
+    ADMINWEB_JURISDICTIONS_URL = "${local.def_store_url}/api/data/jurisdictions"
   }
 }
