@@ -15,8 +15,6 @@ locals {
 
   s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
   def_store_url = "http://ccd-definition-store-api-${local.env_ase_url}"
-
-  def_store_url = "http://ccd-definition-store-api-${local.env_ase_url}"
 }
 
 data "vault_generic_secret" "idam_service_key" {
