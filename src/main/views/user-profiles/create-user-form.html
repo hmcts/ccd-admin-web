@@ -35,10 +35,11 @@
         },
         errorElement : 'div',
         errorElementClass: 'error',
-        errorClass: 'govuk-error-message',
+        errorClass: 'govuk-error-message form-group-error',
         rules: {
             idamsId: {
-                required: true
+                required: true,
+                email: true
             },
             jurisdictionDropdown: {
                 required: true
@@ -52,7 +53,8 @@
         },
         messages :{
             "idamsId" : {
-                required : 'Enter Idams Id'
+                required : 'Enter Idams Id',
+                email: 'Email address invalid'
             },
             "jurisdictionDropdown": {
                 required : 'Choose a jurisdiction'
@@ -93,15 +95,7 @@
          $("select#stateDropdown").html(listItems);
       });
   });
-   /**   window.onload = function() {
-          if (window.jQuery) {  
-              // jQuery is loaded  
-              alert("Yeah!");
-          } else {
-              // jQuery is not loaded
-              alert("Doesn't Work");
-          }
-      }*/
+
 </script>
 {%endblock%}
  {% block content %}
@@ -109,7 +103,14 @@
 <h2 class="heading-large padding">Create User profile</h2>
 
 <div class="padding">
+    {% if (error)%}
+        <div class="error-summary govuk-error-message">
+            {{error.text}}
+        </div>
+    {% endif %}
+
     <form id="createuserform" name="createuserform" method="POST">
+    
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
         

@@ -32,7 +32,7 @@ gulp.task('sass', () => {
 gulp.task('copy-files', () => {
   gulp.src([
     './node_modules/jquery/dist/jquery.min.js',
-    "./node_modules/jquery-validation/dist/jquery.validate.min.js",
+    './node_modules/jquery-validation/dist/jquery.validate.min.js',
     './node_modules/govuk_frontend_toolkit/javascripts/**/*.js',
     './node_modules/govuk_template_jinja/assets/javascripts/**/*.js'
   ])
@@ -52,7 +52,7 @@ gulp.task('copy-files', () => {
     './node_modules/govuk_template_jinja/assets/stylesheets/**/*'
   ])
     .pipe(replace('images/', '/stylesheets/lib/images/', { skipBinary: true }))
-    .pipe(gulp.dest(`${assetsDirectory}/stylesheets/lib/`));
+    .pipe(gulp.dest(`${assetsDirectory}/stylesheets/`));
 });
 
 // compile scss files whenever they're changed

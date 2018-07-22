@@ -28,7 +28,7 @@ describe("userprofileService", () => {
     it("should return a user object", () => {
       const user: User = fetchUsers(new User("10001", "jurdictionname"));
       expect(user.id).to.equal("10001");
-      expect(user.jurisdictionname).to.equal("jurdictionname");
+      expect(user.jurisdictionName).to.equal("jurdictionname");
     });
   });
 

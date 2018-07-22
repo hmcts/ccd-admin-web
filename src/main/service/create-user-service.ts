@@ -6,17 +6,20 @@ import { UserProfile } from "domain/userprofile";
 export function createUserProfile(req, userprofile: UserProfile) {
     const logger = Logger.getLogger(__filename);
     const url = config.get("adminWeb.create_user_profile_url");
+
     const headers = {
         Accept: "application/json",
-        Authorization: req.headers.Authorization,
-        ServiceAuthorization: req.headers.ServiceAuthorization,
+        Authorization: req.headers.Authorization ? req.headers.Authorization : req.headers.authorization,
+        ServiceAuthorization: req.headers.ServiceAuthorization ? req.headers.ServiceAuthorization :
+            req.headers.serviceauthorization,
     };
+
     const payloadString: string = `{"id": "${userprofile.id}", ` +
+        `"jurisdictions": [{ "id": "${userprofile.jurisdictionname}"}], ` +
         `"work_basket_default_jurisdiction": "${userprofile.jurisdictionname}",` +
         `"work_basket_default_case_type": "${userprofile.caseType}",` +
         ` "work_basket_default_state": "${userprofile.state}" }`;
 
-    const payload = JSON.parse(payloadString);
     return request
         .post(url)
         .set("Content-Type", "application/json")

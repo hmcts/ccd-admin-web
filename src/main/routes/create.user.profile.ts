@@ -1,9 +1,7 @@
-import * as express from "express";
 import { fetchAll } from "../service/jurisdiction.service";
 import { createUserProfile } from "../service/create-user-service";
 import { UserProfile } from "../domain/userprofile";
-
-const router = express.Router();
+const router = require("../routes/home");
 
 /* GET create user form. */
 router.get("/createuser", (req, res, next) => {
@@ -12,6 +10,10 @@ router.get("/createuser", (req, res, next) => {
     res.status(201);
     const responseContent: { [k: string]: any } = {};
     responseContent.jurisdictions = JSON.stringify(response);
+    if (req.session.error) {
+      responseContent.error = req.session.error;
+      delete req.session.error;
+    }
     res.render("user-profiles/create-user-form", responseContent);
   })
     .catch((error) => {
@@ -29,7 +31,8 @@ router.post("/createuser", (req, res, next) => {
       res.render("jurisdictions", { sucess: "Creating user profile" });
     })
     .catch((error) => {
-      next(error);
+      req.session.error = { status: 400, text: error.rawResponse };
+      res.redirect(302, "/createuser");
     });
 });
 /* tslint:disable:no-default-export */

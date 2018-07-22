@@ -1,6 +1,5 @@
-import * as express from "express";
 import { fetchAll } from "../service/jurisdiction.service";
-const router = express.Router();
+const router = require("../routes/home");
 
 /* GET Jurisdiction page. */
 router.get("/jurisdiction", (req, res, next) => {

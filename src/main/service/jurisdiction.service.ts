@@ -14,6 +14,7 @@ export function fetchAll(req) {
     .get(url)
     .set(headers)
     .then((res) => {
+
       logger.info(`Get All jurisdictions, response: ${res.text}`);
       return res.text;
     })

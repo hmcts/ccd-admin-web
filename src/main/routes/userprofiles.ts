@@ -1,9 +1,9 @@
-import * as express from "express";
+
 import { fetchUsers } from "../service/user.profiles.service";
 import { Jurisdiction } from "../domain/jurisdiction";
 import { Validator } from "../validators/validate";
 
-const router = express.Router();
+const router = require("../routes/home");
 
 // Validate
 function validate(req, res, next) {

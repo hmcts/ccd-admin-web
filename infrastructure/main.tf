@@ -15,6 +15,7 @@ locals {
 
   s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
   def_store_url = "http://ccd-definition-store-api-${local.env_ase_url}"
+  userprofile_url = "http://ccd-user-profile-api-${local.env_ase_url}"
 }
 
 data "vault_generic_secret" "idam_service_key" {
@@ -36,6 +37,7 @@ module "ccd-admin-web" {
   additional_host_name = "${local.external_host_name}"
   capacity = "${var.capacity}"
   https_only = "${var.https_only}"
+  common_tags  = "${var.common_tags}"
 
   app_settings = {
     // Node specific vars
@@ -67,5 +69,8 @@ module "ccd-admin-web" {
 
     ADMINWEB_LOGIN_URL = "${var.authentication_web_url}/login"
     ADMINWEB_IMPORT_URL = "${local.def_store_url}/import"
+    ADMINWEB_JURISDICTIONS_URL = "${local.def_store_url}/api/data/jurisdictions"
+    ADMINWEB_CREATE_USER_PROFILE_URL = "${local.userprofile_url}/user-profile/users"
+    ADMINWEB_STATE_URL = "${local.def_store_url}/api/data/case-type/{id}"
   }
 }

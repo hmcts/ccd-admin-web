@@ -14,5 +14,6 @@ router.get("/", (req, res, next) => {
   res.redirect(302, "/import");
 });
 
+module.exports = router;
 /* tslint:disable:no-default-export */
 export default router;
