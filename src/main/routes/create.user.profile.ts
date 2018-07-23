@@ -24,7 +24,7 @@ router.get("/createuser", (req, res, next) => {
 
 /* POST create user result. */
 router.post("/createuser", (req, res, next) => {
-  createUserProfile(req, new UserProfile(req.body.idamsId,
+  createUserProfile(req, new UserProfile(req.body.idamId,
     req.body.jurisdictionDropdown, req.body.caseTypeDropdown, req.body.stateDropdown))
     .then((response) => {
       res.status(201);

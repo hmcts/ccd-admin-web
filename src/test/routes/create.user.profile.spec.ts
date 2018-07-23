@@ -72,7 +72,7 @@ describe("on POST /createuser", () => {
             .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
-                caseTypeDropdown: "caseType", idamsId: "anas@yahoo.com",
+                caseTypeDropdown: "caseType", idamId: "anas@yahoo.com",
                 jurisdictionDropdown: "jurisdiction", stateDropdown: "state",
             })
             .expect(201);
@@ -94,7 +94,7 @@ describe("on POST /createuser", () => {
             .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
-                caseTypeDropdown: "caseType", idamsId: "anas@yahoo.com",
+                caseTypeDropdown: "caseType", idamId: "anas@yahoo.com",
                 jurisdictionDropdown: "jurisdiction", stateDropdown: "state",
             })
             .expect(302)

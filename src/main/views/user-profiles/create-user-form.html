@@ -37,7 +37,7 @@
         errorElementClass: 'error',
         errorClass: 'govuk-error-message form-group-error',
         rules: {
-            idamsId: {
+            idamId: {
                 required: true,
                 email: true
             },
@@ -52,8 +52,8 @@
             }
         },
         messages :{
-            "idamsId" : {
-                required : 'Enter Idams Id',
+            "idamId" : {
+                required : 'Enter idam Id',
                 email: 'Email address invalid'
             },
             "jurisdictionDropdown": {
@@ -114,8 +114,8 @@
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
         
-            <label class="form-label" for="first-name-2">User Idams ID</label>
-            <input class="form-control" id="idamsId" name="idamsId" type="text"><br><br>  
+            <label class="form-label" for="first-name-2">User idam ID</label>
+            <input class="form-control" id="idamId" name="idamId" type="text"><br><br>  
         <label class="form-label">Live from</label>
             {{ dateMacro() }}
             <label class="form-label">Live to</label>
