@@ -35,6 +35,8 @@ module "ccd-admin-web" {
   is_frontend = "${local.is_frontend}"
   additional_host_name = "${local.external_host_name}"
   capacity = "${var.capacity}"
+  https_only = "${var.https_only}"
+  common_tags  = "${var.common_tags}"
 
   app_settings = {
     // Node specific vars
@@ -66,5 +68,6 @@ module "ccd-admin-web" {
 
     ADMINWEB_LOGIN_URL = "${var.authentication_web_url}/login"
     ADMINWEB_IMPORT_URL = "${local.def_store_url}/import"
+    ADMINWEB_JURISDICTIONS_URL = "${local.def_store_url}/api/data/jurisdictions"
   }
 }

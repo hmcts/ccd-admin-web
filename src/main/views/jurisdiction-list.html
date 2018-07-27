@@ -1,0 +1,9 @@
+
+<div class="form-group">
+       <select id="jurisdictionName" name="jurisdictionName" class="form-control">
+                <option value="" selected>--Select a value--</option>
+                {% for jursidiction in jurisdictions %}
+                    <option value="{{ jursidiction.id }}">{{jursidiction.name}}</option>
+                {%endfor%}
+        </select> 
+</div>     

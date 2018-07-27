@@ -1,0 +1,29 @@
+{% extends "govuk_template.html" %}
+{% from "macros/csrf.html" import csrfProtection %}
+{% from "macros/formElements.html" import errorsFor %}
+{% from "macros/formElements.html" import jurisdictionList %}
+{% block page_title %}
+  Jurisdiction
+{% endblock %}
+ {% block head %}
+ <link rel="stylesheet" media="all" href="stylesheets/app.css"/>
+ {% endblock %}
+ {% block content %}
+ {% include "menu.html" %}
+<h2 class="heading-large padding">Jurisdiction Search</h2>
+ <div class="grid-row padding">
+     <div class="column-two-thirds padding">
+     <form action="/userprofiles" method="post">
+            {{ csrfProtection(csrfToken) }}
+            {{  jurisdictionList(jurisdictions) }}
+             {{ errorsFor(error)}}
+             <div class="form-group">
+             <button type="submit" class="button" value="Submit">Submit</button>
+           </div>
+         </form>
+
+     </div>
+
+ </div>
+  {% endblock %}
+

@@ -7,8 +7,8 @@ let path = require('path');
 let replace = require('gulp-replace');
 
 const repoRoot = path.join(__dirname, '/');
-const govUkFrontendToolkitRoot = path.join(repoRoot, 'node_modules/govuk_frontend_toolkit/stylesheets');
-const govUkElementRoot = path.join(repoRoot, 'node_modules/govuk-elements-sass/public/sass');
+const govUkFrontendToolkitRoot = path.join(repoRoot, './node_modules/govuk_frontend_toolkit/stylesheets');
+const govUkElementRoot = path.join(repoRoot, './node_modules/govuk-elements-sass/public/sass');
 
 const assetsDirectory = './src/main/public';
 const stylesheetsDirectory = `${assetsDirectory}/stylesheets`;
@@ -32,39 +32,43 @@ gulp.task('sass', () => {
 gulp.task('copy-files', () => {
   gulp.src([
     './node_modules/jquery/dist/jquery.min.js',
+    './node_modules/jquery-validation/dist/jquery.validate.min.js',
     './node_modules/govuk_frontend_toolkit/javascripts/**/*.js',
     './node_modules/govuk_template_jinja/assets/javascripts/**/*.js'
   ])
-  .pipe(gulp.dest(`${assetsDirectory}/js/lib/`));
+    .pipe(gulp.dest(`${assetsDirectory}/js/lib/`));
 
+  gulp.src(['src/main/public/js/lib/**/*.js']).pipe(gulp.dest(`${assetsDirectory}/javascripts`));
+  gulp.src(['src/main/public/stylesheets/lib/**/*.css']).pipe(gulp.dest(`${assetsDirectory}/stylesheets`));
+  gulp.src(['src/main/public/stylesheets/lib/fonts/*.*']).pipe(gulp.dest(`${assetsDirectory}/stylesheets/fonts`));
+  gulp.src(['src/main/public/img/lib/gov.uk_logotype_crown_invert_trans.png']).pipe(gulp.dest(`${assetsDirectory}/images`));
   gulp.src([
     './node_modules/govuk_frontend_toolkit/images/**/*',
     './node_modules/govuk_template_jinja/assets/images/*.*'
   ])
-  .pipe(gulp.dest(`${assetsDirectory}/img/lib/`));
+    .pipe(gulp.dest(`${assetsDirectory}/img/lib/`));
 
   gulp.src([
     './node_modules/govuk_template_jinja/assets/stylesheets/**/*'
   ])
-  .pipe(replace('images/', '/stylesheets/lib/images/', { skipBinary: true }))
-  .pipe(gulp.dest(`${assetsDirectory}/stylesheets/lib/`));
+    .pipe(replace('images/', '/stylesheets/lib/images/', { skipBinary: true }))
+    .pipe(gulp.dest(`${assetsDirectory}/stylesheets/`));
 });
 
 // compile scss files whenever they're changed
 gulp.task('watch', () => {
-  gulp.watch(stylesheetsDirectory + '/**/*.scss', [ 'sass' ]);
+  gulp.watch(stylesheetsDirectory + '/**/*.scss', ['sass']);
 });
 
 // start the application and watch for file changes (in which case it will be restarted)
 gulp.task('develop', () => {
   setTimeout(() => {
     livereload.listen();
-
     nodemon({
-      ext: 'ts js njk po',
+      ext: 'ts js njk po html',
       stdout: true
     }).on('start', () => {
-        livereload.changed(__dirname);
+      livereload.changed(__dirname);
     });
   }, 500);
 });
