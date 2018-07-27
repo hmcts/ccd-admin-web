@@ -11,11 +11,12 @@ const completeRedirectURI = (uri) => {
 };
 
 export function accessTokenRequest(request) {
+
   const options = {
     headers: {
       "Authorization": "Basic "
         + Buffer.from(get("idam.oauth2.client_id") + ":" + get("idam.oauth2.client_secret"))
-        .toString("base64"),
+          .toString("base64"),
       "Content-Type": "application/x-www-form-urlencoded",
     },
     method: "POST",

@@ -14,5 +14,7 @@ properties([
 ])
 
 withParameterizedPipeline(params.TYPE, params.PRODUCT_NAME, params.APP, params.ENVIRONMENT, params.SUBSCRIPTION) {
-
+  after('build') {
+    sh 'yarn setup'
+  }
 }

@@ -12,7 +12,7 @@ export interface IConfig {
 const googleAnalyticsDomain = "*.google-analytics.com";
 const hmctsPiwikDomain = "hmctspiwik.useconnect.co.uk";
 const self = "'self'";
-
+const unsafeinline = "'unsafe-inline'";
 /**
  * Module that enables helmet in the application
  */
@@ -41,8 +41,8 @@ export class Helmet {
           fontSrc: [self, "data:"],
           imgSrc: [self, googleAnalyticsDomain, hmctsPiwikDomain],
           objectSrc: [self],
-          scriptSrc: [self, googleAnalyticsDomain, hmctsPiwikDomain],
-          styleSrc: [self],
+          scriptSrc: [self, googleAnalyticsDomain, hmctsPiwikDomain, unsafeinline],
+          styleSrc: [self, unsafeinline],
         },
       },
     ));

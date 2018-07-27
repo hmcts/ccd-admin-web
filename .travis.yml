@@ -2,13 +2,15 @@ language: node_js
 node_js:
   - "8.4"
 cache: yarn
+before_install: yarn global add greenkeeper-lockfile@1
+before_script: greenkeeper-lockfile-update
 script:
   - yarn --version
   - yarn sass
-# Commented out because of problems introduced by nyc
-#  - yarn check
+  - yarn check || echo 'yarn check failed'
   - yarn lint
   - yarn test
   - yarn test:routes
   - yarn test:a11y
   - yarn test:nsp
+after_script: greenkeeper-lockfile-upload

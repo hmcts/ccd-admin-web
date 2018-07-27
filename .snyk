@@ -12,3 +12,6 @@ patch:
         patched: '2018-06-19T06:30:07.009Z'
     - '@hmcts/nodejs-logging > log4js > loggly > request > hawk > cryptiles > boom > hoek':
         patched: '2018-06-19T06:30:07.009Z'
+  'npm:tunnel-agent:20170305':
+    - '@hmcts/nodejs-logging > log4js > loggly > request > tunnel-agent':
+        patched: '2018-06-26T06:35:10.034Z'
