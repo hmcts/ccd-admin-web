@@ -9,7 +9,6 @@ export function uploadFile(req) {
     ServiceAuthorization: req.headers.ServiceAuthorization,
   };
   const logger = Logger.getLogger(__filename);
-
   return request
     .post(url)
     .set(headers)
