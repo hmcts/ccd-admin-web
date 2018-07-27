@@ -7,8 +7,7 @@ before_script: greenkeeper-lockfile-update
 script:
   - yarn --version
   - yarn sass
-# Commented out because of problems introduced by nyc
-#  - yarn check
+  - yarn check || echo 'yarn check failed'
   - yarn lint
   - yarn test
   - yarn test:routes
