@@ -18,6 +18,7 @@ adminWeb:
   login_url: ADMINWEB_LOGIN_URL
   import_url: ADMINWEB_IMPORT_URL
   jurisdiction_url: ADMINWEB_JURISDICTIONS_URL
+  userprofiles_url: ADMINWEB_USER_PROFILE_URL
   create_user_profile_url: ADMINWEB_CREATE_USER_PROFILE_URL 
 appInsights:
   instrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY

@@ -1,35 +1,93 @@
 import * as chai from "chai";
+import * as nock from "nock";
 import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
-import { User } from "domain/User";
 
 const expect = chai.expect;
 chai.use(sinonChai);
 
-describe("userprofileService", () => {
+describe("user profile service", () => {
 
-  const importUrl = "http://localhost:9999/userprofiles";
+  const userProfileUrl = "http://localhost:4453/user-profile/users";
 
-  let fetchUsers;
+  let req;
+  let fetchUserProfilesByJurisdiction;
 
   beforeEach(() => {
+    req = {
+      body: { jurisdictionName: "Mike" },
+      file: {
+        buffer: new Buffer(8),
+      },
+      headers: {
+        Authorization: "userAuthToken",
+        ServiceAuthorization: "serviceAuthToken",
+      },
+    };
+
     const config = {
       get: sinon.stub(),
     };
-    config.get.withArgs("adminWeb.import_url").returns(importUrl);
+    config.get.withArgs("adminWeb.userprofiles_url").returns(userProfileUrl);
 
-    fetchUsers = proxyquire("../../main/service/user.profiles.service", {
+    fetchUserProfilesByJurisdiction = proxyquire("../../main/service/user.profiles.service.ts", {
       config,
-    }).fetchUsers;
+    }).fetchUserProfilesByJurisdiction;
   });
 
-  describe("successful call to fetchUser", () => {
-    it("should return a user object", () => {
-      const user: User = fetchUsers(new User("10001", "jurdictionname"));
-      expect(user.id).to.equal("10001");
-      expect(user.jurisdictionName).to.equal("jurdictionname");
+  describe("successful jurisdiction lookup", () => {
+    it("should return an HTTP 201 status and success message", (done) => {
+      const expectedResult = {
+        jurisdictions: [{
+          id: "ID_3",
+          work_basket_default_case_type: "Case Type 3",
+          work_basket_default_jurisdiction: "Jurisdiction 3",
+          work_basket_default_state: "State 3",
+        }],
+      };
+
+      nock("http://localhost:4453")
+        .get("/user-profile/users")
+        .query({ jurisdiction: "Mike" })
+        .reply(200, expectedResult);
+
+      fetchUserProfilesByJurisdiction(req).then((res) => {
+        try {
+          expect(JSON.parse(res).jurisdictions.length).to.equal(1);
+          expect(res).to.equal(JSON.stringify(expectedResult));
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+
+    describe("invalid S2S token", () => {
+      it("should return an HTTP 403 status and error message", (done) => {
+        req.headers.ServiceAuthorization = "invalid_token";
+
+        const expectedResult = {
+          error: "Forbidden",
+          message: "Access Denied",
+        };
+
+        nock("http://localhost:4453")
+          .get("/user-profile/users")
+          .query({ jurisdiction: "Mike" })
+          .reply(403, expectedResult);
+
+        fetchUserProfilesByJurisdiction(req).catch((err) => {
+          try {
+            expect(err.status).to.equal(403);
+            expect(err.response.body.error).to.equal(expectedResult.error);
+            expect(err.response.body.message).to.equal(expectedResult.message);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+      });
     });
   });
-
 });
