@@ -28,7 +28,7 @@
     "@hmcts/nodejs-logging": "^2.0.0",
     "@types/node": "^10.5.4",
     "body-parser": "^1.18.1",
-    "config": "^1.26.2",
+    "config": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "csurf": "^1.9.0",
     "express": "^4.15.4",
