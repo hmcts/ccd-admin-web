@@ -129,6 +129,7 @@ table, tbody, td, tr
 
   .rightAlign {
     float: right;
+    margin-right: 50px;
   }
   .govuk-error-message {
     font-family: "nta", Arial, sans-serif;
@@ -143,9 +144,10 @@ table, tbody, td, tr
     color: #b10e1e; }
   
     .success {
-      width: 981px;
+      width: 100%;
       height: 40px;
       background-color: #006435;
+      margin-bottom: 3px;
     }
   .error {
     display:block;
