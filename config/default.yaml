@@ -27,7 +27,7 @@ adminWeb:
   login_url: https://localhost:3501/login
   import_url: http://localhost:4451/import
   jurisdiction_url: http://localhost:4451/api/data/jurisdictions
-  userprofiles_url: http://localhost:4453/user-profile/users
+  userprofiles_url: http://localhost:4453/users
   create_user_profile_url: http://localhost:4453/user-profile/users
 appInsights:
   instrumentationKey: "some-key"

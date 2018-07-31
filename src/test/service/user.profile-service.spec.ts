@@ -9,7 +9,7 @@ chai.use(sinonChai);
 
 describe("user profile service", () => {
 
-  const userProfileUrl = "http://localhost:4453/user-profile/users";
+  const userProfileUrl = "http://localhost:4453/users";
 
   let req;
   let fetchUserProfilesByJurisdiction;
@@ -48,8 +48,44 @@ describe("user profile service", () => {
       };
 
       nock("http://localhost:4453")
-        .get("/user-profile/users")
+        .get("/users")
         .query({ jurisdiction: "Mike" })
+        .reply(200, expectedResult);
+
+      fetchUserProfilesByJurisdiction(req).then((res) => {
+        try {
+          expect(JSON.parse(res).jurisdictions.length).to.equal(1);
+          expect(res).to.equal(JSON.stringify(expectedResult));
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+
+    it("should return all user profiles if jurisdictionName is not passed ", (done) => {
+      const expectedResult = {
+        jurisdictions: [{
+          id: "ID_3",
+          work_basket_default_case_type: "Case Type 3",
+          work_basket_default_jurisdiction: "Jurisdiction 3",
+          work_basket_default_state: "State 3",
+        }],
+      };
+      req = {
+        body: {},
+        file: {
+          buffer: new Buffer(8),
+        },
+        headers: {
+          Authorization: "userAuthToken",
+          ServiceAuthorization: "serviceAuthToken",
+        },
+      };
+
+      nock("http://localhost:4453")
+        .get("/users")
+        .query({})
         .reply(200, expectedResult);
 
       fetchUserProfilesByJurisdiction(req).then((res) => {
@@ -73,7 +109,7 @@ describe("user profile service", () => {
         };
 
         nock("http://localhost:4453")
-          .get("/user-profile/users")
+          .get("/users")
           .query({ jurisdiction: "Mike" })
           .reply(403, expectedResult);
 

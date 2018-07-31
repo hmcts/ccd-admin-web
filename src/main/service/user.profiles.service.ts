@@ -11,8 +11,10 @@ export function fetchUserProfilesByJurisdiction(req) {
                 ServiceAuthorization: req.headers.ServiceAuthorization ? req.headers.ServiceAuthorization :
                         req.headers.serviceauthorization,
         };
+        const query = req.body.jurisdictionName ? { jurisdiction: `${req.body.jurisdictionName}` } : {};
         return request
-                .get(url + `?jurisdiction=${req.body.jurisdictionName}`)
+                .get(url)
+                .query(query)
                 .set(headers)
                 .then((res) => {
                         logger.info(`Get user profiles by jurisdiction, response: ${res.text}`);

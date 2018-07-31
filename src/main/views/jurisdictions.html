@@ -12,7 +12,7 @@
  {% endblock %}
 
  {% block content %}
- 
+  {% include "menu.html" %}
  {% if sucess%}
  <div class="success"><div class="admin-ui">User created sucessfully</div></div>
  {% endif%}
@@ -24,7 +24,7 @@
 
   </tr>
   <tr>
-    <th class="search-result-column-label">User Idam IDs  <a class="sort-widget" >&#9660; &#9650;</a></th>
+    <th class="search-result-column-label">User Idam IDs</th>
     <th>
       Work basket default jurisdiction
     </th>
@@ -60,9 +60,8 @@
         </div>
     </td>
      <td>
-        <div>
-         <a href="#">Edit</a>
-        </div>
+
+          <a href="/deleteuser" class="button rightAlign" value="Submit">Delete</a>
     </td>
   </tr>
   {% endfor %}

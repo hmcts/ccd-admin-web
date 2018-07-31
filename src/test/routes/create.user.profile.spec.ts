@@ -18,6 +18,7 @@ describe("on Get /createuser", () => {
                 expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
             });
     });
+
     it("should respond with create user form and populated response when authenticated", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
@@ -75,7 +76,10 @@ describe("on POST /createuser", () => {
                 caseTypeDropdown: "caseType", idamId: "anas@yahoo.com",
                 jurisdictionDropdown: "jurisdiction", stateDropdown: "state",
             })
-            .expect(201);
+            .expect(302)
+            .then((res) => {
+                expect(res.headers.location.startsWith("/userprofiles")).to.be.true;
+            });
     });
 
     it("should respond with create user form and populated response when authenticated", () => {
