@@ -10,6 +10,8 @@ router.get("/createuser", (req, res, next) => {
     res.status(201);
     const responseContent: { [k: string]: any } = {};
     responseContent.jurisdictions = JSON.stringify(response);
+    responseContent.heading = "Create User profile";
+    responseContent.submitButtonText = "Create";
     if (req.session.error) {
       responseContent.error = req.session.error;
       delete req.session.error;
@@ -24,7 +26,8 @@ router.get("/createuser", (req, res, next) => {
 
 /* POST create user result. */
 router.post("/createuser", (req, res, next) => {
-  createUserProfile(req, new UserProfile(req.body.idamId,
+  const idamId = req.body.idamId ? req.body.idamId : req.body.idamIdUpdate;
+  createUserProfile(req, new UserProfile(idamId,
     req.body.jurisdictionDropdown, req.body.caseTypeDropdown, req.body.stateDropdown))
     .then((response) => {
       // res.status(201);

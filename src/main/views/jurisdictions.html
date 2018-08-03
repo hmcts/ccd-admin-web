@@ -42,7 +42,7 @@
   {% for userprofile in userprofiles %}
   <tr >
     <td>
-      <a href="">  <div> {{userprofile.id}} </div></a>
+      <a href="/updateusersprofile?idamId={{userprofile.id}}&jurisdiction={{userprofile.work_basket_default_jurisdiction}}&casetype={{userprofile.work_basket_default_case_type}}&state={{userprofile.work_basket_default_state}}">  <div> {{userprofile.id}} </div></a>
     </td>
     <td>
       <div>
