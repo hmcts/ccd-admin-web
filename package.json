@@ -7,7 +7,7 @@
   },
   "scripts": {
     "setup": "gulp sass copy-files",
-    "start": "node server.js",
+    "start": "gulp sass copy-files && node server.js",
     "lint": "tslint --project tsconfig.json --type-check && sass-lint -v -q",
     "sass": "gulp sass copy-files",
     "watch": "gulp develop",
@@ -19,14 +19,16 @@
     "test:coverage": "NODE_ENV=mocha LOG_LEVEL=OFF nyc mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*')",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
-    "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/**,coverage/**,src/main/modules/**,src/main/router/**,src/main/util/**,src/main/app.ts,src/main/app.test.ts,src/main/server.ts -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info"
+    "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/**,coverage/**,src/main/modules/**,src/main/router/**,src/main/util/**,src/main/app.ts,src/main/app.test.ts,src/main/server.ts -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.4.5",
     "@hmcts/nodejs-logging": "^2.0.0",
-    "@types/node": "^8.10.11",
+    "@types/node": "^10.5.4",
     "body-parser": "^1.18.1",
-    "config": "^1.26.2",
+    "config": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "csurf": "^1.9.0",
     "express": "^4.15.4",
@@ -54,8 +56,9 @@
     "superagent": "^3.8.3",
     "supertest-session": "^3.3.0",
     "ts-node": "^3.3.0",
-    "tsconfig-paths": "^2.6.0",
-    "typescript": "^2.6.2"
+    "tsconfig-paths": "^3.5.0",
+    "typescript": "^2.6.2",
+    "snyk": "^1.85.0"
   },
   "devDependencies": {
     "@types/chai-as-promised": "^7.1.0",
@@ -115,5 +118,6 @@
     ],
     "report-dir": "coverage",
     "all": true
-  }
+  },
+  "snyk": true
 }
