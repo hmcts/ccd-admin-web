@@ -12,7 +12,7 @@ router.get("/updateusersprofile", (req, res, next) => {
         responseContent.jurisdiction = req.query.jurisdiction;
         responseContent.casetype = req.query.casetype;
         responseContent.state = req.query.state;
-
+        responseContent.update = "true";
         responseContent.heading = "Update User profile";
         responseContent.submitButtonText = "Update";
         if (req.session.error) {

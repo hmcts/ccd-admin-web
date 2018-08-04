@@ -124,7 +124,7 @@
         </div>
     {% endif %}
 
-    <form id="createuserform" name="createuserform" method="POST">
+    <form id="createuserform" name="createuserform" method="POST" action="/createuser">
     
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
@@ -132,7 +132,9 @@
             <label class="form-label" for="first-name-2">User idam ID</label>
             {% if idamId%}
                 <label class="form-label-bold" >{{idamId}}</label><br><br>
-                 <input class="form-control" id="idamIdUpdate" name="idamIdUpdate" type="hidden">
+                 <input class="form-control" id="idamId" name="idamId" type="hidden" value="{{idamId}}">
+                 <input class="form-control" id="update" name="update" type="hidden" value="{{update}}">
+                 
             {% else %}
                 <input class="form-control" id="idamId" name="idamId" type="text"><br><br> 
             {% endif%} 

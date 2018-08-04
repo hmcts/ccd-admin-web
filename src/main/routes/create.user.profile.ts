@@ -26,13 +26,17 @@ router.get("/createuser", (req, res, next) => {
 
 /* POST create user result. */
 router.post("/createuser", (req, res, next) => {
-  const idamId = req.body.idamId ? req.body.idamId : req.body.idamIdUpdate;
-  createUserProfile(req, new UserProfile(idamId,
+
+  createUserProfile(req, new UserProfile(req.body.idamId,
     req.body.jurisdictionDropdown, req.body.caseTypeDropdown, req.body.stateDropdown))
     .then((response) => {
       // res.status(201);
       // res.render("jurisdictions", { sucess: "Creating user profile" });
-      req.session.sucess = { sucess: "Creating user profile" };
+
+      req.session.sucess = "Created user profile";
+      if (req.body.update) {
+        req.session.sucess = "Updated user profile";
+      }
       res.redirect(302, "/userprofiles");
     })
     .catch((error) => {

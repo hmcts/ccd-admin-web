@@ -38,7 +38,7 @@ describe("test create user profile service", () => {
     const expectedResult = "User profile created successfully";
 
     nock("http://localhost:4453")
-      .post("/user-profile/users")
+      .put("/user-profile/users")
       .reply(201, expectedResult);
 
     createUserProfile(req, new UserProfile("someid", "jurisdictionname", "caseType", "state")).then((res) => {
@@ -63,7 +63,7 @@ describe("test create user profile service", () => {
     };
 
     nock("http://localhost:4453")
-      .post("/user-profile/users")
+      .put("/user-profile/users")
       .reply(403, expectedResult);
 
     createUserProfile(req, new UserProfile("someid", "jurisdictionname", "caseType", "state")).catch((err) => {
