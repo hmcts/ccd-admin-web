@@ -1,13 +1,16 @@
-{% extends "govuk_template.html" %}
+{% extends "layout_template.html" %}
 
 {% block page_title %}
   Jurisdiction
 {% endblock %}
- {% block head %}
- <link rel="stylesheet" media="all" href="stylesheets/app.css"/>
- {% endblock %}
+ 
  {% block content %}
- {% include "menu.html" %}
+ {% if sucess%}
+ <div class="success"><div class="admin-ui">User created sucessfully</div></div>
+ {% endif%}
+ <a href="/createuser" class="button rightAlign" value="Submit">Create User</a>
     <h2 class="heading-large padding">The ID is {{jurisdictionName}} </h2>
+   
+
   {% endblock %}
 

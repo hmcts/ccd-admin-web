@@ -16,3 +16,26 @@
         </select> 
 </div> 
 {%- endmacro %}    
+{% macro dropdown(name) -%}
+<div class="form-group">
+       <select id="{{name}}" name="{{name}}" class="form-control">
+                <option value="" selected>--Select a value--</option>
+        </select> 
+</div> 
+{%- endmacro %} 
+{% macro dateMacro() -%}
+    <table class="tableCSS">
+
+        <tr>
+            <td><label class="date" for="Day-1">Day</label></td>
+            <td><label class="form-label date" for="Month-1">Month</label></td> 
+            <td><label class="form-label date" for="Year-1">Year</label></td>
+
+        </tr>
+        <tr>
+            <td class="tdCSS"> <input class="form-control date" id="Day-1" name="Day-1" type="text" size="2"></td>
+            <td class="tdCSS"> <input class="form-control date" id="Month-1" name="Month-1" type="text" size="2"></td> 
+            <td class="tdCSS"><input class="form-control date" id="Year-1" name="Year-1" type="text" size="4"></td>
+        </tr>        
+        </table><br>
+{%- endmacro %} 

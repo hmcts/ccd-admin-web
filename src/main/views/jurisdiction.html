@@ -1,13 +1,8 @@
-{% extends "govuk_template.html" %}
+{% extends "layout_template.html" %}
 {% from "macros/csrf.html" import csrfProtection %}
 {% from "macros/formElements.html" import errorsFor %}
 {% from "macros/formElements.html" import jurisdictionList %}
-{% block page_title %}
-  Jurisdiction
-{% endblock %}
- {% block head %}
- <link rel="stylesheet" media="all" href="stylesheets/app.css"/>
- {% endblock %}
+
  {% block content %}
  {% include "menu.html" %}
 <h2 class="heading-large padding">Jurisdiction Search</h2>

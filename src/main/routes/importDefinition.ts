@@ -9,7 +9,6 @@ const upload = multer({
     if (!file.originalname.match(/\.(xls|xlsx)$/)) {
       return cb(new Error("Only Excel files are allowed"));
     }
-
     return cb(null, true);
   },
   limits: {
@@ -27,7 +26,7 @@ export default router.post("/import", (req, res, next) => {
       uploadFile(req)
         .then((response) => {
           res.status(201);
-          res.render("home", {response});
+          res.render("home", { response });
         })
         .catch((error) => {
           // Call the next middleware, which is the error handler
