@@ -84,3 +84,17 @@ module "ccd-admin-web" {
     ADMINWEB_STATE_URL = "${local.def_store_url}/api/data/case-type/{id}"
   }
 }
+
+// Copy into Azure Key Vault
+
+resource "azurerm_key_vault_secret" "idam_service_key" {
+  name = "idam-service-key"
+  value = "${data.vault_generic_secret.idam_service_key.data["value"]}"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+}
+
+resource "azurerm_key_vault_secret" "oauth2_client_secret" {
+  name = "oauth2-client-secret"
+  value = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+}
