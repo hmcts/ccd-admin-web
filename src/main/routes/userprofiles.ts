@@ -37,8 +37,8 @@ router.get("/userprofiles", (req, res, next) => {
     res.status(201);
     const responseContent: { [k: string]: any } = {};
     responseContent.userprofiles = JSON.parse(response);
-    if (req.session.sucess) {
-      responseContent.sucess = req.session.sucess;
+    if (req.session.success) {
+      responseContent.success = req.session.success;
     }
     res.render("jurisdictions", responseContent);
   }).catch((error) => {
