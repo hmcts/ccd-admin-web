@@ -16,6 +16,16 @@ locals {
   s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
   def_store_url = "http://ccd-definition-store-api-${local.env_ase_url}"
   userprofile_url = "http://ccd-user-profile-api-${local.env_ase_url}"
+
+  // Vault name
+  previewVaultName = "${var.raw_product}-shared-aat"
+  nonPreviewVaultName = "${var.raw_product}-shared-${var.env}"
+  vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+}
+
+data "azurerm_key_vault" "ccd_shared_key_vault" {
+  name = "${local.vaultName}"
+  resource_group_name = "${local.vaultName}"
 }
 
 data "vault_generic_secret" "idam_service_key" {
@@ -73,4 +83,18 @@ module "ccd-admin-web" {
     ADMINWEB_CREATE_USER_PROFILE_URL = "${local.userprofile_url}/user-profile/users"
     ADMINWEB_STATE_URL = "${local.def_store_url}/api/data/case-type/{id}"
   }
+}
+
+// Copy into Azure Key Vault
+
+resource "azurerm_key_vault_secret" "idam_service_key" {
+  name = "ccd-admin-web-idam-service-key"
+  value = "${data.vault_generic_secret.idam_service_key.data["value"]}"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+}
+
+resource "azurerm_key_vault_secret" "oauth2_client_secret" {
+  name = "ccd-admin-web-oauth2-client-secret"
+  value = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }
