@@ -64,7 +64,7 @@ describe("on POST /createuser", () => {
             Authorization: "userAuthToken",
             ServiceAuthorization: "serviceAuthToken",
         };
-        mock("http://localhost:4453/user-profile/users")
+        mock("http://localhost:4453/users")
             .put("")
             .reply(200);
 
@@ -89,7 +89,7 @@ describe("on POST /createuser", () => {
             Authorization: "userAuthToken",
             ServiceAuthorization: "serviceAuthToken",
         };
-        mock("http://localhost:4453/user-profile/users")
+        mock("http://localhost:4453/users")
             .put("")
             .replyWithError({ status: 400, rawResponse: "Duplicate values" });
 
