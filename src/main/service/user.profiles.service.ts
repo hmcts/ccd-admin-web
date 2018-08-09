@@ -22,10 +22,10 @@ export function fetchUserProfilesByJurisdiction(req) {
                 })
                 .catch((error) => {
                         if (error.response) {
-                                logger.error(`Error retriving user profiles by jurisdiction: ${error.response.text}`);
+                                logger.error(`Error retrieving user profiles by jurisdiction: ${error.response.text}`);
                                 throw error;
                         } else {
-                                const errMsg = "Error retriving user profiles no error response";
+                                const errMsg = "Error retrieving user profiles no error response";
                                 logger.error(errMsg);
                                 error.text = errMsg;
                                 throw error;
