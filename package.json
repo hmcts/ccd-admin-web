@@ -55,7 +55,7 @@
     "sinon-stub-promise": "^4.0.0",
     "superagent": "^3.8.3",
     "supertest-session": "^3.3.0",
-    "ts-node": "^3.3.0",
+    "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.5.0",
     "typescript": "^2.6.2",
     "snyk": "^1.85.0"
