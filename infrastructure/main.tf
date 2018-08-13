@@ -28,12 +28,14 @@ data "azurerm_key_vault" "ccd_shared_key_vault" {
   resource_group_name = "${local.vaultName}"
 }
 
-data "vault_generic_secret" "idam_service_key" {
-  path = "secret/${var.vault_section}/ccidam/service-auth-provider/api/microservice-keys/ccd-admin"
+data "azurerm_key_vault_secret" "idam_service_key" {
+  name = "ccd-admin-web-idam-service-key"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }
 
-data "vault_generic_secret" "oauth2_client_secret" {
-  path = "secret/${var.vault_section}/ccidam/idam-api/oauth2/client-secrets/ccd-admin"
+data "azurerm_key_vault_secret" "oauth2_client_secret" {
+  name = "ccd-admin-web-oauth2-client-secret"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }
 
 module "ccd-admin-web" {
@@ -69,13 +71,13 @@ module "ccd-admin-web" {
     // IDAM
     IDAM_BASE_URL = "${var.idam_api_url}"
     IDAM_S2S_URL = "${local.s2s_url}"
-    IDAM_ADMIN_WEB_SERVICE_KEY = "${data.vault_generic_secret.idam_service_key.data["value"]}"
+    IDAM_ADMIN_WEB_SERVICE_KEY = "${data.azurerm_key_vault_secret.idam_service_key.value}"
     IDAM_SERVICE_NAME = "${var.idam_service_name}"
     IDAM_LOGOUT_URL = "${var.authentication_web_url}/login/logout"
 
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
     IDAM_OAUTH2_CLIENT_ID = "ccd_admin"
-    IDAM_OAUTH2_AW_CLIENT_SECRET = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
+    IDAM_OAUTH2_AW_CLIENT_SECRET = "${data.azurerm_key_vault_secret.oauth2_client_secret.value}"
 
     ADMINWEB_LOGIN_URL = "${var.authentication_web_url}/login"
     ADMINWEB_IMPORT_URL = "${local.def_store_url}/import"
@@ -83,18 +85,4 @@ module "ccd-admin-web" {
     ADMINWEB_CREATE_USER_PROFILE_URL = "${local.userprofile_url}/user-profile/users"
     ADMINWEB_STATE_URL = "${local.def_store_url}/api/data/case-type/{id}"
   }
-}
-
-// Copy into Azure Key Vault
-
-resource "azurerm_key_vault_secret" "idam_service_key" {
-  name = "ccd-admin-web-idam-service-key"
-  value = "${data.vault_generic_secret.idam_service_key.data["value"]}"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
-}
-
-resource "azurerm_key_vault_secret" "oauth2_client_secret" {
-  name = "ccd-admin-web-oauth2-client-secret"
-  value = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }
