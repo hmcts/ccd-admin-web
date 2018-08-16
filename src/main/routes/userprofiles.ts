@@ -20,6 +20,7 @@ router.post("/userprofiles", validate, (req, res, next) => {
 
   fetchUserProfilesByJurisdiction(req).then((response) => {
     res.status(201);
+    req.session.jurisdiction = req.body.jurisdictionName;
     const responseContent: { [k: string]: any } = {};
     responseContent.userprofiles = JSON.parse(response);
     res.render("jurisdictions", responseContent);
@@ -34,6 +35,7 @@ router.post("/userprofiles", validate, (req, res, next) => {
 router.get("/userprofiles", (req, res, next) => {
 
   fetchUserProfilesByJurisdiction(req).then((response) => {
+
     res.status(201);
     const responseContent: { [k: string]: any } = {};
     responseContent.userprofiles = JSON.parse(response);

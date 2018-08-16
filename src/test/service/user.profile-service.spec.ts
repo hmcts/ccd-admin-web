@@ -74,13 +74,11 @@ describe("user profile service", () => {
       };
       req = {
         body: {},
-        file: {
-          buffer: new Buffer(8),
-        },
         headers: {
           Authorization: "userAuthToken",
           ServiceAuthorization: "serviceAuthToken",
         },
+        session: {},
       };
 
       nock("http://localhost:4453")

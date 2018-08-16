@@ -26,8 +26,8 @@ router.get("/createuser", (req, res, next) => {
 
 /* POST create user result. */
 router.post("/createuser", (req, res, next) => {
-
-  createUserProfile(req, new UserProfile(req.body.idamId,
+  const currentJurisdiction = req.session.jurisdiction;
+  createUserProfile(req, new UserProfile(req.body.idamId, currentJurisdiction,
     req.body.jurisdictionDropdown, req.body.caseTypeDropdown, req.body.stateDropdown))
     .then((response) => {
       req.session.success = "Created user profile";

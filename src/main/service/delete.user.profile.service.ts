@@ -1,11 +1,10 @@
 import * as request from "superagent";
 import * as config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
-import { UserProfile } from "domain/userprofile";
 
-export function createUserProfile(req, userprofile: UserProfile) {
+export function deleteUserProfile(req) {
     const logger = Logger.getLogger(__filename);
-    const url = config.get("adminWeb.saveuserprofiles_url");
+    const url = config.get("adminWeb.userprofiles_url");
 
     const headers = {
         Accept: "application/json",
@@ -13,28 +12,22 @@ export function createUserProfile(req, userprofile: UserProfile) {
         ServiceAuthorization: req.headers.ServiceAuthorization ? req.headers.ServiceAuthorization :
             req.headers.serviceauthorization,
     };
-
-    const payloadString: string = `{"id": "${userprofile.id}", ` +
-        `"jurisdictions": [{ "id": "${userprofile.currentJurisdiction}"}], ` +
-        `"work_basket_default_jurisdiction": "${userprofile.jurisdictionname}",` +
-        `"work_basket_default_case_type": "${userprofile.caseType}",` +
-        ` "work_basket_default_state": "${userprofile.state}" }`;
-
     return request
-        .put(url)
+        .delete(url)
+        .query({ uid: req.body.idamId })
         .set("Content-Type", "application/json")
         .set(headers)
-        .send(payloadString)
         .then((res) => {
-            logger.info(`Create user profile : ${res.text}`);
+            logger.info(`Delete user profile : ${res.text}`);
+
             return res;
         })
         .catch((error) => {
             if (error.response) {
-                logger.error(`Error creating/updating user profile: ${error.response.text}`);
+                logger.error(`Error deleting user profile: ${error.response.text}`);
                 throw error;
             } else {
-                const errMsg = "Error creating/ user profile: no error response";
+                const errMsg = "Error deleting user profile: no error response";
                 logger.error(errMsg);
                 error.text = errMsg;
                 throw error;
