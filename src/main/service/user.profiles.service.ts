@@ -11,7 +11,8 @@ export function fetchUserProfilesByJurisdiction(req) {
                 ServiceAuthorization: req.headers.ServiceAuthorization ? req.headers.ServiceAuthorization :
                         req.headers.serviceauthorization,
         };
-        const query = req.body.jurisdictionName ? { jurisdiction: `${req.body.jurisdictionName}` } : {};
+        const query = req.body.jurisdictionName ? { jurisdiction: `${req.body.jurisdictionName}` }
+                : req.session.jurisdiction ? { jurisdiction: `${req.session.jurisdiction}` } : {};
         return request
                 .get(url)
                 .query(query)

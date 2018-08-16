@@ -82,6 +82,7 @@ module "ccd-admin-web" {
     ADMINWEB_JURISDICTIONS_URL = "${local.def_store_url}/api/data/jurisdictions"
     ADMINWEB_CREATE_USER_PROFILE_URL = "${local.userprofile_url}/user-profile/users"
     ADMINWEB_USER_PROFILE_URL = "${local.userprofile_url}/users"
+    ADMINWEB_SAVE_USER_PROFILE_URL = "${local.userprofile_url}/users/save"
   }
 }
 

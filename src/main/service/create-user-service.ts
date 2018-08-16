@@ -14,11 +14,11 @@ export function createUserProfile(req, userprofile: UserProfile) {
             req.headers.serviceauthorization,
     };
 
-    const payloadString: string = `[{"id": "${userprofile.id}", ` +
+    const payloadString: string = `{"id": "${userprofile.id}", ` +
         `"jurisdictions": [{ "id": "${userprofile.jurisdictionname}"}], ` +
         `"work_basket_default_jurisdiction": "${userprofile.jurisdictionname}",` +
         `"work_basket_default_case_type": "${userprofile.caseType}",` +
-        ` "work_basket_default_state": "${userprofile.state}" }]`;
+        ` "work_basket_default_state": "${userprofile.state}" }`;
 
     return request
         .put(url)
