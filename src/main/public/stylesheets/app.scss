@@ -1,7 +1,6 @@
 $path: '/assets/';
 
 @import './node_modules/govuk-elements-sass/public/sass/_govuk-elements.scss';
-
 $fa-font-path: './node_modules/font-awesome/fonts';
 $govuk-frontend-toolkit-image-path: '/assets';
 $govuk-template-image-path: '/assets';
@@ -130,9 +129,7 @@ table, tbody, td, tr
 
   .rightAlign {
     float: right;
-  }
-  .date{
-    width: 50px
+    margin-right: 50px;
   }
   .govuk-error-message {
     font-family: "nta", Arial, sans-serif;
@@ -147,12 +144,22 @@ table, tbody, td, tr
     color: #b10e1e; }
   
     .success {
-      width: 981px;
+      width: 100%;
       height: 40px;
       background-color: #006435;
+      margin-bottom: 3px;
     }
   .error {
     display:block;
     border: 5px solid #ffdddd;
     color: red
   }
+  hr {
+    display: block;
+    background: #bfc1c3;
+    border: 0;
+    height: 1px;
+    margin-top: 0px;
+    margin-bottom: 0px; 
+    padding: 0;
+}

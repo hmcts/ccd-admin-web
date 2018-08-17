@@ -27,8 +27,8 @@ router.post("/createuser", (req, res, next) => {
   createUserProfile(req, new UserProfile(req.body.idamId,
     req.body.jurisdictionDropdown, req.body.caseTypeDropdown, req.body.stateDropdown))
     .then((response) => {
-      res.status(201);
-      res.render("jurisdictions", { sucess: "Creating user profile" });
+      req.session.success = { success: "Creating user profile" };
+      res.redirect(302, "/userprofiles");
     })
     .catch((error) => {
       req.session.error = { status: 400, text: error.rawResponse };

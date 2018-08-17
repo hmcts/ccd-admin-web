@@ -1,6 +1,5 @@
 
-import { fetchUsers } from "../service/user.profiles.service";
-import { Jurisdiction } from "../domain/jurisdiction";
+import { fetchUserProfilesByJurisdiction } from "../service/user.profiles.service";
 import { Validator } from "../validators/validate";
 
 const router = require("../routes/home");
@@ -16,11 +15,37 @@ function validate(req, res, next) {
   }
 }
 
-/* GET home page. */
+/* POST */
 router.post("/userprofiles", validate, (req, res, next) => {
-  const user: Jurisdiction = fetchUsers(new Jurisdiction(req.body.jurisdictionName, "AAAAA"));
-  res.render("jurisdictions", { jurisdictionName: user.id });
+
+  fetchUserProfilesByJurisdiction(req).then((response) => {
+    res.status(201);
+    const responseContent: { [k: string]: any } = {};
+    responseContent.userprofiles = JSON.parse(response);
+    res.render("jurisdictions", responseContent);
+  })
+    .catch((error) => {
+      // Call the next middleware, which is the error handler
+      next(error);
+    });
 });
 
-/* tslint:disable:no-default-export */
+/* GET */
+router.get("/userprofiles", (req, res, next) => {
+
+  fetchUserProfilesByJurisdiction(req).then((response) => {
+    res.status(201);
+    const responseContent: { [k: string]: any } = {};
+    responseContent.userprofiles = JSON.parse(response);
+    if (req.session.success) {
+      responseContent.success = req.session.success;
+    }
+    res.render("jurisdictions", responseContent);
+  }).catch((error) => {
+    // Call the next middleware, which is the error handler
+    next(error);
+  });
+
+});
+
 export default router;

@@ -3,14 +3,80 @@
 {% block page_title %}
   Jurisdiction
 {% endblock %}
- 
+ {% block head%}
+  {{super()}}
+  <script type="text/javascript">
+ // var jurisdictionString = {{userprofiles |safe }}
+ // var jurisdictionLookups = $.parseJSON(jurisdictionString);
+  </script>
+ {% endblock %}
+
  {% block content %}
- {% if sucess%}
- <div class="success"><div class="admin-ui">User created sucessfully</div></div>
+  {% include "menu.html" %}
+ {% if success%}
+ <div class="success"><div class="admin-ui">&#10004;   User created successfully</div></div>
  {% endif%}
  <a href="/createuser" class="button rightAlign" value="Submit">Create User</a>
-    <h2 class="heading-large padding">The ID is {{jurisdictionName}} </h2>
-   
+<div class="padding ngx-pagination">
+   <table border="1">
+  <thead>
+  <tr> <th colspan="5">
+
+  </tr>
+  <tr>
+    <th class="search-result-column-label">User Idam IDs</th>
+    <th>
+      Work basket default jurisdiction
+    </th>
+    <th >
+    Work basket default case type
+    </th>
+      <th >
+    Work basket default state
+    </th>
+     <th>Action
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for userprofile in userprofiles %}
+  <tr >
+    <td>
+      <a href="">  <div> {{userprofile.id}} </div></a>
+    </td>
+    <td>
+      <div>
+       {{userprofile.work_basket_default_jurisdiction}}
+      </div>
+    </td>
+    <td>
+        <div>
+           {{userprofile.work_basket_default_case_type}}
+        </div>
+    </td>
+     <td>
+        <div>
+           {{userprofile.work_basket_default_state}}
+        </div>
+    </td>
+     <td>
+
+          <a href="/deleteuser" class="button rightAlign" value="Submit">Delete</a>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  <tfoot>
+   <tr> <th colspan="5">
+
+  </tr>
+  </tfoot>
+</table>
+</div>
+<div class="notification">
+
+</div>
+
 
   {% endblock %}
 
