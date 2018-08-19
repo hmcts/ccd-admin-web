@@ -12,6 +12,7 @@ router.get("/createuser", (req, res, next) => {
     responseContent.jurisdictions = JSON.stringify(response);
     responseContent.heading = "Create User profile";
     responseContent.submitButtonText = "Create";
+    responseContent.jurisdiction = req.query.jurisdiction ? req.query.jurisdiction : req.session.jurisdiction;
     if (req.session.error) {
       responseContent.error = req.session.error;
       delete req.session.error;
@@ -26,21 +27,26 @@ router.get("/createuser", (req, res, next) => {
 
 /* POST create user result. */
 router.post("/createuser", (req, res, next) => {
+  const currentJurisdiction = req.body.jurisdiction ? req.body.jurisdiction : req.session.jurisdiction;
 
-  const currentJurisdiction = req.session.jurisdiction;
-  createUserProfile(req, new UserProfile(req.body.idamId, currentJurisdiction,
-    req.body.jurisdictionDropdown, req.body.caseTypeDropdown, req.body.stateDropdown))
-    .then((response) => {
-      req.session.success = "Created user profile";
-      if (req.body.update) {
-        req.session.success = "Updated user profile";
-      }
-      res.redirect(302, "/userprofiles");
-    })
-    .catch((error) => {
-      req.session.error = { status: 400, text: error.rawResponse };
-      res.redirect(302, "/createuser");
-    });
+  if (currentJurisdiction === undefined) {
+    req.session.error = { status: 401, text: "Please select jurisdiction name" };
+    res.redirect(302, "/jurisdiction");
+  } else {
+    createUserProfile(req, new UserProfile(req.body.idamId, currentJurisdiction,
+      req.body.jurisdictionDropdown, req.body.caseTypeDropdown, req.body.stateDropdown))
+      .then((response) => {
+        req.session.success = "Created user profile";
+        if (req.body.update) {
+          req.session.success = "Updated user profile";
+        }
+        res.redirect(302, `/userprofiles?jursidiction=${currentJurisdiction}`);
+      })
+      .catch((error) => {
+        req.session.error = { status: 400, text: error.rawResponse };
+        res.redirect(302, `/createuser?jurisdiction=${currentJurisdiction}`);
+      });
+  }
 });
 /* tslint:disable:no-default-export */
 export default router;

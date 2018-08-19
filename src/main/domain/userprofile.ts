@@ -7,6 +7,7 @@ export class UserProfile {
     constructor(id: string, currentJurisdiction: string, jurisdictionname: string, caseType: string, state: string) {
         this.id = id;
         this.jurisdictionname = jurisdictionname;
+        this.currentJurisdiction = currentJurisdiction;
         this.caseType = caseType;
         this.state = state;
     }

@@ -10,7 +10,7 @@ chai.use(sinonChai);
 
 describe("test create user profile service", () => {
 
-  const createUserProfileURL = "http://localhost:4453/user-profile/users";
+  const createUserProfileURL = "http://localhost:4453/users/save";
 
   let createUserProfile;
 
@@ -27,7 +27,7 @@ describe("test create user profile service", () => {
     const config = {
       get: sinon.stub(),
     };
-    config.get.withArgs("adminWeb.create_user_profile_url").returns(createUserProfileURL);
+    config.get.withArgs("adminWeb.saveuserprofiles_url").returns(createUserProfileURL);
 
     createUserProfile = proxyquire("../../main/service/create-user-service.ts", {
       config,
@@ -38,7 +38,7 @@ describe("test create user profile service", () => {
     const expectedResult = "User profile created successfully";
 
     nock("http://localhost:4453")
-      .put("/user-profile/users")
+      .put("/users/save")
       .reply(201, expectedResult);
 
     createUserProfile(req, new UserProfile("someid", "jurisdictionname",
@@ -64,7 +64,7 @@ describe("test create user profile service", () => {
     };
 
     nock("http://localhost:4453")
-      .put("/user-profile/users")
+      .put("/users/save")
       .reply(403, expectedResult);
 
     createUserProfile(req, new UserProfile("someid", "jurisdictionname",

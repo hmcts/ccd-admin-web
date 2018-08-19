@@ -5,7 +5,7 @@ import { UserProfile } from "domain/userprofile";
 
 export function createUserProfile(req, userprofile: UserProfile) {
     const logger = Logger.getLogger(__filename);
-    const url = config.get("adminWeb.create_user_profile_url");
+    const url = config.get("adminWeb.saveuserprofiles_url");
 
     const headers = {
         Accept: "application/json",
@@ -15,7 +15,7 @@ export function createUserProfile(req, userprofile: UserProfile) {
     };
 
     const payloadString: string = `{"id": "${userprofile.id}", ` +
-        `"jurisdictions": [{ "id": "${userprofile.jurisdictionname}"}], ` +
+        `"jurisdictions": [{ "id": "${userprofile.currentJurisdiction}"}], ` +
         `"work_basket_default_jurisdiction": "${userprofile.jurisdictionname}",` +
         `"work_basket_default_case_type": "${userprofile.caseType}",` +
         ` "work_basket_default_state": "${userprofile.state}" }`;

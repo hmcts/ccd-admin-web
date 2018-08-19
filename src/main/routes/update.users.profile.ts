@@ -10,6 +10,7 @@ router.get("/updateusersprofile", (req, res, next) => {
         responseContent.jurisdictions = JSON.stringify(response);
         responseContent.idamId = req.query.idamId;
         responseContent.jurisdiction = req.query.jurisdiction;
+        responseContent.jurisdiction_default = req.query.jurisdiction_default;
         responseContent.casetype = req.query.casetype;
         responseContent.state = req.query.state;
         responseContent.update = "true";

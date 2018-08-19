@@ -16,7 +16,7 @@
  {% if success%}
  <div class="success"><div class="admin-ui">&#10004;   {{success | safe}}</div></div>
  {% endif%}
- <a href="/createuser" class="button rightAlign" value="Submit">Create User</a>
+ <a href="/createuser?jurisdiction={{jurisdiction}}" class="button rightAlign" value="Submit">Create User</a>
 <div class="padding ngx-pagination">
    <table border="1">
   <thead>
@@ -42,7 +42,7 @@
   {% for userprofile in userprofiles %}
   <tr >
     <td>
-      <a href="/updateusersprofile?idamId={{userprofile.id}}&jurisdiction={{userprofile.work_basket_default_jurisdiction}}&casetype={{userprofile.work_basket_default_case_type}}&state={{userprofile.work_basket_default_state}}">  <div> {{userprofile.id}} </div></a>
+      <a href="/updateusersprofile?idamId={{userprofile.id}}&jurisdiction={{jurisdiction}}&jurisdiction_default={{userprofile.work_basket_default_jurisdiction}}&casetype={{userprofile.work_basket_default_case_type}}&state={{userprofile.work_basket_default_state}}">  <div> {{userprofile.id}} </div></a>
     </td>
     <td>
       <div>

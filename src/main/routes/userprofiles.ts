@@ -23,6 +23,7 @@ router.post("/userprofiles", validate, (req, res, next) => {
     req.session.jurisdiction = req.body.jurisdictionName;
     const responseContent: { [k: string]: any } = {};
     responseContent.userprofiles = JSON.parse(response);
+    responseContent.jurisdiction = req.body.jurisdictionName;
     res.render("jurisdictions", responseContent);
   })
     .catch((error) => {
