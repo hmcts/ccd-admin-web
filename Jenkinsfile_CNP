@@ -10,5 +10,7 @@ def product = "ccd"
 def component = "admin-web"
 
 withPipeline("nodejs", product, component) {
-
+    after('build') {
+     sh 'yarn setup'
+   }
 }
