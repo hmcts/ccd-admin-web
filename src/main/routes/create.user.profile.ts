@@ -40,6 +40,7 @@ router.post("/createuser", (req, res, next) => {
         if (req.body.update) {
           req.session.success = "Updated user profile";
         }
+        req.session.jurisdiction = currentJurisdiction;
         res.redirect(302, `/userprofiles?jursidiction=${currentJurisdiction}`);
       })
       .catch((error) => {

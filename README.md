@@ -1,4 +1,8 @@
-# Case Admin Web [![Build Status](https://travis-ci.org/hmcts/ccd-admin-web.svg?branch=master)](https://travis-ci.org/hmcts/ccd-admin-web)
+# Case Admin Web
+[![Build Status](https://travis-ci.org/hmcts/ccd-admin-web.svg?branch=master)](https://travis-ci.org/hmcts/ccd-admin-web)
+[![Docker Build Status](https://img.shields.io/docker/build/hmcts/ccd-admin-web.svg)](https://hub.docker.com/r/hmcts/ccd-admin-web)
+[![codecov](https://codecov.io/gh/hmcts/ccd-admin-web/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/ccd-admin-web)
+
 Web application for administration of Case Definition data (initially for importing definitions).
 
 ## Overview
