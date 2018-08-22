@@ -14,7 +14,13 @@ properties([
 ])
 
 withParameterizedPipeline(params.TYPE, params.PRODUCT_NAME, params.APP, params.ENVIRONMENT, params.SUBSCRIPTION) {
+
+  afterCheckout {
+    sh "yarn cache clean"
+  }
+
   after('build') {
     sh 'yarn setup'
   }
+
 }
