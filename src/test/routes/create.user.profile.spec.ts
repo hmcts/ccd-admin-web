@@ -82,6 +82,30 @@ describe("on POST /createuser", () => {
             });
     });
 
+    it("should respond with error", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+        mock("http://localhost:4453/users")
+            .put("")
+            .reply(200);
+
+        return request(appTest)
+            .post("/createuser")
+            .set(headers)
+            .set("Cookie", "accessToken=ey123.ey456")
+            .send({
+                caseTypeDropdown: "caseType", idamId: "anasyahoo.com",
+                jurisdictionDropdown: "jurisdiction", stateDropdown: "state",
+            })
+            .expect(302)
+            .then((res) => {
+                expect(res.headers.location.startsWith("/createuser")).to.be.true;
+            });
+    });
     it("should respond with create user form and populated response when authenticated", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();

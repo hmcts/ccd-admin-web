@@ -41,7 +41,7 @@ describe("test create user profile service", () => {
       .put("/user-profile/users")
       .reply(201, expectedResult);
 
-    createUserProfile(req, new UserProfile("someid", "jurisdictionname", "caseType", "state")).then((res) => {
+    createUserProfile(req, new UserProfile("someid@yahoo.com", "jurisdictionname", "caseType", "state")).then((res) => {
       try {
         expect(res.status).to.equal(201);
         expect(res.text).to.equal(expectedResult);
@@ -66,15 +66,16 @@ describe("test create user profile service", () => {
       .put("/user-profile/users")
       .reply(403, expectedResult);
 
-    createUserProfile(req, new UserProfile("someid", "jurisdictionname", "caseType", "state")).catch((err) => {
-      try {
-        expect(err.status).to.equal(403);
-        expect(err.response.body.error).to.equal(expectedResult.error);
-        expect(err.response.body.message).to.equal(expectedResult.message);
-        done();
-      } catch (e) {
-        done(e);
-      }
-    });
+    createUserProfile(req, new UserProfile("someid@yahoo.com", "jurisdictionname", "caseType", "state"))
+      .catch((err) => {
+        try {
+          expect(err.status).to.equal(403);
+          expect(err.response.body.error).to.equal(expectedResult.error);
+          expect(err.response.body.message).to.equal(expectedResult.message);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
   });
 });

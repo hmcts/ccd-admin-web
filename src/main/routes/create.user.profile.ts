@@ -30,14 +30,17 @@ router.post("/createuser", (req, res, next) => {
   createUserProfile(req, new UserProfile(req.body.idamId,
     req.body.jurisdictionDropdown, req.body.caseTypeDropdown, req.body.stateDropdown))
     .then((response) => {
-      req.session.success = "Created user profile";
+      req.session.success = `User profile for ${req.body.idamId} created.`;
       if (req.body.update) {
-        req.session.success = "Updated user profile";
+        req.session.success = `User profile for ${req.body.idamId} updated.`;
       }
       res.redirect(302, "/userprofiles");
     })
     .catch((error) => {
-      req.session.error = { status: 400, text: error.rawResponse };
+      req.session.error = {
+        status: 400, text: error.rawResponse ? error.rawResponse :
+          error.message ? error.message : "Invalid data",
+      };
       res.redirect(302, "/createuser");
     });
 });

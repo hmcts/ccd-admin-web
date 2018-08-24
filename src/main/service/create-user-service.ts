@@ -14,6 +14,9 @@ export function createUserProfile(req, userprofile: UserProfile) {
             req.headers.serviceauthorization,
     };
 
+    if (!validateEmail(userprofile.id)) {
+        return Promise.reject(new Error("Invalid Email address"));
+    }
     const payloadString: string = `[{"id": "${userprofile.id}", ` +
         `"jurisdictions": [{ "id": "${userprofile.jurisdictionname}"}], ` +
         `"work_basket_default_jurisdiction": "${userprofile.jurisdictionname}",` +
@@ -40,4 +43,9 @@ export function createUserProfile(req, userprofile: UserProfile) {
                 throw error;
             }
         });
+
+    function validateEmail(email) {
+        return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+    }
+
 }

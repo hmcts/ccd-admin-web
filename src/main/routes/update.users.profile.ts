@@ -2,16 +2,16 @@ import { fetchAll } from "../service/jurisdiction.service";
 const router = require("../routes/home");
 
 /* GET create user form. */
-router.get("/updateusersprofile", (req, res, next) => {
+router.post("/updateusersprofile", (req, res, next) => {
 
     fetchAll(req).then((response) => {
         res.status(201);
         const responseContent: { [k: string]: any } = {};
         responseContent.jurisdictions = JSON.stringify(response);
-        responseContent.idamId = req.query.idamId;
-        responseContent.jurisdiction = req.query.jurisdiction;
-        responseContent.casetype = req.query.casetype;
-        responseContent.state = req.query.state;
+        responseContent.idamId = req.body.idamId;
+        responseContent.jurisdiction = req.body.jurisdiction;
+        responseContent.casetype = req.body.casetype;
+        responseContent.state = req.body.state;
         responseContent.update = "true";
         responseContent.heading = "Update User profile";
         responseContent.submitButtonText = "Update";

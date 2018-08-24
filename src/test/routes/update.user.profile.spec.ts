@@ -1,4 +1,5 @@
 import { app } from "../../main/app";
+import { appTest } from "../../main/app.test";
 import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
@@ -21,13 +22,17 @@ describe("on Get /updateusersprofile", () => {
     it("should respond with update user form and populated response when authenticated", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
         mock("http://localhost:4451")
             .get("/api/data/jurisdictions")
             .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
 
-        return request(app)
-            .get("/updateusersprofile")
+        return request(appTest)
+            .post("/updateusersprofile")
+            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .then((res) => {
                 expect(res.statusCode).to.equal(201);
