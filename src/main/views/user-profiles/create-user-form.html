@@ -128,7 +128,7 @@
     
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
-        
+          <input class="form-control" id="currentjurisdiction" name="currentjurisdiction" type="hidden" value="{{currentjurisdiction}}">
             <label class="form-label" for="first-name-2">User idam ID</label>
             {% if idamId%}
                 <label class="form-label-bold" >{{idamId}}</label><br><br>

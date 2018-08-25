@@ -12,7 +12,7 @@ import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { RouterFinder } from "./router/routerFinder";
 
 import { serviceFilter } from "./service/service-filter";
-
+const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
 app.locals.ENV = env;
@@ -23,6 +23,13 @@ Logger.config({
   microservice: "ccd-admin-web",
   team: "CCD",
 });
+// Session
+app.set("trust proxy", 1); // trust first proxy
+
+app.use(cookieSession({
+  keys: ["key1", "key2"],
+  name: "session",
+}));
 
 // setup logging of HTTP requests
 app.use(Express.accessLogger());

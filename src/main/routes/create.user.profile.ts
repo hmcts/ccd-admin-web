@@ -2,6 +2,9 @@ import { fetchAll } from "../service/jurisdiction.service";
 import { createUserProfile } from "../service/create-user-service";
 import { UserProfile } from "../domain/userprofile";
 const router = require("../routes/home");
+const validator = require("validator");
+import { Validator } from "../validators/validate";
+import { sanitize } from "../util/sanitize";
 
 /* GET create user form. */
 router.get("/createuser", (req, res, next) => {
@@ -10,6 +13,7 @@ router.get("/createuser", (req, res, next) => {
     res.status(201);
     const responseContent: { [k: string]: any } = {};
     responseContent.jurisdictions = JSON.stringify(response);
+    responseContent.currentjurisdiction = req.session.jurisdiction;
     responseContent.heading = "Create User profile";
     responseContent.submitButtonText = "Create";
     if (req.session.error) {
@@ -24,11 +28,26 @@ router.get("/createuser", (req, res, next) => {
     });
 });
 
+// Validate
+function validate(req, res, next) {
+  const jurisdictionName = new Validator(req.body.currentjurisdiction);
+  delete req.session.success;
+  if (jurisdictionName.isEmpty()) {
+    req.session.error = { status: 401, text: "Please select jurisdiction name" };
+    res.redirect(302, "/jurisdiction");
+  } else if (!validator.isEmail(req.body.idamId)) {
+    req.session.error = { status: 401, text: "Please select a valid email address!" };
+    res.redirect(302, "/createuser");
+  } else {
+    delete req.session.error;
+    next();
+  }
+}
 /* POST create user result. */
-router.post("/createuser", (req, res, next) => {
+router.post("/createuser", validate, (req, res, next) => {
 
-  createUserProfile(req, new UserProfile(req.body.idamId,
-    req.body.jurisdictionDropdown, req.body.caseTypeDropdown, req.body.stateDropdown))
+  createUserProfile(req, new UserProfile(sanitize(req.body.idamId), sanitize(req.body.currentjurisdiction),
+    sanitize(req.body.jurisdictionDropdown), sanitize(req.body.caseTypeDropdown), sanitize(req.body.stateDropdown)))
     .then((response) => {
       req.session.success = `User profile for ${req.body.idamId} created.`;
       if (req.body.update) {

@@ -3,6 +3,7 @@ import * as config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 import { UserProfile } from "domain/userprofile";
 
+const validator = require("validator");
 export function createUserProfile(req, userprofile: UserProfile) {
     const logger = Logger.getLogger(__filename);
     const url = config.get("adminWeb.create_user_profile_url");
@@ -14,11 +15,11 @@ export function createUserProfile(req, userprofile: UserProfile) {
             req.headers.serviceauthorization,
     };
 
-    if (!validateEmail(userprofile.id)) {
+    if (!validator.isEmail(userprofile.id)) {
         return Promise.reject(new Error("Invalid Email address"));
     }
     const payloadString: string = `[{"id": "${userprofile.id}", ` +
-        `"jurisdictions": [{ "id": "${userprofile.jurisdictionname}"}], ` +
+        `"jurisdictions": [{ "id": "${userprofile.currentJurisdiction}"}], ` +
         `"work_basket_default_jurisdiction": "${userprofile.jurisdictionname}",` +
         `"work_basket_default_case_type": "${userprofile.caseType}",` +
         ` "work_basket_default_state": "${userprofile.state}" }]`;
@@ -43,9 +44,5 @@ export function createUserProfile(req, userprofile: UserProfile) {
                 throw error;
             }
         });
-
-    function validateEmail(email) {
-        return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
-    }
 
 }

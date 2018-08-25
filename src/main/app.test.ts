@@ -8,7 +8,7 @@ import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import { RouterFinder } from "./router/routerFinder";
-
+const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTest: express.Express = express();
 appTest.locals.ENV = env;
@@ -20,6 +20,12 @@ Logger.config({
   team: "CCD",
 });
 
+// Session
+appTest.set("trust proxy", 1); // trust first proxy
+appTest.use(cookieSession({
+  keys: ["key1", "key2"],
+  name: "session",
+}));
 // setup logging of HTTP requests
 appTest.use(Express.accessLogger());
 

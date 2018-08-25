@@ -30,12 +30,12 @@
     "body-parser": "^1.18.1",
     "config": "^2.0.1",
     "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "csurf": "^1.9.0",
     "express": "^4.15.4",
     "express-force-https": "^1.0.0",
     "express-force-ssl": "^0.3.2",
     "express-nunjucks": "^2.2.3",
-    "express-session": "^1.15.6",
     "govuk-elements-sass": "~3.0.2",
     "govuk-frontend": "^1.0.0",
     "govuk_frontend_toolkit": "~6.0.1",
@@ -59,7 +59,9 @@
     "supertest-session": "^3.3.0",
     "ts-node": "^3.3.0",
     "tsconfig-paths": "^3.5.0",
-    "typescript": "^2.6.2"
+    "typescript": "^2.6.2",
+    "validator": "^10.7.0",
+    "xss-filters": "^1.2.7"
   },
   "devDependencies": {
     "@types/chai-as-promised": "^7.1.0",

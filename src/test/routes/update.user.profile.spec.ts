@@ -32,6 +32,7 @@ describe("on Get /updateusersprofile", () => {
 
         return request(appTest)
             .post("/updateusersprofile")
+            .send({ idamId: "anas@yahoo.com", currentjurisdiction: "test" })
             .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .then((res) => {
