@@ -41,17 +41,18 @@ describe("test create user profile service", () => {
       .put("/user-profile/users")
       .reply(201, expectedResult);
 
-    createUserProfile(req, new UserProfile("someid@yahoo.com", "test", "jurisdictionname", "caseType", "state")).then((res) => {
-      try {
-        expect(res.status).to.equal(201);
-        expect(res.text).to.equal(expectedResult);
-        done();
-      } catch (e) {
-        done(e);
-      }
-    }).catch((err) => {
-      done(err);
-    });
+    createUserProfile(req, new UserProfile("someid@yahoo.com", "test",
+      "jurisdictionname", "caseType", "state")).then((res) => {
+        try {
+          expect(res.status).to.equal(201);
+          expect(res.text).to.equal(expectedResult);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      }).catch((err) => {
+        done(err);
+      });
   });
 
   it("should return an HTTP 403 status and error message", (done) => {
