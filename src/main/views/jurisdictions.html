@@ -50,11 +50,11 @@
     <td>
     <form id="userprofile_{{loop.index}}" method="post" action="/updateusersprofile" >
       {{ csrfProtection(csrfToken) }}
-      <input type="hidden" name="idamId" value="{{userprofile.id}}" /> 
-      <input type="hidden" name="currentjurisdiction" value="{{currentjurisdiction}}" /> 
-      <input type="hidden" name="jurisdiction" value="{{userprofile.work_basket_default_jurisdiction}}" /> 
-      <input type="hidden" name="casetype" value="{{userprofile.work_basket_default_case_type}}" /> 
-      <input type="hidden" name="state" value="{{userprofile.work_basket_default_state}}" /> 
+      <input type="hidden" name="idamId" value="{{userprofile.id}}" />
+      <input type="hidden" name="currentjurisdiction" value="{{currentjurisdiction}}" />
+      <input type="hidden" name="jurisdiction" value="{{userprofile.work_basket_default_jurisdiction}}" />
+      <input type="hidden" name="casetype" value="{{userprofile.work_basket_default_case_type}}" />
+      <input type="hidden" name="state" value="{{userprofile.work_basket_default_state}}" />
         <a href="#" onclick="document.getElementById('userprofile_{{loop.index}}').submit();"><div>{{userprofile.id}}</div></a>
     </form>
     </td>
