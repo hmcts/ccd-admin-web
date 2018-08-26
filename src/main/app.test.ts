@@ -1,8 +1,6 @@
 import { Express, Logger } from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
-import * as config from "config";
 import * as cookieParser from "cookie-parser";
-import * as csrf from "csurf";
 import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
@@ -49,21 +47,6 @@ expressNunjucks(appTest);
 
 // Allow appTestlication to work correctly behind a proxy (needed to pick up correct request protocol)
 appTest.enable("trust proxy");
-
-if (config.useCSRFProtection === false) {
-  const csrfOptions = {
-    cookie: {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: true,
-    },
-  };
-
-  appTest.all(/^\/(?!import).*$/, csrf(csrfOptions), (req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
-    next();
-  });
-}
 
 appTest.use("/", RouterFinder.findAll(path.join(__dirname, "routes")));
 

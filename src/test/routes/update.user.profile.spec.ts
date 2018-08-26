@@ -1,22 +1,13 @@
-import { app } from "../../main/app";
+
 import { appTest } from "../../main/app.test";
 import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
-import { get } from "config";
 
-describe("on Get /updateusersprofile", () => {
+describe("on POST /updateusersprofile", () => {
     beforeEach(() => {
         mock.cleanAll();
-    });
-    it("Update user should redirect to IdAM login page when not authenticated", () => {
-        return request(app)
-            .get("/updateusersprofile")
-            .then((res) => {
-                expect(res.statusCode).to.equal(302);
-                expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
-            });
     });
 
     it("should respond with update user form and populated response when authenticated", () => {
@@ -40,5 +31,37 @@ describe("on Get /updateusersprofile", () => {
                 expect(res.text).to.contain("Jurisdiction 1");
                 expect(res.text).to.contain("Jurisdiction 2");
             });
+    });
+
+    it("should redirect with error message when invalid email id is passed", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+
+        return request(appTest)
+            .post("/updateusersprofile")
+            .send({ idamId: "anasyahoo.com", currentjurisdiction: "test" })
+            .set(headers)
+            .set("Cookie", "accessToken=ey123.ey456")
+            .expect(302);
+    });
+
+    it("should redirect with error message when current jurisdiction is empty", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+
+        return request(appTest)
+            .post("/updateusersprofile")
+            .send({ idamId: "anas@yahoo.com" })
+            .set(headers)
+            .set("Cookie", "accessToken=ey123.ey456")
+            .expect(302);
     });
 });

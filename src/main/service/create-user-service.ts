@@ -3,7 +3,6 @@ import * as config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 import { UserProfile } from "domain/userprofile";
 
-const validator = require("validator");
 export function createUserProfile(req, userprofile: UserProfile) {
     const logger = Logger.getLogger(__filename);
     const url = config.get("adminWeb.create_user_profile_url");
@@ -15,9 +14,6 @@ export function createUserProfile(req, userprofile: UserProfile) {
             req.headers.serviceauthorization,
     };
 
-    if (!validator.isEmail(userprofile.id)) {
-        return Promise.reject(new Error("Invalid Email address"));
-    }
     const payloadString: string = `[{"id": "${userprofile.id}", ` +
         `"jurisdictions": [{ "id": "${userprofile.currentJurisdiction}"}], ` +
         `"work_basket_default_jurisdiction": "${userprofile.jurisdictionname}",` +
