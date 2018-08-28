@@ -1,10 +1,8 @@
 import { fetchUserProfilesByJurisdiction } from "../service/user.profiles.service";
 import { Validator } from "../validators/validate";
 import { sanitize } from "../util/sanitize";
-import { Logger } from "@hmcts/nodejs-logging";
 
 const router = require("../routes/home");
-const logger = Logger.getLogger(__filename);
 
 // Validate
 function validate(req, res, next) {
@@ -29,7 +27,6 @@ router.post("/userprofiles", validate, (req, res, next) => {
     const responseContent: { [k: string]: any } = {};
     responseContent.userprofiles = JSON.parse(response);
     responseContent.currentjurisdiction = req.body.jurisdictionName;
-    logger.info(`POST user profiles response ${responseContent}`);
     res.render("jurisdictions", responseContent);
   })
     .catch((error) => {
@@ -54,7 +51,6 @@ router.get("/userprofiles", (req, res, next) => {
       responseContent.success = req.session.success;
     }
     responseContent.jurisdiction = jurisdiction;
-    logger.info(`Get user profiles response ${responseContent.text}`);
     res.render("jurisdictions", responseContent);
   }).catch((error) => {
     // Call the next middleware, which is the error handler
