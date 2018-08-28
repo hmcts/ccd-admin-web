@@ -75,6 +75,7 @@ describe("user profile service", () => {
           Authorization: "userAuthToken",
           ServiceAuthorization: "serviceAuthToken",
         },
+        session: {},
       };
 
       nock("http://localhost:4453")

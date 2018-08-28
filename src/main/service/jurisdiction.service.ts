@@ -6,8 +6,9 @@ export function fetchAll(req) {
   const logger = Logger.getLogger(__filename);
   const url = config.get("adminWeb.jurisdiction_url");
   const headers = {
-    Authorization: req.headers.Authorization,
-    ServiceAuthorization: req.headers.ServiceAuthorization,
+    Authorization: req.headers.Authorization ? req.headers.Authorization : req.headers.authorization,
+    ServiceAuthorization: req.headers.ServiceAuthorization ? req.headers.ServiceAuthorization :
+      req.headers.serviceauthorization,
   };
 
   return request
@@ -20,7 +21,7 @@ export function fetchAll(req) {
     })
     .catch((error) => {
       if (error.response) {
-        logger.error(`Error retriving jurisdiction: ${error.response.text}`);
+        logger.error(`Error retrieving jurisdiction: ${error.response.text}`);
         throw error;
       } else {
         const errMsg = "Error jurisdictions no error response";

@@ -11,10 +11,12 @@
   <script type="text/javascript">
   var jurisdictionString = {{jurisdictions |safe }}
   var jurisdictionLookups = $.parseJSON(jurisdictionString);
-  
+  var idamId = "{{idamId |safe }}"
+
   var updateCaseTypeBasedOn = function(index) {
 
     var listItems= "<option value=''  selected>--Select a value--</option>";
+
     if(index > -1){
         var case_types = jurisdictionLookups[index].case_types;
         for (var i = 0; i < jurisdictionLookups[index].case_types.length; i++){
@@ -23,6 +25,20 @@
     }
     $("select#caseTypeDropdown").html(listItems);
     $("select#stateDropdown").html("<option value=''  selected>--Select a value--</option>");
+  }
+
+  var populateStateDropdown = function () {
+        var jurisdictionIndex = $("select#jurisdictionDropdown")[0].selectedIndex -1;
+       var caseTypeIndex = $("select#caseTypeDropdown")[0].selectedIndex -1;
+        var listItems= "<option value='' selected>--Select a value--</option>";
+        if(caseTypeIndex > -1){
+            var stateTypes = jurisdictionLookups[jurisdictionIndex].case_types[caseTypeIndex].states;
+ 
+            for (var i = 0; i < stateTypes.length; i++){
+            listItems+= "<option value='" + stateTypes[i].id + "'>" + stateTypes[i].name + "</option>";
+            }
+        }
+         $("select#stateDropdown").html(listItems);
   }
 
   $(document).ready(function(){
@@ -68,12 +84,6 @@
         }
     });
 
-
-    var listItems= "<option value='' selected>--Select a value--</option>";
-    for (var i = 0; i < jurisdictionLookups.length; i++){
-        listItems+= "<option value='" + jurisdictionLookups[i].id + "'>" + jurisdictionLookups[i].name + "</option>";
-    }
-    $("select#jurisdictionDropdown").html(listItems);
     $("select#jurisdictionDropdown").on('change',function(){
         var str = "";
         $( "select#jurisdictionDropdown option:selected" ).each(function() {
@@ -82,25 +92,30 @@
         });
      });
       $("select#caseTypeDropdown").on('change',function(){
-       var jurisdictionIndex = $("select#jurisdictionDropdown")[0].selectedIndex -1;
-       var caseTypeIndex = $("select#caseTypeDropdown")[0].selectedIndex -1;
-        var listItems= "<option value='' selected>--Select a value--</option>";
-        if(caseTypeIndex > -1){
-            var stateTypes = jurisdictionLookups[jurisdictionIndex].case_types[caseTypeIndex].states;
- 
-            for (var i = 0; i < stateTypes.length; i++){
-            listItems+= "<option value='" + stateTypes[i].id + "'>" + stateTypes[i].name + "</option>";
-            }
-        }
-         $("select#stateDropdown").html(listItems);
+        populateStateDropdown();
       });
+
+    var listItems= "<option value=''>--Select a value--</option>";
+    for (var i = 0; i < jurisdictionLookups.length; i++){  
+        listItems+= "<option value='" + jurisdictionLookups[i].id + "'>" + jurisdictionLookups[i].name + "</option>";
+    }
+    $("select#jurisdictionDropdown").html(listItems);
+    
+    {% if idamId%}
+        $('select#jurisdictionDropdown>option').filter(function() { return $(this).val() == "{{jurisdiction}}"; }).prop('selected', true);
+        updateCaseTypeBasedOn($("select#jurisdictionDropdown")[0].selectedIndex -1);
+        $('select#caseTypeDropdown>option').filter(function() { return $(this).val() == "{{casetype}}"; }).prop('selected', true);
+        populateStateDropdown();
+         $('select#stateDropdown>option').filter(function() { return $(this).val() == "{{state}}"; }).prop('selected', true);
+
+    {% endif %}
   });
 
 </script>
 {%endblock%}
  {% block content %}
  {% include "menu.html" %}
-<h2 class="heading-large padding">Create User profile</h2>
+<h2 class="heading-large padding">{{heading}}</h2>
 
 <div class="padding">
     {% if (error)%}
@@ -109,13 +124,20 @@
         </div>
     {% endif %}
 
-    <form id="createuserform" name="createuserform" method="POST">
+    <form id="createuserform" name="createuserform" method="POST" action="/createuser">
     
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
-        
+          <input class="form-control" id="currentjurisdiction" name="currentjurisdiction" type="hidden" value="{{currentjurisdiction}}">
             <label class="form-label" for="first-name-2">User idam ID</label>
-            <input class="form-control" id="idamId" name="idamId" type="text"><br><br>  
+            {% if idamId%}
+                <label class="form-label-bold" >{{idamId}}</label><br><br>
+                 <input class="form-control" id="idamId" name="idamId" type="hidden" value="{{idamId}}">
+                 <input class="form-control" id="update" name="update" type="hidden" value="{{update}}">
+                 
+            {% else %}
+                <input class="form-control" id="idamId" name="idamId" type="text"><br><br> 
+            {% endif%} 
         <label class="form-label">Live from</label>
             {{ dateMacro() }}
             <label class="form-label">Live to</label>
@@ -127,7 +149,7 @@
             <label class="form-label">Work basket default state</label>
             {{  dropdown("stateDropdown")}}
         </div> 
-        <button type="submit" class="button" value="Submit">Create</button>
+        <button type="submit" class="button" value="Submit">{{submitButtonText}}</button>
     </form>
     </div>
   

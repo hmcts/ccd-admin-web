@@ -14,14 +14,14 @@ export function createUserProfile(req, userprofile: UserProfile) {
             req.headers.serviceauthorization,
     };
 
-    const payloadString: string = `{"id": "${userprofile.id}", ` +
-        `"jurisdictions": [{ "id": "${userprofile.jurisdictionname}"}], ` +
+    const payloadString: string = `[{"id": "${userprofile.id}", ` +
+        `"jurisdictions": [{ "id": "${userprofile.currentJurisdiction}"}], ` +
         `"work_basket_default_jurisdiction": "${userprofile.jurisdictionname}",` +
         `"work_basket_default_case_type": "${userprofile.caseType}",` +
-        ` "work_basket_default_state": "${userprofile.state}" }`;
+        ` "work_basket_default_state": "${userprofile.state}" }]`;
 
     return request
-        .post(url)
+        .put(url)
         .set("Content-Type", "application/json")
         .set(headers)
         .send(payloadString)
@@ -31,13 +31,14 @@ export function createUserProfile(req, userprofile: UserProfile) {
         })
         .catch((error) => {
             if (error.response) {
-                logger.error(`Error creating user profile: ${error.response.text}`);
+                logger.error(`Error creating/updating user profile: ${error.response.text}`);
                 throw error;
             } else {
-                const errMsg = "Error creating user profile: no error response";
+                const errMsg = "Error creating/ user profile: no error response";
                 logger.error(errMsg);
                 error.text = errMsg;
                 throw error;
             }
         });
+
 }

@@ -16,7 +16,6 @@ withPipeline("nodejs", product, component) {
     }
 
     after('build') {
-        sh 'yarn setup'
+         sh "yarn setup"
     }
-
 }
