@@ -76,8 +76,7 @@ describe("user profile service", () => {
           Authorization: "userAuthToken",
           ServiceAuthorization: "serviceAuthToken",
         },
-        query: { jurisdiction: "test2" },
-        session: {},
+        session: { jurisdiction: "test2" },
       };
 
       nock("http://localhost:4453")

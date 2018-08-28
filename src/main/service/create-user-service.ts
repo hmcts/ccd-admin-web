@@ -5,7 +5,11 @@ import { UserProfile } from "domain/userprofile";
 
 export function createUserProfile(req, userprofile: UserProfile) {
     const logger = Logger.getLogger(__filename);
-    const url = config.get("adminWeb.saveuserprofiles_url");
+    let url = config.get("adminWeb.saveuserprofiles_url");
+
+    if (req.body.update) {
+        url = config.get("adminWeb.userprofiles_url");
+    }
 
     const headers = {
         Accept: "application/json",
@@ -24,7 +28,7 @@ export function createUserProfile(req, userprofile: UserProfile) {
         .put(url)
         .set("Content-Type", "application/json")
         .set(headers)
-        .send(payloadString)
+        .send(req.body.update ? `[ ${payloadString}]` : payloadString)
         .then((res) => {
             logger.info(`Create user profile : ${res.text}`);
             return res;
@@ -40,4 +44,5 @@ export function createUserProfile(req, userprofile: UserProfile) {
                 throw error;
             }
         });
+
 }
