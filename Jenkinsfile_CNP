@@ -11,4 +11,11 @@ def component = "admin-web"
 
 withPipeline("nodejs", product, component) {
 
+    afterCheckout {
+        sh "yarn cache clean"
+    }
+
+    after('build') {
+         sh "yarn setup"
+    }
 }

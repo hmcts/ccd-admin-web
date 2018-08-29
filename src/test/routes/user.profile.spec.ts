@@ -78,8 +78,25 @@ describe("User profile page", () => {
           expect(res.text).to.contain("Jurisdiction 3");
         });
     });
+    it("should redirect to choose jurisdiction page when jurisdiction name is empty", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveServiceToken();
+      const headers = {
+        Authorization: "userAuthToken",
+        ServiceAuthorization: "serviceAuthToken",
+      };
 
-    it("should return jurisdictions list", () => {
+      return request(appTest)
+        .post("/userprofiles")
+        .set(headers)
+        .set("Cookie", "accessToken=ey123.ey456")
+        .send({
+        })
+        .then((res) => {
+          expect(res.statusCode).to.equal(302);
+        });
+    });
+    it("should return error from the server", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
       const headers = {

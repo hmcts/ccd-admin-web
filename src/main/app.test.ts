@@ -1,14 +1,12 @@
 import { Express, Logger } from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
-import * as config from "config";
 import * as cookieParser from "cookie-parser";
-import * as csrf from "csurf";
 import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import { RouterFinder } from "./router/routerFinder";
-
+const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTest: express.Express = express();
 appTest.locals.ENV = env;
@@ -20,6 +18,12 @@ Logger.config({
   team: "CCD",
 });
 
+// Session
+appTest.set("trust proxy", 1); // trust first proxy
+appTest.use(cookieSession({
+  keys: ["key1", "key2"],
+  name: "session",
+}));
 // setup logging of HTTP requests
 appTest.use(Express.accessLogger());
 
@@ -43,21 +47,6 @@ expressNunjucks(appTest);
 
 // Allow appTestlication to work correctly behind a proxy (needed to pick up correct request protocol)
 appTest.enable("trust proxy");
-
-if (config.useCSRFProtection === false) {
-  const csrfOptions = {
-    cookie: {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: true,
-    },
-  };
-
-  appTest.all(/^\/(?!import).*$/, csrf(csrfOptions), (req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
-    next();
-  });
-}
 
 appTest.use("/", RouterFinder.findAll(path.join(__dirname, "routes")));
 

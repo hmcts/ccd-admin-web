@@ -17,13 +17,11 @@ describe("user profile service", () => {
   beforeEach(() => {
     req = {
       body: { jurisdictionName: "Mike" },
-      file: {
-        buffer: new Buffer(8),
-      },
       headers: {
         Authorization: "userAuthToken",
         ServiceAuthorization: "serviceAuthToken",
       },
+      session: {},
     };
 
     const config = {
@@ -63,7 +61,7 @@ describe("user profile service", () => {
       });
     });
 
-    it("should return all user profiles if jurisdictionName is not passed ", (done) => {
+    it("should return user profiles from query if jurisdictionName is not passed in the body", (done) => {
       const expectedResult = {
         jurisdictions: [{
           id: "ID_3",
@@ -78,12 +76,12 @@ describe("user profile service", () => {
           Authorization: "userAuthToken",
           ServiceAuthorization: "serviceAuthToken",
         },
-        session: {},
+        session: { jurisdiction: "test2" },
       };
 
       nock("http://localhost:4453")
         .get("/users")
-        .query({})
+        .query({ jurisdiction: "test2" })
         .reply(200, expectedResult);
 
       fetchUserProfilesByJurisdiction(req).then((res) => {

@@ -80,21 +80,7 @@ module "ccd-admin-web" {
     ADMINWEB_LOGIN_URL = "${var.authentication_web_url}/login"
     ADMINWEB_IMPORT_URL = "${local.def_store_url}/import"
     ADMINWEB_JURISDICTIONS_URL = "${local.def_store_url}/api/data/jurisdictions"
-    ADMINWEB_CREATE_USER_PROFILE_URL = "${local.userprofile_url}/user-profile/users"
     ADMINWEB_USER_PROFILE_URL = "${local.userprofile_url}/users"
+    ADMINWEB_SAVE_USER_PROFILE_URL = "${local.userprofile_url}/users/save"
   }
-}
-
-// Copy into Azure Key Vault
-
-resource "azurerm_key_vault_secret" "idam_service_key" {
-  name = "ccd-admin-web-idam-service-key"
-  value = "${data.vault_generic_secret.idam_service_key.data["value"]}"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
-}
-
-resource "azurerm_key_vault_secret" "oauth2_client_secret" {
-  name = "ccd-admin-web-oauth2-client-secret"
-  value = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }

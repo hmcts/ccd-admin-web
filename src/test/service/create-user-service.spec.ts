@@ -10,7 +10,7 @@ chai.use(sinonChai);
 
 describe("test create user profile service", () => {
 
-  const createUserProfileURL = "http://localhost:4453/user-profile/users";
+  const createUserProfileURL = "http://localhost:4453/users/save";
 
   let createUserProfile;
 
@@ -18,6 +18,7 @@ describe("test create user profile service", () => {
 
   beforeEach(() => {
     req = {
+      body: {},
       headers: {
         Authorization: "userAuthToken",
         ServiceAuthorization: "serviceAuthToken",
@@ -38,10 +39,10 @@ describe("test create user profile service", () => {
     const expectedResult = "User profile created successfully";
 
     nock("http://localhost:4453")
-      .put("/user-profile/users")
+      .put("/users/save")
       .reply(201, expectedResult);
 
-    createUserProfile(req, new UserProfile("someid", "jurisdictionname",
+    createUserProfile(req, new UserProfile("someid@yahoo.com", "test",
       "jurisdictionname", "caseType", "state")).then((res) => {
         try {
           expect(res.status).to.equal(201);
@@ -64,11 +65,85 @@ describe("test create user profile service", () => {
     };
 
     nock("http://localhost:4453")
-      .put("/user-profile/users")
+      .put("/users/save")
       .reply(403, expectedResult);
 
-    createUserProfile(req, new UserProfile("someid", "jurisdictionname",
-      "jurisdictionname", "caseType", "state")).catch((err) => {
+    createUserProfile(req, new UserProfile("someid@yahoo.com", "test", "jurisdictionname", "caseType", "state"))
+      .catch((err) => {
+        try {
+          expect(err.status).to.equal(403);
+          expect(err.response.body.error).to.equal(expectedResult.error);
+          expect(err.response.body.message).to.equal(expectedResult.message);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+  });
+});
+
+describe("test update user profile service", () => {
+
+  const updateUserProfileURL = "http://localhost:4453/users";
+
+  let createUserProfile;
+
+  let req;
+
+  beforeEach(() => {
+    req = {
+      body: { update: true },
+      headers: {
+        Authorization: "userAuthToken",
+        ServiceAuthorization: "serviceAuthToken",
+      },
+    };
+
+    const config = {
+      get: sinon.stub(),
+    };
+    config.get.withArgs("adminWeb.userprofiles_url").returns(updateUserProfileURL);
+
+    createUserProfile = proxyquire("../../main/service/create-user-service.ts", {
+      config,
+    }).createUserProfile;
+  });
+
+  it("should return an HTTP 201 status and success message", (done) => {
+    const expectedResult = "User profile created successfully";
+
+    nock("http://localhost:4453")
+      .put("/users")
+      .reply(201, expectedResult);
+
+    createUserProfile(req, new UserProfile("someid@yahoo.com", "test",
+      "jurisdictionname", "caseType", "state")).then((res) => {
+        try {
+          expect(res.status).to.equal(201);
+          expect(res.text).to.equal(expectedResult);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      }).catch((err) => {
+        done(err);
+      });
+  });
+
+  it("should return an HTTP 403 status and error message", (done) => {
+    req.headers.ServiceAuthorization = "invalid_token";
+
+    const expectedResult = {
+      error: "Forbidden",
+      message: "Access Denied",
+    };
+
+    nock("http://localhost:4453")
+      .put("/users")
+      .reply(403, expectedResult);
+
+    createUserProfile(req, new UserProfile("someid@yahoo.com", "test", "jurisdictionname", "caseType", "state"))
+      .catch((err) => {
         try {
           expect(err.status).to.equal(403);
           expect(err.response.body.error).to.equal(expectedResult.error);

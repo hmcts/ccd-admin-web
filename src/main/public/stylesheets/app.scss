@@ -145,7 +145,7 @@ table, tbody, td, tr
     margin-bottom: 15px;
     clear: both;
     color: #b10e1e; }
-  
+
     .success {
       width: 100%;
       height: 40px;
@@ -157,14 +157,14 @@ table, tbody, td, tr
     border: 5px solid #ffdddd;
     color: red
   }
-  
+
   hr {
     display: block;
     background: #bfc1c3;
     border: 0;
     height: 1px;
     margin-top: 0px;
-    margin-bottom: 0px; 
+    margin-bottom: 0px;
     padding: 0;
 }
 .govuk-fieldset__legend {
@@ -182,7 +182,12 @@ table, tbody, td, tr
   margin-bottom: 15px;
   padding: 0;
   overflow: hidden;
-  white-space: normal; }
+  white-space: normal;
+ }
+
+.disableborder {
+  border-color: darkgray;
+}
 
   .govuk-fieldset__legend--xl {
     font-family: "nta", Arial, sans-serif;
@@ -196,4 +201,3 @@ table, tbody, td, tr
       @extend .button;
       margin-bottom: 20px;
     }
-    

@@ -8,6 +8,7 @@ export class UserProfile {
         this.id = id;
         this.currentJurisdiction = currentJurisdiction;
         this.jurisdictionname = jurisdictionname;
+        this.currentJurisdiction = currentJurisdiction;
         this.caseType = caseType;
         this.state = state;
     }
