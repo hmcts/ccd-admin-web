@@ -14,7 +14,7 @@ export function deleteUserProfile(req) {
     };
     return request
         .delete(url)
-        .query({ uid: req.body.idamId })
+        .query({ uid: req.body.idamId, jid: req.session.jurisdiction })
         .set("Content-Type", "application/json")
         .set(headers)
         .then((res) => {

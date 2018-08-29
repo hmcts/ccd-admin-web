@@ -22,6 +22,7 @@ describe("test delete user profile service", () => {
         Authorization: "userAuthToken",
         ServiceAuthorization: "serviceAuthToken",
       },
+      session: { jurisdiction: "test" },
     };
 
     const config = {
@@ -39,7 +40,7 @@ describe("test delete user profile service", () => {
 
     nock("http://localhost:4453")
       .delete("/users")
-      .query({ uid: "aaa@yahii.com" })
+      .query({ uid: "aaa@yahii.com", jid: "test" })
       .reply(201, expectedResult);
 
     deleteUserProfile(req).then((res) => {
@@ -65,7 +66,7 @@ describe("test delete user profile service", () => {
 
     nock("http://localhost:4453")
       .delete("/users")
-      .query({ uid: "aaa@yahii.com" })
+      .query({ uid: "aaa@yahii.com", jid: "test" })
       .reply(403, expectedResult);
 
     deleteUserProfile(req).catch((err) => {

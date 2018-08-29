@@ -24,7 +24,10 @@ router.post("/deleteuserprofile", (req, res, next) => {
             req.session.success = "Successfully deleted the user :- " + req.body.idamId;
             res.redirect(302, "/userprofiles");
         }).catch((error) => {
-            req.session.error = { status: 400, text: "Unexpected error : Please contact your administrator" };
+            req.session.error = {
+                status: 400, text: error.rawResponse ? error.rawResponse :
+                    "Unexpected error : Please contact your administrator",
+            };
             res.redirect(302, `/deleteuserprofile?idamId=${req.body.idamId}`);
         });
     } else if (req.body.deleteUser === "No") {
