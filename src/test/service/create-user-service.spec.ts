@@ -154,4 +154,29 @@ describe("test update user profile service", () => {
         }
       });
   });
+
+  it("should return an HTTP 503 status service unavailable", (done) => {
+    req.headers.ServiceAuthorization = "invalid_token";
+
+    const expectedResult = {
+      error: "Server Error",
+      message: "Service unavailable",
+    };
+
+    nock("http://localhost:4453")
+      .put("/users")
+      .reply(503, expectedResult);
+
+    createUserProfile(req, new UserProfile("someid@yahoo.com", "test", "jurisdictionname", "caseType", "state"))
+      .catch((err) => {
+        try {
+          expect(err.status).to.equal(503);
+          expect(err.response.body.error).to.equal(expectedResult.error);
+          expect(err.response.body.message).to.equal(expectedResult.message);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+  });
 });
