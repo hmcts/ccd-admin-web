@@ -28,6 +28,6 @@ adminWeb:
   import_url: http://localhost:4451/import
   jurisdiction_url: http://localhost:4451/api/data/jurisdictions
   userprofiles_url: http://localhost:4453/users
-  create_user_profile_url: http://localhost:4453/users
+  saveuserprofiles_url: http://localhost:4453/users/save
 appInsights:
   instrumentationKey: "some-key"

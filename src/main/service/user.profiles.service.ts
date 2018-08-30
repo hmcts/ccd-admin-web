@@ -1,4 +1,3 @@
-
 import * as request from "superagent";
 import * as config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
@@ -20,6 +19,7 @@ export function fetchUserProfilesByJurisdiction(req) {
                 .set(headers)
                 .then((res) => {
                         logger.info(`Get user profiles by jurisdiction, response: ${res.text}`);
+
                         return res.text;
                 })
                 .catch((error) => {

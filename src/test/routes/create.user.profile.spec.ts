@@ -64,7 +64,7 @@ describe("on POST /createuser", () => {
             Authorization: "userAuthToken",
             ServiceAuthorization: "serviceAuthToken",
         };
-        mock("http://localhost:4453/users")
+        mock("http://localhost:4453/users/save")
             .put("")
             .reply(200);
 
@@ -127,14 +127,15 @@ describe("on POST /createuser", () => {
                 expect(res.headers.location.startsWith("/jurisdiction")).to.be.true;
             });
     });
-    it("should respond with create user form and populated response when authenticated", () => {
+
+    it("should respond with create user form due to server error", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
         const headers = {
             Authorization: "userAuthToken",
             ServiceAuthorization: "serviceAuthToken",
         };
-        mock("http://localhost:4453/users")
+        mock("http://localhost:4453/users/save")
             .put("")
             .replyWithError({ status: 400, rawResponse: "Duplicate values" });
 
@@ -143,7 +144,8 @@ describe("on POST /createuser", () => {
             .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
-                caseTypeDropdown: "caseType", currentjurisdiction: "test", idamId: "anas@yahoo.com",
+                caseTypeDropdown: "caseType", currentjurisdiction: "test",
+                idamId: "anas@yahoo.com", jurisdiction: "test2",
                 jurisdictionDropdown: "jurisdiction", stateDropdown: "state",
             })
             .expect(302)

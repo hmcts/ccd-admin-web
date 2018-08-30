@@ -132,12 +132,13 @@
             <label class="form-label" for="first-name-2">User idam ID</label>
             {% if idamId%}
                 <label class="form-label-bold" >{{idamId}}</label><br><br>
-                 <input class="form-control" id="idamId" name="idamId" type="hidden" value="{{idamId}}">
-                 <input class="form-control" id="update" name="update" type="hidden" value="{{update}}">
+                 <input class="form-control" id="idamId" name="idamId" type="hidden" value="{{idamId}}"/>
+                 <input class="form-control" id="update" name="update" type="hidden" value="{{update}}"/>
                  
             {% else %}
-                <input class="form-control" id="idamId" name="idamId" type="text"><br><br> 
+                <input class="form-control" id="idamId" name="idamId" type="text"/><br><br> 
             {% endif%} 
+            <input type="hidden" id="jurisdiction" name="jurisdiction" value="{{jurisdiction | safe}}"/>
         <label class="form-label">Live from</label>
             {{ dateMacro() }}
             <label class="form-label">Live to</label>

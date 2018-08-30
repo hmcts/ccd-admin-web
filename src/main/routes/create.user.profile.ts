@@ -16,6 +16,7 @@ router.get("/createuser", (req, res, next) => {
     responseContent.currentjurisdiction = req.session.jurisdiction;
     responseContent.heading = "Create User profile";
     responseContent.submitButtonText = "Create";
+    responseContent.jurisdiction = req.query.jurisdiction ? req.query.jurisdiction : req.session.jurisdiction;
     if (req.session.error) {
       responseContent.error = req.session.error;
       delete req.session.error;
