@@ -1,0 +1,23 @@
+{% extends "layout_template.html" %}
+{% from "macros/csrf.html" import csrfProtection %}
+
+{% block page_title %}
+  User roles
+{% endblock %}
+ {% block head%}
+  {{super()}}
+  <script type="text/javascript">
+ // var jurisdictionString = {{userprofiles |safe }}
+ // var jurisdictionLookups = $.parseJSON(jurisdictionString);
+  </script>
+ {% endblock %}
+
+ {% block content %}
+  {% include "menu.html" %}
+  {% if (error)%}
+        <div class="error-summary govuk-error-message">
+            {{error.text}}
+        </div>
+  {% endif %}
+ <a href="/create-user-role" class="button rightAlign" value="Submit">Create User Role</a>
+  {% endblock %}

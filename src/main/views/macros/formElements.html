@@ -12,12 +12,15 @@
 
 {%- endmacro %}
 
-{% macro jurisdictionList(jurisdictions) -%}
+{% macro serverList (list , name , selectValue) -%}
 <div class="form-group">
-       <select id="jurisdictionName" name="jurisdictionName" class="form-control">
+       <select id="{{name}}" name="{{name}}" class="form-control">
+                {% if selectValue%}
                 <option value="" selected>--Select a value--</option>
-                {% for jursidiction in jurisdictions %}
-                    <option value="{{ jursidiction.id }}">{{jursidiction.name}}</option>
+                {%endif%}
+                {% for element in list %}
+                    <option value="{{ element.id }}"  {% if selectValue == "false" %} 
+                    {{ "selected" if loop.index ==0 }} {%endif%}>{{element.name}}</option>
                 {%endfor%}
         </select> 
 </div> 
