@@ -48,6 +48,16 @@ data "vault_generic_secret" "oauth2_client_secret" {
   path = "secret/${var.vault_section}/ccidam/idam-api/oauth2/client-secrets/ccd-admin"
 }
 
+data "azurerm_key_vault_secret" "storageaccount_primary_connection_string" {
+  name = "storage-account-primary-connection-string"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "storageaccount_secondary_connection_string" {
+  name = "storage-account-secondary-connection-string"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+}
+
 module "ccd-admin-web" {
   source = "git@github.com:hmcts/moj-module-webapp?ref=master"
   product = "${local.app_full_name}"
@@ -94,5 +104,9 @@ module "ccd-admin-web" {
     ADMINWEB_JURISDICTIONS_URL = "${local.def_store_url}/api/data/jurisdictions"
     ADMINWEB_USER_PROFILE_URL = "${local.userprofile_url}/users"
     ADMINWEB_SAVE_USER_PROFILE_URL = "${local.userprofile_url}/users/save"
+
+    # Storage Account
+    STORAGEACCOUNT_PRIMARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_primary_connection_string.value}"
+    STORAGEACCOUNT_SECONDARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_secondary_connection_string.value}"
   }
 }
