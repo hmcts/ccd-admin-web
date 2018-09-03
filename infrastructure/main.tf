@@ -21,6 +21,16 @@ locals {
   previewVaultName = "${var.raw_product}-shared-aat"
   nonPreviewVaultName = "${var.raw_product}-shared-${var.env}"
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+
+  // Shared Resource Group
+  previewResourceGroup = "${var.raw_product}-shared-aat"
+  nonPreviewResourceGroup = "${var.raw_product}-shared-${var.env}"
+  sharedResourceGroup = "${(var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup}"
+
+  // Storage Account
+  previewStorageAccountName = "${var.raw_product}sharedaat"
+  nonPreviewStorageAccountName = "${var.raw_product}shared${var.env}"
+  storageAccountName = "${(var.env == "preview" || var.env == "spreview") ? local.previewStorageAccountName : local.nonPreviewStorageAccountName}"
 }
 
 data "azurerm_key_vault" "ccd_shared_key_vault" {
