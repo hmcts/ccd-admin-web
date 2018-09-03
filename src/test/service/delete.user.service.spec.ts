@@ -35,7 +35,7 @@ describe("test delete user profile service", () => {
     }).deleteUserProfile;
   });
 
-  it("should return an HTTP 201 status and success message", (done) => {
+  it("should return an HTTP 204 status and success message", (done) => {
     const expectedResult = "User profile deleted successfully";
 
     nock("http://localhost:4453")
