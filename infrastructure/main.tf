@@ -40,6 +40,13 @@ data "azurerm_key_vault" "ccd_shared_key_vault" {
   resource_group_name = "${local.sharedResourceGroup}"
 }
 
+resource "azurerm_storage_container" "imports_container" {
+  name = "${local.app_full_name}-imports-${var.env}"
+  resource_group_name = "${local.sharedResourceGroup}"
+  storage_account_name = "${local.storageAccountName}"
+  container_access_type = "private"
+}
+
 data "vault_generic_secret" "idam_service_key" {
   path = "secret/${var.vault_section}/ccidam/service-auth-provider/api/microservice-keys/ccd-admin"
 }
@@ -108,5 +115,6 @@ module "ccd-admin-web" {
     # Storage Account
     STORAGEACCOUNT_PRIMARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_primary_connection_string.value}"
     STORAGEACCOUNT_SECONDARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_secondary_connection_string.value}"
+    STORAGE_CONTAINER_IMPORTS_CONTAINER_NAME = "${azurerm_storage_container.imports_container.name}"
   }
 }
