@@ -41,11 +41,11 @@ describe("test delete user profile service", () => {
     nock("http://localhost:4453")
       .delete("/users")
       .query({ uid: "aaa@yahii.com", jid: "test" })
-      .reply(201, expectedResult);
+      .reply(204, expectedResult);
 
     deleteUserProfile(req).then((res) => {
       try {
-        expect(res.status).to.equal(201);
+        expect(res.status).to.equal(204);
         expect(res.text).to.equal(expectedResult);
         done();
       } catch (e) {
