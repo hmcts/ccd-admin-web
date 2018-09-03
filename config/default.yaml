@@ -29,5 +29,6 @@ adminWeb:
   jurisdiction_url: http://localhost:4451/api/data/jurisdictions
   userprofiles_url: http://localhost:4453/users
   saveuserprofiles_url: http://localhost:4453/users/save
+  saveuserrole_url: http://localhost:4451/api/user-role
 appInsights:
   instrumentationKey: "some-key"

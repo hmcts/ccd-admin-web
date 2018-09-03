@@ -11,6 +11,27 @@
   <script type="text/javascript">
 
   $(document).ready(function(){
+          $('#createuserroleform').validate({ // initialize the plugin
+        onkeyup: false,
+        onclick: false,
+        onfocusout: false,
+       errorPlacement: function (error, element) {
+            error.insertBefore(element);
+        },
+        errorElement : 'div',
+        errorElementClass: 'error',
+        errorClass: 'govuk-error-message form-group-error',
+        rules: {
+            role: {
+                required: true
+            }
+        },
+        messages :{
+            "role" : {
+                required : 'Enter role'
+            }
+        }
+    });
   });
 
 </script>
@@ -31,11 +52,11 @@
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
             <label class="form-label" for="userroles">User Roles</label>
-            <input class="form-control" id="userroles" name="userroles" type="text"/><br><br> 
+            <input type="text" class="form-control" id="role" name="role"/><br><br> 
             <label class="form-label">Security Classifications</label>
-            {{  serverList(securityClassifications, "classifiction")}}
+            {{  serverList(securityClassifications, "classification")}}
         </div> 
-        <button type="submit" class="button" value="Submit">{{submitButtonText}}</button>
+        <button type="submit" class="button" value="Submit">{{submitButtonText}}</button>   
     </form>
     </div>
   
