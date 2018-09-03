@@ -3,6 +3,8 @@ provider "vault" {
 }
 
 locals {
+  app_full_name = "${var.product}-${var.component}"
+
   is_frontend = "${var.external_host_name != "" ? "1" : "0"}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
 
@@ -18,14 +20,31 @@ locals {
   userprofile_url = "http://ccd-user-profile-api-${local.env_ase_url}"
 
   // Vault name
-  previewVaultName = "${var.raw_product}-shared-aat"
-  nonPreviewVaultName = "${var.raw_product}-shared-${var.env}"
+  previewVaultName = "${var.raw_product}-aat"
+  nonPreviewVaultName = "${var.raw_product}-${var.env}"
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+
+  // Shared Resource Group
+  previewResourceGroup = "${var.raw_product}-shared-aat"
+  nonPreviewResourceGroup = "${var.raw_product}-shared-${var.env}"
+  sharedResourceGroup = "${(var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup}"
+
+  // Storage Account
+  previewStorageAccountName = "${var.raw_product}sharedaat"
+  nonPreviewStorageAccountName = "${var.raw_product}shared${var.env}"
+  storageAccountName = "${(var.env == "preview" || var.env == "spreview") ? local.previewStorageAccountName : local.nonPreviewStorageAccountName}"
 }
 
 data "azurerm_key_vault" "ccd_shared_key_vault" {
   name = "${local.vaultName}"
-  resource_group_name = "${local.vaultName}"
+  resource_group_name = "${local.sharedResourceGroup}"
+}
+
+resource "azurerm_storage_container" "imports_container" {
+  name = "${local.app_full_name}-imports-${var.env}"
+  resource_group_name = "${local.sharedResourceGroup}"
+  storage_account_name = "${local.storageAccountName}"
+  container_access_type = "private"
 }
 
 data "vault_generic_secret" "idam_service_key" {
@@ -36,9 +55,19 @@ data "vault_generic_secret" "oauth2_client_secret" {
   path = "secret/${var.vault_section}/ccidam/idam-api/oauth2/client-secrets/ccd-admin"
 }
 
+data "azurerm_key_vault_secret" "storageaccount_primary_connection_string" {
+  name = "storage-account-primary-connection-string"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "storageaccount_secondary_connection_string" {
+  name = "storage-account-secondary-connection-string"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+}
+
 module "ccd-admin-web" {
   source = "git@github.com:hmcts/moj-module-webapp?ref=master"
-  product = "${var.product}-${var.component}"
+  product = "${local.app_full_name}"
   location = "${var.location}"
   env = "${var.env}"
   ilbIp = "${var.ilbIp}"
@@ -82,5 +111,10 @@ module "ccd-admin-web" {
     ADMINWEB_JURISDICTIONS_URL = "${local.def_store_url}/api/data/jurisdictions"
     ADMINWEB_USER_PROFILE_URL = "${local.userprofile_url}/users"
     ADMINWEB_SAVE_USER_PROFILE_URL = "${local.userprofile_url}/users/save"
+
+    # Storage Account
+    STORAGEACCOUNT_PRIMARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_primary_connection_string.value}"
+    STORAGEACCOUNT_SECONDARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_secondary_connection_string.value}"
+    STORAGE_CONTAINER_IMPORTS_CONTAINER_NAME = "${azurerm_storage_container.imports_container.name}"
   }
 }
