@@ -3,6 +3,8 @@ provider "vault" {
 }
 
 locals {
+  app_full_name = "${var.product}-${var.component}"
+
   is_frontend = "${var.external_host_name != "" ? "1" : "0"}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
 
@@ -48,7 +50,7 @@ data "vault_generic_secret" "oauth2_client_secret" {
 
 module "ccd-admin-web" {
   source = "git@github.com:hmcts/moj-module-webapp?ref=master"
-  product = "${var.product}-${var.component}"
+  product = "${local.app_full_name}"
   location = "${var.location}"
   env = "${var.env}"
   ilbIp = "${var.ilbIp}"
