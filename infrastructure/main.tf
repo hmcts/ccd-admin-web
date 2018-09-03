@@ -37,7 +37,7 @@ locals {
 
 data "azurerm_key_vault" "ccd_shared_key_vault" {
   name = "${local.vaultName}"
-  resource_group_name = "${local.vaultName}"
+  resource_group_name = "${local.sharedResourceGroup}"
 }
 
 data "vault_generic_secret" "idam_service_key" {
