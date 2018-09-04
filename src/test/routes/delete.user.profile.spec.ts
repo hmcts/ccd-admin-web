@@ -86,7 +86,7 @@ describe("Confirm Delete page", () => {
             mock("http://localhost:4453")
                 .delete("/users")
                 .query({ uid: "anas@yahoo.com" })
-                .reply(200);
+                .reply(204);
 
             return request(appTest)
                 .post("/deleteuserprofile")

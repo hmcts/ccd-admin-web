@@ -13,7 +13,6 @@ $nta-font-path: '/node_modules/@govuk/platform-template/assets/fonts';
   .footer-meta-inner .open-government-licence .logo a {
     background: url('#{$govuk-template-image-path}/open-government-licence.png') no-repeat;
   }
-
 }
 
 pre.error-message {
@@ -189,15 +188,11 @@ table, tbody, td, tr
   border-color: darkgray;
 }
 
-  .govuk-fieldset__legend--xl {
-    font-family: "nta", Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-weight: 700;
-    font-size: 32px;
-    line-height: 1.09375; }
-
-    .mybutton {
-      @extend .button;
-      margin-bottom: 20px;
-    }
+.govuk-fieldset__legend--xl {
+  font-family: "nta", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.09375; 
+}
