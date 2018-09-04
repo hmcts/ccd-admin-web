@@ -34,6 +34,60 @@ describe("on Get /create-user-role-form", () => {
     });
 });
 
+describe("on Get /user-roles-list", () => {
+    beforeEach(() => {
+        mock.cleanAll();
+    });
+    it("Create user role should redirect to IdAM login page when not authenticated", () => {
+        return request(app)
+            .get("/user-roles-list")
+            .then((res) => {
+                expect(res.statusCode).to.equal(302);
+                expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+            });
+    });
+
+    it("should respond with user roles list page and populated response when authenticated", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+
+        return request(app)
+            .get("/user-roles-list")
+            .set("Cookie", "accessToken=ey123.ey456")
+            .then((res) => {
+                expect(res.statusCode).to.equal(200);
+                expect(res.text).to.contain("Create User Role");
+            });
+    });
+});
+
+describe("on Get /user-roles", () => {
+    beforeEach(() => {
+        mock.cleanAll();
+    });
+    it("Create user role should redirect to IdAM login page when not authenticated", () => {
+        return request(app)
+            .get("/user-roles")
+            .then((res) => {
+                expect(res.statusCode).to.equal(302);
+                expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+            });
+    });
+
+    it("should respond with user roles page and populated response when authenticated", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+
+        return request(app)
+            .get("/user-roles")
+            .set("Cookie", "accessToken=ey123.ey456")
+            .then((res) => {
+                expect(res.statusCode).to.equal(200);
+                expect(res.text).to.contain("Create User Role");
+            });
+    });
+});
+
 describe("on POST /createuserrole", () => {
     beforeEach(() => {
         mock.cleanAll();
