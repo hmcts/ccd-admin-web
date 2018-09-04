@@ -24,10 +24,6 @@ variable "ilbIp" {}
 
 variable "subscription" {}
 
-variable "vault_section" {
-  default = "test"
-}
-
 variable "external_host_name" {
   type = "string"
   default = ""
