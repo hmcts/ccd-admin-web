@@ -28,7 +28,7 @@ describe("test create user role service", () => {
     const config = {
       get: sinon.stub(),
     };
-    config.get.withArgs("adminWeb.saveuserrole_url").returns(createUserRoleURL);
+    config.get.withArgs("adminWeb.userrole_url").returns(createUserRoleURL);
 
     createUserRole = proxyquire("../../main/service/create-user-role.ts", {
       config,
