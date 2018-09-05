@@ -50,9 +50,20 @@ describe("on Get /user-roles-list", () => {
     it("should respond with user roles list page and populated response when authenticated", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+        mock("http://localhost:4451")
+            .get("/api/all-roles")
+            .reply(200, [{
+                role: "admin",
+                security_classification: "PUBLIC",
+            }]);
 
         return request(app)
             .get("/user-roles-list")
+            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .then((res) => {
                 expect(res.statusCode).to.equal(200);
@@ -77,9 +88,20 @@ describe("on Get /user-roles", () => {
     it("should respond with user roles page and populated response when authenticated", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+        mock("http://localhost:4451")
+            .get("/api/all-roles")
+            .reply(200, [{
+                role: "admin",
+                security_classification: "PUBLIC",
+            }]);
 
         return request(app)
             .get("/user-roles")
+            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .then((res) => {
                 expect(res.statusCode).to.equal(200);

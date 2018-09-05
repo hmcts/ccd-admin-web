@@ -1,6 +1,7 @@
 import * as express from "express";
 import { UserRole } from "../domain/userrole";
 import { createUserRole } from "../service/create-user-role";
+import { fetchAllUserRoles } from "../service/get-user.roles.service";
 import { sanitize } from "../util/sanitize";
 import { Validator } from "../validators/validate";
 
@@ -11,9 +12,17 @@ const createUserRoleText = "Create User Roles";
 
 /* GET User roles landing page. */
 router.get("/user-roles", (req, res, next) => {
+  const responseContent: { [k: string]: any } = {};
   delete req.session.error;
   delete req.session.success;
-  res.render("user-roles");
+  fetchAllUserRoles(req).then((response) => {
+    responseContent.userroles = JSON.parse(response);
+    res.render("user-roles", responseContent);
+  })
+    .catch((error) => {
+      // Call the next middleware, which is the error handler
+      next(error);
+    });
 });
 
 /* GET User roles landing page. */
@@ -25,7 +34,14 @@ router.get("/user-roles-list", (req, res, next) => {
   if (req.session.success) {
     responseContent.success = req.session.success;
   }
-  res.render("user-roles", responseContent);
+  fetchAllUserRoles(req).then((response) => {
+    responseContent.userroles = JSON.parse(response);
+    res.render("user-roles", responseContent);
+  })
+    .catch((error) => {
+      // Call the next middleware, which is the error handler
+      next(error);
+    });
 });
 
 /* GET create user roles form. */

@@ -23,4 +23,54 @@
         </div>
   {% endif %}
  <a href="/create-user-role-form?save=create" class="button rightAlign" value="Submit">Create User Role</a>
+ <div class="padding ngx-pagination">
+   <table border="1">
+  <thead>
+  <tr> <th colspan="3">
+
+  </tr>
+  <tr>
+    <th>Role</th>
+    <th>
+      Security Classification
+    </th>
+    <th>Action
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for userrole in userroles %}
+  <tr >
+    <td>
+    <form id="userprofile_{{loop.index}}" method="post" action="/updateuserrole" >
+      {{ csrfProtection(csrfToken) }}
+      <input type="hidden" name="role" value="{{userrole.role}}" />
+      <input type="hidden" name="classification" value="{{userrole.security_classification}}" />
+       <div>{{userrole.role}}</div>
+    </form>
+    </td>
+    <td>
+      <div>
+       {{userrole.security_classification}}
+      </div>
+    </td>
+     <td>
+          <a href="#" class="button" value="Submit">Delete</a>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  <tfoot>
+   <tr> <th colspan="3">
+
+  </tr>
+  </tfoot>
+</table>
+</div>
+<div class="notification">
+
+</div>
+
+
   {% endblock %}
+

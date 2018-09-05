@@ -3,16 +3,15 @@ import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
 import * as nock from "nock";
-import { UserRole } from "domain/userrole";
 
 const expect = chai.expect;
 chai.use(sinonChai);
 
-describe("test create user role service", () => {
+describe("test read user role service", () => {
 
-  const createUserRoleURL = "http://localhost:4453/api/user-role";
+  const readUserRoleURL = "http://localhost:4451/api/all-roles";
 
-  let createUserRole;
+  let fetchAllUserRoles;
 
   let req;
 
@@ -28,24 +27,23 @@ describe("test create user role service", () => {
     const config = {
       get: sinon.stub(),
     };
-    config.get.withArgs("adminWeb.userrole_url").returns(createUserRoleURL);
+    config.get.withArgs("adminWeb.alluserroles_url").returns(readUserRoleURL);
 
-    createUserRole = proxyquire("../../main/service/create-user-role.ts", {
+    fetchAllUserRoles = proxyquire("../../main/service/get-user.roles.service.ts", {
       config,
-    }).createUserRole;
+    }).fetchAllUserRoles;
   });
 
-  it("should return an HTTP 201 status and success message", (done) => {
-    const expectedResult = "User profile created successfully";
+  it("should return an HTTP 200 status and success message", (done) => {
+    const expectedResult = { role: "Admin", security_classification: "PUBLIC" };
 
-    nock("http://localhost:4453")
-      .put("/api/user-role")
-      .reply(201, expectedResult);
+    nock("http://localhost:4451")
+      .get("/api/all-roles")
+      .reply(200, expectedResult);
 
-    createUserRole(req, new UserRole("ccd-admin", "PUBLIC")).then((res) => {
+    fetchAllUserRoles(req).then((res) => {
       try {
-        expect(res.status).to.equal(201);
-        expect(res.text).to.equal(expectedResult);
+        expect(res).to.equal(JSON.stringify(expectedResult));
         done();
       } catch (e) {
         done(e);
@@ -63,11 +61,11 @@ describe("test create user role service", () => {
       message: "Access Denied",
     };
 
-    nock("http://localhost:4453")
-      .put("/api/user-role")
+    nock("http://localhost:4451")
+      .get("/api/all-roles")
       .reply(403, expectedResult);
 
-    createUserRole(req, new UserRole("ccd-admin", "PRIVATE"))
+    fetchAllUserRoles(req)
       .catch((err) => {
         try {
           expect(err.status).to.equal(403);

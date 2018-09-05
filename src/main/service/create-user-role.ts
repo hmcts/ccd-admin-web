@@ -5,7 +5,7 @@ import { UserRole } from "domain/userrole";
 
 export function createUserRole(req, userrole: UserRole) {
     const logger = Logger.getLogger(__filename);
-    const url = config.get("adminWeb.saveuserrole_url");
+    const url = config.get("adminWeb.userrole_url");
 
     const headers = {
         Accept: "application/json",
