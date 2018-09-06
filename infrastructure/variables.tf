@@ -76,3 +76,11 @@ variable "https_only" {
 variable "common_tags" {
   type = "map"
 }
+
+variable "asp_name" {
+  type = "string"
+}
+
+variable "rg_name" {
+  type = "string"
+}
