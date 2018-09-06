@@ -81,6 +81,6 @@ variable "asp_name" {
   type = "string"
 }
 
-variable "rg_name" {
+variable "asp_rg" {
   type = "string"
 }
