@@ -40,6 +40,7 @@ router.get("/userprofiles", (req, res, next) => {
 
   const jurisdiction = req.session.jurisdiction;
   fetchUserProfilesByJurisdiction(req).then((response) => {
+
     res.status(201);
     const responseContent: { [k: string]: any } = {};
     responseContent.currentjurisdiction = req.session.jurisdiction;

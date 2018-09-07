@@ -13,7 +13,6 @@ $nta-font-path: '/node_modules/@govuk/platform-template/assets/fonts';
   .footer-meta-inner .open-government-licence .logo a {
     background: url('#{$govuk-template-image-path}/open-government-licence.png') no-repeat;
   }
-
 }
 
 pre.error-message {
@@ -52,6 +51,9 @@ pre.error-message {
 // Start new In house GOV Template
 .padding {
   padding: 15px;
+}
+.padding-deeper {
+  padding: 35px;
 }
 
 .rectangle-2-copy {
@@ -142,7 +144,7 @@ table, tbody, td, tr
     margin-bottom: 15px;
     clear: both;
     color: #b10e1e; }
-  
+
     .success {
       width: 100%;
       height: 40px;
@@ -154,15 +156,43 @@ table, tbody, td, tr
     border: 5px solid #ffdddd;
     color: red
   }
+
   hr {
     display: block;
     background: #bfc1c3;
     border: 0;
     height: 1px;
     margin-top: 0px;
-    margin-bottom: 0px; 
+    margin-bottom: 0px;
     padding: 0;
 }
+.govuk-fieldset__legend {
+  font-family: "nta", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #0b0c0c;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: table;
+  max-width: 100%;
+  margin-bottom: 15px;
+  padding: 0;
+  overflow: hidden;
+  white-space: normal;
+ }
+
 .disableborder {
   border-color: darkgray;
+}
+
+.govuk-fieldset__legend--xl {
+  font-family: "nta", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.09375; 
 }
