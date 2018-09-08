@@ -47,4 +47,3 @@ function deleteSessionVariables(req: any) {
 }
 
 export default router;
-
