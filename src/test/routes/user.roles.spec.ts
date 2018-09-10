@@ -55,7 +55,7 @@ describe("on Get /user-roles-list", () => {
             ServiceAuthorization: "serviceAuthToken",
         };
         mock("http://localhost:4451")
-            .get("/api/all-roles")
+            .get("/api/user-roles")
             .reply(200, [{
                 role: "admin",
                 security_classification: "PUBLIC",
@@ -93,7 +93,7 @@ describe("on Get /user-roles", () => {
             ServiceAuthorization: "serviceAuthToken",
         };
         mock("http://localhost:4451")
-            .get("/api/all-roles")
+            .get("/api/user-roles")
             .reply(200, [{
                 role: "admin",
                 security_classification: "PUBLIC",

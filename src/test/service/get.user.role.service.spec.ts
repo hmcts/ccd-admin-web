@@ -9,7 +9,7 @@ chai.use(sinonChai);
 
 describe("test read user role service", () => {
 
-  const readUserRoleURL = "http://localhost:4451/api/all-roles";
+  const readUserRoleURL = "http://localhost:4451/api/user-roles";
 
   let fetchAllUserRoles;
 
@@ -38,7 +38,7 @@ describe("test read user role service", () => {
     const expectedResult = { role: "Admin", security_classification: "PUBLIC" };
 
     nock("http://localhost:4451")
-      .get("/api/all-roles")
+      .get("/api/user-roles")
       .reply(200, expectedResult);
 
     fetchAllUserRoles(req).then((res) => {
@@ -62,7 +62,7 @@ describe("test read user role service", () => {
     };
 
     nock("http://localhost:4451")
-      .get("/api/all-roles")
+      .get("/api/user-roles")
       .reply(403, expectedResult);
 
     fetchAllUserRoles(req)

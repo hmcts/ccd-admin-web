@@ -50,7 +50,7 @@
     <td>
     <form id="userprofile_{{loop.index}}" method="post" action="/updateusersprofile" >
       {{ csrfProtection(csrfToken) }}
-      <input type="hidden" name="idamId" value="{{userprofile.id}}" />
+      <input type="hidden" name="idamId" value="{{userprofile.id  }}" />
       <input type="hidden" name="currentjurisdiction" value="{{currentjurisdiction}}" />
       <input type="hidden" name="jurisdiction" value="{{userprofile.work_basket_default_jurisdiction}}" />
       <input type="hidden" name="casetype" value="{{userprofile.work_basket_default_case_type}}" />
@@ -75,7 +75,7 @@
     </td>
      <td>
 
-          <a href="/deleteuserprofile?idamId={{userprofile.id}}" class="button rightAlign" value="Submit">Delete</a>
+          <a href="/deleteuserprofile?idamId={{userprofile.id | urlencode}}" class="button rightAlign" value="Submit">Delete</a>
     </td>
   </tr>
   {% endfor %}

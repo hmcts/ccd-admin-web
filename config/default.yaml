@@ -30,6 +30,6 @@ adminWeb:
   userprofiles_url: http://localhost:4453/users
   saveuserprofiles_url: http://localhost:4453/users/save
   userrole_url: http://localhost:4451/api/user-role
-  alluserroles_url: http://localhost:4451/api/all-roles
+  alluserroles_url: http://localhost:4451/api/user-roles
 appInsights:
   instrumentationKey: "some-key"
