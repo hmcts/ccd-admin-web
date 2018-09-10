@@ -79,8 +79,10 @@ variable "common_tags" {
 
 variable "asp_name" {
   type = "string"
+  default = ""
 }
 
 variable "asp_rg" {
   type = "string"
+  default = ""
 }
