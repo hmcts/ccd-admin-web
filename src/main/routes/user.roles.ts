@@ -66,7 +66,7 @@ function validate(req, res, next) {
   delete req.session.success;
   if (role.isEmpty() || classification.isEmpty()) {
     req.session.error = { status: 401, text: "Please add role / classification." };
-    res.redirect(302, "/create-user-role");
+    res.redirect(302, "/create-user-role-form");
   } else {
     delete req.session.error;
     next();
@@ -84,7 +84,7 @@ router.post("/createuserrole", validate, (req, res, next) => {
         status: 400, text: error.rawResponse ? error.rawResponse :
           error.message ? error.message : "Invalid data",
       };
-      res.redirect(302, "/create-user-role");
+      res.redirect(302, "/create-user-role-form");
     });
 });
 

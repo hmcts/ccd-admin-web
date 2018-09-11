@@ -38,7 +38,7 @@ function validate(req, res, next) {
     res.redirect(302, "/jurisdiction");
   } else if (!validator.isEmail(req.body.idamId)) {
     req.session.error = { status: 401, text: "Please select a valid email address!" };
-    res.redirect(302, "/createuser");
+    res.redirect(302, "user-profiles/create-user-form");
   } else {
     delete req.session.error;
     next();

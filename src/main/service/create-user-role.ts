@@ -18,7 +18,7 @@ export function createUserRole(req, userrole: UserRole) {
         ` "security_classification": "${userrole.classification}" }`;
 
     return request
-        .put(url)
+        .post(url)
         .set("Content-Type", "application/json")
         .set(headers)
         .send(payloadString)
@@ -29,6 +29,8 @@ export function createUserRole(req, userrole: UserRole) {
         .catch((error) => {
             if (error.response) {
                 logger.error(`Error creating/updating user role: ${error.response.text}`);
+                const errorResponse = JSON.parse(error.response.text);
+                error.rawResponse = errorResponse.message;
                 throw error;
             } else {
                 const errMsg = "Error creating / updating user role: no error response";
