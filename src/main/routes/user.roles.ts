@@ -4,7 +4,6 @@ import { createUserRole } from "../service/create-user-role";
 import { fetchAllUserRoles } from "../service/get-user.roles.service";
 import { sanitize } from "../util/sanitize";
 import { Validator } from "../validators/validate";
-
 const router = express.Router();
 const classifications = [{ id: "PUBLIC", name: "PUBLIC" },
 { id: "PRIVATE", name: "PRIVATE" }, { id: "RESTRICTED", name: "RESTRICTED" }];
@@ -64,8 +63,8 @@ function validate(req, res, next) {
   const role = new Validator(req.body.role);
   const classification = new Validator(req.body.classification);
   delete req.session.success;
-  if (role.isEmpty() || classification.isEmpty()) {
-    req.session.error = { status: 401, text: "Please add role / classification." };
+  if (!role.isAlphanumber() || !classification.isAlphanumber()) {
+    req.session.error = { status: 401, text: "Please add correct role / classification." };
     res.redirect(302, "/create-user-role-form");
   } else {
     delete req.session.error;

@@ -39,7 +39,7 @@ describe("test create user role service", () => {
     const expectedResult = "User profile created successfully";
 
     nock("http://localhost:4453")
-      .put("/api/user-role")
+      .post("/api/user-role")
       .reply(201, expectedResult);
 
     createUserRole(req, new UserRole("ccd-admin", "PUBLIC")).then((res) => {
@@ -64,7 +64,7 @@ describe("test create user role service", () => {
     };
 
     nock("http://localhost:4453")
-      .put("/api/user-role")
+      .post("/api/user-role")
       .reply(403, expectedResult);
 
     createUserRole(req, new UserRole("ccd-admin", "PRIVATE"))

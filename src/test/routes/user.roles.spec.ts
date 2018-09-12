@@ -123,7 +123,7 @@ describe("on POST /createuserrole", () => {
             ServiceAuthorization: "serviceAuthToken",
         };
         mock("http://localhost:4451/api/user-role")
-            .put("")
+            .post("")
             .reply(200);
 
         return request(appTest)
@@ -148,7 +148,7 @@ describe("on POST /createuserrole", () => {
             ServiceAuthorization: "serviceAuthToken",
         };
         mock("http://localhost:4451/api/user-role")
-            .put("")
+            .post("")
             .reply(200);
 
         return request(appTest)
@@ -172,7 +172,7 @@ describe("on POST /createuserrole", () => {
             ServiceAuthorization: "serviceAuthToken",
         };
         mock("http://localhost:4451/api/user-role")
-            .put("")
+            .post("")
             .reply(200);
 
         return request(appTest)
