@@ -52,7 +52,7 @@
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
             <label class="form-label" for="userroles">User Roles</label>
-            <input type="text" class="form-control" id="role" name="role"/><br><br> 
+            <input type="text" class="form-control" id="role" name="role" maxlength="99"/><br><br> 
             <label class="form-label">Security Classifications</label>
             {{  serverList(securityClassifications, "classification")}}
         </div> 
