@@ -1,7 +1,3 @@
-provider "vault" {
-  address = "https://vault.reform.hmcts.net:6200"
-}
-
 locals {
   app_full_name = "${var.product}-${var.component}"
 
@@ -33,6 +29,8 @@ locals {
   previewStorageAccountName = "${var.raw_product}sharedaat"
   nonPreviewStorageAccountName = "${var.raw_product}shared${var.env}"
   storageAccountName = "${(var.env == "preview" || var.env == "spreview") ? local.previewStorageAccountName : local.nonPreviewStorageAccountName}"
+
+  sharedAppServicePlan = "${var.raw_product}-${var.env}"
 }
 
 data "azurerm_key_vault" "ccd_shared_key_vault" {
@@ -47,12 +45,14 @@ resource "azurerm_storage_container" "imports_container" {
   container_access_type = "private"
 }
 
-data "vault_generic_secret" "idam_service_key" {
-  path = "secret/${var.vault_section}/ccidam/service-auth-provider/api/microservice-keys/ccd-admin"
+data "azurerm_key_vault_secret" "idam_service_key" {
+  name = "ccd-admin-web-s2s-secret"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }
 
-data "vault_generic_secret" "oauth2_client_secret" {
-  path = "secret/${var.vault_section}/ccidam/idam-api/oauth2/client-secrets/ccd-admin"
+data "azurerm_key_vault_secret" "oauth2_client_secret" {
+  name = "ccd-admin-web-oauth2-client-secret"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }
 
 data "azurerm_key_vault_secret" "storageaccount_primary_connection_string" {
@@ -77,6 +77,8 @@ module "ccd-admin-web" {
   capacity = "${var.capacity}"
   https_only = "${var.https_only}"
   common_tags  = "${var.common_tags}"
+  asp_name = "${(var.asp_name == "use_shared") ? local.sharedAppServicePlan : var.asp_name}"
+  asp_rg = "${(var.asp_rg == "use_shared") ? local.sharedResourceGroup : var.asp_rg}"
 
   app_settings = {
     // Node specific vars
@@ -98,13 +100,13 @@ module "ccd-admin-web" {
     // IDAM
     IDAM_BASE_URL = "${var.idam_api_url}"
     IDAM_S2S_URL = "${local.s2s_url}"
-    IDAM_ADMIN_WEB_SERVICE_KEY = "${data.vault_generic_secret.idam_service_key.data["value"]}"
+    IDAM_ADMIN_WEB_SERVICE_KEY = "${data.azurerm_key_vault_secret.idam_service_key.value}"
     IDAM_SERVICE_NAME = "${var.idam_service_name}"
     IDAM_LOGOUT_URL = "${var.authentication_web_url}/login/logout"
 
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
     IDAM_OAUTH2_CLIENT_ID = "ccd_admin"
-    IDAM_OAUTH2_AW_CLIENT_SECRET = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
+    IDAM_OAUTH2_AW_CLIENT_SECRET = "${data.azurerm_key_vault_secret.oauth2_client_secret.value}"
 
     ADMINWEB_LOGIN_URL = "${var.authentication_web_url}/login"
     ADMINWEB_IMPORT_URL = "${local.def_store_url}/import"
