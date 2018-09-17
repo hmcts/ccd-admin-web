@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.4.5",
-    "@hmcts/nodejs-logging": "^2.0.0",
+    "@hmcts/nodejs-logging": "^3.0.0",
     "@types/node": "^10.5.4",
     "body-parser": "^1.18.1",
     "config": "^2.0.1",
