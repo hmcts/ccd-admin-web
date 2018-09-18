@@ -123,9 +123,9 @@
   version "10.9.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.9.4.tgz#0f4cb2dc7c1de6096055357f70179043c33e9897"
 
-"@types/sinon-chai@^2.7.31":
-  version "2.7.31"
-  resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-2.7.31.tgz#d6cd5369bbf533d31e0bdf1fe55175e998f62757"
+"@types/sinon-chai@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-3.2.0.tgz#58abf70d8d002d2292ce656425431d873f2c77bc"
   dependencies:
     "@types/chai" "*"
     "@types/sinon" "*"
