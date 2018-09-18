@@ -81,7 +81,7 @@
     "gulp-replace": "^0.6.1",
     "gulp-sass": "^3.1.0",
     "http-status-codes": "^1.3.0",
-    "jsonwebtoken": "^8.2.1",
+    "jsonwebtoken": "^8.3.0",
     "karma": "1.4.1",
     "mocha": "^3.5.3",
     "mochawesome": "^2.3.1",
