@@ -11,6 +11,7 @@ import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter"
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { RouterFinder } from "./router/routerFinder";
 
+import { serviceFilter } from "./service/service-filter";
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
@@ -74,6 +75,7 @@ if (config.useCSRFProtection === true) {
 }
 
 app.all(/^\/(?!oauth2redirect|health).*$/, authCheckerUserOnlyFilter);
+app.all(/^\/(?!oauth2redirect|health).*$/, serviceFilter);
 app.use("/", RouterFinder.findAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router
