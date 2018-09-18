@@ -2982,9 +2982,9 @@ govuk_template_jinja@^0.23.0:
   version "0.23.3"
   resolved "https://registry.yarnpkg.com/govuk_template_jinja/-/govuk_template_jinja-0.23.3.tgz#b15360b4931b9b51021d52f8500bfca96c1ea875"
 
-govuk_template_mustache@^0.19.0:
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/govuk_template_mustache/-/govuk_template_mustache-0.19.2.tgz#944ccbfc987674fa952db621e1464fd5970d096a"
+govuk_template_mustache@^0.24.1:
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/govuk_template_mustache/-/govuk_template_mustache-0.24.1.tgz#4624e2b9e3ccdba78a4689568713ed87ab3f055a"
 
 graceful-fs@^3.0.0:
   version "3.0.11"
