@@ -64,5 +64,5 @@ router.post("/createuser", validate, (req, res, next) => {
       res.redirect(302, "/createuser");
     });
 });
-/* tslint:disable:no-default-export */
+
 export default router;

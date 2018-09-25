@@ -40,10 +40,10 @@ router.post("/deleteuserprofile", (req, res, next) => {
     }
 });
 
-export default router;
-
 function deleteSessionVariables(req: any) {
     delete req.session.response;
     delete req.session.error;
     delete req.session.success;
 }
+
+export default router;

@@ -1,7 +1,3 @@
-provider "vault" {
-  address = "https://vault.reform.hmcts.net:6200"
-}
-
 locals {
   app_full_name = "${var.product}-${var.component}"
 
@@ -35,6 +31,7 @@ locals {
   storageAccountName = "${(var.env == "preview" || var.env == "spreview") ? local.previewStorageAccountName : local.nonPreviewStorageAccountName}"
 
   sharedAppServicePlan = "${var.raw_product}-${var.env}"
+  sharedASPResourceGroup = "${var.raw_product}-shared-${var.env}"
 }
 
 data "azurerm_key_vault" "ccd_shared_key_vault" {
@@ -82,7 +79,7 @@ module "ccd-admin-web" {
   https_only = "${var.https_only}"
   common_tags  = "${var.common_tags}"
   asp_name = "${(var.asp_name == "use_shared") ? local.sharedAppServicePlan : var.asp_name}"
-  asp_rg = "${(var.asp_rg == "use_shared") ? local.sharedResourceGroup : var.asp_rg}"
+  asp_rg = "${(var.asp_rg == "use_shared") ? local.sharedASPResourceGroup : var.asp_rg}"
 
   app_settings = {
     // Node specific vars
@@ -117,6 +114,8 @@ module "ccd-admin-web" {
     ADMINWEB_JURISDICTIONS_URL = "${local.def_store_url}/api/data/jurisdictions"
     ADMINWEB_USER_PROFILE_URL = "${local.userprofile_url}/users"
     ADMINWEB_SAVE_USER_PROFILE_URL = "${local.userprofile_url}/users/save"
+    ADMINWEB_USER_ROLE_URL = "${local.def_store_url}/api/user-role"
+    ADMIN_ALL_USER_ROLES_URL = "${local.def_store_url}/api/user-roles"
 
     # Storage Account
     STORAGEACCOUNT_PRIMARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_primary_connection_string.value}"

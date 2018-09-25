@@ -8,6 +8,9 @@ router.get("/jurisdiction", (req, res, next) => {
     res.status(201);
     const responseContent: { [k: string]: any } = {};
     responseContent.jurisdictions = JSON.parse(response);
+    if (req.query.page) {
+      delete req.session.error;
+    }
     if (req.session.error) {
       responseContent.error = req.session.error;
       delete req.session.error;
