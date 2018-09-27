@@ -1,5 +1,5 @@
 idam_api_url = "https://prod-idamapi.reform.hmcts.net:3511"
-authentication_web_url = "https://www.idam.reform.hmcts.net"
+authentication_web_url = "https://www.idam.platform.hmcts.net"
 capacity = "2"
 asp_name = "ccd-admin-web-prod"
 asp_rg = "ccd-admin-web-prod"
