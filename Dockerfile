@@ -4,8 +4,12 @@ MAINTAINER https://github.com/hmcts/ccd-admin-web
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock /usr/src/app/
+RUN apk add patch
+
+COPY package.json yarn.lock .snyk /usr/src/app/
 RUN yarn install
+
+RUN apk del patch
 
 COPY src/main /usr/src/app/src/main
 COPY config /usr/src/app/config
