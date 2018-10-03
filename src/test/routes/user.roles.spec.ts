@@ -160,7 +160,7 @@ describe("on POST /createuserrole", () => {
             })
             .expect(302)
             .then((res) => {
-                expect(res.headers.location.startsWith("/create-user-role")).to.be.true;
+                expect(res.headers.location.startsWith("/create-user-role-form")).to.be.true;
             });
     });
 
@@ -212,5 +212,162 @@ describe("on POST /createuserrole", () => {
             .then((res) => {
                 expect(res.headers.location.startsWith("/create-user-role")).to.be.true;
             });
+    });
+});
+
+describe("on POST /updateuserrole", () => {
+    beforeEach(() => {
+        mock.cleanAll();
+    });
+
+    it("should respond with user roles page and populated response when authenticated", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+        mock("http://localhost:4451/api/user-role")
+            .put("")
+            .reply(200);
+
+        return request(appTest)
+            .post("/updateuserrole")
+            .set(headers)
+            .set("Cookie", "accessToken=ey123.ey456")
+            .send({
+                classification: "PUBLIC",
+                role: "ccd-admin",
+            })
+            .expect(302)
+            .then((res) => {
+                expect(res.headers.location.startsWith("/user-roles-list")).to.be.true;
+            });
+    });
+
+    it("should respond with error when role is empty", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+        mock("http://localhost:4451/api/user-role")
+            .put("")
+            .reply(200);
+
+        return request(appTest)
+            .post("/updateuserrole")
+            .set(headers)
+            .set("Cookie", "accessToken=ey123.ey456")
+            .send({
+                classification: "PUBLIC",
+            })
+            .expect(200);
+    });
+
+    it("should respond with error when classification is empty", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+        mock("http://localhost:4451/api/user-role")
+            .put("")
+            .reply(200);
+
+        return request(appTest)
+            .post("/updateuserrole")
+            .set(headers)
+            .set("Cookie", "accessToken=ey123.ey456")
+            .send({
+                classification: "",
+                role: "ccd-admin",
+            })
+            .expect(200);
+    });
+
+    it("should respond with create user form due to server error", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+        mock("http://localhost:4451/api/user-role")
+            .put("")
+            .replyWithError({ status: 400, rawResponse: "Bad request" });
+
+        return request(appTest)
+            .post("/updateuserrole")
+            .set(headers)
+            .set("Cookie", "accessToken=ey123.ey456")
+            .send({
+                classification: "PUBLIC",
+                role: "ccd-admin",
+            })
+            .expect(302)
+            .then((res) => {
+                expect(res.headers.location.startsWith("/create-user-role")).to.be.true;
+            });
+    });
+});
+
+describe("on POST /updateuserroleform", () => {
+    beforeEach(() => {
+        mock.cleanAll();
+    });
+
+    it("should respond with update user form and populated response when authenticated", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+
+        return request(appTest)
+            .post("/updateuserroleform")
+            .send({ role: "ccd-admin", classification: "PUBLIC" })
+            .set(headers)
+            .set("Cookie", "accessToken=ey123.ey456")
+            .then((res) => {
+                expect(res.statusCode).to.equal(200);
+                expect(res.text).to.contain("ccd-admin");
+                expect(res.text).to.contain("PUBLIC");
+            });
+    });
+
+    it("should redirect with error message when invalid role is passed", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+
+        return request(appTest)
+            .post("/updateuserroleform")
+            .send({ role: "ccd-admin*34", classification: "PUBLIC" })
+            .set(headers)
+            .set("Cookie", "accessToken=ey123.ey456")
+            .expect(302);
+    });
+
+    it("should redirect with error message when current jurisdiction is empty", () => {
+        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveServiceToken();
+        const headers = {
+            Authorization: "userAuthToken",
+            ServiceAuthorization: "serviceAuthToken",
+        };
+
+        return request(appTest)
+            .post("/updateuserroleform")
+            .send({ role: "ccd-admin", classification: "PUBLIC)))" })
+            .set(headers)
+            .set("Cookie", "accessToken=ey123.ey456")
+            .expect(302);
     });
 });

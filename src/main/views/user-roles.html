@@ -53,11 +53,11 @@
     {% for userrole in userroles %}
     <tr >
       <td>
-      <form id="userprofile_{{loop.index}}" method="post" action="/updateuserrole" >
+      <form id="userrole_{{loop.index}}" method="post" action="/updateuserroleform" >
         {{ csrfProtection(csrfToken) }}
         <input type="hidden" name="role" value="{{userrole.role}}" />
         <input type="hidden" name="classification" value="{{userrole.security_classification}}" />
-        <div>{{userrole.role}}</div>
+         <a href="#" onclick="document.getElementById('userrole_{{loop.index}}').submit();"><div>{{userrole.role}}</div></a>
       </form>
       </td>
       <td>

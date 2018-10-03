@@ -1,5 +1,5 @@
 {% extends "layout_template.html" %}
-{% from "../macros/formElements.html" import serverList      %}
+{% from "../macros/formElements.html" import serverListChosenValue%}
 {% from "../macros/formElements.html" import dateMacro %}
 {% from "../macros/csrf.html" import csrfProtection %}
 {% block page_title %}
@@ -47,14 +47,21 @@
         </div>
     {% endif %}
 
-    <form id="createuserroleform" name="createuserform" method="POST" action="/createuserrole">
+    <form id="createuserroleform" name="createuserform" method="POST" action="{{submitUserRoleEndPoint}}">
     
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
+        
             <label class="form-label" for="userroles">User Roles</label>
-            <input type="text" class="form-control" id="role" name="role" maxlength="100"/><br><br> 
+             {%if update == true%}
+                 <input type="hidden" id="role" name="role" value="{{role}}" />
+                 <label class="form-label-bold" >{{role}}</label><br><br>
+                 <input class="form-control" id="update" name="update" type="hidden" value="{{update}}"/>
+             {% else %}
+                 <input type="text" class="form-control" id="role" name="role" maxlength="100"/><br><br> 
+            {% endif %}
             <label class="form-label">Security Classifications</label>
-            {{  serverList(securityClassifications, "classification")}}
+            {{serverListChosenValue(securityClassifications, "classification", chosenClassification)}}
         </div> 
         <button type="submit" class="button" value="Submit">{{submitButtonText}}</button>   
           <a href="/user-roles" class="button">Cancel</a>
