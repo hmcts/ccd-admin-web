@@ -1,10 +1,10 @@
-import { fetchAll } from "../service/jurisdiction.service";
+import { fetch } from "../service/get-service";
+import * as config from "config";
 const router = require("../routes/home");
-
+const url = config.get("adminWeb.jurisdiction_url");
 /* GET Jurisdiction page. */
 router.get("/jurisdiction", (req, res, next) => {
-
-  fetchAll(req).then((response) => {
+  fetch(req, url).then((response) => {
     res.status(201);
     const responseContent: { [k: string]: any } = {};
     responseContent.jurisdictions = JSON.parse(response);

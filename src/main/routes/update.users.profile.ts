@@ -1,28 +1,19 @@
-import { fetchAll } from "../service/jurisdiction.service";
+import { fetch } from "../service/get-service";
+import * as config from "config";
 const router = require("../routes/home");
-const validator = require("validator");
-import { Validator } from "../validators/validate";
+import { validate } from "../validators/validateUserProfile";
 import { sanitize } from "../util/sanitize";
+const url = config.get("adminWeb.jurisdiction_url");
 
-// Validate
+// Apply Validation
 function validateUpdate(req, res, next) {
-    const jurisdictionName = new Validator(req.body.currentjurisdiction);
-    delete req.session.success;
-    if (jurisdictionName.isEmpty()) {
-        req.session.error = { status: 401, text: "Please select jurisdiction name" };
-        res.redirect(302, "/jurisdiction");
-    } else if (!validator.isEmail(req.body.idamId)) {
-        req.session.error = { status: 401, text: "Please select a valid email address!" };
-        res.redirect(302, "/userprofiles");
-    } else {
-        delete req.session.error;
-        next();
-    }
+    validate(req, res, next, "/userprofiles");
 }
+
 /* GET create user form. */
 router.post("/updateusersprofile", validateUpdate, (req, res, next) => {
 
-    fetchAll(req).then((response) => {
+    fetch(req, url).then((response) => {
         res.status(201);
         const responseContent: { [k: string]: any } = {};
         responseContent.jurisdictions = JSON.stringify(response);

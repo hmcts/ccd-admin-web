@@ -3,7 +3,7 @@ import * as config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 import { UserRole } from "domain/userrole";
 
-export function updateUserRole(req, userrole: UserRole) {
+export function saveUserRole(req, userrole: UserRole, isCreateUserRole: boolean) {
     const logger = Logger.getLogger(__filename);
     const url = config.get("adminWeb.userrole_url");
 
@@ -16,9 +16,11 @@ export function updateUserRole(req, userrole: UserRole) {
 
     const payloadString: string = `{"role": "${userrole.role}", ` +
         ` "security_classification": "${userrole.classification}" }`;
-
-    return request
-        .put(url)
+    let requestObject = request.put(url);
+    if (isCreateUserRole) {
+        requestObject = request.post(url);
+    }
+    return requestObject
         .set("Content-Type", "application/json")
         .set(headers)
         .send(payloadString)
