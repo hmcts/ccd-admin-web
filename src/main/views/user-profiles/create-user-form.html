@@ -139,10 +139,6 @@
                 <input class="form-control" id="idamId" name="idamId" type="text"/><br><br> 
             {% endif%} 
             <input type="hidden" id="jurisdiction" name="jurisdiction" value="{{jurisdiction | safe}}"/>
-        <label class="form-label">Live from</label>
-            {{ dateMacro() }}
-            <label class="form-label">Live to</label>
-            {{ dateMacro() }}
             <label class="form-label" >Work basket default jurisdiction</label>
             {{  dropdown("jurisdictionDropdown") }}
             <label class="form-label">Work basket default case type</label>

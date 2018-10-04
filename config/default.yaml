@@ -22,7 +22,7 @@ idam:
   oauth2:
     token_endpoint: http://localhost:4501/oauth2/token
     client_id: ccd_admin
-    client_secret: OOOOOOOOOOOOOOOO
+    client_secret: IIIIIIIIIIIIIIII
 adminWeb:
   login_url: https://localhost:3501/login
   import_url: http://localhost:4451/import
