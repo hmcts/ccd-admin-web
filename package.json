@@ -28,7 +28,7 @@
     "@hmcts/nodejs-healthcheck": "^1.4.5",
     "@hmcts/nodejs-logging": "^2.0.0",
     "@types/node": "^10.5.4",
-    "body-parser": "^1.18.1",
+    "body-parser": "^1.18.3",
     "config": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
