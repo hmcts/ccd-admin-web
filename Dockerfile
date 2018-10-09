@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:8.12.0-slim
 MAINTAINER https://github.com/hmcts/ccd-admin-web
 
 RUN mkdir -p /usr/src/app
