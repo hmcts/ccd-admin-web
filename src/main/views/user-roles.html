@@ -26,7 +26,7 @@
  {% if userroles.length == 0 %}
  <table border="1">
     <thead>
-    <tr> 
+    <tr>
       <th colspan="3">
         <div class="boldcontents" align="center"> No User Roles found</div>
       </th>
@@ -57,7 +57,7 @@
         {{ csrfProtection(csrfToken) }}
         <input type="hidden" name="role" value="{{userrole.role}}" />
         <input type="hidden" name="classification" value="{{userrole.security_classification}}" />
-         <a href="#" onclick="document.getElementById('userrole_{{loop.index}}').submit();"><div>{{userrole.role}}</div></a>
+        <a href="#" onclick="document.getElementById('userrole_{{loop.index}}').submit();"><div>{{userrole.role}}</div></a>
       </form>
       </td>
       <td>
