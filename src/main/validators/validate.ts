@@ -4,7 +4,7 @@ export class Validator {
         this.field = field;
     }
     public isEmpty() {
-        return !this.field ? true : false;
+        return !this.field;
     }
 
     public isAlphanumber() {

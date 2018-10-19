@@ -25,6 +25,18 @@
         </select> 
 </div> 
 {%- endmacro %}    
+{% macro serverListChosenValue (list , name , choosenValue) -%}
+<div class="form-group">
+       <select id="{{name}}" name="{{name}}" class="form-control">
+                {% for element in list %}
+                    <option value="{{ element.id }}"  {% if choosenValue %} 
+                    {{ "selected" if element.name ==choosenValue }} 
+                    {%else%}
+                    {{ "selected" if loop.index ==0 }} {%endif%}>{{element.name}}</option>
+                {%endfor%}
+        </select> 
+</div> 
+{%- endmacro %}  
 {% macro dropdown(name) -%}
 <div class="form-group">
        <select id="{{name}}" name="{{name}}" class="form-control">
