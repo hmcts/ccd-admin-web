@@ -31,7 +31,7 @@ describe("on Get /createuser", () => {
             .get("/createuser")
             .set("Cookie", "accessToken=ey123.ey456")
             .then((res) => {
-                expect(res.statusCode).to.equal(201);
+                expect(res.statusCode).to.equal(200);
                 expect(res.text).to.contain("Jurisdiction 1");
                 expect(res.text).to.contain("Jurisdiction 2");
             });

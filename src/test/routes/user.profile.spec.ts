@@ -40,7 +40,7 @@ describe("User profile page", () => {
           jurisdictionName: "Mike",
         })
         .then((res) => {
-          expect(res.statusCode).to.equal(201);
+          expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");
           expect(res.text).to.contain("Jurisdiction 3");
         });
@@ -73,7 +73,7 @@ describe("User profile page", () => {
           jurisdictionName: "Mike",
         })
         .then((res) => {
-          expect(res.statusCode).to.equal(201);
+          expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");
           expect(res.text).to.contain("Jurisdiction 3");
         });

@@ -22,7 +22,7 @@ function validate(req, res, next) {
 router.post("/userprofiles", validate, (req, res, next) => {
 
   fetchUserProfilesByJurisdiction(req).then((response) => {
-    res.status(201);
+    res.status(200);
     req.session.jurisdiction = req.body.jurisdictionName;
     const responseContent: { [k: string]: any } = {};
     responseContent.userprofiles = JSON.parse(response);
@@ -40,8 +40,7 @@ router.get("/userprofiles", (req, res, next) => {
 
   const jurisdiction = req.session.jurisdiction;
   fetchUserProfilesByJurisdiction(req).then((response) => {
-
-    res.status(201);
+    res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.currentjurisdiction = req.session.jurisdiction;
     responseContent.userprofiles = JSON.parse(response);
