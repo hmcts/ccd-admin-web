@@ -14,7 +14,7 @@ export function fetch(req, url: any) {
                 .get(url)
                 .set(headers)
                 .then((res) => {
-                        logger.info(`Get data, response: ${res.text}`);
+                        logger.debug(`Get data, response: ${res.text}`);
 
                         return res.text;
                 })

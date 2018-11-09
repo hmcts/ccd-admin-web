@@ -38,7 +38,7 @@ export function createUserProfile(req, userprofile: UserProfile) {
                 logger.error(`Error creating/updating user profile: ${error.response.text}`);
                 throw error;
             } else {
-                const errMsg = "Error creating/ user profile: no error response";
+                const errMsg = "Error creating/updating user profile: no error response";
                 logger.error(errMsg);
                 error.text = errMsg;
                 throw error;

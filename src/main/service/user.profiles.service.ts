@@ -12,13 +12,13 @@ export function fetchUserProfilesByJurisdiction(req) {
         };
         const jurisdiction = req.body.jurisdictionName ? req.body.jurisdictionName : req.session.jurisdiction;
         const query = jurisdiction ? { jurisdiction: `${jurisdiction}` } : {};
-        logger.info(`Userprofile jurisdiction ${query}`);
+        logger.info(`Userprofile jurisdiction: ${ JSON.stringify(query) }`);
         return request
                 .get(url)
                 .query(query)
                 .set(headers)
                 .then((res) => {
-                        logger.info(`Get user profiles by jurisdiction, response: ${res.text}`);
+                        logger.debug(`Get user profiles by jurisdiction, response: ${res.text}`);
 
                         return res.text;
                 })
