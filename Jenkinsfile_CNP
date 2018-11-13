@@ -21,6 +21,7 @@ withPipeline("nodejs", product, component) {
     }
 
     enableDockerBuild()
+    enableDeployToAKS()
 
     afterCheckout {
         sh "yarn cache clean"
