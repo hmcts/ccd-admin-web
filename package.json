@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "^8.11.1"
+    "node": "^8.11.1",
+    "yarn": "^1.12.3"
   },
   "scripts": {
     "setup": "gulp sass copy-files",
