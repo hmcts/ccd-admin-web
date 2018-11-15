@@ -13,3 +13,4 @@
 
 !src/main/**
 !config/**
+!server.js
