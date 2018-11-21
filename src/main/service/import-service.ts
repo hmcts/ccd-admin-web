@@ -13,7 +13,7 @@ export function uploadFile(req) {
     .post(url)
     .set(headers)
     .set("enctype", "multipart/form-data")
-    .attach("file", req.file.buffer, { filename: "definition_upload" })
+    .attach("file", req.file.buffer, { filename: req.file.originalname })
     .then((res) => {
       logger.info(`Uploaded file to Case Definition Store, response: ${res.text}`);
       return res;
