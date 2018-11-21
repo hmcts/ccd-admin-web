@@ -9,6 +9,22 @@ properties(
 def product = "ccd"
 def component = "admin-web"
 
+List<LinkedHashMap<String, Object>> secrets = [
+    secret('ccd-admin-web-s2s-secret', 'IDAM_SERVICE_KEY'),
+    secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
+    secret('storage-account-primary-connection-string', 'STORAGEACCOUNT_PRIMARY_CONNECTION_STRING'),
+    secret('storage-account-secondary-connection-string', 'STORAGEACCOUNT_SECONDARY_CONNECTION_STRING'),
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+    [ $class: 'AzureKeyVaultSecret',
+      secretType: 'Secret',
+      name: secretName,
+      version: '',
+      envVariable: envVar
+    ]
+}
+
 withPipeline("nodejs", product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')
@@ -21,6 +37,10 @@ withPipeline("nodejs", product, component) {
     }
 
     enableDockerBuild()
+    enableDeployToAKS()
+
+    setVaultName('ccd')
+    loadVaultSecrets(secrets)
 
     afterCheckout {
         sh "yarn cache clean"
