@@ -3,7 +3,7 @@ import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
 import * as nock from "nock";
-import { UserProfile } from "domain/userprofile";
+import { UserProfile } from "../../main/domain/userprofile";
 
 const expect = chai.expect;
 chai.use(sinonChai);
