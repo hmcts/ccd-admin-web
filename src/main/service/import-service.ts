@@ -15,7 +15,7 @@ export function uploadFile(req) {
     .set("enctype", "multipart/form-data")
     .attach("file", req.file.buffer, { filename: req.file.originalname })
     .then((res) => {
-      logger.info(`Uploaded file to Case Definition Store, response: ${res.text}`);
+      logger.info(`Uploaded file ${req.file.originalname} to Case Definition Store, response: ${res.text}`);
       return res;
     })
     .catch((error) => {
