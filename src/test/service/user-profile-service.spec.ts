@@ -29,7 +29,7 @@ describe("user profile service", () => {
     };
     config.get.withArgs("adminWeb.userprofiles_url").returns(userProfileUrl);
 
-    fetchUserProfilesByJurisdiction = proxyquire("../../main/service/user.profiles.service.ts", {
+    fetchUserProfilesByJurisdiction = proxyquire("../../main/service/user-profile-service", {
       config,
     }).fetchUserProfilesByJurisdiction;
   });

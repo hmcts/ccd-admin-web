@@ -4,7 +4,7 @@ import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
 
-describe("on POST /updateusersprofile", () => {
+describe("on POST /updateuser", () => {
     beforeEach(() => {
         mock.cleanAll();
     });
@@ -21,7 +21,7 @@ describe("on POST /updateusersprofile", () => {
             .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
 
         return request(appTest)
-            .post("/updateusersprofile")
+            .post("/updateuser")
             .send({ idamId: "anas@yahoo.com", currentjurisdiction: "test" })
             .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
@@ -41,7 +41,7 @@ describe("on POST /updateusersprofile", () => {
         };
 
         return request(appTest)
-            .post("/updateusersprofile")
+            .post("/updateuser")
             .send({ idamId: "anasyahoo.com", currentjurisdiction: "test" })
             .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
@@ -57,7 +57,7 @@ describe("on POST /updateusersprofile", () => {
         };
 
         return request(appTest)
-            .post("/updateusersprofile")
+            .post("/updateuser")
             .send({ idamId: "anas@yahoo.com" })
             .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")

@@ -11,7 +11,7 @@ function validateUpdate(req, res, next) {
 }
 
 /* GET create user form. */
-router.post("/updateusersprofile", validateUpdate, (req, res, next) => {
+router.post("/updateuser", validateUpdate, (req, res, next) => {
 
     fetch(req, url).then((response) => {
         res.status(200);

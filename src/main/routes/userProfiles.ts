@@ -1,4 +1,4 @@
-import { fetchUserProfilesByJurisdiction } from "../service/user.profiles.service";
+import { fetchUserProfilesByJurisdiction } from "../service/user-profile-service";
 import { Validator } from "../validators/validate";
 import { sanitize } from "../util/sanitize";
 

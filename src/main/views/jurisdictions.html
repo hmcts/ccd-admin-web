@@ -60,7 +60,7 @@
       {% for userprofile in userprofiles %}
       <tr >
         <td>
-        <form id="userprofile_{{loop.index}}" method="post" action="/updateusersprofile" >
+        <form id="userprofile_{{loop.index}}" method="post" action="/updateuser" >
           {{ csrfProtection(csrfToken) }}
           <input type="hidden" name="idamId" value="{{userprofile.id  }}" />
           <input type="hidden" name="currentjurisdiction" value="{{currentjurisdiction}}" />
@@ -87,7 +87,7 @@
         </td>
         <td>
 
-              <a href="/deleteuserprofile?idamId={{userprofile.id | urlencode}}" class="button rightAlign" value="Submit">Delete</a>
+              <a href="/deleteuser?idamId={{userprofile.id | urlencode}}" class="button rightAlign" value="Submit">Delete</a>
         </td>
       </tr>
       {% endfor %}

@@ -30,7 +30,7 @@ describe("test create user profile service", () => {
     };
     config.get.withArgs("adminWeb.saveuserprofiles_url").returns(createUserProfileURL);
 
-    createUserProfile = proxyquire("../../main/service/create-user-service.ts", {
+    createUserProfile = proxyquire("../../main/service/create-user-service", {
       config,
     }).createUserProfile;
   });
@@ -104,7 +104,7 @@ describe("test update user profile service", () => {
     };
     config.get.withArgs("adminWeb.userprofiles_url").returns(updateUserProfileURL);
 
-    createUserProfile = proxyquire("../../main/service/create-user-service.ts", {
+    createUserProfile = proxyquire("../../main/service/create-user-service", {
       config,
     }).createUserProfile;
   });

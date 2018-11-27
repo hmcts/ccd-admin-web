@@ -30,7 +30,7 @@ describe("test delete user profile service", () => {
     };
     config.get.withArgs("adminWeb.userprofiles_url").returns(deleteUserProfileURL);
 
-    deleteUserProfile = proxyquire("../../main/service/delete.user.profile.service", {
+    deleteUserProfile = proxyquire("../../main/service/delete-user-service", {
       config,
     }).deleteUserProfile;
   });

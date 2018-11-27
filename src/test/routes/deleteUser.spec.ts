@@ -17,11 +17,11 @@ describe("Confirm Delete page", () => {
         config.get.withArgs("adminWeb.userprofiles_url").returns("http://localhost:4453/users");
     });
 
-    describe("on GET /deleteuserprofile", () => {
+    describe("on GET /deleteuser", () => {
 
         it("should redirect to import page when not authenticated", () => {
             return request(app)
-                .get("/deleteuserprofile")
+                .get("/deleteuser")
                 .then((res) => {
                     expect(res.statusCode).to.equal(302);
                     expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
@@ -33,7 +33,7 @@ describe("Confirm Delete page", () => {
             idamServiceMock.resolveRetrieveServiceToken();
 
             return request(app)
-                .get("/deleteuserprofile")
+                .get("/deleteuser")
                 .query({ idamId: "anas@yahoo.com" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
@@ -46,19 +46,19 @@ describe("Confirm Delete page", () => {
 
     });
 
-    describe("on POST /deleteuserprofile", () => {
+    describe("on POST /deleteuser", () => {
 
         it("should redirect to the confirm delete page when Yes or No is not chosen", () => {
             idamServiceMock.resolveRetrieveUserFor("1", "admin");
             idamServiceMock.resolveRetrieveServiceToken();
 
             return request(appTest)
-                .post("/deleteuserprofile")
+                .post("/deleteuser")
                 .send({ idamId: "anas@yahoo.com" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
                     expect(res.statusCode).to.equal(302);
-                    expect(res.headers.location.startsWith("/deleteuserprofile?idamId=anas@yahoo.com")).to.be.true;
+                    expect(res.headers.location.startsWith("/deleteuser?idamId=anas@yahoo.com")).to.be.true;
                 });
         });
         it("should redirect to the User profiles list when No is chosen", () => {
@@ -66,7 +66,7 @@ describe("Confirm Delete page", () => {
             idamServiceMock.resolveRetrieveServiceToken();
 
             return request(appTest)
-                .post("/deleteuserprofile")
+                .post("/deleteuser")
                 .send({ deleteUser: "No", idamId: "anas@yahoo.com" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
@@ -89,7 +89,7 @@ describe("Confirm Delete page", () => {
                 .reply(204);
 
             return request(appTest)
-                .post("/deleteuserprofile")
+                .post("/deleteuser")
                 .set(headers)
                 .send({ deleteUser: "Yes", idamId: "anas@yahoo.com" })
                 .set("Cookie", "accessToken=ey123.ey456")
@@ -114,13 +114,13 @@ describe("Confirm Delete page", () => {
                 .replyWithError(500);
 
             return request(appTest)
-                .post("/deleteuserprofile")
+                .post("/deleteuser")
                 .set(headers)
                 .send({ deleteUser: "Yes", idamId: "anas@yahoo.com" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
                     expect(res.statusCode).to.equal(302);
-                    expect(res.headers.location.startsWith("/deleteuserprofile?idamId=anas@yahoo.com")).to.be.true;
+                    expect(res.headers.location.startsWith("/deleteuser?idamId=anas@yahoo.com")).to.be.true;
                 });
         });
     });
