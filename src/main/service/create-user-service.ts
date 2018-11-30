@@ -13,9 +13,8 @@ export function createUserProfile(req, userprofile: UserProfile) {
 
     const headers = {
         Accept: "application/json",
-        Authorization: req.headers.Authorization ? req.headers.Authorization : req.headers.authorization,
-        ServiceAuthorization: req.headers.ServiceAuthorization ? req.headers.ServiceAuthorization :
-            req.headers.serviceauthorization,
+        Authorization: req.accessToken,
+        ServiceAuthorization: req.serviceAuthToken,
     };
 
     const payloadString: string = `{"id": "${userprofile.id}", ` +
@@ -44,5 +43,4 @@ export function createUserProfile(req, userprofile: UserProfile) {
                 throw error;
             }
         });
-
 }

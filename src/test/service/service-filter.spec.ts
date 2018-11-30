@@ -48,7 +48,7 @@ describe("serviceFilter", () => {
     it("should set service auth token in request", (done) => {
       filter(req, res, () => {
         try {
-          expect(req.headers.ServiceAuthorization).to.equal(serviceAuthToken);
+          expect(req.serviceAuthToken).to.equal(serviceAuthToken);
           done();
         } catch (e) {
           done(e);

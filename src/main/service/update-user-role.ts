@@ -9,9 +9,8 @@ export function saveUserRole(req, userrole: UserRole, isCreateUserRole: boolean)
 
     const headers = {
         Accept: "application/json",
-        Authorization: req.headers.Authorization ? req.headers.Authorization : req.headers.authorization,
-        ServiceAuthorization: req.headers.ServiceAuthorization ? req.headers.ServiceAuthorization :
-            req.headers.serviceauthorization,
+        Authorization: req.accessToken,
+        ServiceAuthorization: req.serviceAuthToken,
     };
 
     const payloadString: string = `{"role": "${userrole.role}", ` +
@@ -41,5 +40,4 @@ export function saveUserRole(req, userrole: UserRole, isCreateUserRole: boolean)
                 throw error;
             }
         });
-
 }
