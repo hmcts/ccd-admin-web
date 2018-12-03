@@ -27,7 +27,7 @@ router.post("/userprofiles", validate, (req, res, next) => {
     const responseContent: { [k: string]: any } = {};
     responseContent.userprofiles = JSON.parse(response);
     responseContent.currentjurisdiction = req.body.jurisdictionName;
-    res.render("jurisdictions", responseContent);
+    res.render("user-profiles", responseContent);
   })
     .catch((error) => {
       // Call the next middleware, which is the error handler
@@ -51,7 +51,7 @@ router.get("/userprofiles", (req, res, next) => {
       responseContent.success = req.session.success;
     }
     responseContent.jurisdiction = jurisdiction;
-    res.render("jurisdictions", responseContent);
+    res.render("user-profiles", responseContent);
   }).catch((error) => {
     // Call the next middleware, which is the error handler
     next(error);
