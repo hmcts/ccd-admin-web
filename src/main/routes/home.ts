@@ -31,7 +31,6 @@ router.get("/import", (req, res, next) => {
       // Call the next middleware, which is the error handler
       next(error);
     });
-  // res.render("home");
 });
 
 router.get("/", (req, res, next) => {
