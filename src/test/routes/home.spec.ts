@@ -48,7 +48,6 @@ describe("Home page", () => {
           expect(res.text).to.contain("<th>Filename</th>");
           expect(res.text).to.contain("next century");
           expect(res.text).to.contain("ID_3");
-          expect(res.text).to.contain("next century");
           expect(res.text).to.contain("I am si of it");
           expect(res.text).to.contain("9343EWFMVl");
           expect(res.text).not.to.contain("last century");
