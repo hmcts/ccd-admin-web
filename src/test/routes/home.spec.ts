@@ -25,11 +25,15 @@ describe("Home page", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
 
+      mock("http://localhost:4451")
+        .get("/api/import-audits")
+        .reply(200, []);
+
       return request(app)
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
-          expect(res.statusCode).to.equal(200);
+          expect(res.statusCode).to.equal(201);
         });
     });
   });
