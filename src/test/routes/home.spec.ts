@@ -57,7 +57,7 @@ describe("Home page", () => {
         });
     });
 
-  it("should xxx", () => {
+  it("should return 500", () => {
     idamServiceMock.resolveRetrieveUserFor("1", "admin");
     idamServiceMock.resolveRetrieveServiceToken();
 
