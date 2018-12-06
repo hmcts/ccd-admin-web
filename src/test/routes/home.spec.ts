@@ -57,21 +57,21 @@ describe("Home page", () => {
         });
     });
 
-  it("should return 500", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", "admin");
-    idamServiceMock.resolveRetrieveServiceToken();
+    it("should return 500", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveServiceToken();
 
-    mock("http://localhost:4451")
-      .get("/api/import-audits")
-      .replyWithError(500);
+      mock("http://localhost:4451")
+        .get("/api/import-audits")
+        .replyWithError(500);
 
-    return request(app)
-      .get("/import")
-      .set("Cookie", "accessToken=ey123.ey456")
-      .then((res) => {
-        expect(res.statusCode).to.equal(500);
+      return request(app)
+        .get("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(500);
       });
-  });
+    });
 });
 
   describe("on GET /", () => {
