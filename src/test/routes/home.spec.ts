@@ -56,7 +56,23 @@ describe("Home page", () => {
           expect(res.text).not.to.contain("x343EWFMVl");
         });
     });
+
+  it("should xxx", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", "admin");
+    idamServiceMock.resolveRetrieveServiceToken();
+
+    mock("http://localhost:4451")
+      .get("/api/import-audits")
+      .replyWithError(500);
+
+    return request(app)
+      .get("/import")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .then((res) => {
+        expect(res.statusCode).to.equal(500);
+      });
   });
+});
 
   describe("on GET /", () => {
 
