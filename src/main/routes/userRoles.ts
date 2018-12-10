@@ -36,6 +36,8 @@ router.get("/user-roles-list", (req, res, next) => {
   }
   if (req.session.success) {
     responseContent.success = req.session.success;
+    // Clear success message so it doesn't appear subsequently
+    delete req.session.success;
   }
   fetch(req, url).then((response) => {
     responseContent.userroles = JSON.parse(response);

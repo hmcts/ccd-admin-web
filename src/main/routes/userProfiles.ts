@@ -1,5 +1,4 @@
 import { fetchUserProfilesByJurisdiction } from "../service/user-profile-service";
-import { Validator } from "../validators/validate";
 import { sanitize } from "../util/sanitize";
 
 const router = require("../routes/home");
@@ -7,15 +6,10 @@ const router = require("../routes/home");
 // Validate
 function validate(req, res, next) {
 
-  const jurisdictionName = new Validator(req.body.jurisdictionName);
-  if (jurisdictionName.isEmpty()) {
-    req.session.error = { status: 401, text: "Please select jurisdiction name" };
-    res.redirect(302, "/jurisdiction");
-  } else {
-    req.body.jurisdictionName = sanitize(req.body.jurisdictionName);
-    req.session.jurisdiction = req.body.jurisdictionName;
-    next();
-  }
+  // Jurisdiction is guaranteed to be set from the Jurisdiction Search page, since the dropdown uses jQuery validation
+  req.body.jurisdictionName = sanitize(req.body.jurisdictionName);
+  req.session.jurisdiction = req.body.jurisdictionName;
+  next();
 }
 
 /* POST */
@@ -49,6 +43,8 @@ router.get("/userprofiles", (req, res, next) => {
     }
     if (req.session.success) {
       responseContent.success = req.session.success;
+      // Clear success message so it doesn't appear subsequently
+      delete req.session.success;
     }
     responseContent.jurisdiction = jurisdiction;
     res.render("user-profiles", responseContent);

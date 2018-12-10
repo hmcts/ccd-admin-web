@@ -14,52 +14,52 @@
 
 {% macro serverList (list , name , selectValue) -%}
 <div class="form-group">
-       <select id="{{name}}" name="{{name}}" class="form-control">
-                {% if selectValue%}
+       <select id="{{name}}" name="{{name}}" class="form-control required">
+                {% if selectValue %}
                 <option value="" selected>--Select a value--</option>
-                {%endif%}
+                {% endif %}
                 {% for element in list %}
-                    <option value="{{ element.id }}"  {% if selectValue == "false" %} 
-                    {{ "selected" if loop.index ==0 }} {%endif%}>{{element.name}}</option>
+                    <option value="{{ element.id }}"  {% if selectValue == "false" %}
+                    {{ "selected" if loop.index == 0 }} {% endif %}>{{element.name}}</option>
                 {%endfor%}
-        </select> 
-</div> 
-{%- endmacro %}    
-{% macro serverListChosenValue (list , name , choosenValue) -%}
+        </select>
+</div>
+{%- endmacro %}
+{% macro serverListChosenValue (list , name , chosenValue) -%}
 <div class="form-group">
        <select id="{{name}}" name="{{name}}" class="form-control">
                 {% for element in list %}
-                    <option value="{{ element.id }}"  {% if choosenValue %} 
-                    {{ "selected" if element.name ==choosenValue }} 
-                    {%else%}
-                    {{ "selected" if loop.index ==0 }} {%endif%}>{{element.name}}</option>
-                {%endfor%}
-        </select> 
-</div> 
-{%- endmacro %}  
+                    <option value="{{ element.id }}"  {% if chosenValue %}
+                    {{ "selected" if element.name == chosenValue }}
+                    {% else %}
+                    {{ "selected" if loop.index == 0 }} {% endif %}>{{element.name}}</option>
+                {% endfor %}
+        </select>
+</div>
+{%- endmacro %}
 {% macro dropdown(name) -%}
 <div class="form-group">
        <select id="{{name}}" name="{{name}}" class="form-control">
                 <option value="" selected>--Select a value--</option>
-        </select> 
-</div> 
-{%- endmacro %} 
+        </select>
+</div>
+{%- endmacro %}
 {% macro dateMacro() -%}
     <table class="tableCSS">
 
         <tr>
             <td><label class="date" for="Day-1">Day</label></td>
-            <td><label class="form-label date" for="Month-1">Month</label></td> 
+            <td><label class="form-label date" for="Month-1">Month</label></td>
             <td><label class="form-label date" for="Year-1">Year</label></td>
 
         </tr>
         <tr>
             <td class="tdCSS"> <input class="form-control date disableborder" id="Day-1" name="Day-1" type="text" size="2" disabled></td>
-            <td class="tdCSS"> <input class="form-control date disableborder" id="Month-1" name="Month-1" type="text" size="2" disabled></td> 
+            <td class="tdCSS"> <input class="form-control date disableborder" id="Month-1" name="Month-1" type="text" size="2" disabled></td>
             <td class="tdCSS"><input class="form-control date disableborder" id="Year-1" name="Year-1" type="text" size="4" disabled></td>
-        </tr>        
+        </tr>
         </table><br>
-{%- endmacro %} 
+{%- endmacro %}
 
 
 {% macro radioButton(value, label, name, field, dataTarget = '', screenReader = '') -%}
