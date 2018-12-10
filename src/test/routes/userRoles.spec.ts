@@ -1,5 +1,5 @@
-import { app } from "app";
-import { appTest } from "app.test";
+import { app } from "../../main/app";
+import { appTest } from "../../main/app.test";
 import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
@@ -50,10 +50,6 @@ describe("on Get /user-roles-list", () => {
     it("should respond with user roles list page and populated response when authenticated", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
         mock("http://localhost:4451")
             .get("/api/user-roles")
             .reply(200, [{
@@ -63,7 +59,6 @@ describe("on Get /user-roles-list", () => {
 
         return request(app)
             .get("/user-roles-list")
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .then((res) => {
                 expect(res.statusCode).to.equal(200);
@@ -88,10 +83,6 @@ describe("on Get /user-roles", () => {
     it("should respond with user roles page and populated response when authenticated", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
         mock("http://localhost:4451")
             .get("/api/user-roles")
             .reply(200, [{
@@ -101,7 +92,6 @@ describe("on Get /user-roles", () => {
 
         return request(app)
             .get("/user-roles")
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .then((res) => {
                 expect(res.statusCode).to.equal(200);
@@ -118,17 +108,12 @@ describe("on POST /createuserrole", () => {
     it("should respond with user roles page and populated response when authenticated", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
         mock("http://localhost:4451/api/user-role")
             .post("")
             .reply(200);
 
         return request(appTest)
             .post("/createuserrole")
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
                 classification: "PUBLIC",
@@ -143,17 +128,12 @@ describe("on POST /createuserrole", () => {
     it("should respond with error when role is empty", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
         mock("http://localhost:4451/api/user-role")
             .post("")
             .reply(200);
 
         return request(appTest)
             .post("/createuserrole")
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
                 classification: "PUBLIC",
@@ -167,17 +147,12 @@ describe("on POST /createuserrole", () => {
     it("should respond with error when classification is empty", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
         mock("http://localhost:4451/api/user-role")
             .post("")
             .reply(200);
 
         return request(appTest)
             .post("/createuserrole")
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
                 classification: "",
@@ -192,17 +167,12 @@ describe("on POST /createuserrole", () => {
     it("should respond with create user form due to server error", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
         mock("http://localhost:4451/api/user-role")
             .put("")
             .replyWithError({ status: 400, rawResponse: "Bad request" });
 
         return request(appTest)
             .post("/createuserrole")
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
                 classification: "PUBLIC",
@@ -223,17 +193,12 @@ describe("on POST /updateuserrole", () => {
     it("should respond with user roles page and populated response when authenticated", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
         mock("http://localhost:4451/api/user-role")
             .put("")
             .reply(200);
 
         return request(appTest)
             .post("/updateuserrole")
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
                 classification: "PUBLIC",
@@ -248,17 +213,12 @@ describe("on POST /updateuserrole", () => {
     it("should respond with error when role is empty", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
         mock("http://localhost:4451/api/user-role")
             .put("")
             .reply(200);
 
         return request(appTest)
             .post("/updateuserrole")
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
                 classification: "PUBLIC",
@@ -269,17 +229,12 @@ describe("on POST /updateuserrole", () => {
     it("should respond with error when classification is empty", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
         mock("http://localhost:4451/api/user-role")
             .put("")
             .reply(200);
 
         return request(appTest)
             .post("/updateuserrole")
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
                 classification: "",
@@ -291,17 +246,12 @@ describe("on POST /updateuserrole", () => {
     it("should respond with create user form due to server error", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
         mock("http://localhost:4451/api/user-role")
             .put("")
             .replyWithError({ status: 400, rawResponse: "Bad request" });
 
         return request(appTest)
             .post("/updateuserrole")
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .send({
                 classification: "PUBLIC",
@@ -322,15 +272,10 @@ describe("on POST /updateuserroleform", () => {
     it("should respond with update user form and populated response when authenticated", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
 
         return request(appTest)
             .post("/updateuserroleform")
             .send({ role: "ccd-admin", classification: "PUBLIC" })
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .then((res) => {
                 expect(res.statusCode).to.equal(200);
@@ -342,15 +287,10 @@ describe("on POST /updateuserroleform", () => {
     it("should redirect with error message when invalid role is passed", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
 
         return request(appTest)
             .post("/updateuserroleform")
             .send({ role: "ccd-admin*34", classification: "PUBLIC" })
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .expect(302);
     });
@@ -358,15 +298,10 @@ describe("on POST /updateuserroleform", () => {
     it("should redirect with error message when current jurisdiction is empty", () => {
         idamServiceMock.resolveRetrieveUserFor("1", "admin");
         idamServiceMock.resolveRetrieveServiceToken();
-        const headers = {
-            Authorization: "userAuthToken",
-            ServiceAuthorization: "serviceAuthToken",
-        };
 
         return request(appTest)
             .post("/updateuserroleform")
             .send({ role: "ccd-admin", classification: "PUBLIC)))" })
-            .set(headers)
             .set("Cookie", "accessToken=ey123.ey456")
             .expect(302);
     });

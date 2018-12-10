@@ -18,10 +18,6 @@ describe("User profile page", () => {
     it("should return jurisdictions list", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
-      const headers = {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      };
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
@@ -34,7 +30,6 @@ describe("User profile page", () => {
 
       return request(appTest)
         .get("/userprofiles")
-        .set(headers)
         .set("Cookie", "accessToken=ey123.ey456")
         .send({
           jurisdictionName: "Mike",
@@ -51,10 +46,6 @@ describe("User profile page", () => {
     it("should return jurisdictions list", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
-      const headers = {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      };
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
@@ -67,7 +58,6 @@ describe("User profile page", () => {
 
       return request(appTest)
         .post("/userprofiles")
-        .set(headers)
         .set("Cookie", "accessToken=ey123.ey456")
         .send({
           jurisdictionName: "Mike",
@@ -78,31 +68,9 @@ describe("User profile page", () => {
           expect(res.text).to.contain("Jurisdiction 3");
         });
     });
-    it("should redirect to choose jurisdiction page when jurisdiction name is empty", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
-      idamServiceMock.resolveRetrieveServiceToken();
-      const headers = {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      };
-
-      return request(appTest)
-        .post("/userprofiles")
-        .set(headers)
-        .set("Cookie", "accessToken=ey123.ey456")
-        .send({
-        })
-        .then((res) => {
-          expect(res.statusCode).to.equal(302);
-        });
-    });
     it("should return error from the server", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
-      const headers = {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      };
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
@@ -110,7 +78,6 @@ describe("User profile page", () => {
 
       return request(appTest)
         .post("/userprofiles")
-        .set(headers)
         .set("Cookie", "accessToken=ey123.ey456")
         .send({
           jurisdictionName: "Mike",

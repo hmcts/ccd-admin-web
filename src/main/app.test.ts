@@ -29,7 +29,7 @@ appTest.use(Express.accessLogger());
 
 const logger = Logger.getLogger("appTest");
 
-// secure the appTestlication by adding various HTTP headers to its responses
+// secure the application by adding various HTTP headers to its responses
 
 // view engine setup
 appTest.set("view engine", "html");
@@ -45,8 +45,15 @@ appTest.use(express.static(path.join(__dirname, "public")));
 
 expressNunjucks(appTest);
 
-// Allow appTestlication to work correctly behind a proxy (needed to pick up correct request protocol)
+// Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
 appTest.enable("trust proxy");
+
+// Set dummy accessToken and serviceAuthToken on all requests
+appTest.use((req, res, next) => {
+  req.accessToken = "userAuthToken";
+  req.serviceAuthToken = "serviceAuthToken";
+  next();
+});
 
 appTest.use("/", RouterFinder.findAll(path.join(__dirname, "routes")));
 

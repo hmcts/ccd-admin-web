@@ -78,10 +78,6 @@ describe("Confirm Delete page", () => {
         it("should redirect to the User profiles list when Yes is chosen", () => {
             idamServiceMock.resolveRetrieveUserFor("1", "admin");
             idamServiceMock.resolveRetrieveServiceToken();
-            const headers = {
-                Authorization: "userAuthToken",
-                ServiceAuthorization: "serviceAuthToken",
-            };
 
             mock("http://localhost:4453")
                 .delete("/users")
@@ -90,7 +86,6 @@ describe("Confirm Delete page", () => {
 
             return request(appTest)
                 .post("/deleteuser")
-                .set(headers)
                 .send({ deleteUser: "Yes", idamId: "anas@yahoo.com" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
@@ -103,11 +98,6 @@ describe("Confirm Delete page", () => {
             idamServiceMock.resolveRetrieveUserFor("1", "admin");
             idamServiceMock.resolveRetrieveServiceToken();
 
-            const headers = {
-                Authorization: "userAuthToken",
-                ServiceAuthorization: "serviceAuthToken",
-            };
-
             mock("http://localhost:4453")
                 .delete("/users")
                 .query({ uid: "anas@yahoo.com" })
@@ -115,7 +105,6 @@ describe("Confirm Delete page", () => {
 
             return request(appTest)
                 .post("/deleteuser")
-                .set(headers)
                 .send({ deleteUser: "Yes", idamId: "anas@yahoo.com" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
