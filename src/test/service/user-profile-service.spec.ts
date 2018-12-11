@@ -16,11 +16,9 @@ describe("user profile service", () => {
 
   beforeEach(() => {
     req = {
+      accessToken: "userAuthToken",
       body: { jurisdictionName: "Mike" },
-      headers: {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      },
+      serviceAuthToken: "serviceAuthToken",
       session: {},
     };
 
@@ -71,11 +69,9 @@ describe("user profile service", () => {
         }],
       };
       req = {
+        accessToken: "userAuthToken",
         body: {},
-        headers: {
-          Authorization: "userAuthToken",
-          ServiceAuthorization: "serviceAuthToken",
-        },
+        serviceAuthToken: "serviceAuthToken",
         session: { jurisdiction: "test2" },
       };
 
@@ -97,7 +93,7 @@ describe("user profile service", () => {
 
     describe("invalid S2S token", () => {
       it("should return an HTTP 403 status and error message", (done) => {
-        req.headers.ServiceAuthorization = "invalid_token";
+        req.serviceAuthToken = "invalid_token";
 
         const expectedResult = {
           error: "Forbidden",

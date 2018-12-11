@@ -18,11 +18,9 @@ describe("test create user profile service", () => {
 
   beforeEach(() => {
     req = {
+      accessToken: "userAuthToken",
       body: {},
-      headers: {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      },
+      serviceAuthToken: "serviceAuthToken",
     };
 
     const config = {
@@ -57,7 +55,7 @@ describe("test create user profile service", () => {
   });
 
   it("should return an HTTP 403 status and error message", (done) => {
-    req.headers.ServiceAuthorization = "invalid_token";
+    req.serviceAuthToken = "invalid_token";
 
     const expectedResult = {
       error: "Forbidden",
@@ -92,11 +90,9 @@ describe("test update user profile service", () => {
 
   beforeEach(() => {
     req = {
+      accessToken: "userAuthToken",
       body: { update: true },
-      headers: {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      },
+      serviceAuthToken: "serviceAuthToken",
     };
 
     const config = {
@@ -131,7 +127,7 @@ describe("test update user profile service", () => {
   });
 
   it("should return an HTTP 403 status and error message", (done) => {
-    req.headers.ServiceAuthorization = "invalid_token";
+    req.serviceAuthToken = "invalid_token";
 
     const expectedResult = {
       error: "Forbidden",
@@ -156,7 +152,7 @@ describe("test update user profile service", () => {
   });
 
   it("should return an HTTP 503 status service unavailable", (done) => {
-    req.headers.ServiceAuthorization = "invalid_token";
+    req.serviceAuthToken = "invalid_token";
 
     const expectedResult = {
       error: "Server Error",

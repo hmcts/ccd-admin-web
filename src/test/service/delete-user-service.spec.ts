@@ -17,11 +17,9 @@ describe("test delete user profile service", () => {
 
   beforeEach(() => {
     req = {
+      accessToken: "userAuthToken",
       body: { idamId: "aaa@yahii.com" },
-      headers: {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      },
+      serviceAuthToken: "serviceAuthToken",
       session: { jurisdiction: "test" },
     };
 
@@ -57,7 +55,7 @@ describe("test delete user profile service", () => {
   });
 
   it("should return an HTTP 403 status and error message", (done) => {
-    req.headers.ServiceAuthorization = "invalid_token";
+    req.serviceAuthToken = "invalid_token";
 
     const expectedResult = {
       error: "Forbidden",

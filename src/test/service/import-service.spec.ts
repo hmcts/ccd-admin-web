@@ -18,14 +18,12 @@ describe("importService", () => {
 
   beforeEach(() => {
     req = {
+      accessToken: "userAuthToken",
       file: {
         buffer: new Buffer(8),
         originalname: "dummy_filename.abc",
       },
-      headers: {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      },
+      serviceAuthToken: "serviceAuthToken",
     };
 
     const config = {
@@ -60,7 +58,7 @@ describe("importService", () => {
 
     describe("invalid S2S token", () => {
       it("should return an HTTP 403 status and error message", (done) => {
-        req.headers.ServiceAuthorization = "invalid_token";
+        req.serviceAuthToken = "invalid_token";
 
         const expectedResult = {
           error: "Forbidden",
