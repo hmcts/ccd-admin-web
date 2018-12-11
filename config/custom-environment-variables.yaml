@@ -20,7 +20,9 @@ adminWeb:
   jurisdiction_url: ADMINWEB_JURISDICTIONS_URL
   userprofiles_url: ADMINWEB_USER_PROFILE_URL
   saveuserprofiles_url: ADMINWEB_SAVE_USER_PROFILE_URL
-  userrole_url: ADMINWEB_USER_ROLE_URL 
+  userrole_url: ADMINWEB_USER_ROLE_URL
   alluserroles_url: ADMIN_ALL_USER_ROLES_URL
+  createdefinition_url: ADMINWEB_CREATE_DEFINITION_URL
+  definitions_url: ADMINWEB_DEFINITIONS_URL
 appInsights:
   instrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY

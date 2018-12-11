@@ -48,9 +48,15 @@ expressNunjucks(appTest);
 // Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
 appTest.enable("trust proxy");
 
-// Set dummy accessToken and serviceAuthToken on all requests
+// Set dummy accessToken, serviceAuthToken, and authentication on all requests
 appTest.use((req, res, next) => {
   req.accessToken = "userAuthToken";
+  req.authentication = {
+    user: {
+      email: "ccd@hmcts.net",
+      id: 123,
+    },
+  };
   req.serviceAuthToken = "serviceAuthToken";
   next();
 });

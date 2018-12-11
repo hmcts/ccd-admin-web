@@ -1,0 +1,106 @@
+{% extends "layout_template.html" %}
+{% from "../macros/csrf.html" import csrfProtection %}
+{% block page_title %}
+  Create Definition
+{% endblock %}
+{% block head %}
+  {{ super() }}
+
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+
+      $('#createdefinitionform').validate({ // initialize the plugin
+        onkeyup: function(element) {$(element).valid()},
+        onclick: false,
+        onfocusout: false,
+        errorPlacement: function (error, element) {
+          error.insertBefore(element);
+        },
+        errorElement : 'div',
+        errorElementClass: 'error',
+        errorClass: 'govuk-error-message form-group-error',
+        rules: {
+          description: {
+            required: true
+          }
+        },
+        messages: {
+          "description" : {
+            required : 'Enter a description'
+          }
+        }
+      });
+
+      let getJurisdiction = () => {
+        let jurisdictionString = {{ jurisdictions | safe }}
+        let jurisdictionLookups = $.parseJSON(jurisdictionString);
+        return jurisdictionLookups.filter(jurisdiction => {
+          return jurisdiction.id === "{{ currentjurisdiction }}";
+        })[0];
+      };
+
+      $("#jurisdictionId").text(getJurisdiction().id);
+      $("#jurisdictionName").text(getJurisdiction().name);
+      $("#jurisdictionDescription").text(getJurisdiction().description);
+    });
+
+  </script>
+{% endblock %}
+
+{% block content %}
+  {% include "menu.html" %}
+  <h2 class="heading-large padding">Create Definition</h2>
+
+  <div class="padding">
+    {% if error %}
+      <div class="error-summary govuk-error-message">
+        {{ error.text }}
+      </div>
+    {% endif %}
+
+    <form id="createdefinitionform" name="createdefinitionform" method="POST" action="/createdefinition">
+
+      {{ csrfProtection(csrfToken) }}
+        <div class="form-group">
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <label class="form-label">Jurisdiction ID:</label>
+                </td>
+                <td id="jurisdictionId">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="form-label">Name:</label>
+                </td>
+                <td id="jurisdictionName">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="form-label">Description:</label>
+                </td>
+                <td id="jurisdictionDescription">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <label class="form-label">Definition description</label>
+          {% if update %}
+            <input type="hidden" id="description" name="description" value="{{ description }}"/>
+            <label class="form-label-bold">{{ description }}</label><br><br>
+          {% else %}
+            <input type="text" class="form-control" id="description" name="description" maxlength="100"/><br><br>
+          {% endif %}
+          <!-- Empty data element for now -->
+          <input type="hidden" id="data" name="data" value="&quot;Field 1&quot;: &quot;Value 1&quot;"/>
+        </div>
+        <button type="submit" class="button" value="Submit">{{ submitButtonText }}</button>
+        <a href="/definitions" class="button">Cancel</a>
+    </form>
+  </div>
+
+{% endblock %}

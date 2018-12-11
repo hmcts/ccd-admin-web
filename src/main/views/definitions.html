@@ -1,0 +1,107 @@
+{% extends "layout_template.html" %}
+{% from "macros/csrf.html" import csrfProtection %}
+
+{% block page_title %}
+  Definitions
+{% endblock %}
+{% block head %}
+  {{super()}}
+  <script type="text/javascript">
+  // var jurisdictionString = {{userprofiles |safe }}
+  // var jurisdictionLookups = $.parseJSON(jurisdictionString);
+  </script>
+{% endblock %}
+
+{% block content %}
+  {% include "menu.html" %}
+  {% if success %}
+    <div class="success"><div class="admin-ui">&#10004;   {{success | safe}}</div></div>
+  {% endif %}
+  {% if error %}
+    <div class="error-summary govuk-error-message">
+      {{error.text}}
+    </div>
+  {% endif %}
+  <a href="/createdefinition" class="button rightAlign" value="Submit">Create Definition</a>
+
+  {% if definitions.length == 0 %}
+    <table border="1">
+      <thead>
+        <tr>
+          <th colspan="3">
+            <div class="boldcontents" align="center">No Definitions found</div>
+          </th>
+        </tr>
+      </thead>
+    </table>
+  {% else %}
+    <div class="padding ngx-pagination">
+      <table border="1">
+        <thead>
+          <tr>
+            <th colspan="5">
+          </tr>
+          <tr>
+            <th class="search-result-column-label">
+              Definition Heading 1
+            </th>
+            <th>
+              Definition Heading 2
+            </th>
+            <th>
+              Definition Heading 3
+            </th>
+            <th>
+              Definition Heading 4
+            </th>
+            <th>
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for userprofile in userprofiles %}
+            <tr>
+              <td>
+                <form id="userprofile_{{loop.index}}" method="post" action="/updateuser" >
+                  {{ csrfProtection(csrfToken) }}
+                  <input type="hidden" name="idamId" value="{{userprofile.id}}" />
+                  <input type="hidden" name="currentjurisdiction" value="{{currentjurisdiction}}" />
+                  <input type="hidden" name="jurisdiction" value="{{userprofile.work_basket_default_jurisdiction}}" />
+                  <input type="hidden" name="casetype" value="{{userprofile.work_basket_default_case_type}}" />
+                  <input type="hidden" name="state" value="{{userprofile.work_basket_default_state}}" />
+                  <a href="#" onclick="document.getElementById('userprofile_{{loop.index}}').submit();">
+                    <div>{{userprofile.id}}</div>
+                  </a>
+                </form>
+              </td>
+              <td>
+                <div>
+                  {{userprofile.work_basket_default_jurisdiction}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{userprofile.work_basket_default_case_type}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{userprofile.work_basket_default_state}}
+                </div>
+              </td>
+              <td>
+                <a href="/deleteuser?idamId={{userprofile.id | urlencode}}" class="button rightAlign" value="Submit">Delete</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="5">
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  {% endif %}
+{% endblock %}
