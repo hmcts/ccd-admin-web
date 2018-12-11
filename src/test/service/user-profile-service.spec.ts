@@ -34,10 +34,10 @@ describe("user profile service", () => {
     }).fetchUserProfilesByJurisdiction;
   });
 
-  describe("successful jurisdiction lookup", () => {
-    it("should return an HTTP 201 status and success message", (done) => {
+  describe("successful user profiles retrieval", () => {
+    it("should return an HTTP 200 status and success message", (done) => {
       const expectedResult = {
-        jurisdictions: [{
+        user_profiles: [{
           id: "ID_3",
           work_basket_default_case_type: "Case Type 3",
           work_basket_default_jurisdiction: "Jurisdiction 3",
@@ -52,7 +52,7 @@ describe("user profile service", () => {
 
       fetchUserProfilesByJurisdiction(req).then((res) => {
         try {
-          expect(JSON.parse(res).jurisdictions.length).to.equal(1);
+          expect(JSON.parse(res).user_profiles.length).to.equal(1);
           expect(res).to.equal(JSON.stringify(expectedResult));
           done();
         } catch (e) {
@@ -63,7 +63,7 @@ describe("user profile service", () => {
 
     it("should return user profiles from query if jurisdictionName is not passed in the body", (done) => {
       const expectedResult = {
-        jurisdictions: [{
+        user_profiles: [{
           id: "ID_3",
           work_basket_default_case_type: "Case Type 3",
           work_basket_default_jurisdiction: "Jurisdiction 3",
@@ -86,7 +86,7 @@ describe("user profile service", () => {
 
       fetchUserProfilesByJurisdiction(req).then((res) => {
         try {
-          expect(JSON.parse(res).jurisdictions.length).to.equal(1);
+          expect(JSON.parse(res).user_profiles.length).to.equal(1);
           expect(res).to.equal(JSON.stringify(expectedResult));
           done();
         } catch (e) {

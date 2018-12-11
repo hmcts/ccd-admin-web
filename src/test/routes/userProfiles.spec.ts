@@ -15,7 +15,7 @@ describe("User profile page", () => {
   });
 
   describe("on GET /userprofiles", () => {
-    it("should return jurisdictions list", () => {
+    it("should return user profiles list", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
@@ -43,7 +43,7 @@ describe("User profile page", () => {
   });
 
   describe("on POST /userprofiles", () => {
-    it("should return jurisdictions list", () => {
+    it("should return user profiles list", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
