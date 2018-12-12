@@ -5,8 +5,8 @@ import * as request from "superagent";
 export function uploadFile(req) {
   const url = config.get("adminWeb.import_url");
   const headers = {
-    Authorization: req.headers.Authorization,
-    ServiceAuthorization: req.headers.ServiceAuthorization,
+    Authorization: req.accessToken,
+    ServiceAuthorization: req.serviceAuthToken,
   };
   const logger = Logger.getLogger(__filename);
   return request

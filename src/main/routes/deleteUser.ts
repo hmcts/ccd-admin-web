@@ -1,8 +1,8 @@
-import { deleteUserProfile } from "../service/delete.user.profile.service";
+import { deleteUserProfile } from "../service/delete-user-service";
 const router = require("../routes/home");
 
 /* GET */
-router.get("/deleteuserprofile", (req, res, next) => {
+router.get("/deleteuser", (req, res, next) => {
     const responseContent: { [k: string]: any } = {};
     responseContent.idamId = req.query.idamId;
     responseContent.response = req.session.response;
@@ -17,7 +17,7 @@ router.get("/deleteuserprofile", (req, res, next) => {
 /**
  * Delete user profile based on IDAM Id
  */
-router.post("/deleteuserprofile", (req, res, next) => {
+router.post("/deleteuser", (req, res, next) => {
     if (req.body.deleteUser === "Yes") {
         deleteSessionVariables(req);
         deleteUserProfile(req).then((response) => {
@@ -28,7 +28,7 @@ router.post("/deleteuserprofile", (req, res, next) => {
                 status: 400, text: error.rawResponse ? error.rawResponse :
                     "Unexpected error : Please contact your administrator",
             };
-            res.redirect(302, `/deleteuserprofile?idamId=${req.body.idamId}`);
+            res.redirect(302, `/deleteuser?idamId=${req.body.idamId}`);
         });
     } else if (req.body.deleteUser === "No") {
         deleteSessionVariables(req);
@@ -36,7 +36,7 @@ router.post("/deleteuserprofile", (req, res, next) => {
     } else {
         deleteSessionVariables(req);
         req.session.response = { error: "Please choose Yes or No" };
-        res.redirect(302, "/deleteuserprofile?idamId=" + req.body.idamId);
+        res.redirect(302, "/deleteuser?idamId=" + req.body.idamId);
     }
 });
 

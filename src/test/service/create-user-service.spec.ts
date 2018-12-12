@@ -3,7 +3,7 @@ import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
 import * as nock from "nock";
-import { UserProfile } from "domain/userprofile";
+import { UserProfile } from "../../main/domain/userprofile";
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -18,11 +18,9 @@ describe("test create user profile service", () => {
 
   beforeEach(() => {
     req = {
+      accessToken: "userAuthToken",
       body: {},
-      headers: {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      },
+      serviceAuthToken: "serviceAuthToken",
     };
 
     const config = {
@@ -30,7 +28,7 @@ describe("test create user profile service", () => {
     };
     config.get.withArgs("adminWeb.saveuserprofiles_url").returns(createUserProfileURL);
 
-    createUserProfile = proxyquire("../../main/service/create-user-service.ts", {
+    createUserProfile = proxyquire("../../main/service/create-user-service", {
       config,
     }).createUserProfile;
   });
@@ -57,7 +55,7 @@ describe("test create user profile service", () => {
   });
 
   it("should return an HTTP 403 status and error message", (done) => {
-    req.headers.ServiceAuthorization = "invalid_token";
+    req.serviceAuthToken = "invalid_token";
 
     const expectedResult = {
       error: "Forbidden",
@@ -92,11 +90,9 @@ describe("test update user profile service", () => {
 
   beforeEach(() => {
     req = {
+      accessToken: "userAuthToken",
       body: { update: true },
-      headers: {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      },
+      serviceAuthToken: "serviceAuthToken",
     };
 
     const config = {
@@ -104,7 +100,7 @@ describe("test update user profile service", () => {
     };
     config.get.withArgs("adminWeb.userprofiles_url").returns(updateUserProfileURL);
 
-    createUserProfile = proxyquire("../../main/service/create-user-service.ts", {
+    createUserProfile = proxyquire("../../main/service/create-user-service", {
       config,
     }).createUserProfile;
   });
@@ -131,7 +127,7 @@ describe("test update user profile service", () => {
   });
 
   it("should return an HTTP 403 status and error message", (done) => {
-    req.headers.ServiceAuthorization = "invalid_token";
+    req.serviceAuthToken = "invalid_token";
 
     const expectedResult = {
       error: "Forbidden",
@@ -156,7 +152,7 @@ describe("test update user profile service", () => {
   });
 
   it("should return an HTTP 503 status service unavailable", (done) => {
-    req.headers.ServiceAuthorization = "invalid_token";
+    req.serviceAuthToken = "invalid_token";
 
     const expectedResult = {
       error: "Server Error",

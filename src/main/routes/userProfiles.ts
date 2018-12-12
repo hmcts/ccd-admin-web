@@ -1,5 +1,4 @@
-import { fetchUserProfilesByJurisdiction } from "../service/user.profiles.service";
-import { Validator } from "../validators/validate";
+import { fetchUserProfilesByJurisdiction } from "../service/user-profile-service";
 import { sanitize } from "../util/sanitize";
 
 const router = require("../routes/home");
@@ -7,27 +6,22 @@ const router = require("../routes/home");
 // Validate
 function validate(req, res, next) {
 
-  const jurisdictionName = new Validator(req.body.jurisdictionName);
-  if (jurisdictionName.isEmpty()) {
-    req.session.error = { status: 401, text: "Please select jurisdiction name" };
-    res.redirect(302, "/jurisdiction");
-  } else {
-    req.body.jurisdictionName = sanitize(req.body.jurisdictionName);
-    req.session.jurisdiction = req.body.jurisdictionName;
-    next();
-  }
+  // Jurisdiction is guaranteed to be set from the Jurisdiction Search page, since the dropdown uses jQuery validation
+  req.body.jurisdictionName = sanitize(req.body.jurisdictionName);
+  req.session.jurisdiction = req.body.jurisdictionName;
+  next();
 }
 
 /* POST */
 router.post("/userprofiles", validate, (req, res, next) => {
 
   fetchUserProfilesByJurisdiction(req).then((response) => {
-    res.status(201);
+    res.status(200);
     req.session.jurisdiction = req.body.jurisdictionName;
     const responseContent: { [k: string]: any } = {};
     responseContent.userprofiles = JSON.parse(response);
     responseContent.currentjurisdiction = req.body.jurisdictionName;
-    res.render("jurisdictions", responseContent);
+    res.render("user-profiles", responseContent);
   })
     .catch((error) => {
       // Call the next middleware, which is the error handler
@@ -40,8 +34,7 @@ router.get("/userprofiles", (req, res, next) => {
 
   const jurisdiction = req.session.jurisdiction;
   fetchUserProfilesByJurisdiction(req).then((response) => {
-
-    res.status(201);
+    res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.currentjurisdiction = req.session.jurisdiction;
     responseContent.userprofiles = JSON.parse(response);
@@ -50,9 +43,11 @@ router.get("/userprofiles", (req, res, next) => {
     }
     if (req.session.success) {
       responseContent.success = req.session.success;
+      // Clear success message so it doesn't appear subsequently
+      delete req.session.success;
     }
     responseContent.jurisdiction = jurisdiction;
-    res.render("jurisdictions", responseContent);
+    res.render("user-profiles", responseContent);
   }).catch((error) => {
     // Call the next middleware, which is the error handler
     next(error);

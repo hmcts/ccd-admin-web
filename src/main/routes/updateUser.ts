@@ -11,10 +11,10 @@ function validateUpdate(req, res, next) {
 }
 
 /* GET create user form. */
-router.post("/updateusersprofile", validateUpdate, (req, res, next) => {
+router.post("/updateuser", validateUpdate, (req, res, next) => {
 
     fetch(req, url).then((response) => {
-        res.status(201);
+        res.status(200);
         const responseContent: { [k: string]: any } = {};
         responseContent.jurisdictions = JSON.stringify(response);
         responseContent.idamId = sanitize(req.body.idamId);

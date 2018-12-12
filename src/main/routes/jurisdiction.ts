@@ -5,11 +5,11 @@ const url = config.get("adminWeb.jurisdiction_url");
 /* GET Jurisdiction page. */
 router.get("/jurisdiction", (req, res, next) => {
   fetch(req, url).then((response) => {
-    res.status(201);
+    res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.jurisdictions = JSON.parse(response);
-    if (req.query.page) {
-      delete req.session.error;
+    if (req.query.dest) {
+      responseContent.destination = req.query.dest;
     }
     if (req.session.error) {
       responseContent.error = req.session.error;
