@@ -17,6 +17,16 @@ describe("Definition service", () => {
   beforeEach(() => {
     req = {
       accessToken: "userAuthToken",
+      authentication: {
+        user : {
+          defaultService: "CCD",
+          email: "irtahkm@example.com",
+          forename: "ccd",
+          id: 445,
+          roles: [],
+          surname: "test",
+        },
+      },
       body: { jurisdictionName: "TEST" },
       serviceAuthToken: "serviceAuthToken",
       session: {},
@@ -114,6 +124,16 @@ describe("Definition service", () => {
       };
       req = {
         accessToken: "userAuthToken",
+        authentication: {
+          user : {
+            defaultService: "CCD",
+            email: "irtahkm@example.com",
+            forename: "ccd",
+            id: 445,
+            roles: [],
+            surname: "test",
+          },
+        },
         body: {},
         serviceAuthToken: "serviceAuthToken",
         session: { jurisdiction: "test2" },

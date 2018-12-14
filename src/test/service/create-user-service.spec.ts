@@ -19,6 +19,16 @@ describe("test create user profile service", () => {
   beforeEach(() => {
     req = {
       accessToken: "userAuthToken",
+      authentication: {
+        user : {
+          defaultService: "CCD",
+          email: "irtahkm@example.com",
+          forename: "ccd",
+          id: 445,
+          roles: [],
+          surname: "test",
+        },
+      },
       body: {},
       serviceAuthToken: "serviceAuthToken",
     };
@@ -91,6 +101,16 @@ describe("test update user profile service", () => {
   beforeEach(() => {
     req = {
       accessToken: "userAuthToken",
+      authentication: {
+        user : {
+          defaultService: "CCD",
+          email: "irtahkm@example.com",
+          forename: "ccd",
+          id: 445,
+          roles: [],
+          surname: "test",
+        },
+      },
       body: { update: true },
       serviceAuthToken: "serviceAuthToken",
     };
