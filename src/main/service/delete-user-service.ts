@@ -10,6 +10,7 @@ export function deleteUserProfile(req) {
         Accept: "application/json",
         Authorization: req.accessToken,
         ServiceAuthorization: req.serviceAuthToken,
+        actionedBy : req.authentication.user.email,
     };
     return request
         .delete(url)

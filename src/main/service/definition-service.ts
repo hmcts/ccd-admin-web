@@ -9,6 +9,7 @@ export function fetchDefinitionsByJurisdiction(req) {
     const headers = {
         Authorization: req.accessToken,
         ServiceAuthorization: req.serviceAuthToken,
+        actionedBy : req.authentication.user.email,
     };
     const jurisdiction = req.body.jurisdictionName ? req.body.jurisdictionName : req.session.jurisdiction;
     const query = jurisdiction ? { jurisdiction: `${jurisdiction}` } : {};

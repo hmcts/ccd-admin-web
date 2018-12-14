@@ -11,6 +11,7 @@ export function saveUserRole(req, userrole: UserRole, isCreateUserRole: boolean)
         Accept: "application/json",
         Authorization: req.accessToken,
         ServiceAuthorization: req.serviceAuthToken,
+        actionedBy : req.authentication.user.email,
     };
 
     const payloadString: string = `{"role": "${userrole.role}", ` +

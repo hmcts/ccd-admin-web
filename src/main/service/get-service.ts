@@ -7,6 +7,7 @@ export function fetch(req, url: any) {
     const headers = {
         Authorization: req.accessToken,
         ServiceAuthorization: req.serviceAuthToken,
+        actionedBy : req.authentication.user.email,
     };
 
     return request

@@ -12,6 +12,7 @@ export function createDefinition(req, definition: Definition) {
         "Authorization": req.accessToken,
         "Content-Type": "application/json",
         "ServiceAuthorization": req.serviceAuthToken,
+        "actionedBy" : req.authentication.user.email,
     };
 
     const payloadString: string =

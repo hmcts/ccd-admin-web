@@ -15,6 +15,7 @@ export function createUserProfile(req, userprofile: UserProfile) {
         Accept: "application/json",
         Authorization: req.accessToken,
         ServiceAuthorization: req.serviceAuthToken,
+        actionedBy : req.authentication.user.email,
     };
 
     const payloadString: string = `{"id": "${userprofile.id}", ` +
