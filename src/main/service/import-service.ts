@@ -5,17 +5,17 @@ import * as request from "superagent";
 export function uploadFile(req) {
   const url = config.get("adminWeb.import_url");
   const headers = {
-    Authorization: req.headers.Authorization,
-    ServiceAuthorization: req.headers.ServiceAuthorization,
+    Authorization: req.accessToken,
+    ServiceAuthorization: req.serviceAuthToken,
   };
   const logger = Logger.getLogger(__filename);
   return request
     .post(url)
     .set(headers)
     .set("enctype", "multipart/form-data")
-    .attach("file", req.file.buffer, { filename: "definition_upload" })
+    .attach("file", req.file.buffer, { filename: req.file.originalname })
     .then((res) => {
-      logger.info(`Uploaded file to Case Definition Store, response: ${res.text}`);
+      logger.info(`Uploaded file ${req.file.originalname} to Case Definition Store, response: ${res.text}`);
       return res;
     })
     .catch((error) => {

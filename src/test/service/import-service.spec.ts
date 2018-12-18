@@ -1,6 +1,7 @@
 import * as chai from "chai";
 import * as nock from "nock";
 import * as proxyquire from "proxyquire";
+import * as request from "superagent";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
 
@@ -10,19 +11,19 @@ chai.use(sinonChai);
 describe("importService", () => {
 
   const importUrl = "http://localhost:9999/import";
+  const requestAttachSpy = sinon.spy(request.Request.prototype, "attach");
 
   let req;
   let uploadFile;
 
   beforeEach(() => {
     req = {
+      accessToken: "userAuthToken",
       file: {
         buffer: new Buffer(8),
+        originalname: "dummy_filename.abc",
       },
-      headers: {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      },
+      serviceAuthToken: "serviceAuthToken",
     };
 
     const config = {
@@ -47,6 +48,7 @@ describe("importService", () => {
         try {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
+          expect(requestAttachSpy).to.be.calledWith("file", req.file.buffer, { filename: req.file.originalname });
           done();
         } catch (e) {
           done(e);
@@ -56,7 +58,7 @@ describe("importService", () => {
 
     describe("invalid S2S token", () => {
       it("should return an HTTP 403 status and error message", (done) => {
-        req.headers.ServiceAuthorization = "invalid_token";
+        req.serviceAuthToken = "invalid_token";
 
         const expectedResult = {
           error: "Forbidden",

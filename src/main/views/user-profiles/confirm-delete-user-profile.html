@@ -17,7 +17,7 @@
         </div>
     {% endif %}
     <div class="padding-deeper">
-      <form id="confirmdelete" name="confirmdelete" method="POST" action="/deleteuserprofile">
+      <form id="confirmdelete" name="confirmdelete" method="POST" action="/deleteuser">
        <input id="idamId" name="idamId" type="hidden" value="{{idamId}}">
         {{ csrfProtection(csrfToken) }}
         {{ yesNoRadioHeading(

@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y $BUILD_DEPS --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && yarn install
 
+COPY server.js /usr/src/app/
 COPY src/main /usr/src/app/src/main
 COPY config /usr/src/app/config
 

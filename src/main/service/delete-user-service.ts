@@ -8,9 +8,8 @@ export function deleteUserProfile(req) {
 
     const headers = {
         Accept: "application/json",
-        Authorization: req.headers.Authorization ? req.headers.Authorization : req.headers.authorization,
-        ServiceAuthorization: req.headers.ServiceAuthorization ? req.headers.ServiceAuthorization :
-            req.headers.serviceauthorization,
+        Authorization: req.accessToken,
+        ServiceAuthorization: req.serviceAuthToken,
     };
     return request
         .delete(url)
@@ -19,7 +18,6 @@ export function deleteUserProfile(req) {
         .set(headers)
         .then((res) => {
             logger.info(`Delete user profile : ${res.text}`);
-
             return res;
         })
         .catch((error) => {

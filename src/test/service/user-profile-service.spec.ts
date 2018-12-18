@@ -16,11 +16,9 @@ describe("user profile service", () => {
 
   beforeEach(() => {
     req = {
+      accessToken: "userAuthToken",
       body: { jurisdictionName: "Mike" },
-      headers: {
-        Authorization: "userAuthToken",
-        ServiceAuthorization: "serviceAuthToken",
-      },
+      serviceAuthToken: "serviceAuthToken",
       session: {},
     };
 
@@ -29,15 +27,15 @@ describe("user profile service", () => {
     };
     config.get.withArgs("adminWeb.userprofiles_url").returns(userProfileUrl);
 
-    fetchUserProfilesByJurisdiction = proxyquire("../../main/service/user.profiles.service.ts", {
+    fetchUserProfilesByJurisdiction = proxyquire("../../main/service/user-profile-service", {
       config,
     }).fetchUserProfilesByJurisdiction;
   });
 
-  describe("successful jurisdiction lookup", () => {
-    it("should return an HTTP 201 status and success message", (done) => {
+  describe("successful user profiles retrieval", () => {
+    it("should return an HTTP 200 status and success message", (done) => {
       const expectedResult = {
-        jurisdictions: [{
+        user_profiles: [{
           id: "ID_3",
           work_basket_default_case_type: "Case Type 3",
           work_basket_default_jurisdiction: "Jurisdiction 3",
@@ -52,7 +50,7 @@ describe("user profile service", () => {
 
       fetchUserProfilesByJurisdiction(req).then((res) => {
         try {
-          expect(JSON.parse(res).jurisdictions.length).to.equal(1);
+          expect(JSON.parse(res).user_profiles.length).to.equal(1);
           expect(res).to.equal(JSON.stringify(expectedResult));
           done();
         } catch (e) {
@@ -63,7 +61,7 @@ describe("user profile service", () => {
 
     it("should return user profiles from query if jurisdictionName is not passed in the body", (done) => {
       const expectedResult = {
-        jurisdictions: [{
+        user_profiles: [{
           id: "ID_3",
           work_basket_default_case_type: "Case Type 3",
           work_basket_default_jurisdiction: "Jurisdiction 3",
@@ -71,11 +69,9 @@ describe("user profile service", () => {
         }],
       };
       req = {
+        accessToken: "userAuthToken",
         body: {},
-        headers: {
-          Authorization: "userAuthToken",
-          ServiceAuthorization: "serviceAuthToken",
-        },
+        serviceAuthToken: "serviceAuthToken",
         session: { jurisdiction: "test2" },
       };
 
@@ -86,7 +82,7 @@ describe("user profile service", () => {
 
       fetchUserProfilesByJurisdiction(req).then((res) => {
         try {
-          expect(JSON.parse(res).jurisdictions.length).to.equal(1);
+          expect(JSON.parse(res).user_profiles.length).to.equal(1);
           expect(res).to.equal(JSON.stringify(expectedResult));
           done();
         } catch (e) {
@@ -97,7 +93,7 @@ describe("user profile service", () => {
 
     describe("invalid S2S token", () => {
       it("should return an HTTP 403 status and error message", (done) => {
-        req.headers.ServiceAuthorization = "invalid_token";
+        req.serviceAuthToken = "invalid_token";
 
         const expectedResult = {
           error: "Forbidden",

@@ -5,7 +5,7 @@ export const serviceFilter = (req, res, next) => {
   const logger = Logger.getLogger(__filename);
   serviceTokenGenerator()
     .then((t) => {
-      req.headers.ServiceAuthorization = t;
+      req.serviceAuthToken = t;
       next();
     })
     .catch((error) => {

@@ -10,9 +10,9 @@ node_modules/
 *log
 .DS_Store
 
-src/main/public/img/lib/*
+src/main/public/javascripts/
 src/main/public/js/lib/**/*.js
-src/main/public/stylesheets/lib/*
+src/main/public/stylesheets/images/
 
 node-rpm-packaging/
 mochawesome-report/

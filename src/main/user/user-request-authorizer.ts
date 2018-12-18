@@ -27,11 +27,7 @@ export const authorise = (request) => {
     return Promise.reject(ERROR_TOKEN_MISSING);
   }
 
-  // Use AccessToken cookie as Authorization header
-  if (!request.get(AUTHORIZATION) && bearerToken) {
-    request.headers = request.headers || {};
-    request.headers[AUTHORIZATION] = `Bearer ${bearerToken}`;
-  }
+  request.accessToken = bearerToken.startsWith("Bearer ") ? bearerToken : "Bearer " + bearerToken;
 
   return getTokenDetails(bearerToken)
     .then((tokenDetails) => user = tokenDetails)

@@ -13,9 +13,8 @@ export function createUserProfile(req, userprofile: UserProfile) {
 
     const headers = {
         Accept: "application/json",
-        Authorization: req.headers.Authorization ? req.headers.Authorization : req.headers.authorization,
-        ServiceAuthorization: req.headers.ServiceAuthorization ? req.headers.ServiceAuthorization :
-            req.headers.serviceauthorization,
+        Authorization: req.accessToken,
+        ServiceAuthorization: req.serviceAuthToken,
     };
 
     const payloadString: string = `{"id": "${userprofile.id}", ` +
@@ -38,11 +37,10 @@ export function createUserProfile(req, userprofile: UserProfile) {
                 logger.error(`Error creating/updating user profile: ${error.response.text}`);
                 throw error;
             } else {
-                const errMsg = "Error creating/ user profile: no error response";
+                const errMsg = "Error creating/updating user profile: no error response";
                 logger.error(errMsg);
                 error.text = errMsg;
                 throw error;
             }
         });
-
 }

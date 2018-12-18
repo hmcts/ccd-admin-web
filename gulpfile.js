@@ -4,7 +4,6 @@ let plumber = require('gulp-plumber');
 let livereload = require('gulp-livereload');
 let sass = require('gulp-sass');
 let path = require('path');
-let replace = require('gulp-replace');
 
 const repoRoot = path.join(__dirname, '/');
 const govUkFrontendToolkitRoot = path.join(repoRoot, './node_modules/govuk_frontend_toolkit/stylesheets');
@@ -39,20 +38,11 @@ gulp.task('copy-files', () => {
     .pipe(gulp.dest(`${assetsDirectory}/js/lib/`));
 
   gulp.src(['src/main/public/js/lib/**/*.js']).pipe(gulp.dest(`${assetsDirectory}/javascripts`));
-  gulp.src(['src/main/public/stylesheets/lib/**/*.css']).pipe(gulp.dest(`${assetsDirectory}/stylesheets`));
-  gulp.src(['src/main/public/stylesheets/lib/fonts/*.*']).pipe(gulp.dest(`${assetsDirectory}/stylesheets/fonts`));
-  gulp.src(['src/main/public/img/lib/gov.uk_logotype_crown_invert_trans.png']).pipe(gulp.dest(`${assetsDirectory}/images`));
-  gulp.src([
-    './node_modules/govuk_frontend_toolkit/images/**/*',
-    './node_modules/govuk_template_jinja/assets/images/*.*'
-  ])
-    .pipe(gulp.dest(`${assetsDirectory}/img/lib/`));
 
   gulp.src([
     './node_modules/govuk_template_jinja/assets/stylesheets/**/*'
   ])
-    .pipe(replace('images/', '/stylesheets/lib/images/', { skipBinary: true }))
-    .pipe(gulp.dest(`${assetsDirectory}/stylesheets/`));
+    .pipe(gulp.dest(`${stylesheetsDirectory}/`));
 });
 
 // compile scss files whenever they're changed

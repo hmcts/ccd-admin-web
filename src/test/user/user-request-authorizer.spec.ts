@@ -20,7 +20,6 @@ describe("UserRequestAuthorizer", () => {
     const COOKIES = {
       [userReqAuth.COOKIE_ACCESS_TOKEN]: "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNW91NWFi",
     };
-    const X_CUSTOM_HEADER = "CCD";
 
     let request;
     let userResolver;
@@ -87,16 +86,12 @@ describe("UserRequestAuthorizer", () => {
         .catch(() => done(new Error("Promise should have been resolved")));
     });
 
-    it("should use the AccessToken cookie to set the Authorization header, when the header is missing", (done) => {
+    it("should use the AccessToken cookie to set an accessToken property on the request", (done) => {
       request.get.returns(null);
-      request.headers = {X_CUSTOM_HEADER};
 
       userRequestAuthorizer.authorise(request)
         .then(() => {
-          expect(request.headers).not.to.be.undefined;
-          expect(request.headers[userReqAuth.AUTHORIZATION]).to.equal(
-            `Bearer ${COOKIES[userReqAuth.COOKIE_ACCESS_TOKEN]}`);
-          expect(request.headers.X_CUSTOM_HEADER).to.equal(X_CUSTOM_HEADER);
+          expect(request.accessToken).to.equal(`Bearer ${COOKIES[userReqAuth.COOKIE_ACCESS_TOKEN]}`);
           done();
         })
         .catch(() => done(new Error("Promise should have been resolved")));
