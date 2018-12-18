@@ -1,5 +1,6 @@
+import * as config from "config";
+import { fetch } from "../service/get-service";
 import { sanitize } from "../util/sanitize";
-import { fetchDefinitionsByJurisdiction } from "../service/definition-service";
 
 const router = require("../routes/home");
 
@@ -15,14 +16,15 @@ function validate(req, res, next) {
 /* POST */
 router.post("/definitions", validate, (req, res, next) => {
 
-  // Currently using a "dummy" implementation, which retrieves user profiles but does nothing with them
-  // TODO Provide proper implementation for fetchDefinitionsByJurisdiction
-  fetchDefinitionsByJurisdiction(req).then((response) => {
+  // Currently retrieves user profiles but does nothing with them
+  // TODO Switch to "adminWeb.definitions_url", once endpoint is implemented in ccd-definition-store-api
+  const url = config.get("adminWeb.userprofiles_url");
+  const query = { jurisdiction: req.body.jurisdictionName };
+  fetch(req, url, query).then((response) => {
     res.status(200);
-    req.session.jurisdiction = req.body.jurisdictionName;
     const responseContent: { [k: string]: any } = {};
-    responseContent.definitions = JSON.parse(response);
     responseContent.currentjurisdiction = req.body.jurisdictionName;
+    responseContent.definitions = JSON.parse(response);
     res.render("definitions", responseContent);
   }).catch((error) => {
       // Call the next middleware, which is the error handler
@@ -33,9 +35,12 @@ router.post("/definitions", validate, (req, res, next) => {
 /* GET */
 router.get("/definitions", (req, res, next) => {
 
-  // Currently using a "dummy" implementation, which retrieves user profiles but does nothing with them
-  // TODO Provide proper implementation for fetchDefinitionsByJurisdiction
-  fetchDefinitionsByJurisdiction(req).then((response) => {
+  // Currently retrieves user profiles but does nothing with them
+  // TODO Switch to "adminWeb.definitions_url", once endpoint is implemented in ccd-definition-store-api
+  const url = config.get("adminWeb.userprofiles_url");
+  // Jurisdiction is expected to be set already on the session, hence it can be used for the query
+  const query = req.session.jurisdiction ? { jurisdiction: req.session.jurisdiction } : {};
+  fetch(req, url, query).then((response) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.currentjurisdiction = req.session.jurisdiction;
