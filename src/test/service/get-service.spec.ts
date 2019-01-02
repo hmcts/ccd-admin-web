@@ -1,18 +1,20 @@
 import * as chai from "chai";
 import * as nock from "nock";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
+import { fetch } from "../../main/service/get-service";
 
 const expect = chai.expect;
 chai.use(sinonChai);
 
-describe("Definition service", () => {
+describe("Get service", () => {
 
-  const definitionsUrl = "http://localhost:4451/api/drafts";
+  // Can be any GET endpoint; using the Definitions one
+  const definitionStoreHost = "http://localhost:4451";
+  const definitionsEndpoint = "/api/drafts";
+  const definitionsUrl = definitionStoreHost + definitionsEndpoint;
 
   let req;
-  let fetchDefinitionsByJurisdiction;
+  let query;
 
   beforeEach(() => {
     req = {
@@ -32,18 +34,10 @@ describe("Definition service", () => {
       session: {},
     };
 
-    const config = {
-      get: sinon.stub(),
-    };
-    // TODO Change to "adminWeb.definitions_url", once Definition retrieval has been implemented
-    config.get.withArgs("adminWeb.userprofiles_url").returns(definitionsUrl);
-
-    fetchDefinitionsByJurisdiction = proxyquire("../../main/service/definition-service", {
-      config,
-    }).fetchDefinitionsByJurisdiction;
+    query = { jurisdiction: req.body.jurisdictionName };
   });
 
-  describe("successful definitions retrieval", () => {
+  describe("successful data retrieval", () => {
     it("should return an HTTP 200 status and success message", (done) => {
       const expectedResult = {
         definitions: [
@@ -86,12 +80,12 @@ describe("Definition service", () => {
         ],
       };
 
-      nock("http://localhost:4451")
-        .get("/api/drafts")
-        .query({ jurisdiction: "TEST" })
+      nock(definitionStoreHost)
+        .get(definitionsEndpoint)
+        .query(query)
         .reply(200, expectedResult);
 
-      fetchDefinitionsByJurisdiction(req).then((res) => {
+      fetch(req, definitionsUrl, query).then((res) => {
         try {
           expect(JSON.parse(res).definitions.length).to.equal(2);
           expect(res).to.equal(JSON.stringify(expectedResult));
@@ -102,7 +96,7 @@ describe("Definition service", () => {
       });
     });
 
-    it("should return user profiles from query if jurisdictionName is not passed in the body", (done) => {
+    it("should return data when query parameter is empty", (done) => {
       const expectedResult = {
         definitions: [
           {
@@ -138,13 +132,14 @@ describe("Definition service", () => {
         serviceAuthToken: "serviceAuthToken",
         session: { jurisdiction: "test2" },
       };
+      query = {};
 
-      nock("http://localhost:4451")
-        .get("/api/drafts")
-        .query({ jurisdiction: "test2" })
+      nock(definitionStoreHost)
+        .get(definitionsEndpoint)
+        .query(query)
         .reply(200, expectedResult);
 
-      fetchDefinitionsByJurisdiction(req).then((res) => {
+      fetch(req, definitionsUrl, query).then((res) => {
         try {
           expect(JSON.parse(res).definitions.length).to.equal(1);
           expect(res).to.equal(JSON.stringify(expectedResult));
@@ -164,12 +159,12 @@ describe("Definition service", () => {
           message: "Access Denied",
         };
 
-        nock("http://localhost:4451")
-          .get("/api/drafts")
-          .query({ jurisdiction: "TEST" })
+        nock(definitionStoreHost)
+          .get(definitionsEndpoint)
+          .query(query)
           .reply(403, expectedResult);
 
-        fetchDefinitionsByJurisdiction(req).catch((err) => {
+        fetch(req, definitionsUrl, query).catch((err) => {
           try {
             expect(err.status).to.equal(403);
             expect(err.response.body.error).to.equal(expectedResult.error);
