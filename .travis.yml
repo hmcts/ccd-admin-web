@@ -16,7 +16,7 @@ script:
   - yarn test
   - yarn test:routes
   - yarn test:a11y
-  - yarn test:nsp
+  #- yarn test:nsp - reenable when we have solved RDM-2508
   - yarn test:coverage
 after_script: greenkeeper-lockfile-upload
 after_success:
