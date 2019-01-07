@@ -1,17 +1,8 @@
 import * as config from "config";
 import { fetch } from "../service/get-service";
-import { sanitize } from "../util/sanitize";
+import { validate } from "../validators/validateJurisdiction";
 
 const router = require("../routes/home");
-
-// Validate
-function validate(req, res, next) {
-
-  // Jurisdiction is guaranteed to be set from the Jurisdiction Search page, since the dropdown uses jQuery validation
-  req.body.jurisdictionName = sanitize(req.body.jurisdictionName);
-  req.session.jurisdiction = req.body.jurisdictionName;
-  next();
-}
 
 /* POST */
 router.post("/userprofiles", validate, (req, res, next) => {
