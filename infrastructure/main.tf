@@ -16,6 +16,8 @@ locals {
   env_ase_url = "${local.local_env}.service.${local.local_ase}.internal"
 
   s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
+  s2s_vault_url = "https://s2s-${local.local_env}.vault.azure.net/"
+
   def_store_url = "http://ccd-definition-store-api-${local.env_ase_url}"
   userprofile_url = "http://ccd-user-profile-api-${local.env_ase_url}"
 
@@ -51,8 +53,8 @@ resource "azurerm_storage_container" "imports_container" {
 }
 
 data "azurerm_key_vault_secret" "idam_service_key" {
-  name = "ccd-admin-web-s2s-secret"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+  name = "microservicekey-ccd-admin"
+  vault_uri = "${local.s2s_vault_url}"
 }
 
 data "azurerm_key_vault_secret" "oauth2_client_secret" {
