@@ -17,8 +17,8 @@ function validate(req, res, next) {
 router.post("/definitions", validate, (req, res, next) => {
 
   // Currently retrieves user profiles but does nothing with them
-  // TODO Switch to "adminWeb.definitions_url", once endpoint is implemented in ccd-definition-store-api
-  const url = config.get("adminWeb.userprofiles_url");
+  // TODO Point "adminWeb.definitions_url" to the correct URL, once endpoint is implemented in ccd-definition-store-api
+  const url = config.get("adminWeb.definitions_url");
   const query = { jurisdiction: req.body.jurisdictionName };
   fetch(req, url, query).then((response) => {
     res.status(200);
@@ -36,8 +36,8 @@ router.post("/definitions", validate, (req, res, next) => {
 router.get("/definitions", (req, res, next) => {
 
   // Currently retrieves user profiles but does nothing with them
-  // TODO Switch to "adminWeb.definitions_url", once endpoint is implemented in ccd-definition-store-api
-  const url = config.get("adminWeb.userprofiles_url");
+  // TODO Point "adminWeb.definitions_url" to the correct URL, once endpoint is implemented in ccd-definition-store-api
+  const url = config.get("adminWeb.definitions_url");
   // Jurisdiction is expected to be set already on the session, hence it can be used for the query
   const query = req.session.jurisdiction ? { jurisdiction: req.session.jurisdiction } : {};
   fetch(req, url, query).then((response) => {
