@@ -1,16 +1,17 @@
 import * as request from "superagent";
 import { Logger } from "@hmcts/nodejs-logging";
 
-export function fetch(req, url: any) {
+export function fetch(req, url: any, query?: object) {
     const logger = Logger.getLogger(__filename);
-    // const url = config.get("adminWeb.alluserroles_url");
     const headers = {
         Authorization: req.accessToken,
         ServiceAuthorization: req.serviceAuthToken,
     };
 
+    logger.info(`Fetch query parameter: ${ JSON.stringify(query) }`);
     return request
         .get(url)
+        .query(query)
         .set(headers)
         .then((res) => {
             logger.debug(`Get data, response: ${res.text}`);

@@ -34,6 +34,6 @@ adminWeb:
   alluserroles_url: http://localhost:4451/api/user-roles
   import_audits_url: http://localhost:4451/api/import-audits
   createdefinition_url: http://localhost:4451/api/draft
-  definitions_url: http://localhost:4451/api/drafts
+  definitions_url: http://localhost:4453/users # Dummy URL for now - change to http://localhost:4451/api/drafts
 appInsights:
   instrumentationKey: "some-key"

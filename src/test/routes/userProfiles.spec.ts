@@ -1,9 +1,10 @@
 import { appTest } from "../../main/app.test";
-import * as sinon from "sinon";
+import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
+import * as mockSession from "mock-session";
 import * as request from "supertest-session";
-import { expect } from "chai";
+import * as sinon from "sinon";
 
 describe("User profile page", () => {
 
@@ -12,6 +13,7 @@ describe("User profile page", () => {
       get: sinon.stub(),
     };
     config.get.withArgs("adminWeb.userprofiles_url").returns("userprofiles_url");
+    mock.cleanAll();
   });
 
   describe("on GET /userprofiles", () => {
@@ -28,12 +30,12 @@ describe("User profile page", () => {
           work_basket_default_state: "State 3",
         }]);
 
+      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
+      const sessionCookie = mockSession("session", "key1", { jurisdiction: "Mike" });
+
       return request(appTest)
         .get("/userprofiles")
-        .set("Cookie", "accessToken=ey123.ey456")
-        .send({
-          jurisdictionName: "Mike",
-        })
+        .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");

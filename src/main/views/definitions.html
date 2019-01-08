@@ -24,7 +24,7 @@
   {% endif %}
   <a href="/createdefinition" class="button rightAlign" value="Submit">Create Definition</a>
 
-  {% if definitions.length == 0 %}
+  {% if dataItems.length == 0 %}
     <table border="1">
       <thead>
         <tr>
@@ -60,7 +60,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for userprofile in userprofiles %}
+          {% for userprofile in dataItems %}
             <tr>
               <td>
                 <form id="userprofile_{{loop.index}}" method="post" action="/updateuser" >

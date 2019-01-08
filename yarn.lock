@@ -4257,6 +4257,11 @@ kew@~0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/kew/-/kew-0.7.0.tgz#79d93d2d33363d6fdd2970b335d9141ad591d79b"
 
+keygrip@^1.0.2:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/keygrip/-/keygrip-1.0.3.tgz#399d709f0aed2bab0a059e0cdd3a5023a053e1dc"
+  integrity sha512-/PpesirAIfaklxUzp4Yb7xBper9MwP6hNRA6BGGUFCgbJ+BM5CKBtsoxinNXkLHAr+GXS1/lSlF2rP7cv5Fl+g==
+
 keygrip@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/keygrip/-/keygrip-1.0.2.tgz#ad3297c557069dea8bcfe7a4fa491b75c5ddeb91"
@@ -5035,6 +5040,14 @@ mochawesome@^2.3.1:
     mochawesome-report-generator "^2.2.0"
     strip-ansi "^4.0.0"
     uuid "^3.0.1"
+
+mock-session@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/mock-session/-/mock-session-0.0.5.tgz#48aed4c930fa18eb49e7a4383fb8cd9e9112956e"
+  integrity sha512-tXem7EShmdS+TkjslEoMejpOjrNMpTKavpBfR7RU19VtU29cIr3sa5JgFGrFJZzSsq+Oxe6SK85ihbQ+hawmwA==
+  dependencies:
+    keygrip "^1.0.2"
+    safe-buffer "^5.1.1"
 
 module-not-found-error@^1.0.0:
   version "1.0.1"
