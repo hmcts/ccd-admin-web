@@ -20,16 +20,20 @@ describe("Definitions page", () => {
     it("should return Definitions list for given Jurisdiction", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
-      // TODO Change endpoint, once adminWeb.definitions_url points to http://localhost:4451/api/drafts
-      mock("http://localhost:4453")
-        .get("/users")
+      mock("http://localhost:4451")
+        .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
         .reply(200, [{
+          case_types: "Type1,Type2",
           data: {
             Field1: "Some value",
           },
           description: "Draft definition",
-          jurisdiction_id: 1,
+          jurisdiction: {
+            description: "Test Jurisdiction",
+            id: "TEST",
+            name: "Test",
+          },
           status: "DRAFT",
         }]);
 
@@ -41,25 +45,28 @@ describe("Definitions page", () => {
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          // TODO Re-enable when the Definitions List page has been implemented
-          // expect(res.text).to.contain("Draft definition");
-          // expect(res.text).to.contain("Some value");
+          expect(res.text).to.contain("Type1,Type2");
+          expect(res.text).to.contain("Draft definition");
         });
     });
 
     it("should return all Definitions list if Jurisdiction is not present in session", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
-      // TODO Change endpoint, once adminWeb.definitions_url points to http://localhost:4451/api/drafts
-      mock("http://localhost:4453")
-        .get("/users")
+      mock("http://localhost:4451")
+        .get("/api/drafts")
         .query({})
         .reply(200, [{
+          case_types: "Type1,Type2",
           data: {
             Field1: "Some value",
           },
           description: "Draft definition",
-          jurisdiction_id: 1,
+          jurisdiction: {
+            description: "Test Jurisdiction",
+            id: "TEST",
+            name: "Test",
+          },
           status: "DRAFT",
         }]);
 
@@ -71,9 +78,8 @@ describe("Definitions page", () => {
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          // TODO Re-enable when the Definitions List page has been implemented
-          // expect(res.text).to.contain("Draft definition");
-          // expect(res.text).to.contain("Some value");
+          expect(res.text).to.contain("Type1,Type2");
+          expect(res.text).to.contain("Draft definition");
         });
     });
   });
@@ -82,16 +88,20 @@ describe("Definitions page", () => {
     it("should return Definitions list", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
-      // TODO Change endpoint, once adminWeb.definitions_url points to http://localhost:4451/api/drafts
-      mock("http://localhost:4453")
-        .get("/users")
+      mock("http://localhost:4451")
+        .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
         .reply(200, [{
+          case_types: "Type1,Type2",
           data: {
             Field1: "Some value",
           },
           description: "Draft definition",
-          jurisdiction_id: 1,
+          jurisdiction: {
+            description: "Test Jurisdiction",
+            id: "TEST",
+            name: "Test",
+          },
           status: "DRAFT",
         }]);
 
@@ -103,17 +113,15 @@ describe("Definitions page", () => {
         })
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          // TODO Re-enable when the Definitions List page has been implemented
-          // expect(res.text).to.contain("Draft definition");
-          // expect(res.text).to.contain("Some value");
+          expect(res.text).to.contain("Type1,Type2");
+          expect(res.text).to.contain("Draft definition");
         });
     });
     it("should return error from the server", () => {
       idamServiceMock.resolveRetrieveUserFor("1", "admin");
       idamServiceMock.resolveRetrieveServiceToken();
-      // TODO Change endpoint, once adminWeb.definitions_url points to http://localhost:4451/api/drafts
-      mock("http://localhost:4453")
-        .get("/users")
+      mock("http://localhost:4451")
+        .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
         .replyWithError({ code: 500, text: "Server Error" });
 
