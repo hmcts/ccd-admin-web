@@ -1,0 +1,47 @@
+{% from "macros/csrf.html" import csrfProtection %}
+
+ {% block content %}
+ {% if importAudits?.length == 0 %}
+ <table border="1">
+    <thead>
+    <tr>
+      <th>
+        <div class="boldcontents" align="center">Imports audits are not found</div>
+      </th>
+    </tr>
+    </thead>
+ </table>
+ {%else%}
+  <div class="padding ngx-pagination">
+    <table border="1">
+    <thead>
+    <tr>
+      <th>Date Imported</th>
+      <th>Who Imported</th>
+      <th>Case Type</th>
+      <th>Filename</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for audit in importAudits %}
+    <tr >
+      <td>
+        {{audit.date_imported}}
+      </td>
+      <td>
+        {{audit.who_imported}}
+      <td>
+        {{audit.case_type}}
+      </td>
+      <td>
+        <a href="{{audit.uri}}">{{audit.filename}}</a>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+ {% endif %}
+
+ {% endblock %}
+
