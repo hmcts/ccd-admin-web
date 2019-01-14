@@ -123,6 +123,8 @@ module "ccd-admin-web" {
     ADMINWEB_SAVE_USER_PROFILE_URL = "${local.userprofile_url}/users/save"
     ADMINWEB_USER_ROLE_URL = "${local.def_store_url}/api/user-role"
     ADMIN_ALL_USER_ROLES_URL = "${local.def_store_url}/api/user-roles"
+    ADMINWEB_CREATE_DEFINITION_URL = "${local.def_store_url}/api/draft"
+    ADMINWEB_DEFINITIONS_URL = "${local.def_store_url}/api/drafts"
 
     # Storage Account
     STORAGEACCOUNT_PRIMARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_primary_connection_string.value}"
