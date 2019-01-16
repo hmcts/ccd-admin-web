@@ -21,7 +21,8 @@
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/**,coverage/**,src/main/modules/**,src/main/router/**,src/main/util/**,src/main/app.ts,src/main/app.test.ts,src/main/server.ts -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.4.5",
@@ -55,7 +56,7 @@
     "require-directory": "^2.1.1",
     "serve-favicon": "^2.4.4",
     "sinon-stub-promise": "^4.0.0",
-    "snyk": "^1.85.0",
+    "snyk": "^1.120.1",
     "superagent": "^3.8.3",
     "supertest-session": "^3.3.0",
     "ts-node": "^3.3.0",
