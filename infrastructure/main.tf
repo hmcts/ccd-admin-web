@@ -76,6 +76,7 @@ module "ccd-admin-web" {
   source = "git@github.com:hmcts/moj-module-webapp?ref=master"
   product = "${local.app_full_name}"
   location = "${var.location}"
+  appinsights_location = "${var.location}"
   env = "${var.env}"
   ilbIp = "${var.ilbIp}"
   subscription = "${var.subscription}"
@@ -87,6 +88,7 @@ module "ccd-admin-web" {
   asp_name = "${(var.asp_name == "use_shared") ? local.sharedAppServicePlan : var.asp_name}"
   asp_rg = "${(var.asp_rg == "use_shared") ? local.sharedASPResourceGroup : var.asp_rg}"
   website_local_cache_sizeinmb = 800
+  appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
 
   app_settings = {
     // Node specific vars

@@ -11,18 +11,16 @@ import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter"
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { RouterFinder } from "./router/routerFinder";
 
+const enableAppInsights = require("./app-insights/app-insights");
+
+enableAppInsights();
+
 import { serviceFilter } from "./service/service-filter";
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
 app.locals.ENV = env;
 
-// TODO: adjust these values to your application
-Logger.config({
-  environment: process.env.NODE_ENV,
-  microservice: "ccd-admin-web",
-  team: "CCD",
-});
 // Session
 app.set("trust proxy", 1); // trust first proxy
 

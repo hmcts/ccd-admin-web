@@ -11,13 +11,6 @@ const env = process.env.NODE_ENV || "development";
 export const appTest: express.Express = express();
 appTest.locals.ENV = env;
 
-// TODO: adjust these values to your application
-Logger.config({
-  environment: process.env.NODE_ENV,
-  microservice: "ccd-admin-web",
-  team: "CCD",
-});
-
 // Session
 appTest.set("trust proxy", 1); // trust first proxy
 appTest.use(cookieSession({
