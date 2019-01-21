@@ -24,5 +24,8 @@ adminWeb:
   alluserroles_url: ADMIN_ALL_USER_ROLES_URL
   createdefinition_url: ADMINWEB_CREATE_DEFINITION_URL
   definitions_url: ADMINWEB_DEFINITIONS_URL
+  whoami_url : ADMINWEB_WHOAMI_URL
+  import_audits_url : ADMINWEB_IMPORT_AUDITS_URL
+
 appInsights:
   instrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY
