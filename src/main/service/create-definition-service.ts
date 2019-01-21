@@ -5,7 +5,11 @@ import { Definition } from "../domain/definition";
 
 export function createDefinition(req, definition: Definition) {
     const logger = Logger.getLogger(__filename);
-    const url = config.get("adminWeb.createdefinition_url");
+    let url = config.get("adminWeb.createdefinition_url");
+
+    if (req.body.update) {
+        url = config.get("adminWeb.updatedefinition_url");
+    }
 
     const headers = {
         "Accept": "application/json",
@@ -14,28 +18,34 @@ export function createDefinition(req, definition: Definition) {
         "ServiceAuthorization": req.serviceAuthToken,
     };
 
-    const payloadString: string =
-        `{ "jurisdiction": {` +
-            `"id": "${definition.jurisdictionId}" },` +
-        `"description": "${definition.description}",` +
-        `"data": { ${definition.data} },` +
-        `"author": "${definition.author}",` +
-        `"deleted": "false" }`; // Temporary workaround; should default in Definition model object, ccd-definition-store
+    const payload = {
+      author: definition.author,
+      case_types: definition.caseTypes,
+      data: definition.data,
+      deleted: false, // Temporary workaround; should default in Definition model object, ccd-definition-store
+      description: definition.description,
+      jurisdiction: {
+        id: definition.jurisdictionId,
+      },
+      status: definition.status ? definition.status : undefined,
+      version: definition.version,
+    };
 
-    return request
-        .post(url)
+    const createRequest = req.body.update ? request.put(url) : request.post(url);
+
+    return createRequest
         .set(headers)
-        .send(payloadString)
+        .send(payload)
         .then((res) => {
-            logger.info(`Created definition: ${res.text}`);
+            logger.info(req.body.update ? `Updated definition: ${res.text}` : `Created definition: ${res.text}`);
             return res;
         })
         .catch((error) => {
             if (error.response) {
-                logger.error(`Error creating definition: ${error.response.text}`);
+                logger.error(`Error creating/updating definition: ${error.response.text}`);
                 throw error;
             } else {
-                const errMsg = "Error creating definition: no error response";
+                const errMsg = "Error creating/updating definition: no error response";
                 logger.error(errMsg);
                 error.text = errMsg;
                 throw error;

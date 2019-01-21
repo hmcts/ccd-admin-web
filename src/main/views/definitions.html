@@ -65,11 +65,11 @@
               <td>
                 <form id="definition_{{loop.index}}" method="post" action="/updatedefinition" >
                   {{ csrfProtection(csrfToken) }}
-                  <input type="hidden" name="currentjurisdiction" value="{{currentjurisdiction}}" />
                   <input type="hidden" name="jurisdictionName" value="{{definition.jurisdiction.name}}" />
                   <input type="hidden" name="casetypes" value="{{definition.case_types}}" />
                   <input type="hidden" name="description" value="{{definition.description}}" />
                   <input type="hidden" name="status" value="{{definition.status}}" />
+                  <input type="hidden" name="version" value="{{definition.version}}" />
                   <a href="#" onclick="document.getElementById('definition_{{loop.index}}').submit();">
                     <div>{{definition.jurisdiction.name}}</div>
                   </a>
