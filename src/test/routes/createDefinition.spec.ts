@@ -62,13 +62,13 @@ describe("on POST /createdefinition", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")
       .post("")
-      .reply(200);
+      .reply(201);
 
     return request(appTest)
       .post("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
       .send({
-        data: "Test data", description: "Draft definition",
+        data: "{\"Field1\": \"data\"}", description: "Draft definition", version: undefined,
       })
       .expect(302)
       .then((res) => {
@@ -84,7 +84,7 @@ describe("on POST /createdefinition", () => {
       .post("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
       .send({
-        description: "Draft definition",
+        data: "{}", description: "Draft definition",
       })
       .expect(302)
       .then((res) => {
@@ -103,11 +103,30 @@ describe("on POST /createdefinition", () => {
       .post("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
       .send({
-        data: "Test data", description: "Draft definition",
+        data: "{\"Field1\": \"data\"}", description: "Draft definition",
       })
       .expect(302)
       .then((res) => {
         expect(res.headers.location.startsWith("/createdefinition")).to.be.true;
+      });
+  });
+
+  it("should redirect to Definitions list page on updating a Definition successfully", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", "admin");
+    idamServiceMock.resolveRetrieveServiceToken();
+    mock("http://localhost:4451/api/draft/save")
+      .put("")
+      .reply(200);
+
+    return request(appTest)
+      .post("/createdefinition")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .send({
+        data: "{\"Field1\": \"data\"}", description: "Draft definition", status: "DRAFT", update: true, version: 1,
+      })
+      .expect(302)
+      .then((res) => {
+        expect(res.headers.location.startsWith("/definitions")).to.be.true;
       });
   });
 });
