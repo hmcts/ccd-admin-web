@@ -23,6 +23,7 @@ adminWeb:
   userrole_url: ADMINWEB_USER_ROLE_URL
   alluserroles_url: ADMIN_ALL_USER_ROLES_URL
   createdefinition_url: ADMINWEB_CREATE_DEFINITION_URL
+  updatedefinition_url: ADMINWEB_UPDATE_DEFINITION_URL
   definitions_url: ADMINWEB_DEFINITIONS_URL
   whoami_url : ADMINWEB_WHOAMI_URL
   import_audits_url : ADMINWEB_IMPORT_AUDITS_URL

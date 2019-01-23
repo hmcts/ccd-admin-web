@@ -50,7 +50,7 @@
 
 {% block content %}
   {% include "menu.html" %}
-  <h2 class="heading-large padding">Create Definition</h2>
+  <h2 class="heading-large padding">{{ heading }}</h2>
 
   <div class="padding">
     {% if error %}
@@ -89,14 +89,18 @@
             </tbody>
           </table>
           <label class="form-label">Definition description</label>
+          <input type="hidden" id="casetypes" name="casetypes" value="{{ casetypes }}"/>
           {% if update %}
-            <input type="hidden" id="description" name="description" value="{{ description }}"/>
-            <label class="form-label-bold">{{ description }}</label><br><br>
+            <input type="text" class="form-control" id="description" name="description" value="{{ description }}"
+                   maxlength="100"/><br><br>
           {% else %}
             <input type="text" class="form-control" id="description" name="description" maxlength="100"/><br><br>
           {% endif %}
           <!-- Empty data element for now -->
-          <input type="hidden" id="data" name="data" value="&quot;Field 1&quot;: &quot;Value 1&quot;"/>
+          <input type="hidden" id="data" name="data" value="{&quot;Field 1&quot;: &quot;Value 1&quot;}"/>
+          <input type="hidden" id="status" name="status" value="{{ status }}"/>
+          <input type="hidden" id="version" name="version" value="{{ version }}"/>
+          <input type="hidden" id="update" name="update" value="{{ update }}"/>
         </div>
         <button type="submit" class="button" value="Submit">{{ submitButtonText }}</button>
         <a href="/definitions" class="button">Cancel</a>

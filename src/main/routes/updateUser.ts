@@ -10,7 +10,7 @@ function validateUpdate(req, res, next) {
     validate(req, res, next, "/userprofiles");
 }
 
-/* GET create user form. */
+/* POST form data to Create User form. */
 router.post("/updateuser", validateUpdate, (req, res, next) => {
 
     fetch(req, url).then((response) => {

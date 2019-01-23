@@ -33,9 +33,15 @@ router.post("/createdefinition", (req, res) => {
   createDefinition(req, new Definition(sanitize(req.session.jurisdiction),
                                        sanitize(req.body.description),
                                        sanitize(req.body.data),
-                                       sanitize(req.authentication.user.email)))
+                                       sanitize(req.authentication.user.email),
+                                       sanitize(req.body.casetypes),
+                                       Number(req.body.version),
+                                       sanitize(req.body.status)))
   .then(() => {
     req.session.success = `Definition for ${req.session.jurisdiction} jurisdiction created.`;
+    if (req.body.update) {
+      req.session.success = `Definition for ${req.session.jurisdiction} jurisdiction updated.`;
+    }
     res.redirect(302, "/definitions");
   })
   .catch((error) => {
