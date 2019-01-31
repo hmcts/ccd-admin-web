@@ -1,0 +1,25 @@
+nodejs:
+  environment:
+    # Logging vars
+    REFORM_ENVIRONMENT: aat
+
+    # Application vars
+    # IDAM
+    IDAM_BASE_URL: https://preprod-idamapi.reform.hmcts.net:3511
+    IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    IDAM_LOGOUT_URL: https://idam.preprod.ccidam.reform.hmcts.net/login/logout
+
+    IDAM_OAUTH2_TOKEN_ENDPOINT: http://betaDevBccidamAppLB.reform.hmcts.net/oauth2/token
+
+    ADMINWEB_LOGIN_URL: https://idam.preprod.ccidam.reform.hmcts.net/login
+    ADMINWEB_IMPORT_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/import
+    ADMINWEB_JURISDICTIONS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/data/jurisdictions
+    ADMINWEB_USER_PROFILE_URL: http://ccd-user-profile-api-aat.service.core-compute-aat.internal/users
+    ADMINWEB_SAVE_USER_PROFILE_URL: http://ccd-user-profile-api-aat.service.core-compute-aat.internal/users/save
+    ADMINWEB_USER_ROLE_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/user-role
+    ADMIN_ALL_USER_ROLES_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/user-roles
+    ADMINWEB_CREATE_DEFINITION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/draft
+    ADMINWEB_UPDATE_DEFINITION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/draft/save
+    ADMINWEB_DEFINITIONS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/drafts
+    ADMINWEB_WHOAMI_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/idam/profile
+    ADMINWEB_IMPORT_AUDITS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/import-audits
