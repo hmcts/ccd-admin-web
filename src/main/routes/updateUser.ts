@@ -23,7 +23,7 @@ router.post("/updateuser", validateUpdate, (req, res, next) => {
         responseContent.casetype = sanitize(req.body.casetype);
         responseContent.state = sanitize(req.body.state);
         responseContent.update = "true";
-        responseContent.heading = "Update User profile";
+        responseContent.heading = "Update User Profile";
         responseContent.submitButtonText = "Update";
         if (req.session.error) {
             responseContent.error = req.session.error;

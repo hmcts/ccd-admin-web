@@ -5,70 +5,70 @@ import * as mock from "nock";
 import * as request from "supertest";
 
 describe("Confirm Delete page", () => {
-    describe("on POST /deleteuser", () => {
+    describe("on POST /deletedefinition", () => {
 
         it("should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
             idamServiceMock.resolveRetrieveUserFor("1", "admin");
             idamServiceMock.resolveRetrieveServiceToken();
 
             return request(appTest)
-                .post("/deleteuser")
-                .send({ idamId: "anas@yahoo.com", itemToDelete: "user" })
+                .post("/deletedefinition")
+                .send({ definitionVersion: 1, itemToDelete: "definition", jurisdictionId: "TEST" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
                     expect(res.statusCode).to.equal(302);
-                    expect(res.headers.location.startsWith("/deleteitem?item=user&idamId=anas@yahoo.com")).to.be.true;
+                    expect(res.headers.location.startsWith(
+                      "/deleteitem?item=definition&jurisdictionId=TEST&version=1")).to.be.true;
                 });
         });
-        it("should redirect to the User Profiles list when No is chosen", () => {
+        it("should redirect to the Definitions list when No is chosen", () => {
             idamServiceMock.resolveRetrieveUserFor("1", "admin");
             idamServiceMock.resolveRetrieveServiceToken();
 
             return request(appTest)
-                .post("/deleteuser")
-                .send({ deleteItem: "No", idamId: "anas@yahoo.com", itemToDelete: "user" })
+                .post("/deletedefinition")
+                .send({ definitionVersion: 1, deleteItem: "No", itemToDelete: "definition", jurisdictionId: "TEST" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
                     expect(res.statusCode).to.equal(302);
-                    expect(res.headers.location.startsWith("/userprofiles")).to.be.true;
+                    expect(res.headers.location.startsWith("/definitions")).to.be.true;
                 });
         });
 
-        it("should redirect to the User Profiles list when Yes is chosen", () => {
+        it("should redirect to the Definitions list when Yes is chosen", () => {
             idamServiceMock.resolveRetrieveUserFor("1", "admin");
             idamServiceMock.resolveRetrieveServiceToken();
 
-            mock("http://localhost:4453")
-                .delete("/users")
-                .query({ uid: "anas@yahoo.com" })
+            mock("http://localhost:4451")
+                .delete("/api/draft/TEST/1")
                 .reply(204);
 
             return request(appTest)
-                .post("/deleteuser")
-                .send({ deleteItem: "Yes", idamId: "anas@yahoo.com", itemToDelete: "user" })
+                .post("/deletedefinition")
+                .send({ definitionVersion: 1, deleteItem: "Yes", itemToDelete: "definition", jurisdictionId: "TEST" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
                     expect(res.statusCode).to.equal(302);
-                    expect(res.headers.location.startsWith("/userprofiles")).to.be.true;
+                    expect(res.headers.location.startsWith("/definitions")).to.be.true;
                 });
         });
 
-        it("should redirect to the User Profiles list when Yes is chosen but an error occurred", () => {
+        it("should redirect to the Definitions list when Yes is chosen but an error occurred", () => {
             idamServiceMock.resolveRetrieveUserFor("1", "admin");
             idamServiceMock.resolveRetrieveServiceToken();
 
-            mock("http://localhost:4453")
-                .delete("/users")
-                .query({ uid: "anas@yahoo.com" })
+            mock("http://localhost:4451")
+                .delete("/api/draft/TEST/1")
                 .replyWithError(500);
 
             return request(appTest)
-                .post("/deleteuser")
-                .send({ deleteItem: "Yes", idamId: "anas@yahoo.com", itemToDelete: "user" })
+                .post("/deletedefinition")
+                .send({ definitionVersion: 1, deleteItem: "Yes", itemToDelete: "definition", jurisdictionId: "TEST" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
                     expect(res.statusCode).to.equal(302);
-                    expect(res.headers.location.startsWith("/deleteitem?item=user&idamId=anas@yahoo.com")).to.be.true;
+                    expect(res.headers.location.startsWith(
+                      "/deleteitem?item=definition&jurisdictionId=TEST&version=1")).to.be.true;
                 });
         });
     });

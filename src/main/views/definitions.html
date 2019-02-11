@@ -22,7 +22,7 @@
       {{error.text}}
     </div>
   {% endif %}
-  <a href="/createdefinition" class="button rightAlign" value="Submit">Create Definition</a>
+  <a href="/createdefinition" class="button rightAlign">Create Definition</a>
 
   {% if dataItems.length == 0 %}
     <table border="1">
@@ -91,9 +91,8 @@
                 </div>
               </td>
               <td>
-                <!--
-                <a href="/deleteuser?idamId={{userprofile.id | urlencode}}" class="button rightAlign" value="Submit">Delete</a>
-                -->
+                <a href="/deleteitem?item=definition&jurisdictionId={{definition.jurisdiction.id}}&version={{definition.version}}"
+                   class="button rightAlign">Delete</a>
               </td>
             </tr>
           {% endfor %}

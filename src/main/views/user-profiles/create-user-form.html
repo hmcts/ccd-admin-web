@@ -3,7 +3,7 @@
 {% from "../macros/formElements.html" import dateMacro %}
 {% from "../macros/csrf.html" import csrfProtection %}
 {% block page_title %}
-  CCD Admin Web
+  {{ heading }}
 {% endblock %}
 {% block head%}
   {{super()}}
@@ -33,7 +33,7 @@
         var listItems= "<option value='' selected>--Select a value--</option>";
         if(caseTypeIndex > -1){
             var stateTypes = jurisdictionLookups[jurisdictionIndex].case_types[caseTypeIndex].states;
- 
+
             for (var i = 0; i < stateTypes.length; i++){
             listItems+= "<option value='" + stateTypes[i].id + "'>" + stateTypes[i].name + "</option>";
             }
@@ -69,7 +69,7 @@
             },
             messages :{
                 "idamId" : {
-                    required : 'Enter idam Id',
+                    required : 'Enter IdAM Id',
                     email: 'Email address invalid'
                 },
                 "jurisdictionDropdown": {
@@ -88,7 +88,7 @@
         var str = "";
         $( "select#jurisdictionDropdown option:selected" ).each(function() {
             updateCaseTypeBasedOn($("select#jurisdictionDropdown")[0].selectedIndex -1);
-      
+
         });
      });
       $("select#caseTypeDropdown").on('change',function(){
@@ -96,11 +96,11 @@
       });
 
     var listItems= "<option value=''>--Select a value--</option>";
-    for (var i = 0; i < jurisdictionLookups.length; i++){  
+    for (var i = 0; i < jurisdictionLookups.length; i++){
         listItems+= "<option value='" + jurisdictionLookups[i].id + "'>" + jurisdictionLookups[i].name + "</option>";
     }
     $("select#jurisdictionDropdown").html(listItems);
-    
+
     {% if idamId%}
         $('select#jurisdictionDropdown>option').filter(function() { return $(this).val() == "{{jurisdiction}}"; }).prop('selected', true);
         updateCaseTypeBasedOn($("select#jurisdictionDropdown")[0].selectedIndex -1);
@@ -115,7 +115,7 @@
 {%endblock%}
  {% block content %}
  {% include "menu.html" %}
-<h2 class="heading-large padding">{{heading}}</h2>
+<h2 class="heading-large padding">{{ heading }}</h2>
 
 <div class="padding">
     {% if (error)%}
@@ -125,19 +125,19 @@
     {% endif %}
 
     <form id="createuserform" name="createuserform" method="POST" action="/createuser">
-    
+
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
           <input class="form-control" id="currentjurisdiction" name="currentjurisdiction" type="hidden" value="{{currentjurisdiction}}">
-            <label class="form-label" for="first-name-2">User idam ID</label>
+            <label class="form-label" for="first-name-2">User IdAM ID</label>
             {% if idamId%}
                 <label class="form-label-bold" >{{idamId}}</label><br><br>
                  <input class="form-control" id="idamId" name="idamId" type="hidden" value="{{idamId}}"/>
                  <input class="form-control" id="update" name="update" type="hidden" value="{{update}}"/>
-                 
+
             {% else %}
-                <input class="form-control" id="idamId" name="idamId" type="text"/><br><br> 
-            {% endif%} 
+                <input class="form-control" id="idamId" name="idamId" type="text"/><br><br>
+            {% endif%}
             <input type="hidden" id="jurisdiction" name="jurisdiction" value="{{jurisdiction | safe}}"/>
             <label class="form-label" >Work basket default jurisdiction</label>
             {{  dropdown("jurisdictionDropdown") }}
@@ -145,10 +145,10 @@
             {{   dropdown("caseTypeDropdown") }}
             <label class="form-label">Work basket default state</label>
             {{  dropdown("stateDropdown")}}
-        </div> 
+        </div>
         <button type="submit" class="button" value="Submit">{{submitButtonText}}</button>
          <a href="/userprofiles" class="button">Cancel</a>
     </form>
     </div>
-  
+
   {% endblock %}

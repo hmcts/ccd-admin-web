@@ -9,8 +9,10 @@ import { Validator } from "../validators/validate";
 const router = express.Router();
 const classifications = [{ id: "PUBLIC", name: "PUBLIC" },
 { id: "PRIVATE", name: "PRIVATE" }, { id: "RESTRICTED", name: "RESTRICTED" }];
-const createUserRoleText = "Create User Roles";
-const updateUserRoleText = "Update User Roles";
+const createUserRoleText = "Create";
+const updateUserRoleText = "Update";
+const createUserRoleHeading = "Create User Role";
+const updateUserRoleHeading = "Update User Role";
 const url = config.get("adminWeb.alluserroles_url");
 
 /* GET User roles landing page. */
@@ -57,6 +59,7 @@ router.get("/create-user-role-form", (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
   responseContent.submitUserRoleEndPoint = "/createuserrole";
   responseContent.securityClassifications = classifications;
+  responseContent.heading = createUserRoleHeading;
   responseContent.submitButtonText = createUserRoleText;
 
   if (req.session.error) {
@@ -96,6 +99,7 @@ function validateUpdate(req, res, next) {
     responseContent.submitUserRoleEndPoint = "/updateuserrole";
     responseContent.securityClassifications = classifications;
     responseContent.chosenClassification = req.body.classification;
+    responseContent.heading = updateUserRoleHeading;
     responseContent.submitButtonText = updateUserRoleText;
     if (req.session.error) {
       responseContent.error = req.session.error;
@@ -134,6 +138,7 @@ router.post("/updateuserroleform", validateUpdateForm, (req, res, next) => {
   responseContent.submitUserRoleEndPoint = "/updateuserrole";
   responseContent.securityClassifications = classifications;
   responseContent.chosenClassification = req.body.classification;
+  responseContent.heading = updateUserRoleHeading;
   responseContent.submitButtonText = updateUserRoleText;
   if (req.session.error) {
     responseContent.error = req.session.error;

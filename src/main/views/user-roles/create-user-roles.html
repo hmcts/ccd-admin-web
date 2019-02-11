@@ -3,7 +3,7 @@
 {% from "../macros/formElements.html" import dateMacro %}
 {% from "../macros/csrf.html" import csrfProtection %}
 {% block page_title %}
-  Create User role
+  {{ heading }}
 {% endblock %}
 {% block head%}
   {{super()}}
@@ -38,7 +38,7 @@
 {%endblock%}
  {% block content %}
  {% include "menu.html" %}
-<h2 class="heading-large padding">Create User Roles</h2>
+<h2 class="heading-large padding">{{ heading }}</h2>
 
 <div class="padding">
     {% if (error)%}
@@ -51,7 +51,7 @@
 
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
-            <label class="form-label" for="userroles">User Roles</label>
+            <label class="form-label" for="userroles">User Role</label>
             {%if update == true%}
                  <input type="hidden" id="role" name="role" value="{{role}}" />
                  <label class="form-label-bold" >{{role}}</label><br><br>
@@ -59,7 +59,7 @@
             {% else %}
                  <input type="text" class="form-control" id="role" name="role" maxlength="100"/><br><br>
             {% endif %}
-            <label class="form-label">Security Classifications</label>
+            <label class="form-label">Security Classification</label>
             {{serverListChosenValue(securityClassifications, "classification", chosenClassification)}}
         </div>
         <button type="submit" class="button" value="Submit">{{submitButtonText}}</button>

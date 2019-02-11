@@ -2,7 +2,7 @@
 {% from "macros/csrf.html" import csrfProtection %}
 
 {% block page_title %}
-  User roles
+  User Roles
 {% endblock %}
  {% block head%}
   {{super()}}
@@ -22,7 +22,7 @@
             {{error.text}}
         </div>
   {% endif %}
- <a href="/create-user-role-form?save=create" class="button rightAlign" value="Submit">Create User Role</a>
+ <a href="/create-user-role-form?save=create" class="button rightAlign">Create User Role</a>
  {% if userroles.length == 0 %}
  <table border="1">
     <thead>
@@ -66,7 +66,7 @@
         </div>
       </td>
       <td>
-            <a href="#" class="button" value="Submit">Delete</a>
+        <a href="#" class="button">Delete</a>
       </td>
     </tr>
     {% endfor %}
