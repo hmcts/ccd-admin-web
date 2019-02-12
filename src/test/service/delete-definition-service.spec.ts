@@ -29,9 +29,7 @@ describe("Test Delete Definition service", () => {
     const config = {
       get: sinon.stub(),
     };
-    // Note: Not a typo - the base URLs for creating and deleting a Definition are exactly the same, hence reusing the
-    // create one
-    config.get.withArgs("adminWeb.createdefinition_url").returns(deleteDefinitionUrl);
+    config.get.withArgs("adminWeb.deletedefinition_url").returns(deleteDefinitionUrl);
 
     deleteDefinition = proxyquire("../../main/service/delete-definition-service", {
       config,

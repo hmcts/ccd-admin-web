@@ -127,6 +127,7 @@ module "ccd-admin-web" {
     ADMIN_ALL_USER_ROLES_URL = "${local.def_store_url}/api/user-roles"
     ADMINWEB_CREATE_DEFINITION_URL = "${local.def_store_url}/api/draft"
     ADMINWEB_UPDATE_DEFINITION_URL = "${local.def_store_url}/api/draft/save"
+    ADMINWEB_DELETE_DEFINITION_URL = "${local.def_store_url}/api/draft"
     ADMINWEB_DEFINITIONS_URL = "${local.def_store_url}/api/drafts"
     ADMINWEB_WHOAMI_URL = "${local.def_store_url}/api/idam/profile"
     ADMINWEB_IMPORT_AUDITS_URL = "${local.def_store_url}/api/import-audits"

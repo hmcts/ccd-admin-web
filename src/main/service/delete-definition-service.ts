@@ -4,9 +4,7 @@ import { Logger } from "@hmcts/nodejs-logging";
 
 export function deleteDefinition(req) {
   const logger = Logger.getLogger(__filename);
-  // Note: Not a typo - the base URLs for creating and deleting a Definition are exactly the same, hence reusing the
-  // create one
-  const url = config.get("adminWeb.createdefinition_url");
+  const url = config.get("adminWeb.deletedefinition_url");
 
   const headers = {
     Accept: "application/json",
