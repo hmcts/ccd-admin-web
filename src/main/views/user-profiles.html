@@ -2,7 +2,7 @@
 {% from "macros/csrf.html" import csrfProtection %}
 
 {% block page_title %}
-  User profiles
+  User Profiles
 {% endblock %}
 {% block head %}
   {{super()}}
@@ -22,7 +22,7 @@
       {{error.text}}
     </div>
   {% endif %}
-  <a href="/createuser" class="button rightAlign" value="Submit">Create User</a>
+  <a href="/createuser" class="button rightAlign">Create User</a>
 
   {% if dataItems.length == 0 %}
     <table border="1">
@@ -91,7 +91,7 @@
                 </div>
               </td>
               <td>
-                <a href="/deleteuser?idamId={{userprofile.id | urlencode}}" class="button rightAlign" value="Submit">Delete</a>
+                <a href="/deleteitem?item=user&idamId={{userprofile.id | urlencode}}" class="button rightAlign">Delete</a>
               </td>
             </tr>
           {% endfor %}
