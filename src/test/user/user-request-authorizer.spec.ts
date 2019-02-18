@@ -23,6 +23,7 @@ describe("UserRequestAuthorizer", () => {
 
     let request;
     let userResolver;
+    let roleAuthorizer;
 
     let userRequestAuthorizer;
 
@@ -34,8 +35,12 @@ describe("UserRequestAuthorizer", () => {
       userResolver = {
         getTokenDetails: sinon.stub().returns(Promise.resolve(DETAILS)),
       };
+      roleAuthorizer = {
+        isUserAuthorized: sinon.stub().returns(true),
+      };
 
       userRequestAuthorizer = proxyquire("../../main/user/user-request-authorizer", {
+      "../role/roles-based-authorizer": roleAuthorizer,
       "./user-resolver": userResolver,
       });
     });
@@ -95,6 +100,31 @@ describe("UserRequestAuthorizer", () => {
           done();
         })
         .catch(() => done(new Error("Promise should have been resolved")));
+    });
+
+    it("should resolve if the user has an authorized role", () => {
+      return Promise.resolve(userRequestAuthorizer.authorise(request))
+        .then((result) => {
+          expect(roleAuthorizer.isUserAuthorized).to.have.been.calledWith(DETAILS);
+          expect(result).to.equal(DETAILS);
+        })
+        .catch(() => {
+          throw new Error("Promise should have been resolved");
+        });
+    });
+
+    it("should reject if the user has no authorized roles", (done) => {
+      roleAuthorizer.isUserAuthorized.returns(false);
+
+      userRequestAuthorizer.authorise(request)
+        .then(() => {
+          expect(roleAuthorizer.isUserAuthorized).to.have.been.calledWith(DETAILS);
+          done(new Error("Promise should have been rejected"));
+        })
+        .catch((error) => {
+          expect(error).to.equal(userRequestAuthorizer.ERROR_UNAUTHORISED_ROLE);
+          done();
+        });
     });
   });
 });

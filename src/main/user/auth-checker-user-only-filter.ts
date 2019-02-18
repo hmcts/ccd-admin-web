@@ -15,8 +15,12 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
     .then((user) => req.authentication.user = user)
     .then(() => next())
     .catch((error) => {
-      logger.warn("Unsuccessful user authentication", error);
-      res.redirect(302, `${get("adminWeb.login_url")}/?response_type=code&client_id=` +
-        `${get("idam.oauth2.client_id")}&redirect_uri=${REDIRECT_URI}`);
+      if (error.status === 403) {
+        next(error);
+      } else {
+        logger.warn("Unsuccessful user authentication", error);
+        res.redirect(302, `${get("adminWeb.login_url")}/?response_type=code&client_id=` +
+          `${get("idam.oauth2.client_id")}&redirect_uri=${REDIRECT_URI}`);
+      }
     });
 };
