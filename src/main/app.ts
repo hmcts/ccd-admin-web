@@ -16,6 +16,7 @@ const enableAppInsights = require("./app-insights/app-insights");
 enableAppInsights();
 
 import { serviceFilter } from "./service/service-filter";
+import { COOKIE_ACCESS_TOKEN } from "./user/user-request-authorizer";
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
@@ -84,10 +85,15 @@ app.use((req, res) => {
 
 // error handler
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  logger.error(`${err.stack || err}`);
+  logger.error(`${err.stack || err.error}`);
   // set locals
   res.locals.message = err.message;
   res.locals.error = err;
+
+  // If the user could not be authenticated, clear the accessToken cookie to allow the user to try again
+  if (!req.authentication.user) {
+    res.clearCookie(COOKIE_ACCESS_TOKEN);
+  }
 
   res.status(err.status || 500);
   req.authentication.user ? res.render("home") : res.render("error");
