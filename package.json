@@ -95,7 +95,7 @@
     "pa11y": "^4.13.2",
     "proxyquire": "^2.0.1",
     "sass-lint": "^1.12.1",
-    "sinon": "^3.3.0",
+    "sinon": "^7.2.3",
     "sinon-chai": "^2.13.0",
     "sinon-express-mock": "^2.0.4",
     "sonar-scanner": "^3.0.3",
