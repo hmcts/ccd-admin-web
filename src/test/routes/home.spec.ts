@@ -22,7 +22,7 @@ describe("Home page", () => {
     });
 
     it("should return Import Case Definition page when authenticated", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
       idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
@@ -58,7 +58,7 @@ describe("Home page", () => {
     });
 
     it("should return 500", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
       idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
@@ -86,7 +86,7 @@ describe("Home page", () => {
     });
 
     it("should redirect to Import Case Definition page when authenticated", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
       idamServiceMock.resolveRetrieveServiceToken();
 
       return request(app)

@@ -10,7 +10,7 @@ describe("on POST /updatedefinition", () => {
   });
 
   it("should respond with Update Definition form populated with response when authenticated", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", "admin");
+    idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")

@@ -27,7 +27,7 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete User Profile page when authenticated", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
       idamServiceMock.resolveRetrieveServiceToken();
 
       return request(app)
@@ -43,7 +43,7 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete Definition page when authenticated", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
       idamServiceMock.resolveRetrieveServiceToken();
 
       return request(app)

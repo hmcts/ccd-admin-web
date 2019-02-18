@@ -20,7 +20,7 @@ describe("on GET /createdefinition", () => {
   });
 
   it("should respond with Create Definition form and populated response when authenticated", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", "admin");
+    idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
     idamServiceMock.resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
@@ -38,7 +38,7 @@ describe("on GET /createdefinition", () => {
   });
 
   it("should handle error when accessing Create Definition form page", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", "admin");
+    idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
     idamServiceMock.resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
@@ -58,7 +58,7 @@ describe("on POST /createdefinition", () => {
   });
 
   it("should redirect to Definitions list page on creating a Definition successfully", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", "admin");
+    idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")
       .post("")
@@ -77,7 +77,7 @@ describe("on POST /createdefinition", () => {
   });
 
   it("should respond with error if the Definition data is empty", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", "admin");
+    idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
     idamServiceMock.resolveRetrieveServiceToken();
 
     return request(appTest)
@@ -93,7 +93,7 @@ describe("on POST /createdefinition", () => {
   });
 
   it("should respond with Create Definition form due to server error", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", "admin");
+    idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")
       .post("")
@@ -112,7 +112,7 @@ describe("on POST /createdefinition", () => {
   });
 
   it("should redirect to Definitions list page on updating a Definition successfully", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", "admin");
+    idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft/save")
       .put("")

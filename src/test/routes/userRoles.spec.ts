@@ -20,7 +20,7 @@ describe("on Get /create-user-role-form", () => {
     });
 
     it("should respond with create user roles form and populated response when authenticated", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
 
         return request(app)
@@ -48,7 +48,7 @@ describe("on Get /user-roles-list", () => {
     });
 
     it("should respond with user roles list page and populated response when authenticated", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451")
             .get("/api/user-roles")
@@ -81,7 +81,7 @@ describe("on Get /user-roles", () => {
     });
 
     it("should respond with user roles page and populated response when authenticated", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451")
             .get("/api/user-roles")
@@ -106,7 +106,7 @@ describe("on POST /createuserrole", () => {
     });
 
     it("should respond with user roles page and populated response when authenticated", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451/api/user-role")
             .post("")
@@ -126,7 +126,7 @@ describe("on POST /createuserrole", () => {
     });
 
     it("should respond with error when role is empty", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451/api/user-role")
             .post("")
@@ -145,7 +145,7 @@ describe("on POST /createuserrole", () => {
     });
 
     it("should respond with error when classification is empty", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451/api/user-role")
             .post("")
@@ -165,7 +165,7 @@ describe("on POST /createuserrole", () => {
     });
 
     it("should respond with create user form due to server error", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451/api/user-role")
             .put("")
@@ -191,7 +191,7 @@ describe("on POST /updateuserrole", () => {
     });
 
     it("should respond with user roles page and populated response when authenticated", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451/api/user-role")
             .put("")
@@ -211,7 +211,7 @@ describe("on POST /updateuserrole", () => {
     });
 
     it("should respond with error when role is empty", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451/api/user-role")
             .put("")
@@ -227,7 +227,7 @@ describe("on POST /updateuserrole", () => {
     });
 
     it("should respond with error when classification is empty", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451/api/user-role")
             .put("")
@@ -244,7 +244,7 @@ describe("on POST /updateuserrole", () => {
     });
 
     it("should respond with create user form due to server error", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451/api/user-role")
             .put("")
@@ -270,7 +270,7 @@ describe("on POST /updateuserroleform", () => {
     });
 
     it("should respond with update user form and populated response when authenticated", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
 
         return request(appTest)
@@ -285,7 +285,7 @@ describe("on POST /updateuserroleform", () => {
     });
 
     it("should redirect with error message when invalid role is passed", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
 
         return request(appTest)
@@ -296,7 +296,7 @@ describe("on POST /updateuserroleform", () => {
     });
 
     it("should redirect with error message when current jurisdiction is empty", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
 
         return request(appTest)

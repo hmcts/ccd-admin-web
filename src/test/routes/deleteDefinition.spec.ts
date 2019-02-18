@@ -8,7 +8,7 @@ describe("Confirm Delete page", () => {
     describe("on POST /deletedefinition", () => {
 
         it("should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", "admin");
+            idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
             idamServiceMock.resolveRetrieveServiceToken();
 
             return request(appTest)
@@ -22,7 +22,7 @@ describe("Confirm Delete page", () => {
                 });
         });
         it("should redirect to the Definitions list when No is chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", "admin");
+            idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
             idamServiceMock.resolveRetrieveServiceToken();
 
             return request(appTest)
@@ -36,7 +36,7 @@ describe("Confirm Delete page", () => {
         });
 
         it("should redirect to the Definitions list when Yes is chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", "admin");
+            idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
             idamServiceMock.resolveRetrieveServiceToken();
 
             mock("http://localhost:4451")
@@ -54,7 +54,7 @@ describe("Confirm Delete page", () => {
         });
 
         it("should redirect to the Definitions list when Yes is chosen but an error occurred", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", "admin");
+            idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
             idamServiceMock.resolveRetrieveServiceToken();
 
             mock("http://localhost:4451")

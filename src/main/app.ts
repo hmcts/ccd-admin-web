@@ -91,10 +91,10 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   res.locals.error = err;
 
   // If the user could not be authenticated, clear the accessToken cookie to allow the user to try again
-  if (!req.authentication.user) {
+  if (req.authentication && !req.authentication.user) {
     res.clearCookie(COOKIE_ACCESS_TOKEN);
   }
 
   res.status(err.status || 500);
-  req.authentication.user ? res.render("home") : res.render("error");
+  req.authentication && req.authentication.user ? res.render("home") : res.render("error");
 });

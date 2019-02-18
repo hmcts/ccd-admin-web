@@ -21,7 +21,7 @@ describe("Jurisdiction page", () => {
     });
 
     it("should return jurisdiction list", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
       idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
@@ -38,5 +38,4 @@ describe("Jurisdiction page", () => {
         });
     });
   });
-
 });

@@ -20,7 +20,7 @@ describe("on Get /createuser", () => {
     });
 
     it("should respond with create user form and populated response when authenticated", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
 
         mock("http://localhost:4451")
@@ -38,7 +38,7 @@ describe("on Get /createuser", () => {
     });
 
     it("should handle error when accessing create user form page", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
 
         mock("http://localhost:4451")
@@ -58,7 +58,7 @@ describe("on POST /createuser", () => {
     });
 
     it("should respond with create user form and populated response when authenticated", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4453/users/save")
             .put("")
@@ -78,7 +78,7 @@ describe("on POST /createuser", () => {
     });
 
     it("should respond with error when invalid email is passed", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4453/users")
             .put("")
@@ -97,7 +97,7 @@ describe("on POST /createuser", () => {
             });
     });
     it("should respond with error when jurisdiction is empty", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
 
         return request(appTest)
@@ -114,7 +114,7 @@ describe("on POST /createuser", () => {
     });
 
     it("should respond with create user form due to server error", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", "admin");
+        idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
         idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4453/users/save")
             .put("")
