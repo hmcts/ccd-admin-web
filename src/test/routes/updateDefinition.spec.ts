@@ -5,12 +5,14 @@ import * as mock from "nock";
 import * as request from "supertest";
 
 describe("on POST /updatedefinition", () => {
+  const CCD_IMPORT_ROLE = "ccd-import";
+
   beforeEach(() => {
     mock.cleanAll();
   });
 
   it("should respond with Update Definition form populated with response when authenticated", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")

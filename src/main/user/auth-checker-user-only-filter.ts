@@ -1,4 +1,4 @@
-import { authorise } from "./user-request-authorizer";
+import { authorize } from "./user-request-authorizer";
 import { get } from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 
@@ -11,7 +11,7 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
   req.authentication = {};
   const logger = Logger.getLogger(__filename);
 
-  authorise(req)
+  authorize(req)
     .then((user) => req.authentication.user = user)
     .then(() => next())
     .catch((error) => {

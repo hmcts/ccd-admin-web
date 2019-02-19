@@ -6,12 +6,12 @@ export const ERROR_TOKEN_MISSING = {
   message: "You are not authorised to access this resource",
   status: 401,
 };
-export const ERROR_UNAUTHORISED_ROLE = {
+export const ERROR_UNAUTHORIZED_ROLE = {
   error: "Unauthorised role",
   message: "You are not authorised to access this resource",
   status: 403,
 };
-export const ERROR_UNAUTHORISED_USER_ID = {
+export const ERROR_UNAUTHORIZED_USER_ID = {
   error: "Unauthorised user",
   message: "You are not authorised to access this resource",
   status: 403,
@@ -22,13 +22,13 @@ export const AUTHORIZATION = "Authorization";
 
 const authorizeRoles = (user) => new Promise((resolve, reject) => {
   if (!isUserAuthorized(user)) {
-    reject(ERROR_UNAUTHORISED_ROLE);
+    reject(ERROR_UNAUTHORIZED_ROLE);
   } else {
     resolve();
   }
 });
 
-export const authorise = (request) => {
+export const authorize = (request) => {
   let user;
   const bearerToken = request.get(AUTHORIZATION) || (request.cookies ? request.cookies[COOKIE_ACCESS_TOKEN] : null);
 

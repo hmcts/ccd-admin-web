@@ -31,7 +31,7 @@ describe("authCheckerUserOnlyFilter", () => {
     res = {};
 
     userRequestAuthorizer = {
-      authorise: sinon.stub(),
+      authorize: sinon.stub(),
     };
 
     const config = {
@@ -48,7 +48,7 @@ describe("authCheckerUserOnlyFilter", () => {
 
   describe("when user authorised", () => {
     beforeEach(() => {
-      userRequestAuthorizer.authorise.returns(Promise.resolve(user));
+      userRequestAuthorizer.authorize.returns(Promise.resolve(user));
     });
 
     it("should call next middleware without error", (done) => {
@@ -82,7 +82,7 @@ describe("authCheckerUserOnlyFilter", () => {
         status: 401,
       };
 
-      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+      userRequestAuthorizer.authorize.returns(Promise.reject(error));
     });
 
     it("should redirect to the IdAM login URL", (done) => {
@@ -114,7 +114,7 @@ describe("authCheckerUserOnlyFilter", () => {
         status: 403,
       };
 
-      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+      userRequestAuthorizer.authorize.returns(Promise.reject(error));
     });
 
     it("should call the error-handling middleware to render an error page", (done) => {

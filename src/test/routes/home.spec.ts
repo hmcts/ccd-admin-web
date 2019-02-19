@@ -6,6 +6,8 @@ import * as mock from "nock";
 import * as request from "supertest";
 
 describe("Home page", () => {
+  const CCD_IMPORT_ROLE = "ccd-import";
+
   beforeEach(() => {
     mock.cleanAll();
   });
@@ -22,7 +24,7 @@ describe("Home page", () => {
     });
 
     it("should return Import Case Definition page when authenticated", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
@@ -58,7 +60,7 @@ describe("Home page", () => {
     });
 
     it("should return 500", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
@@ -72,7 +74,7 @@ describe("Home page", () => {
           expect(res.statusCode).to.equal(500);
       });
     });
-});
+  });
 
   describe("on GET /", () => {
 
@@ -86,7 +88,7 @@ describe("Home page", () => {
     });
 
     it("should redirect to Import Case Definition page when authenticated", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
       return request(app)

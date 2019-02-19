@@ -6,9 +6,10 @@ import * as request from "supertest";
 
 describe("Confirm Delete page", () => {
     describe("on POST /deleteuser", () => {
+        const CCD_IMPORT_ROLE = "ccd-import";
 
         it("should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
+            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
             idamServiceMock.resolveRetrieveServiceToken();
 
             return request(appTest)
@@ -21,7 +22,7 @@ describe("Confirm Delete page", () => {
                 });
         });
         it("should redirect to the User Profiles list when No is chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
+            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
             idamServiceMock.resolveRetrieveServiceToken();
 
             return request(appTest)
@@ -35,7 +36,7 @@ describe("Confirm Delete page", () => {
         });
 
         it("should redirect to the User Profiles list when Yes is chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
+            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
             idamServiceMock.resolveRetrieveServiceToken();
 
             mock("http://localhost:4453")
@@ -54,7 +55,7 @@ describe("Confirm Delete page", () => {
         });
 
         it("should redirect to the User Profiles list when Yes is chosen but an error occurred", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
+            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
             idamServiceMock.resolveRetrieveServiceToken();
 
             mock("http://localhost:4453")

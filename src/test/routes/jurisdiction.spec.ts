@@ -11,6 +11,8 @@ describe("Jurisdiction page", () => {
   });
 
   describe("on Get /jurisdiction", () => {
+    const CCD_IMPORT_ROLE = "ccd-import";
+
     it("Jurisdiction should redirect to IdAM login page when not authenticated", () => {
       return request(app)
         .get("/jurisdiction")
@@ -21,7 +23,7 @@ describe("Jurisdiction page", () => {
     });
 
     it("should return jurisdiction list", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "ccd-import");
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
