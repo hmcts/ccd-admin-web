@@ -10,8 +10,9 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
   const REDIRECT_URI = encodeURIComponent(`${req.protocol}://${req.get("host")}${PATH_OAUTH2_REDIRECT}`);
   req.authentication = {};
   const logger = Logger.getLogger(__filename);
+  const whitelist = get("security.roles_whitelist") ? get("security.roles_whitelist").split(/\s*,\s*/) : [];
 
-  authorize(req)
+  authorize(req, whitelist)
     .then((user) => req.authentication.user = user)
     .then(() => next())
     .catch((error) => {
