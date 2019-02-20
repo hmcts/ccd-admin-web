@@ -7,6 +7,7 @@ import * as request from "supertest-session";
 import * as sinon from "sinon";
 
 describe("User profiles page", () => {
+  const CCD_IMPORT_ROLE = "ccd-import";
 
   beforeEach(() => {
     const config = {
@@ -18,7 +19,7 @@ describe("User profiles page", () => {
 
   describe("on GET /userprofiles", () => {
     it("should return user profiles list for given Jurisdiction", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
@@ -44,7 +45,7 @@ describe("User profiles page", () => {
     });
 
     it("should return all user profiles list if Jurisdiction is not present in session", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
@@ -72,7 +73,7 @@ describe("User profiles page", () => {
 
   describe("on POST /userprofiles", () => {
     it("should return user profiles list", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
@@ -97,7 +98,7 @@ describe("User profiles page", () => {
         });
     });
     it("should return error from the server", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")

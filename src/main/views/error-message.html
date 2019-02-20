@@ -1,5 +1,5 @@
 {% if error.status %}
-  <p>{{ error }} ({{ error.status }})</p>
+  <p>{{ error.message }} ({{ error.status }})</p>
 {% else %}
   <p>{{ error }}</p>
 {% endif %}

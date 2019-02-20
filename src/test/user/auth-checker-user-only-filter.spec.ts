@@ -31,7 +31,7 @@ describe("authCheckerUserOnlyFilter", () => {
     res = {};
 
     userRequestAuthorizer = {
-      authorise: sinon.stub(),
+      authorize: sinon.stub(),
     };
 
     const config = {
@@ -48,7 +48,7 @@ describe("authCheckerUserOnlyFilter", () => {
 
   describe("when user authorised", () => {
     beforeEach(() => {
-      userRequestAuthorizer.authorise.returns(Promise.resolve(user));
+      userRequestAuthorizer.authorize.returns(Promise.resolve(user));
     });
 
     it("should call next middleware without error", (done) => {
@@ -74,15 +74,15 @@ describe("authCheckerUserOnlyFilter", () => {
     });
   });
 
-  describe("when authorisation failed", () => {
+  describe("when authorisation failed (401)", () => {
     let error;
 
     beforeEach(() => {
       error = {
-        status: 403,
+        status: 401,
       };
 
-      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+      userRequestAuthorizer.authorize.returns(Promise.reject(error));
     });
 
     it("should redirect to the IdAM login URL", (done) => {
@@ -98,6 +98,39 @@ describe("authCheckerUserOnlyFilter", () => {
         try {
           expect(err).to.equal(error);
           expect(res.redirect).to.be.calledWith(302, completeUrl);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+  });
+
+  describe("when authorisation is forbidden (403)", () => {
+    let error;
+
+    beforeEach(() => {
+      error = {
+        status: 403,
+      };
+
+      userRequestAuthorizer.authorize.returns(Promise.reject(error));
+    });
+
+    it("should call the error-handling middleware to render an error page", (done) => {
+      res = {
+        render: (url) => {
+          assert.equal(url, "error");
+          done();
+        },
+      };
+
+      const next = () => { res.render("error"); };
+
+      filter(req, res, next, (err) => {
+        try {
+          expect(err).to.equal(error);
+          expect(next).to.be.calledWith(error);
           done();
         } catch (e) {
           done(e);

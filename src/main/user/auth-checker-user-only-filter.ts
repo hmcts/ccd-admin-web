@@ -1,4 +1,4 @@
-import { authorise } from "./user-request-authorizer";
+import { authorize } from "./user-request-authorizer";
 import { get } from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 
@@ -11,12 +11,16 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
   req.authentication = {};
   const logger = Logger.getLogger(__filename);
 
-  authorise(req)
+  authorize(req)
     .then((user) => req.authentication.user = user)
     .then(() => next())
     .catch((error) => {
       logger.warn("Unsuccessful user authentication", error);
-      res.redirect(302, `${get("adminWeb.login_url")}/?response_type=code&client_id=` +
-        `${get("idam.oauth2.client_id")}&redirect_uri=${REDIRECT_URI}`);
+      if (error.status === 403) {
+        next(error);
+      } else {
+        res.redirect(302, `${get("adminWeb.login_url")}/?response_type=code&client_id=` +
+          `${get("idam.oauth2.client_id")}&redirect_uri=${REDIRECT_URI}`);
+      }
     });
 };
