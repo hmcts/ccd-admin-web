@@ -13,6 +13,7 @@ security:
     mediaSrc: 'self'
     frameSrc: 'none'
     imgSrc: ['self', 'www.google-analytics.com', 'hmctspiwik.useconnect.co.uk']
+  roles_whitelist: "ccd-import"
 idam:
   base_url: http://localhost:4501
   s2s_url: http://localhost:4502

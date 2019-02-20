@@ -23,6 +23,7 @@ describe("UserRequestAuthorizer", () => {
 
     let request;
     let userResolver;
+    let roleAuthorizer;
 
     let userRequestAuthorizer;
 
@@ -34,8 +35,12 @@ describe("UserRequestAuthorizer", () => {
       userResolver = {
         getTokenDetails: sinon.stub().returns(Promise.resolve(DETAILS)),
       };
+      roleAuthorizer = {
+        isUserAuthorized: sinon.stub().returns(true),
+      };
 
       userRequestAuthorizer = proxyquire("../../main/user/user-request-authorizer", {
+      "../role/roles-based-authorizer": roleAuthorizer,
       "./user-resolver": userResolver,
       });
     });
@@ -44,7 +49,7 @@ describe("UserRequestAuthorizer", () => {
       request.get.returns(null);
       request.cookies = null;
 
-      userRequestAuthorizer.authorise(request)
+      userRequestAuthorizer.authorize(request)
         .then(() => done(new Error("Promise should have been rejected")))
         .catch((error) => {
           expect(error).to.equal(userRequestAuthorizer.ERROR_TOKEN_MISSING);
@@ -56,7 +61,7 @@ describe("UserRequestAuthorizer", () => {
       const ERROR = { error: "oops", status: 401 };
       userResolver.getTokenDetails.returns(Promise.reject(ERROR));
 
-      userRequestAuthorizer.authorise(request)
+      userRequestAuthorizer.authorize(request)
         .then(() => done(new Error("Promise should have been rejected")))
         .catch((error) => {
           expect(error).to.equal(ERROR);
@@ -67,7 +72,7 @@ describe("UserRequestAuthorizer", () => {
     it("should NOT reject missing Authorization header when AccessToken cookie present", (done) => {
       request.get.returns(null);
 
-      userRequestAuthorizer.authorise(request)
+      userRequestAuthorizer.authorize(request)
         .then(() => done())
         .catch((error) => {
           expect(error).not.to.equal(userRequestAuthorizer.ERROR_TOKEN_MISSING);
@@ -78,7 +83,7 @@ describe("UserRequestAuthorizer", () => {
     it("should use the AccessToken cookie when present, to obtain user details", (done) => {
       request.get.returns(null);
 
-      userRequestAuthorizer.authorise(request)
+      userRequestAuthorizer.authorize(request)
         .then(() => {
           expect(userResolver.getTokenDetails).to.have.been.calledWith(COOKIES[userReqAuth.COOKIE_ACCESS_TOKEN]);
           done();
@@ -89,12 +94,37 @@ describe("UserRequestAuthorizer", () => {
     it("should use the AccessToken cookie to set an accessToken property on the request", (done) => {
       request.get.returns(null);
 
-      userRequestAuthorizer.authorise(request)
+      userRequestAuthorizer.authorize(request)
         .then(() => {
           expect(request.accessToken).to.equal(`Bearer ${COOKIES[userReqAuth.COOKIE_ACCESS_TOKEN]}`);
           done();
         })
         .catch(() => done(new Error("Promise should have been resolved")));
+    });
+
+    it("should resolve if the user has an authorized role", () => {
+      return Promise.resolve(userRequestAuthorizer.authorize(request))
+        .then((result) => {
+          expect(roleAuthorizer.isUserAuthorized).to.have.been.calledWith(DETAILS);
+          expect(result).to.equal(DETAILS);
+        })
+        .catch(() => {
+          throw new Error("Promise should have been resolved");
+        });
+    });
+
+    it("should reject if the user has no authorized roles", (done) => {
+      roleAuthorizer.isUserAuthorized.returns(false);
+
+      userRequestAuthorizer.authorize(request)
+        .then(() => {
+          expect(roleAuthorizer.isUserAuthorized).to.have.been.calledWith(DETAILS);
+          done(new Error("Promise should have been rejected"));
+        })
+        .catch((error) => {
+          expect(error).to.equal(userRequestAuthorizer.ERROR_UNAUTHORIZED_ROLE);
+          done();
+        });
     });
   });
 });

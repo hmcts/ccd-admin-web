@@ -16,6 +16,7 @@ describe("Confirm Delete page", () => {
   });
 
   describe("on GET /deleteitem", () => {
+    const CCD_IMPORT_ROLE = "ccd-import";
 
     it("should redirect to Import page when not authenticated", () => {
       return request(app)
@@ -27,7 +28,7 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete User Profile page when authenticated", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
       return request(app)
@@ -43,7 +44,7 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete Definition page when authenticated", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", "admin");
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
       return request(app)

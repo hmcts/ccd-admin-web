@@ -1,8 +1,14 @@
-<html>
-  <head>
-  </head>
-  <body>
-    <h2>Authentication failure</h2>
+{% extends "layout_template.html" %}
+{% block page_title %}
+  Error
+{% endblock %}
+{% block content %}
+  {% if error.error %}
+    <h2 class="heading-large padding">{{ error.error | safe }}</h2>
+  {% else %}
+    <h2 class="heading-large padding">{{ error.name }}</h2>
+  {% endif %}
+  <div class="error-summary govuk-error-message">
     {% include "error-message.html" %}
-  </body>
-</html>
+  </div>
+{% endblock %}

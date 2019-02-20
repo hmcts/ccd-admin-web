@@ -131,6 +131,7 @@ module "ccd-admin-web" {
     ADMINWEB_DEFINITIONS_URL = "${local.def_store_url}/api/drafts"
     ADMINWEB_WHOAMI_URL = "${local.def_store_url}/api/idam/profile"
     ADMINWEB_IMPORT_AUDITS_URL = "${local.def_store_url}/api/import-audits"
+    ADMINWEB_ROLES_WHITELIST = "ccd-import,ccd-import-validate"
 
     # Storage Account
     STORAGEACCOUNT_PRIMARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_primary_connection_string.value}"
