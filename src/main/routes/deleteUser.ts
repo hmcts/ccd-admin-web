@@ -1,6 +1,6 @@
-import { deleteUserProfile } from "../service/delete-user-service";
 import { deleteSessionVariables } from "../util/clearSession";
-const router = require("../routes/home");
+import { deleteUserProfile } from "../service/delete-user-service";
+import router from "./home";
 
 /**
  * Delete user profile based on IdAM ID

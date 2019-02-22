@@ -2,9 +2,9 @@ import * as config from "config";
 import { createDefinition } from "../service/create-definition-service";
 import { Definition } from "../domain/definition";
 import { fetch } from "../service/get-service";
+import router from "./home";
 import { sanitize } from "../util/sanitize";
 
-const router = require("../routes/home");
 const url = config.get("adminWeb.jurisdiction_url");
 
 /* GET create definition form. */

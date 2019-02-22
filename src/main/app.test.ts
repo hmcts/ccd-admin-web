@@ -5,7 +5,7 @@ import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
-import { RouterFinder } from "./router/routerFinder";
+import { importAll } from "./import-all/index";
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTest: express.Express = express();
@@ -54,7 +54,7 @@ appTest.use((req, res, next) => {
   next();
 });
 
-appTest.use("/", RouterFinder.findAll(path.join(__dirname, "routes")));
+appTest.use("/", importAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router
 appTest.use((req, res) => {

@@ -1,6 +1,6 @@
+import * as config from "config";
 import * as express from "express";
 import { fetch } from "../service/get-service";
-import * as config from "config";
 
 const url = config.get("adminWeb.import_audits_url");
 
@@ -32,6 +32,4 @@ router.get("/", (req, res, next) => {
   res.redirect(302, "/import");
 });
 
-module.exports = router;
-/* tslint:disable:no-default-export */
 export default router;
