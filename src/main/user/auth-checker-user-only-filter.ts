@@ -13,6 +13,8 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
 
   authorize(req)
     .then((user) => req.authentication.user = user)
+    // DEBUG ONLY
+    .then(() => logger.info("user", req.authentication.user))
     .then(() => next())
     .catch((error) => {
       logger.warn("Unsuccessful user authentication", error);

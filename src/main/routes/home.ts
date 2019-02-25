@@ -13,6 +13,8 @@ router.get("/import", (req, res, next) => {
     const responseContent: { [k: string]: any } = {};
 
     responseContent.importAudits = JSON.parse(response);
+    responseContent.adminWebAuthorization = req.adminWebAuthorization;
+
     if (req.query.page) {
       delete req.session.error;
     }
