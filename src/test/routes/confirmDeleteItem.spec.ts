@@ -3,6 +3,7 @@ import { expect } from "chai";
 import { get } from "config";
 import * as sinon from "sinon";
 import * as idamServiceMock from "../http-mocks/idam";
+import * as mock from "nock";
 import * as request from "supertest";
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
@@ -13,6 +14,7 @@ describe("Confirm Delete page", () => {
       get: sinon.stub(),
     };
     config.get.withArgs("adminWeb.userprofiles_url").returns("http://localhost:4453/users");
+    mock.cleanAll();
   });
 
   describe("on GET /deleteitem", () => {
@@ -30,6 +32,9 @@ describe("Confirm Delete page", () => {
     it("should return Confirm Delete User Profile page when authenticated", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
 
       return request(app)
         .get("/deleteitem")
@@ -46,6 +51,10 @@ describe("Confirm Delete page", () => {
     it("should return Confirm Delete Definition page when authenticated", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
+
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
 
       return request(app)
         .get("/deleteitem")

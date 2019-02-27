@@ -12,6 +12,7 @@ export const adminWebRoleAuthorizerFilter = (req, res, next) => {
   req.adminWebAuthorization = {};
 
   fetch(req, url).then((response) => {
+    debug("response", response);
     logger.info(response);
     req.adminWebAuthorization = JSON.parse(response);
     debug("req.adminWebAuthorization", req.adminWebAuthorization);

@@ -39,6 +39,10 @@ describe("Home page", () => {
           whoImported: "xID_3",
           who_imported: "ID_3"}]);
 
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
       return request(app)
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
@@ -67,6 +71,10 @@ describe("Home page", () => {
         .get("/api/import-audits")
         .replyWithError(500);
 
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
       return request(app)
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
@@ -90,6 +98,10 @@ describe("Home page", () => {
     it("should redirect to Import Case Definition page when authenticated", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
+
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
 
       return request(app)
         .get("/")

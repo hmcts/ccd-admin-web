@@ -25,7 +25,11 @@ describe("on Get /create-user-role-form", () => {
         idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
         idamServiceMock.resolveRetrieveServiceToken();
 
-        return request(app)
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      return request(app)
             .get("/create-user-role-form")
             .set("Cookie", "accessToken=ey123.ey456")
             .then((res) => {
@@ -59,7 +63,11 @@ describe("on Get /user-roles-list", () => {
                 security_classification: "PUBLIC",
             }]);
 
-        return request(app)
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      return request(app)
             .get("/user-roles-list")
             .set("Cookie", "accessToken=ey123.ey456")
             .then((res) => {
@@ -91,6 +99,10 @@ describe("on Get /user-roles", () => {
                 role: "admin",
                 security_classification: "PUBLIC",
             }]);
+
+        mock("http://localhost:4451")
+          .get("/api/idam/adminweb/authorization")
+          .reply(200, [{}]);
 
         return request(app)
             .get("/user-roles")
