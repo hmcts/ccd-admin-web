@@ -1,4 +1,6 @@
+import * as config from "config";
 import * as express from "express";
+import { fetch } from "../service/get-service";
 import * as multer from "multer";
 import { uploadFile } from "../service/import-service";
 
@@ -16,9 +18,9 @@ const upload = multer({
   },
   storage,
 }).single("file");
+const url = config.get("adminWeb.import_audits_url");
 
-/* tslint:disable:no-default-export */
-export default router.post("/import", (req, res, next) => {
+router.post("/import", (req, res, next) => {
   upload(req, res, (err) => {
     if (err) {
       next(err);
@@ -35,3 +37,27 @@ export default router.post("/import", (req, res, next) => {
     }
   });
 });
+
+/* GET Import Definition page. */
+router.get("/import", (req, res, next) => {
+  fetch(req, url).then((response) => {
+    res.status(200);
+    const responseContent: { [k: string]: any } = {};
+
+    responseContent.importAudits = JSON.parse(response);
+    if (req.query.page) {
+      delete req.session.error;
+    }
+    if (req.session.error) {
+      responseContent.error = req.session.error;
+      delete req.session.error;
+    }
+    res.render("importDefinition", responseContent);
+  })
+    .catch((error) => {
+      // Call the next middleware, which is the error handler
+      next(error);
+    });
+});
+
+export default router;

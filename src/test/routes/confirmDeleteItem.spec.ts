@@ -1,11 +1,10 @@
 import { app } from "../../main/app";
 import { expect } from "chai";
 import { get } from "config";
-import * as sinon from "sinon";
 import * as idamServiceMock from "../http-mocks/idam";
+import { JSDOM } from "jsdom";
 import * as request from "supertest";
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+import * as sinon from "sinon";
 
 describe("Confirm Delete page", () => {
   beforeEach(() => {
