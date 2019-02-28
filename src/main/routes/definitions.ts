@@ -1,9 +1,9 @@
 import * as config from "config";
 import { render } from "../util/render";
+import router from "./home";
 import { validate } from "../validators/validateJurisdiction";
 
 const definitionsPage = "definitions";
-const router = require("../routes/home");
 const url = config.get("adminWeb.definitions_url");
 
 /* POST */

@@ -1,8 +1,8 @@
 import * as config from "config";
 import { render } from "../util/render";
+import router from "./home";
 import { validate } from "../validators/validateJurisdiction";
 
-const router = require("../routes/home");
 const url = config.get("adminWeb.userprofiles_url");
 const userProfilesPage = "user-profiles";
 

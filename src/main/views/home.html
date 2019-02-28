@@ -1,26 +1,5 @@
 {% extends "layout_template.html" %}
- {% block content %}
- {% include "menu.html" %}
-<h2 class="heading-large padding">Import Case Definition</h2>
- <div class="grid-row">
-     <div class="column-two-thirds padding">
-
-     <form action="/import" method="post" enctype="multipart/form-data">
-           <div class="form-group">
-             {% include "response.html" %}
-             {% include "error-message.html" %}
-            <input type="file" id="file" name="file" accept=".xlsx"/>
-           </div>
-           <div class="form-group">
-             <button type="submit" class="button" value="Submit">Submit</button>
-           </div>
-         </form>
-
-     </div>
-
- </div>
-
-  {% include "import-audits_inc.html" %}
-
-  {% endblock %}
-
+{% block content %}
+{% include "menu.html" %}
+<h2 class="heading-large padding">Welcome to CCD Admin Web</h2>
+{% endblock %}
