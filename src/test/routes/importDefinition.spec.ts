@@ -39,10 +39,13 @@ describe("Import Definition page", () => {
           whoImported: "xID_3",
           who_imported: "ID_3"}]);
 
+<<<<<<< HEAD
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, [{}]);
 
+=======
+>>>>>>> 9f6825153f592b8b5bd9ac8a1d78d8cd84c92f88
       return request(app)
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
