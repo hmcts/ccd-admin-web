@@ -1,11 +1,11 @@
-import { fetch } from "../service/get-service";
 import * as config from "config";
 import { createUserProfile } from "../service/create-user-service";
+import { fetch } from "../service/get-service";
+import router from "./home";
+import { sanitize } from "../util/sanitize";
 import { UserProfile } from "../domain/userprofile";
 import { validate } from "../validators/validateUserProfile";
-const router = require("../routes/home");
 
-import { sanitize } from "../util/sanitize";
 const url = config.get("adminWeb.jurisdiction_url");
 /* GET create user form. */
 router.get("/createuser", (req, res, next) => {

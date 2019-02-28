@@ -1,11 +1,11 @@
-import * as express from "express";
 import * as config from "config";
-
-import { UserRole } from "../domain/userrole";
-import { saveUserRole } from "../service/update-user-role";
+import * as express from "express";
 import { fetch } from "../service/get-service";
 import { sanitize } from "../util/sanitize";
+import { saveUserRole } from "../service/update-user-role";
+import { UserRole } from "../domain/userrole";
 import { Validator } from "../validators/validate";
+
 const router = express.Router();
 const classifications = [{ id: "PUBLIC", name: "PUBLIC" },
 { id: "PRIVATE", name: "PRIVATE" }, { id: "RESTRICTED", name: "RESTRICTED" }];
@@ -166,5 +166,4 @@ router.post("/updateuserrole", validateUpdate, (req, res, next) => {
     });
 });
 
-module.exports = router;
 export default router;

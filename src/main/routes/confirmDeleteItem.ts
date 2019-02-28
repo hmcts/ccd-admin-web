@@ -1,4 +1,4 @@
-const router = require("../routes/home");
+import router from "./home";
 
 /* GET */
 router.get("/deleteitem", (req, res, next) => {

@@ -1,8 +1,9 @@
-import { fetch } from "../service/get-service";
 import * as config from "config";
-const router = require("../routes/home");
-import { validate } from "../validators/validateUserProfile";
+import { fetch } from "../service/get-service";
+import router from "./home";
 import { sanitize } from "../util/sanitize";
+import { validate } from "../validators/validateUserProfile";
+
 const url = config.get("adminWeb.jurisdiction_url");
 
 // Apply Validation

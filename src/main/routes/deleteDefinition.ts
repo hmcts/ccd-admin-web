@@ -1,6 +1,6 @@
 import { deleteDefinition } from "../service/delete-definition-service";
 import { deleteSessionVariables } from "../util/clearSession";
-const router = require("../routes/home");
+import router from "./home";
 
 /**
  * Delete Definition based on jurisdiction ID and version

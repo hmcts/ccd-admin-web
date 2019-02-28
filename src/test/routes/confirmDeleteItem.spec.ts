@@ -1,12 +1,11 @@
 import { app } from "../../main/app";
 import { expect } from "chai";
 import { get } from "config";
-import * as sinon from "sinon";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
+import { JSDOM } from "jsdom";
 import * as request from "supertest";
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+import * as sinon from "sinon";
 
 describe("Confirm Delete page", () => {
   beforeEach(() => {
@@ -34,7 +33,7 @@ describe("Confirm Delete page", () => {
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {});
 
       return request(app)
         .get("/deleteitem")

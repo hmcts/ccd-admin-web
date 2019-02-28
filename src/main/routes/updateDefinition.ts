@@ -1,8 +1,8 @@
 import * as config from "config";
 import { fetch } from "../service/get-service";
+import router from "./home";
 import { sanitize } from "../util/sanitize";
 
-const router = require("../routes/home");
 const url = config.get("adminWeb.jurisdiction_url");
 
 /* POST form data to Create Definition form. */

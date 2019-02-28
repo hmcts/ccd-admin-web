@@ -10,7 +10,7 @@ import * as favicon from "serve-favicon";
 import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
 import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
-import { RouterFinder } from "./router/routerFinder";
+import { importAll } from "./import-all/index";
 
 const enableAppInsights = require("./app-insights/app-insights");
 
@@ -77,7 +77,7 @@ if (config.useCSRFProtection === true) {
 app.all(/^\/(?!oauth2redirect|health).*$/, authCheckerUserOnlyFilter);
 app.all(/^\/(?!oauth2redirect|health).*$/, serviceFilter);
 app.all(/^\/(?!oauth2redirect|health).*$/, adminWebRoleAuthorizerFilter);
-app.use("/", RouterFinder.findAll(path.join(__dirname, "routes")));
+app.use("/", importAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router
 app.use((req, res) => {

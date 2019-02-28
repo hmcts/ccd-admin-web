@@ -1,7 +1,9 @@
-import { fetch } from "../service/get-service";
 import * as config from "config";
-const router = require("../routes/home");
+import { fetch } from "../service/get-service";
+import router from "./home";
+
 const url = config.get("adminWeb.jurisdiction_url");
+
 /* GET Jurisdiction page. */
 router.get("/jurisdiction", (req, res, next) => {
   fetch(req, url).then((response) => {
