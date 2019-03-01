@@ -96,5 +96,5 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   }
 
   res.status(err.status || 500);
-  req.authentication && req.authentication.user ? res.render("home") : res.render("error");
+  req.authentication && req.authentication.user ? res.render("importDefinition") : res.render("error");
 });
