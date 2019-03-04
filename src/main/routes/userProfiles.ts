@@ -14,13 +14,7 @@ router.post("/userprofiles", validate, (req, res, next) => {
     const query = {jurisdiction: req.body.jurisdictionName};
     render(req, res, next, url, query, userProfilesPage);
   } else {
-    // const responseContent: { [k: string]: any } = {};
-    // // console.log(ERROR_UNAUTHORIZED_ROLE);
-    // responseContent.error = ERROR_UNAUTHORIZED_ROLE;
-    // res.render(userProfilesPage);
-    // render(req, res, next, url, {}, userProfilesPage);
     res.render(errorPage, error_unauthorized_role());
-    // reject();
   }
 });
 

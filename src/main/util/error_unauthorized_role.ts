@@ -1,9 +1,7 @@
+import { ERROR_UNAUTHORIZED_ROLE } from "../user/user-request-authorizer";
+
 export function error_unauthorized_role() {
   const responseContent: { [k: string]: any } = {};
-  responseContent.error = {
-    error: "Unauthorised role",
-    message: "You are not authorised to access this resource",
-    status: 403,
-  };
+  responseContent.error = ERROR_UNAUTHORIZED_ROLE;
   return responseContent;
 }

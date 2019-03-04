@@ -1,10 +1,8 @@
-// import { app } from "../../main/app";
 import { expect } from "chai";
 import Debug from "debug";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as proxyquire from "proxyquire";
-// import * as request from "supertest";
 import * as sinon from "sinon";
 
 describe("admin-web-role-authorizer-filter", () => {
@@ -15,7 +13,6 @@ describe("admin-web-role-authorizer-filter", () => {
   const loginUrl = "http://idam.login";
   const clientId = "ccd_admin";
   let filter;
-  // let authCheckerUserOnlyfilter;
   let req;
   let res;
   const debug = Debug("ccd-admin-web:admin-web-role-authorizer-filter-spec");
@@ -39,11 +36,6 @@ describe("admin-web-role-authorizer-filter", () => {
     config.get.withArgs("adminWeb.login_url").returns(loginUrl);
     config.get.withArgs("idam.oauth2.client_id").returns(clientId);
 
-    // authCheckerUserOnlyfilter = proxyquire("../../main/user/auth-checker-user-only-filter", {
-    //   "./user-request-authorizer": userRequestAuthorizer,
-    //   config,
-    // }).authCheckerUserOnlyFilter;
-
     filter = proxyquire("../../main/role/admin-web-role-authorizer-filter", {
       config,
     }).adminWebRoleAuthorizerFilter;
@@ -57,9 +49,9 @@ describe("admin-web-role-authorizer-filter", () => {
 
     it("should call next middleware with error", (done) => {
 
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, authorization);
+      mock("http://adminweb")
+        .get("/authorize")
+        .reply(500, {});
 
       filter(req, res, (error) => {
         try {
@@ -80,45 +72,12 @@ describe("admin-web-role-authorizer-filter", () => {
         .get("/authorize")
         .reply(200, authorization);
 
-      // return request(app)
-      //   .addFi
-      //   .get("/createuser")
-      //   .set("Cookie", "accessToken=ey123.ey456")
-      //   .then((resp) => {
-      //     expect(resp.statusCode).to.equal(200);
-      //     // expect(res.text).to.contain("Jurisdiction 1");
-      //     // expect(res.text).to.contain("Jurisdiction 2");
-      //   });
-
-      // appTestWithAuthroziedAdminWebRoles.use((req, res, next) => {
-      //   req.accessToken = "userAuthToken";
-      //   req.authentication = {
-      //     user: {
-      //       email: "ccd@hmcts.net",
-      //       id: 123,
-      //     },
-      //   };
-      //   req.adminWebAuthorization = {
-      //     canManageUserProfile: true,
-      //   };
-      //   req.serviceAuthToken = "serviceAuthToken";
-      //   next();
-      // });
       filter(req, res, (error) => {
-        // req.accessToken = "userAuthToken";
-        // req.authentication = {
-        //   user: {
-        //     email: "ccd@hmcts.net",
-        //     id: 123,
-        //   },
-        // };
-        // req.serviceAuthToken = "serviceAuthToken";
-
         try {
-          // debug("error", error);
-          debug("res", res);
-          // debug("req", req);
+          debug("***** req", req.adminWebAuthorization);
           expect(error).to.be.undefined;
+          expect(req.adminWebAuthorization).not.to.be.undefined;
+          expect(JSON.stringify(req.adminWebAuthorization)).to.be.equal(JSON.stringify(authorization));
           done();
         } catch (e) {
           done(e);
