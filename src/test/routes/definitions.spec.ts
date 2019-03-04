@@ -38,7 +38,7 @@ describe("Definitions page", () => {
           status: "DRAFT",
         }]);
 
-      // Set jurisdiction in the appTestWithAuthroziedAdminWebRoles session object, which is stored as a cookie (signed with "key1", as in appTestWithAuthroziedAdminWebRoles)
+      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
       const sessionCookie = mockSession("session", "key1", { jurisdiction: "TEST" });
 
       return request(appTest)
