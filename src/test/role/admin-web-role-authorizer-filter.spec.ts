@@ -74,7 +74,6 @@ describe("admin-web-role-authorizer-filter", () => {
 
       filter(req, res, (error) => {
         try {
-          debug("***** req", req.adminWebAuthorization);
           expect(error).to.be.undefined;
           expect(req.adminWebAuthorization).not.to.be.undefined;
           expect(JSON.stringify(req.adminWebAuthorization)).to.be.equal(JSON.stringify(authorization));

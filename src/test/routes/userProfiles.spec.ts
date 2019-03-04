@@ -1,5 +1,5 @@
 import { appTest } from "../../main/app.test";
-import { appTestWithAuthroziedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
+import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
@@ -61,7 +61,7 @@ describe("User profiles page", () => {
       // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
       const sessionCookie = mockSession("session", "key1", { jurisdiction: "Mike" });
 
-      return request(appTestWithAuthroziedAdminWebRoles)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .get("/userprofiles")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
@@ -121,7 +121,7 @@ describe("User profiles page", () => {
       // Omit jurisdiction in the appTest session object
       const sessionCookie = mockSession("session", "key1", {});
 
-      return request(appTestWithAuthroziedAdminWebRoles)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .get("/userprofiles")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
@@ -172,7 +172,7 @@ describe("User profiles page", () => {
           work_basket_default_state: "State 3",
         }]);
 
-      return request(appTestWithAuthroziedAdminWebRoles)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .post("/userprofiles")
         .set("Cookie", "accessToken=ey123.ey456")
         .send({
@@ -197,7 +197,7 @@ describe("User profiles page", () => {
         .query({ jurisdiction: "Mike" })
         .replyWithError({ code: 500, text: "Server Error" });
 
-      return request(appTestWithAuthroziedAdminWebRoles)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .post("/userprofiles")
         .set("Cookie", "accessToken=ey123.ey456")
         .send({

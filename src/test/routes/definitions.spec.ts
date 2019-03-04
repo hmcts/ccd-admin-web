@@ -71,7 +71,7 @@ describe("Definitions page", () => {
           status: "DRAFT",
         }]);
 
-      // Omit jurisdiction in the appTestWithAuthroziedAdminWebRoles session object
+      // Omit jurisdiction in the appTest session object
       const sessionCookie = mockSession("session", "key1", {});
 
       return request(appTest)

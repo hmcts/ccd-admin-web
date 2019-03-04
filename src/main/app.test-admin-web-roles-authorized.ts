@@ -8,41 +8,41 @@ import * as favicon from "serve-favicon";
 import { importAll } from "./import-all/index";
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
-export const appTestWithAuthroziedAdminWebRoles: express.Express = express();
-appTestWithAuthroziedAdminWebRoles.locals.ENV = env;
+export const appTestWithAuthorizedAdminWebRoles: express.Express = express();
+appTestWithAuthorizedAdminWebRoles.locals.ENV = env;
 
 // Session
-appTestWithAuthroziedAdminWebRoles.set("trust proxy", 1); // trust first proxy
-appTestWithAuthroziedAdminWebRoles.use(cookieSession({
+appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy
+appTestWithAuthorizedAdminWebRoles.use(cookieSession({
   keys: ["key1", "key2"],
   name: "session",
 }));
 // setup logging of HTTP requests
-appTestWithAuthroziedAdminWebRoles.use(Express.accessLogger());
+appTestWithAuthorizedAdminWebRoles.use(Express.accessLogger());
 
-const logger = Logger.getLogger("appTestWithAuthroziedAdminWebRoles");
+const logger = Logger.getLogger("appTestWithAuthorizedAdminWebRoles");
 
 // secure the application by adding various HTTP headers to its responses
 
 // view engine setup
-appTestWithAuthroziedAdminWebRoles.set("view engine", "html");
-appTestWithAuthroziedAdminWebRoles.set("views", [path.join(__dirname, "views"),
+appTestWithAuthorizedAdminWebRoles.set("view engine", "html");
+appTestWithAuthorizedAdminWebRoles.set("views", [path.join(__dirname, "views"),
 path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
 
-appTestWithAuthroziedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
-appTestWithAuthroziedAdminWebRoles.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
-appTestWithAuthroziedAdminWebRoles.use(bodyParser.json());
-appTestWithAuthroziedAdminWebRoles.use(bodyParser.urlencoded({ extended: false }));
-appTestWithAuthroziedAdminWebRoles.use(cookieParser());
-appTestWithAuthroziedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
+appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
+appTestWithAuthorizedAdminWebRoles.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
+appTestWithAuthorizedAdminWebRoles.use(bodyParser.json());
+appTestWithAuthorizedAdminWebRoles.use(bodyParser.urlencoded({ extended: false }));
+appTestWithAuthorizedAdminWebRoles.use(cookieParser());
+appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 
-expressNunjucks(appTestWithAuthroziedAdminWebRoles);
+expressNunjucks(appTestWithAuthorizedAdminWebRoles);
 
 // Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
-appTestWithAuthroziedAdminWebRoles.enable("trust proxy");
+appTestWithAuthorizedAdminWebRoles.enable("trust proxy");
 
 // Set dummy accessToken, serviceAuthToken, and authentication on all requests
-appTestWithAuthroziedAdminWebRoles.use((req, res, next) => {
+appTestWithAuthorizedAdminWebRoles.use((req, res, next) => {
   req.accessToken = "userAuthToken";
   req.authentication = {
     user: {
@@ -57,16 +57,16 @@ appTestWithAuthroziedAdminWebRoles.use((req, res, next) => {
   next();
 });
 
-appTestWithAuthroziedAdminWebRoles.use("/", importAll(path.join(__dirname, "routes")));
+appTestWithAuthorizedAdminWebRoles.use("/", importAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router
-appTestWithAuthroziedAdminWebRoles.use((req, res) => {
+appTestWithAuthorizedAdminWebRoles.use((req, res) => {
   res.status(404);
   res.render("not-found");
 });
 
 // error handler
-appTestWithAuthroziedAdminWebRoles.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+appTestWithAuthorizedAdminWebRoles.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   logger.error(`${err.stack || err}`);
 
   // set locals
