@@ -50,9 +50,6 @@ appTest.use((req, res, next) => {
       id: 123,
     },
   };
-  req.adminWebAuthorization = {
-    canManageUserProfile: true,
-  };
   req.serviceAuthToken = "serviceAuthToken";
   next();
 });

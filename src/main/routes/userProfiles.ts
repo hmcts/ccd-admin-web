@@ -1,8 +1,10 @@
 import * as config from "config";
+import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { render } from "../util/render";
 import router from "./home";
 import { validate } from "../validators/validateJurisdiction";
 
+const errorPage = "error";
 const url = config.get("adminWeb.userprofiles_url");
 const userProfilesPage = "user-profiles";
 
@@ -12,19 +14,25 @@ router.post("/userprofiles", validate, (req, res, next) => {
     const query = {jurisdiction: req.body.jurisdictionName};
     render(req, res, next, url, query, userProfilesPage);
   } else {
+    // const responseContent: { [k: string]: any } = {};
+    // // console.log(ERROR_UNAUTHORIZED_ROLE);
+    // responseContent.error = ERROR_UNAUTHORIZED_ROLE;
     // res.render(userProfilesPage);
-    render(req, res, next, url, {}, userProfilesPage);
+    // render(req, res, next, url, {}, userProfilesPage);
+    res.render(errorPage, error_unauthorized_role());
+    // reject();
   }
 });
 
 /* GET */
 router.get("/userprofiles", (req, res, next) => {
+  // const debug = Debug("ccd-admin-web:admin-web-role-authorizer-filter");
   const query = req.session.jurisdiction ? { jurisdiction: req.session.jurisdiction } : {};
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserProfile) {
     // Jurisdiction is expected to be set already on the session, hence it can be used for the query
     render(req, res, next, url, query, userProfilesPage);
   } else {
-    render(req, res, next, url, {}, userProfilesPage);
+    res.render(errorPage, error_unauthorized_role());
   }
 });
 
