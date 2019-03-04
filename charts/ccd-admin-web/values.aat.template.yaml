@@ -23,3 +23,4 @@ nodejs:
     ADMINWEB_DEFINITIONS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/drafts
     ADMINWEB_WHOAMI_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/idam/profile
     ADMINWEB_IMPORT_AUDITS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/import-audits
+    ADMINWEB_AUTHORIZATION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/idam/adminweb/authorization
