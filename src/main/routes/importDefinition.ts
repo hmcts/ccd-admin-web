@@ -24,6 +24,9 @@ router.post("/import", (req, res, next) => {
   upload(req, res, (err) => {
     if (err) {
       next(err);
+    } else if (req.file === undefined) {
+      req.session.error = "No file selected! Please select a Definition spreadsheet to import";
+      res.redirect(302, "/import");
     } else {
       uploadFile(req)
         .then((response) => {
@@ -31,8 +34,12 @@ router.post("/import", (req, res, next) => {
           res.render("home", { response });
         })
         .catch((error) => {
-          // Call the next middleware, which is the error handler
-          next(error);
+          req.session.error = {
+            message: error.message ? error.message : "Bad Request",
+            status: error.status ? error.status : 400,
+            text: error.response ? error.response.text : "An error occurred on import",
+          };
+          res.redirect(302, "/import");
         });
     }
   });
