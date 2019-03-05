@@ -31,7 +31,7 @@ router.post("/import", (req, res, next) => {
       uploadFile(req)
         .then((response) => {
           res.status(201);
-          res.render("home", { response });
+          res.render("importDefinition", { response });
         })
         .catch((error) => {
           req.session.error = {
