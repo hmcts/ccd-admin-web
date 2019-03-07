@@ -42,7 +42,8 @@ describe("User profiles page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Case Type 3");
           expect(res.text).not.to.contain("Jurisdiction 3");
-        });
+          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+      });
     });
 
     it("should return user profiles for given Jurisdiction with authorized roles", () => {
@@ -98,7 +99,8 @@ describe("User profiles page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Case Type 3");
           expect(res.text).not.to.contain("Jurisdiction 3");
-        });
+          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+      });
     });
 
     it("should return all user profiles if Jurisdiction is not present in session with authorized roles", () => {
@@ -156,7 +158,8 @@ describe("User profiles page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Case Type 3");
           expect(res.text).not.to.contain("Jurisdiction 3");
-        });
+          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+      });
     });
 
     it("should return user profiles list with authorized roles", () => {

@@ -51,7 +51,10 @@ appTestWithAuthorizedAdminWebRoles.use((req, res, next) => {
     },
   };
   req.adminWebAuthorization = {
+    canImportDefinition: true,
+    canManageDefinition: true,
     canManageUserProfile: true,
+    canManageUserRole: true,
   };
   req.serviceAuthToken = "serviceAuthToken";
   next();

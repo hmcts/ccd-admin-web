@@ -1,4 +1,5 @@
 import { app } from "../../main/app";
+import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
 import { get } from "config";
 import * as idamServiceMock from "../http-mocks/idam";
@@ -23,7 +24,7 @@ describe("Import Definition page", () => {
         });
     });
 
-    it("should return Import Case Definition page when authenticated", () => {
+    it("should not return Import Case Definition page when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
@@ -44,6 +45,63 @@ describe("Import Definition page", () => {
         .reply(200, {});
 
       return request(app)
+        .get("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.text).not.to.contain("<th>Date Imported</th>");
+          expect(res.text).not.to.contain("<th>Who Imported</th>");
+          expect(res.text).not.to.contain("<th>Case Type</th>");
+          expect(res.text).not.to.contain("<th>Filename</th>");
+          expect(res.text).not.to.contain("next century");
+          expect(res.text).not.to.contain("ID_3");
+          expect(res.text).not.to.contain("I am si of it");
+          expect(res.text).not.to.contain("9343EWFMVl");
+          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        });
+    });
+
+    it("should not return a back-end error status as it is not called", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      mock("http://localhost:4451")
+        .get("/api/import-audits")
+        .replyWithError(500);
+
+      return request(app)
+        .get("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+        });
+    });
+
+    it("should return Import Case Definition page when authenticated and authorized", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+
+      mock("http://localhost:4451")
+        .get("/api/import-audits")
+        .reply(200, [{
+          caseType: "I am 100% happy with this piece of work",
+          case_type: "I am si of it",
+          dateImported: "last century",
+          date_imported: "next century",
+          fileName: "x343EWFMVl",
+          filename: "9343EWFMVl",
+          whoImported: "xID_3",
+          who_imported: "ID_3"}]);
+
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, {});
+
+      return request(appTestWithAuthorizedAdminWebRoles)
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
@@ -75,7 +133,7 @@ describe("Import Definition page", () => {
         .get("/api/import-audits")
         .replyWithError(500);
 
-      return request(app)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {

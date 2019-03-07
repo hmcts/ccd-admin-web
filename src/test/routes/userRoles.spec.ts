@@ -1,5 +1,6 @@
 import { app } from "../../main/app";
 import { appTest } from "../../main/app.test";
+import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
@@ -21,7 +22,7 @@ describe("on Get /create-user-role-form", () => {
       });
   });
 
-  it("should respond with create user roles form and populated response when authenticated", () => {
+  it("should respond without populated response when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 
@@ -30,6 +31,24 @@ describe("on Get /create-user-role-form", () => {
       .reply(200, [{}]);
 
     return request(app)
+      .get("/create-user-role-form")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.text).not.to.contain("PUBLIC");
+        expect(res.text).not.to.contain("PRIVATE");
+      });
+  });
+
+  it("should respond with create user roles form and populated response when authenticated and authorized", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+
+    mock("http://localhost:4451")
+      .get("/api/idam/adminweb/authorization")
+      .reply(200, [{}]);
+
+    return request(appTestWithAuthorizedAdminWebRoles)
       .get("/create-user-role-form")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
@@ -53,7 +72,7 @@ describe("on Get /user-roles-list", () => {
       });
   });
 
-  it("should respond with user roles list page and populated response when authenticated", () => {
+  it("should respond without user roles list when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451")
@@ -68,6 +87,30 @@ describe("on Get /user-roles-list", () => {
       .reply(200, [{}]);
 
     return request(app)
+      .get("/user-roles-list")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.text).not.to.contain("Create User Role");
+        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+      });
+  });
+
+  it("should respond with user roles list page and populated response when authenticated and authorized", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+    mock("http://localhost:4451")
+      .get("/api/user-roles")
+      .reply(200, [{
+        role: "admin",
+        security_classification: "PUBLIC",
+      }]);
+
+    mock("http://localhost:4451")
+      .get("/api/idam/adminweb/authorization")
+      .reply(200, [{}]);
+
+    return request(appTestWithAuthorizedAdminWebRoles)
       .get("/user-roles-list")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
@@ -90,7 +133,7 @@ describe("on Get /user-roles", () => {
       });
   });
 
-  it("should respond with user roles page and populated response when authenticated", () => {
+  it("should not show user roles when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451")
@@ -109,6 +152,29 @@ describe("on Get /user-roles", () => {
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
         expect(res.statusCode).to.equal(200);
+        expect(res.text).not.to.contain("Create User Role");
+      });
+  });
+
+  it("should respond with user roles page and populated response when authenticated and authorized", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+    mock("http://localhost:4451")
+      .get("/api/user-roles")
+      .reply(200, [{
+        role: "admin",
+        security_classification: "PUBLIC",
+      }]);
+
+    mock("http://localhost:4451")
+      .get("/api/idam/adminweb/authorization")
+      .reply(200, [{}]);
+
+    return request(appTestWithAuthorizedAdminWebRoles)
+      .get("/user-roles")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
         expect(res.text).to.contain("Create User Role");
       });
   });
@@ -119,7 +185,7 @@ describe("on POST /createuserrole", () => {
     mock.cleanAll();
   });
 
-  it("should respond with user roles page and populated response when authenticated", () => {
+  it("should respond with user roles page and populated response when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
@@ -133,9 +199,10 @@ describe("on POST /createuserrole", () => {
         classification: "PUBLIC",
         role: "ccd-admin",
       })
-      .expect(302)
+      .expect(200)
       .then((res) => {
-        expect(res.headers.location.startsWith("/user-roles-list")).to.be.true;
+        expect(res.headers.location).to.be.undefined;
+        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
       });
   });
 
@@ -178,7 +245,7 @@ describe("on POST /createuserrole", () => {
       });
   });
 
-  it("should respond with create user form due to server error", () => {
+  it("should not respond with create user form due to server error when unauthorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
@@ -186,6 +253,47 @@ describe("on POST /createuserrole", () => {
       .replyWithError({status: 400, rawResponse: "Bad request"});
 
     return request(appTest)
+      .post("/createuserrole")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .send({
+        classification: "PUBLIC",
+        role: "ccd-admin",
+      })
+      .expect(200)
+      .then((res) => {
+        expect(res.headers.location).to.be.undefined;
+        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+      });
+  });
+
+  it("should respond with user roles page and populated response when authenticated and authorized", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+    mock("http://localhost:4451/api/user-role")
+      .post("")
+      .reply(200);
+
+    return request(appTestWithAuthorizedAdminWebRoles)
+      .post("/createuserrole")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .send({
+        classification: "PUBLIC",
+        role: "ccd-admin",
+      })
+      .expect(302)
+      .then((res) => {
+        expect(res.headers.location.startsWith("/user-roles-list")).to.be.true;
+      });
+  });
+
+  it("should respond with create user form due to server error", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+    mock("http://localhost:4451/api/user-role")
+      .put("")
+      .replyWithError({status: 400, rawResponse: "Bad request"});
+
+    return request(appTestWithAuthorizedAdminWebRoles)
       .post("/createuserrole")
       .set("Cookie", "accessToken=ey123.ey456")
       .send({
@@ -204,7 +312,7 @@ describe("on POST /updateuserrole", () => {
     mock.cleanAll();
   });
 
-  it("should respond with user roles page and populated response when authenticated", () => {
+  it("should respond with user roles page and populated response when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
@@ -212,6 +320,27 @@ describe("on POST /updateuserrole", () => {
       .reply(200);
 
     return request(appTest)
+      .post("/updateuserrole")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .send({
+        classification: "PUBLIC",
+        role: "ccd-admin",
+      })
+      .expect(200)
+      .then((res) => {
+        expect(res.headers.location).to.be.undefined;
+        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+      });
+  });
+
+  it("should respond with user roles page and populated response when authenticated and authorized", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+    mock("http://localhost:4451/api/user-role")
+      .put("")
+      .reply(200);
+
+    return request(appTestWithAuthorizedAdminWebRoles)
       .post("/updateuserrole")
       .set("Cookie", "accessToken=ey123.ey456")
       .send({
@@ -271,6 +400,27 @@ describe("on POST /updateuserrole", () => {
         classification: "PUBLIC",
         role: "ccd-admin",
       })
+      .expect(200)
+      .then((res) => {
+        expect(res.headers.location).to.be.undefined;
+        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+      });
+  });
+
+  it("should respond with create user form due to server error when authorized", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+    mock("http://localhost:4451/api/user-role")
+      .put("")
+      .replyWithError({status: 400, rawResponse: "Bad request"});
+
+    return request(appTestWithAuthorizedAdminWebRoles)
+      .post("/updateuserrole")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .send({
+        classification: "PUBLIC",
+        role: "ccd-admin",
+      })
       .expect(302)
       .then((res) => {
         expect(res.headers.location.startsWith("/create-user-role")).to.be.true;
@@ -283,11 +433,27 @@ describe("on POST /updateuserroleform", () => {
     mock.cleanAll();
   });
 
-  it("should respond with update user form and populated response when authenticated", () => {
+  it("should respond with update user form and populated response when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 
     return request(appTest)
+      .post("/updateuserroleform")
+      .send({role: "ccd-admin", classification: "PUBLIC"})
+      .set("Cookie", "accessToken=ey123.ey456")
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.text).not.to.contain("ccd-admin");
+        expect(res.text).not.to.contain("PUBLIC");
+        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+      });
+  });
+
+  it("should respond with update user form and populated response when authenticated and authorized", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+
+    return request(appTestWithAuthorizedAdminWebRoles)
       .post("/updateuserroleform")
       .send({role: "ccd-admin", classification: "PUBLIC"})
       .set("Cookie", "accessToken=ey123.ey456")
