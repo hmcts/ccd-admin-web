@@ -154,7 +154,39 @@ describe("Import Definition page", () => {
         });
     });
 
-    it("should upload a valid Definition file when authenticated", () => {
+    it("should not upload a valid Definition file when authenticated but not authorized", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      const apiCall = mock("http://localhost:4451")
+        .post("/import")
+        .reply(201, "Definition imported");
+
+      const file = {
+        buffer: new Buffer(8),
+        originalname: "dummy_filename.xlsx",
+      };
+
+      return request(app)
+        .post("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .attach("file", file.buffer, file.originalname)
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+          const result = dom.window.document.querySelector(".heading-large").innerHTML;
+          expect(result).to.equal("Unauthorised role");
+
+          // Assert that the back-end is not called
+          expect(apiCall.isDone()).to.be.false;
+        });
+    });
+
+    it("should upload a valid Definition file when authenticated and authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
@@ -171,7 +203,7 @@ describe("Import Definition page", () => {
         originalname: "dummy_filename.xlsx",
       };
 
-      return request(app)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .post("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .attach("file", file.buffer, file.originalname)
@@ -200,7 +232,7 @@ describe("Import Definition page", () => {
         originalname: "dummy_filename.txt",
       };
 
-      return request(app)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .post("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .attach("file", file.buffer, file.originalname)
@@ -225,7 +257,7 @@ describe("Import Definition page", () => {
         .post("/import")
         .reply(201, "Definition imported");
 
-      return request(app)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .post("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
@@ -254,7 +286,7 @@ describe("Import Definition page", () => {
         originalname: "dummy_filename.xlsx",
       };
 
-      return request(app)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .post("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .attach("file", file.buffer, file.originalname)

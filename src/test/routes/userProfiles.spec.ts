@@ -135,7 +135,7 @@ describe("User profiles page", () => {
   });
 
   describe("on POST /userprofiles", () => {
-    it("should return not user profiles list without authorized roles", () => {
+    it("should not return user profiles list without authorized roles", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
@@ -224,7 +224,7 @@ describe("User profiles page", () => {
         .query({ jurisdiction: "Mike" })
         .replyWithError({ code: 500, text: "Server Error" });
 
-      return request(appTestWithAuthorizedAdminWebRoles)
+      return request(appTest)
         .post("/userprofiles")
         .set("Cookie", "accessToken=ey123.ey456")
         .send({
