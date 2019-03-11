@@ -2,6 +2,7 @@ import { app } from "../../main/app";
 import { expect } from "chai";
 import { get } from "config";
 import * as idamServiceMock from "../http-mocks/idam";
+import { JSDOM } from "jsdom";
 import * as mock from "nock";
 import * as request from "supertest";
 
@@ -72,6 +73,115 @@ describe("Import Definition page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(500);
+        });
+    });
+  });
+
+  describe("on POST /import", () => {
+
+    it("should redirect to IdAM login page when not authenticated", () => {
+      return request(app)
+        .post("/import")
+        .then((res) => {
+          expect(res.statusCode).to.equal(302);
+          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        });
+    });
+
+    it("should upload a valid Definition file when authenticated", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+
+      mock("http://localhost:4451/import")
+        .post("")
+        .reply(201, "Definition imported");
+
+      const file = {
+        buffer: new Buffer(8),
+        originalname: "dummy_filename.xlsx",
+      };
+
+      return request(app)
+        .post("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .attach("file", file.buffer, file.originalname)
+        .then((res) => {
+          expect(res.statusCode).to.equal(201);
+          const dom = new JSDOM(res.text);
+          const result = dom.window.document.querySelector(".form-group").innerHTML;
+          expect(result).to.contain("Definition imported");
+        });
+    });
+
+    it("should redirect to Import Definition page without calling back-end if the file is not an Excel file", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+
+      const apiCall = mock("http://localhost:4451/import")
+        .post("")
+        .reply(201, "Definition imported");
+
+      const file = {
+        buffer: new Buffer(8),
+        originalname: "dummy_filename.txt",
+      };
+
+      return request(app)
+        .post("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .attach("file", file.buffer, file.originalname)
+        .then((res) => {
+          expect(res.statusCode).to.equal(302);
+          expect(res.headers.location).to.equal("/import");
+
+          // Assert that the back-end is not called
+          expect(apiCall.isDone()).to.be.false;
+        });
+    });
+
+    it("should redirect to Import Definition page without calling back-end if no file is present on request", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+
+      const apiCall = mock("http://localhost:4451/import")
+        .post("")
+        .reply(201, "Definition imported");
+
+      return request(app)
+        .post("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(302);
+          expect(res.headers.location).to.equal("/import");
+
+          // Assert that the back-end is not called
+          expect(apiCall.isDone()).to.be.false;
+        });
+    });
+
+    it("should redirect to Import Definition page if there is a back-end error", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+
+      const apiCall = mock("http://localhost:4451/import")
+        .post("")
+        .replyWithError(500, "Error on Definition import");
+
+      const file = {
+        buffer: new Buffer(8),
+        originalname: "dummy_filename.xlsx",
+      };
+
+      return request(app)
+        .post("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .attach("file", file.buffer, file.originalname)
+        .then((res) => {
+          expect(res.statusCode).to.equal(302);
+          expect(res.headers.location).to.equal("/import");
+
+          // Assert that the back-end is called
+          expect(apiCall.isDone()).to.be.true;
         });
     });
   });

@@ -23,7 +23,11 @@ const url = config.get("adminWeb.import_audits_url");
 router.post("/import", (req, res, next) => {
   upload(req, res, (err) => {
     if (err) {
-      next(err);
+      // Construct error message manually, since err cannot be passed via req.session.error (it is cleared on redirect)
+      req.session.error = err.name + ": " + err.message;
+
+      // Redirect back to /import, to let the Import Definition page handle displaying the error message
+      res.redirect(302, "/import");
     } else if (req.file === undefined) {
       req.session.error = "No file selected! Please select a Definition spreadsheet to import";
       res.redirect(302, "/import");
