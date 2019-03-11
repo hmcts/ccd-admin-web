@@ -26,7 +26,7 @@ router.post("/import", (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     upload(req, res, (err) => {
       if (err) {
-        // Construct error message manually, since err cannot be passed via req.session.error (it is cleared on redirect)
+        // Construct error message manually since err cannot be passed via req.session.error (it is cleared on redirect)
         req.session.error = err.name + ": " + err.message;
 
         // Redirect back to /import, to let the Import Definition page handle displaying the error message
