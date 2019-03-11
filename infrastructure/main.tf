@@ -130,6 +130,7 @@ module "ccd-admin-web" {
     ADMINWEB_DELETE_DEFINITION_URL = "${local.def_store_url}/api/draft"
     ADMINWEB_DEFINITIONS_URL = "${local.def_store_url}/api/drafts"
     ADMINWEB_WHOAMI_URL = "${local.def_store_url}/api/idam/profile"
+    ADMINWEB_AUTHORIZATION_URL = "${local.def_store_url}/api/idam/adminweb/authorization"
     ADMINWEB_IMPORT_AUDITS_URL = "${local.def_store_url}/api/import-audits"
     ADMINWEB_ROLES_WHITELIST = "ccd-import,ccd-import-validate"
 

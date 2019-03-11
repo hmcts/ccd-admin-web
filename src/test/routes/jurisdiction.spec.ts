@@ -30,6 +30,10 @@ describe("Jurisdiction page", () => {
         .get("/api/data/jurisdictions")
         .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
 
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
       return request(app)
         .get("/jurisdiction")
         .set("Cookie", "accessToken=ey123.ey456")

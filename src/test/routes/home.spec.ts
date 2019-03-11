@@ -28,6 +28,10 @@ describe("Home page", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
       return request(app)
         .get("/")
         .set("Cookie", "accessToken=ey123.ey456")

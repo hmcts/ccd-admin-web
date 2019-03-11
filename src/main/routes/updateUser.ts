@@ -17,6 +17,7 @@ router.post("/updateuser", validateUpdate, (req, res, next) => {
     fetch(req, url).then((response) => {
         res.status(200);
         const responseContent: { [k: string]: any } = {};
+        responseContent.adminWebAuthorization = req.adminWebAuthorization;
         responseContent.jurisdictions = JSON.stringify(response);
         responseContent.idamId = sanitize(req.body.idamId);
         responseContent.jurisdiction = sanitize(req.body.jurisdiction);

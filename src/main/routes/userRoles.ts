@@ -18,6 +18,7 @@ const url = config.get("adminWeb.alluserroles_url");
 /* GET User roles landing page. */
 router.get("/user-roles", (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
+  responseContent.adminWebAuthorization = req.adminWebAuthorization;
   delete req.session.error;
   delete req.session.success;
   fetch(req, url).then((response) => {
@@ -33,6 +34,7 @@ router.get("/user-roles", (req, res, next) => {
 /* GET User roles landing page. */
 router.get("/user-roles-list", (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
+  responseContent.adminWebAuthorization = req.adminWebAuthorization;
   if (req.session.error) {
     responseContent.error = req.session.error;
   }
@@ -57,6 +59,7 @@ router.get("/create-user-role-form", (req, res, next) => {
     delete req.session.error;
   }
   const responseContent: { [k: string]: any } = {};
+  responseContent.adminWebAuthorization = req.adminWebAuthorization;
   responseContent.submitUserRoleEndPoint = "/createuserrole";
   responseContent.securityClassifications = classifications;
   responseContent.heading = createUserRoleHeading;
@@ -94,6 +97,7 @@ function validateAndRedirect(req, res, next, path) {
 function validateUpdate(req, res, next) {
   if (validate(req, res, next)) {
     const responseContent: { [k: string]: any } = {};
+    responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.update = true;
     responseContent.role = req.body.role;
     responseContent.submitUserRoleEndPoint = "/updateuserrole";
@@ -133,6 +137,7 @@ router.post("/createuserrole", validateCreate, (req, res, next) => {
 
 router.post("/updateuserroleform", validateUpdateForm, (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
+  responseContent.adminWebAuthorization = req.adminWebAuthorization;
   responseContent.update = true;
   responseContent.role = req.body.role;
   responseContent.submitUserRoleEndPoint = "/updateuserrole";

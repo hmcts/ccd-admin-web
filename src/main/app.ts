@@ -8,6 +8,7 @@ import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
+import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { importAll } from "./import-all/index";
 
@@ -74,6 +75,7 @@ if (config.useCSRFProtection === true) {
 
 app.all(/^\/(?!oauth2redirect|health).*$/, authCheckerUserOnlyFilter);
 app.all(/^\/(?!oauth2redirect|health).*$/, serviceFilter);
+app.all(/^\/(?!oauth2redirect|health).*$/, adminWebRoleAuthorizerFilter);
 app.use("/", importAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router

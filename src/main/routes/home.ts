@@ -4,7 +4,9 @@ const router = express.Router();
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
-  res.render("home");
+  const responseContent: { [k: string]: any } = {};
+  responseContent.adminWebAuthorization = req.adminWebAuthorization;
+  res.render("home", responseContent);
 });
 
 export default router;

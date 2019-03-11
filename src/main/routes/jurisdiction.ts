@@ -9,6 +9,7 @@ router.get("/jurisdiction", (req, res, next) => {
   fetch(req, url).then((response) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
+    responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.jurisdictions = JSON.parse(response);
     if (req.query.dest) {
       responseContent.destination = req.query.dest;

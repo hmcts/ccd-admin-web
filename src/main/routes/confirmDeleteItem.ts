@@ -3,6 +3,7 @@ import router from "./home";
 /* GET */
 router.get("/deleteitem", (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
+  responseContent.adminWebAuthorization = req.adminWebAuthorization;
   responseContent.response = req.session.response;
   responseContent.itemToDelete = req.query.item;
 
