@@ -100,8 +100,12 @@ describe("Import Definition page", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
-      mock("http://localhost:4451/import")
-        .post("")
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      mock("http://localhost:4451")
+        .post("/import")
         .reply(201, "Definition imported");
 
       const file = {
@@ -125,8 +129,12 @@ describe("Import Definition page", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
-      const apiCall = mock("http://localhost:4451/import")
-        .post("")
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      const apiCall = mock("http://localhost:4451")
+        .post("/import")
         .reply(201, "Definition imported");
 
       const file = {
@@ -151,8 +159,12 @@ describe("Import Definition page", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
-      const apiCall = mock("http://localhost:4451/import")
-        .post("")
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      const apiCall = mock("http://localhost:4451")
+        .post("/import")
         .reply(201, "Definition imported");
 
       return request(app)
@@ -171,8 +183,12 @@ describe("Import Definition page", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
-      const apiCall = mock("http://localhost:4451/import")
-        .post("")
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      const apiCall = mock("http://localhost:4451")
+        .post("/import")
         .replyWithError(500, "Error on Definition import");
 
       const file = {
