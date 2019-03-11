@@ -51,7 +51,6 @@ app.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 new Helmet(config.get<HelmetConfig>("security")).enableFor(app);
 
 expressNunjucks(app);
@@ -98,5 +97,5 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   }
 
   res.status(err.status || 500);
-  req.authentication && req.authentication.user ? res.render("importDefinition") : res.render("error");
+  res.render("error");
 });

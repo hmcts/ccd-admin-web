@@ -23,16 +23,27 @@ const url = config.get("adminWeb.import_audits_url");
 router.post("/import", (req, res, next) => {
   upload(req, res, (err) => {
     if (err) {
-      next(err);
+      // Construct error message manually, since err cannot be passed via req.session.error (it is cleared on redirect)
+      req.session.error = err.name + ": " + err.message;
+
+      // Redirect back to /import, to let the Import Definition page handle displaying the error message
+      res.redirect(302, "/import");
+    } else if (req.file === undefined) {
+      req.session.error = "No file selected! Please select a Definition spreadsheet to import";
+      res.redirect(302, "/import");
     } else {
       uploadFile(req)
         .then((response) => {
           res.status(201);
-          res.render("home", { response });
+          res.render("importDefinition", { response });
         })
         .catch((error) => {
-          // Call the next middleware, which is the error handler
-          next(error);
+          req.session.error = {
+            message: error.message ? error.message : "Bad Request",
+            status: error.status ? error.status : 400,
+            text: error.response ? error.response.text : "An error occurred on import",
+          };
+          res.redirect(302, "/import");
         });
     }
   });
