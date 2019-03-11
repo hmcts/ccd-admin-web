@@ -1,4 +1,5 @@
 import { appTest } from "../../main/app.test";
+import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
@@ -18,7 +19,7 @@ describe("User profiles page", () => {
   });
 
   describe("on GET /userprofiles", () => {
-    it("should return user profiles list for given Jurisdiction", () => {
+    it("should not return user profiles for given Jurisdiction without authorized roles", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
@@ -39,12 +40,68 @@ describe("User profiles page", () => {
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.text).not.to.contain("Case Type 3");
+          expect(res.text).not.to.contain("Jurisdiction 3");
+        });
+    });
+
+    it("should return user profiles for given Jurisdiction with authorized roles", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+      mock("http://localhost:4453")
+        .get("/users")
+        .query({ jurisdiction: "Mike" })
+        .reply(200, [{
+          id: "ID_3",
+          work_basket_default_case_type: "Case Type 3",
+          work_basket_default_jurisdiction: "Jurisdiction 3",
+          work_basket_default_state: "State 3",
+        }]);
+
+      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
+      const sessionCookie = mockSession("session", "key1", { jurisdiction: "Mike" });
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/userprofiles")
+        .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");
           expect(res.text).to.contain("Jurisdiction 3");
         });
     });
 
-    it("should return all user profiles list if Jurisdiction is not present in session", () => {
+    it("should not return all user profiles if Jurisdiction is not present in session without authorized roles", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+      mock("http://localhost:4453")
+      .get("/users")
+      .query({})
+      .reply(200, [{
+        id: "ID_3",
+        work_basket_default_case_type: "Case Type 3",
+        work_basket_default_jurisdiction: "Jurisdiction 3",
+        work_basket_default_state: "State 3",
+      }]);
+
+      mock("http://localhost:4451")
+      .get("/api/idam/adminweb/authorization")
+      .reply(200, {canManageUserProfile: true});
+
+      // Omit jurisdiction in the appTest session object
+      const sessionCookie = mockSession("session", "key1", {});
+
+      return request(appTest)
+        .get("/userprofiles")
+        .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.text).not.to.contain("Case Type 3");
+          expect(res.text).not.to.contain("Jurisdiction 3");
+        });
+    });
+
+    it("should return all user profiles if Jurisdiction is not present in session with authorized roles", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
@@ -57,10 +114,14 @@ describe("User profiles page", () => {
           work_basket_default_state: "State 3",
         }]);
 
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, {canManageUserProfile: true});
+
       // Omit jurisdiction in the appTest session object
       const sessionCookie = mockSession("session", "key1", {});
 
-      return request(appTest)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .get("/userprofiles")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
@@ -72,7 +133,7 @@ describe("User profiles page", () => {
   });
 
   describe("on POST /userprofiles", () => {
-    it("should return user profiles list", () => {
+    it("should return not user profiles list without authorized roles", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
@@ -93,13 +154,68 @@ describe("User profiles page", () => {
         })
         .then((res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.text).not.to.contain("Case Type 3");
+          expect(res.text).not.to.contain("Jurisdiction 3");
+        });
+    });
+
+    it("should return user profiles list with authorized roles", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+      mock("http://localhost:4453")
+        .get("/users")
+        .query({ jurisdiction: "Mike" })
+        .reply(200, [{
+          id: "ID_3",
+          work_basket_default_case_type: "Case Type 3",
+          work_basket_default_jurisdiction: "Jurisdiction 3",
+          work_basket_default_state: "State 3",
+        }]);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .post("/userprofiles")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .send({
+          jurisdictionName: "Mike",
+        })
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");
           expect(res.text).to.contain("Jurisdiction 3");
         });
     });
+
     it("should return error from the server", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, { canManageUserProfile: true });
+
+      mock("http://localhost:4453")
+        .get("/users")
+        .query({ jurisdiction: "Mike" })
+        .replyWithError({ code: 500, text: "Server Error" });
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .post("/userprofiles")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .send({
+          jurisdictionName: "Mike",
+        })
+        .then((res) => {
+          // I have not called /users
+          expect(res.status).to.equal(500);
+        });
+    });
+
+    it("should not call /users if user is not authorized", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, { canManageUserProfile: true });
+
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
@@ -112,8 +228,10 @@ describe("User profiles page", () => {
           jurisdictionName: "Mike",
         })
         .then((res) => {
-          expect(res.status).to.equal(500);
+          // I have not called /users
+          expect(res.status).to.equal(200);
         });
     });
+
   });
 });

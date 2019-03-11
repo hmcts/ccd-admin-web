@@ -22,7 +22,8 @@
       {{error.text}}
     </div>
   {% endif %}
-  <a href="/createuser" class="button rightAlign">Create User</a>
+  {% if adminWebAuthorization and adminWebAuthorization.canManageUserProfile %}
+    <a href="/createuser" class="button rightAlign">Create User</a>
 
   {% if dataItems.length == 0 %}
     <table border="1">
@@ -103,5 +104,6 @@
         </tfoot>
       </table>
     </div>
+    {% endif %}
   {% endif %}
 {% endblock %}

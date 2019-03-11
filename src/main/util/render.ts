@@ -4,6 +4,7 @@ export function render(req, res, next, url, query, page) {
   fetch(req, url, query).then((response) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
+    responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.currentjurisdiction =
       req.session.jurisdiction ? req.session.jurisdiction : req.body.jurisdictionName;
     responseContent.dataItems = JSON.parse(response);
