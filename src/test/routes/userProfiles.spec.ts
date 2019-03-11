@@ -224,7 +224,7 @@ describe("User profiles page", () => {
         .query({ jurisdiction: "Mike" })
         .replyWithError({ code: 500, text: "Server Error" });
 
-      return request(appTest)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .post("/userprofiles")
         .set("Cookie", "accessToken=ey123.ey456")
         .send({

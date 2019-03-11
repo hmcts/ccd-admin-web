@@ -13,6 +13,7 @@ describe("on Get /create-user-role-form", () => {
   beforeEach(() => {
     mock.cleanAll();
   });
+
   it("Create user role should redirect to IdAM login page when not authenticated", () => {
     return request(app)
       .get("/create-user-role-form")
@@ -63,6 +64,7 @@ describe("on Get /user-roles-list", () => {
   beforeEach(() => {
     mock.cleanAll();
   });
+
   it("Create user role should redirect to IdAM login page when not authenticated", () => {
     return request(app)
       .get("/user-roles-list")
@@ -124,6 +126,7 @@ describe("on Get /user-roles", () => {
   beforeEach(() => {
     mock.cleanAll();
   });
+
   it("Create user role should redirect to IdAM login page when not authenticated", () => {
     return request(app)
       .get("/user-roles")

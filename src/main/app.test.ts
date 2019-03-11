@@ -6,6 +6,7 @@ import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import { importAll } from "./import-all/index";
+
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTest: express.Express = express();
@@ -17,6 +18,7 @@ appTest.use(cookieSession({
   keys: ["key1", "key2"],
   name: "session",
 }));
+
 // setup logging of HTTP requests
 appTest.use(Express.accessLogger());
 
@@ -34,7 +36,6 @@ appTest.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 appTest.use(bodyParser.json());
 appTest.use(bodyParser.urlencoded({ extended: false }));
 appTest.use(cookieParser());
-appTest.use(express.static(path.join(__dirname, "public")));
 
 expressNunjucks(appTest);
 
@@ -64,12 +65,12 @@ appTest.use((req, res) => {
 
 // error handler
 appTest.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  logger.error(`${err.stack || err}`);
+  logger.error(`${err.stack || err.error}`);
 
   // set locals
   res.locals.message = err.message;
   res.locals.error = err;
 
   res.status(err.status || 500);
-  req.authentication ? res.render("home") : res.render("error");
+  res.render("error");
 });

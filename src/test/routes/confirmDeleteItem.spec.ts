@@ -20,7 +20,7 @@ describe("Confirm Delete page", () => {
   describe("on GET /deleteitem", () => {
     const CCD_IMPORT_ROLE = "ccd-import";
 
-    it("should redirect to Import page when not authenticated", () => {
+    it("should redirect to IdAM login page when not authenticated", () => {
       return request(app)
         .get("/deleteitem")
         .then((res) => {

@@ -82,7 +82,7 @@ describe("on Get /createuser", () => {
     return request(app)
       .get("/createuser")
       .set("Cookie", "accessToken=ey123.ey456")
-      // not calling /api/data/jurisdiction becaused not authorized
+      // not calling /api/data/jurisdiction because not authorized
       .expect(200);
   });
 
@@ -170,6 +170,7 @@ describe("on POST /createuser", () => {
         expect(res.headers.location.startsWith("/createuser")).to.be.true;
       });
   });
+
   it("should respond with error when jurisdiction is empty", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();

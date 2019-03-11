@@ -1,6 +1,6 @@
 import * as config from "config";
-import { fetch } from "../service/get-service";
 import Debug from "debug";
+import { fetch } from "../service/get-service";
 import { Logger } from "@hmcts/nodejs-logging";
 
 const logger = Logger.getLogger(__filename);
