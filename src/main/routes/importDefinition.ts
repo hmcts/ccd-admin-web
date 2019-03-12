@@ -1,9 +1,11 @@
 import * as config from "config";
 import * as express from "express";
+import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { fetch } from "../service/get-service";
 import * as multer from "multer";
 import { uploadFile } from "../service/import-service";
 
+const errorPage = "error";
 const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -21,54 +23,62 @@ const upload = multer({
 const url = config.get("adminWeb.import_audits_url");
 
 router.post("/import", (req, res, next) => {
-  upload(req, res, (err) => {
-    if (err) {
-      // Construct error message manually, since err cannot be passed via req.session.error (it is cleared on redirect)
-      req.session.error = err.name + ": " + err.message;
+  if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
+    upload(req, res, (err) => {
+      if (err) {
+        // Construct error message manually since err cannot be passed via req.session.error (it is cleared on redirect)
+        req.session.error = err.name + ": " + err.message;
 
-      // Redirect back to /import, to let the Import Definition page handle displaying the error message
-      res.redirect(302, "/import");
-    } else if (req.file === undefined) {
-      req.session.error = "No file selected! Please select a Definition spreadsheet to import";
-      res.redirect(302, "/import");
-    } else {
-      uploadFile(req)
-        .then((response) => {
-          res.status(201);
-          res.render("importDefinition", { response });
-        })
-        .catch((error) => {
-          req.session.error = {
-            message: error.message ? error.message : "Bad Request",
-            status: error.status ? error.status : 400,
-            text: error.response ? error.response.text : "An error occurred on import",
-          };
-          res.redirect(302, "/import");
-        });
-    }
-  });
+        // Redirect back to /import, to let the Import Definition page handle displaying the error message
+        res.redirect(302, "/import");
+      } else if (req.file === undefined) {
+        req.session.error = "No file selected! Please select a Definition spreadsheet to import";
+        res.redirect(302, "/import");
+      } else {
+        uploadFile(req)
+          .then((response) => {
+            res.status(201);
+            res.render("importDefinition", {response});
+          })
+          .catch((error) => {
+            req.session.error = {
+              message: error.message ? error.message : "Bad Request",
+              status: error.status ? error.status : 400,
+              text: error.response ? error.response.text : "An error occurred on import",
+            };
+            res.redirect(302, "/import");
+          });
+      }
+    });
+  } else {
+    res.render(errorPage, error_unauthorized_role());
+  }
 });
 
 /* GET Import Definition page. */
 router.get("/import", (req, res, next) => {
-  fetch(req, url).then((response) => {
-    res.status(200);
-    const responseContent: { [k: string]: any } = {};
+  if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
+    fetch(req, url).then((response) => {
+      res.status(200);
+      const responseContent: { [k: string]: any } = {};
 
-    responseContent.importAudits = JSON.parse(response);
-    if (req.query.page) {
-      delete req.session.error;
-    }
-    if (req.session.error) {
-      responseContent.error = req.session.error;
-      delete req.session.error;
-    }
-    res.render("importDefinition", responseContent);
-  })
-    .catch((error) => {
-      // Call the next middleware, which is the error handler
-      next(error);
-    });
+      responseContent.importAudits = JSON.parse(response);
+      if (req.query.page) {
+        delete req.session.error;
+      }
+      if (req.session.error) {
+        responseContent.error = req.session.error;
+        delete req.session.error;
+      }
+      res.render("importDefinition", responseContent);
+    })
+      .catch((error) => {
+        // Call the next middleware, which is the error handler
+        next(error);
+      });
+  } else {
+    res.render(errorPage, error_unauthorized_role());
+  }
 });
 
 export default router;

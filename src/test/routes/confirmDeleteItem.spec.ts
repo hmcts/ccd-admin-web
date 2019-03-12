@@ -1,4 +1,5 @@
 import { app } from "../../main/app";
+import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
 import { get } from "config";
 import * as idamServiceMock from "../http-mocks/idam";
@@ -28,7 +29,7 @@ describe("Confirm Delete page", () => {
         });
     });
 
-    it("should return Confirm Delete User Profile page when authenticated", () => {
+    it("should not return Confirm Delete User Profile page when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4451")
@@ -41,13 +42,13 @@ describe("Confirm Delete page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
           const dom = new JSDOM(res.text);
-          const result = dom.window.document.querySelector(".govuk-fieldset__legend--xl").innerHTML;
-          expect(result).to.equal("Are you sure you would like to delete user anas@yahoo.com?");
+          expect (dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
         });
     });
 
-    it("should return Confirm Delete Definition page when authenticated", () => {
+    it("should return Confirm Delete Definition page when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
@@ -56,6 +57,48 @@ describe("Confirm Delete page", () => {
         .reply(200, [{}]);
 
       return request(app)
+        .get("/deleteitem")
+        .query({ item: "definition" })
+        .send({
+          currentJurisdiction: "TEST", description: "Test draft", version: 1,
+        })
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          const dom = new JSDOM(res.text);
+          expect (dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
+        });
+    });
+
+    it("should return Confirm Delete User Profile page when authenticated and authorized", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, {});
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/deleteitem")
+        .query({ idamId: "anas@yahoo.com", item: "user" })
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+          const result = dom.window.document.querySelector(".govuk-fieldset__legend--xl").innerHTML;
+          expect(result).to.equal("Are you sure you would like to delete user anas@yahoo.com?");
+        });
+    });
+
+    it("should return Confirm Delete Definition page when authenticated and authorized", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
         .get("/deleteitem")
         .query({ item: "definition" })
         .send({

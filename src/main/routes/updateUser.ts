@@ -1,9 +1,11 @@
 import * as config from "config";
+import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { fetch } from "../service/get-service";
 import router from "./home";
 import { sanitize } from "../util/sanitize";
 import { validate } from "../validators/validateUserProfile";
 
+const errorPage = "error";
 const url = config.get("adminWeb.jurisdiction_url");
 
 // Apply Validation
@@ -13,7 +15,7 @@ function validateUpdate(req, res, next) {
 
 /* POST form data to Create User form. */
 router.post("/updateuser", validateUpdate, (req, res, next) => {
-
+  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     fetch(req, url).then((response) => {
         res.status(200);
         const responseContent: { [k: string]: any } = {};
@@ -36,6 +38,10 @@ router.post("/updateuser", validateUpdate, (req, res, next) => {
         // Call the next middleware, which is the error handler
         next(error);
     });
+  } else {
+    res.render(errorPage, error_unauthorized_role());
+  }
+
 });
 
 export default router;

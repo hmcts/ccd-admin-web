@@ -1,11 +1,14 @@
 import { deleteDefinition } from "../service/delete-definition-service";
 import { deleteSessionVariables } from "../util/clearSession";
+import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import router from "./home";
 
+const errorPage = "error";
 /**
  * Delete Definition based on jurisdiction ID and version
  */
 router.post("/deletedefinition", (req, res, next) => {
+  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
     if (req.body.deleteItem === "Yes") {
         deleteDefinition(req).then((response) => {
             deleteSessionVariables(req);
@@ -28,6 +31,9 @@ router.post("/deletedefinition", (req, res, next) => {
         res.redirect(302, `/deleteitem?item=${req.body.itemToDelete}&jurisdictionId=${req.body.jurisdictionId}`
           + `&version=${req.body.definitionVersion}`);
     }
+  } else {
+    res.render(errorPage, error_unauthorized_role());
+  }
 });
 
 export default router;
