@@ -59,17 +59,17 @@ data "azurerm_key_vault_secret" "idam_service_key" {
 
 data "azurerm_key_vault_secret" "oauth2_client_secret" {
   name = "ccd-admin-web-oauth2-client-secret"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "storageaccount_primary_connection_string" {
   name = "storage-account-primary-connection-string"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "storageaccount_secondary_connection_string" {
   name = "storage-account-secondary-connection-string"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
 }
 
 module "ccd-admin-web" {
