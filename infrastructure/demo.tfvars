@@ -1,3 +1,3 @@
-idam_api_url = "https://preprod-idamapi.reform.hmcts.net:3511"
-authentication_web_url = "https://idam.preprod.ccidam.reform.hmcts.net"
+idam_api_url = "https://idam-api.demo.platform.hmcts.net/"
+authentication_web_url = "https://idam-web-public.demo.platform.hmcts.net/"
 capacity = "2"
