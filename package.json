@@ -46,7 +46,7 @@
     "govuk_template_jinja": "^0.23.0",
     "govuk_template_mustache": "^0.19.0",
     "helmet": "^3.8.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "jquery-validation": "^1.17.0",
     "jsdom": "^11.11.0",
     "jwt-decode": "^2.2.0",
