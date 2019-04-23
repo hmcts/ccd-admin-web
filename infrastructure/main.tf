@@ -112,9 +112,9 @@ module "ccd-admin-web" {
     IDAM_S2S_URL = "${local.s2s_url}"
     IDAM_ADMIN_WEB_SERVICE_KEY = "${data.azurerm_key_vault_secret.idam_service_key.value}"
     IDAM_SERVICE_NAME = "${var.idam_service_name}"
-    IDAM_LOGOUT_URL = "${var.authentication_web_url}/login/logout"
 
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
+    IDAM_OAUTH2_LOGOUT_ENDPOINT = "${var.idam_api_url}/session/:token"
     IDAM_OAUTH2_CLIENT_ID = "ccd_admin"
     IDAM_OAUTH2_AW_CLIENT_SECRET = "${data.azurerm_key_vault_secret.oauth2_client_secret.value}"
 

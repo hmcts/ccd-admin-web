@@ -73,9 +73,9 @@ if (config.useCSRFProtection === true) {
   });
 }
 
-app.all(/^\/(?!oauth2redirect|health).*$/, authCheckerUserOnlyFilter);
-app.all(/^\/(?!oauth2redirect|health).*$/, serviceFilter);
-app.all(/^\/(?!oauth2redirect|health).*$/, adminWebRoleAuthorizerFilter);
+app.all(/^\/(?!oauth2redirect|health|logout).*$/, authCheckerUserOnlyFilter);
+app.all(/^\/(?!oauth2redirect|health|logout).*$/, serviceFilter);
+app.all(/^\/(?!oauth2redirect|health|logout).*$/, adminWebRoleAuthorizerFilter);
 app.use("/", importAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router

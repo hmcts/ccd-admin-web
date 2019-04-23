@@ -8,6 +8,7 @@ router.get("/deleteitem", (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
+    responseContent.user = JSON.stringify(req.authentication.user);
     responseContent.response = req.session.response;
     responseContent.itemToDelete = req.query.item;
 

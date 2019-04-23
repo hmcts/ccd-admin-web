@@ -2,9 +2,31 @@
 {% block page_title %}
   CCD Admin Web
 {% endblock %}
- {% block head %}
- <link rel="stylesheet" media="all" href="stylesheets/app.css"/>
+{% block head %}
+  <link rel="stylesheet" media="all" href="stylesheets/app.css"/>
   <script type="text/javascript" src="js/lib/jquery.min.js"></script>
   <script type="text/javascript" src="js/lib/jquery.validate.min.js"></script>
-  
- {% endblock %}
+  <input id="currentUser" type="hidden" value="{{ user }}"/>
+  <script type="text/javascript">
+    $(document).ready(() => {
+      const userValue = $('#currentUser').attr("value");
+      if (userValue) {
+        const user = JSON.parse(userValue);
+        if (user.hasOwnProperty("forename") || user.hasOwnProperty("surname")) {
+          const userName = $("<div>" + user.forename + " " + user.surname + "</div>")
+            .addClass("proposition-item");
+          const signOut = $("<a href='/logout'>Sign out</a>")
+            .addClass("proposition-item");
+          const propContainer = $("<div/>")
+            .attr('id', 'proposition-name')
+            .addClass("proposition-container")
+            .append(userName, signOut);
+          const headerProp = $("<div/>")
+            .addClass("header-proposition rightAlignNoMargin")
+            .append(propContainer);
+          $('.header-global').append(headerProp);
+        }
+      }
+    });
+  </script>
+{% endblock %}

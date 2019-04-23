@@ -61,7 +61,7 @@ router.get("/import", (req, res, next) => {
     fetch(req, url).then((response) => {
       res.status(200);
       const responseContent: { [k: string]: any } = {};
-
+      responseContent.user = JSON.stringify(req.authentication.user);
       responseContent.importAudits = JSON.parse(response);
       if (req.query.page) {
         delete req.session.error;

@@ -14,6 +14,7 @@ router.post("/updatedefinition", (req, res, next) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
+    responseContent.user = JSON.stringify(req.authentication.user);
     responseContent.jurisdictions = JSON.stringify(response);
     responseContent.currentjurisdiction = sanitize(req.session.jurisdiction);
     responseContent.casetypes = sanitize(req.body.casetypes);
