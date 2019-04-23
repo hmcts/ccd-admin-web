@@ -47,7 +47,9 @@ appTestWithAuthorizedAdminWebRoles.use((req, res, next) => {
   req.authentication = {
     user: {
       email: "ccd@hmcts.net",
+      forename: "Test",
       id: 123,
+      surname: "User",
     },
   };
   req.adminWebAuthorization = {
