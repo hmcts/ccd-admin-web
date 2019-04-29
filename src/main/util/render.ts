@@ -5,6 +5,7 @@ export function render(req, res, next, url, query, page) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
+    responseContent.user = JSON.stringify(req.authentication.user);
     responseContent.currentjurisdiction =
       req.session.jurisdiction ? req.session.jurisdiction : req.body.jurisdictionName;
     responseContent.dataItems = JSON.parse(response);

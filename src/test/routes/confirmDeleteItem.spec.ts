@@ -45,10 +45,11 @@ describe("Confirm Delete page", () => {
           expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
           const dom = new JSDOM(res.text);
           expect (dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
+          expect (dom.window.document.querySelector("#currentUser").getAttribute("value")).to.be.empty;
         });
     });
 
-    it("should return Confirm Delete Definition page when authenticated but not authorized", () => {
+    it("should not return Confirm Delete Definition page when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
@@ -68,6 +69,7 @@ describe("Confirm Delete page", () => {
           expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
           const dom = new JSDOM(res.text);
           expect (dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
+          expect (dom.window.document.querySelector("#currentUser").getAttribute("value")).to.be.empty;
         });
     });
 
@@ -87,6 +89,11 @@ describe("Confirm Delete page", () => {
           const dom = new JSDOM(res.text);
           const result = dom.window.document.querySelector(".govuk-fieldset__legend--xl").innerHTML;
           expect(result).to.equal("Are you sure you would like to delete user anas@yahoo.com?");
+          const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
+          expect (currentUserHiddenInput).not.to.be.empty;
+          const user = JSON.parse(currentUserHiddenInput);
+          expect (user.forename).to.equal("Test");
+          expect (user.surname).to.equal("User");
         });
     });
 
@@ -110,6 +117,11 @@ describe("Confirm Delete page", () => {
           const dom = new JSDOM(res.text);
           const result = dom.window.document.querySelector(".govuk-fieldset__legend--xl").innerHTML;
           expect(result).to.equal("Are you sure you would like to delete the selected definition?");
+          const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
+          expect (currentUserHiddenInput).not.to.be.empty;
+          const user = JSON.parse(currentUserHiddenInput);
+          expect (user.forename).to.equal("Test");
+          expect (user.surname).to.equal("User");
         });
     });
   });

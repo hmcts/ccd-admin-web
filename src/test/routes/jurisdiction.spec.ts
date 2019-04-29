@@ -1,6 +1,7 @@
 import { app } from "../../main/app";
 import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
+import { JSDOM } from "jsdom";
 import * as mock from "nock";
 import * as request from "supertest";
 import { get } from "config";
@@ -41,6 +42,13 @@ describe("Jurisdiction page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Jurisdiction 1");
           expect(res.text).to.contain("Jurisdiction 2");
+          const dom = new JSDOM(res.text);
+          const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
+          expect (currentUserHiddenInput).not.to.be.empty;
+          const user = JSON.parse(currentUserHiddenInput);
+          expect (user.forename).to.equal("Test");
+          expect (user.surname).to.equal("User");
+
         });
     });
   });

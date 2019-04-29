@@ -24,13 +24,13 @@ nodejs:
 
     # Application vars
     # IDAM
-    IDAM_BASE_URL: http://betaDevBccidamAppLB.reform.hmcts.net
+    IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
     IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
     IDAM_ADMIN_WEB_SERVICE_KEY: ${IDAM_SERVICE_KEY}
     IDAM_SERVICE_NAME: ccd_admin
-    IDAM_LOGOUT_URL: https://idam-test.dev.ccidam.reform.hmcts.net/login/logout
 
-    IDAM_OAUTH2_TOKEN_ENDPOINT: http://betaDevBccidamAppLB.reform.hmcts.net/oauth2/token
+    IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
+    IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
     IDAM_OAUTH2_CLIENT_ID: ccd_admin
     IDAM_OAUTH2_AW_CLIENT_SECRET: ${OAUTH2_CLIENT_SECRET}
 

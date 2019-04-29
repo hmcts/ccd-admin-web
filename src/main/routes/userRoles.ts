@@ -21,6 +21,7 @@ const url = config.get("adminWeb.alluserroles_url");
 router.get("/user-roles", (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
+  responseContent.user = JSON.stringify(req.authentication.user);
   delete req.session.error;
   delete req.session.success;
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
@@ -41,6 +42,7 @@ router.get("/user-roles", (req, res, next) => {
 router.get("/user-roles-list", (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
+  responseContent.user = JSON.stringify(req.authentication.user);
   if (req.session.error) {
     responseContent.error = req.session.error;
   }
@@ -71,6 +73,7 @@ router.get("/create-user-role-form", (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
+    responseContent.user = JSON.stringify(req.authentication.user);
     responseContent.submitUserRoleEndPoint = "/createuserrole";
     responseContent.securityClassifications = classifications;
     responseContent.heading = createUserRoleHeading;
@@ -112,6 +115,7 @@ function validateUpdate(req, res, next) {
   if (validate(req, res, next)) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
+    responseContent.user = JSON.stringify(req.authentication.user);
     responseContent.update = true;
     responseContent.role = req.body.role;
     responseContent.submitUserRoleEndPoint = "/updateuserrole";
@@ -157,6 +161,7 @@ router.post("/updateuserroleform", validateUpdateForm, (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
+    responseContent.user = JSON.stringify(req.authentication.user);
     responseContent.update = true;
     responseContent.role = req.body.role;
     responseContent.submitUserRoleEndPoint = "/updateuserrole";

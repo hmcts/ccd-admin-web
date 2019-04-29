@@ -52,6 +52,7 @@ pre.error-message {
 .padding {
   padding: 15px;
 }
+
 .padding-deeper {
   padding: 35px;
 }
@@ -92,7 +93,7 @@ pre.error-message {
 .admin-ui {
   width: 100%;
   height: 2%;
-  font-family: nta", Arial, sans-seri";
+  font-family: "nta", Arial, sans-serif;
   font-size: 18px;
   font-weight: bold;
   font-style: normal;
@@ -104,68 +105,72 @@ pre.error-message {
   padding: 10px;
   color: #ffffff;
 }
-table, tbody, td, tr
-{
-  padding-left: 0px;
-  padding-right: 0px;
-  padding-top: 0px;
-  padding-top: 0px;
+
+table, tbody, td, tr {
+  padding: 0;
   border: none !important;
-  border-style: none;
-  margin: 0px;
+  margin: 0;
 }
 
 .tableCSS {
-  width: 100px; }
+  width: 100px;
+}
 
 .tdCSS {
   width: 25px;
-  border: 1;
-  margin: 0px; }
+  border: 1px;
+  margin: 0;
+}
 
-.rightAlign {
-  float: right; }
+.rightAlignNoMargin {
+  float: right;
+}
 
 .date {
-  width: 50px; }
-
-  .rightAlign {
-    float: right;
-    margin-right: 50px;
-  }
-  .govuk-error-message {
-    font-family: "nta", Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-    display: block;
-    margin-bottom: 15px;
-    clear: both;
-    color: #b10e1e; }
-
-    .success {
-      width: 100%;
-      height: 40px;
-      background-color: #006435;
-      margin-bottom: 3px;
-    }
-  .error {
-    display:block;
-    border: 5px solid #ffdddd;
-    color: red
-  }
-
-  hr {
-    display: block;
-    background: #bfc1c3;
-    border: 0;
-    height: 1px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding: 0;
+  width: 50px;
 }
+
+.rightAlign {
+  float: right;
+  margin-right: 50px;
+}
+
+.govuk-error-message {
+  font-family: "nta", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  display: block;
+  margin-bottom: 15px;
+  clear: both;
+  color: #b10e1e;
+}
+
+.success {
+  width: 100%;
+  height: 40px;
+  background-color: #006435;
+  margin-bottom: 3px;
+}
+
+.error {
+  display: block;
+  border: 5px solid #ffdddd;
+  color: red
+}
+
+hr {
+  display: block;
+  background: #bfc1c3;
+  border: 0;
+  height: 1px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
 .govuk-fieldset__legend {
   font-family: "nta", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -182,7 +187,7 @@ table, tbody, td, tr
   padding: 0;
   overflow: hidden;
   white-space: normal;
- }
+}
 
 .disableborder {
   border-color: darkgray;
@@ -196,6 +201,25 @@ table, tbody, td, tr
   font-size: 32px;
   line-height: 1.09375; 
 }
-.boldcontents{
+
+.boldcontents {
   font-weight: bold;
+}
+
+.proposition-container {
+  margin: 0 15px;
+  line-height: 2 !important;
+}
+
+.proposition-item {
+  float: left;
+  margin-left: 10px;
+  font-size: 16px;
+  @at-root #{selector-append(a, &)} {
+    color: white;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

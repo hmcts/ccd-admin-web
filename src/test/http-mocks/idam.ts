@@ -12,7 +12,7 @@ export const defaultAuthToken =
 export function resolveRetrieveUserFor(id: string, ...roles: string[]) {
   return mock(idamApiBaseUrl)
     .get("/details")
-    .reply(HttpStatus.OK, { id, roles, email: "user@example.com" });
+    .reply(HttpStatus.OK, { id, roles, email: "user@example.com", forename: "Test", surname: "User" });
 }
 
 export function resolveExchangeCode(token: string) {
