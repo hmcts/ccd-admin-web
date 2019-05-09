@@ -212,6 +212,7 @@ describe("Import Definition page", () => {
           const dom = new JSDOM(res.text);
           const result = dom.window.document.querySelector(".form-group").innerHTML;
           expect(result).to.contain("Definition imported");
+          expect(result).not.to.contain("Warnings:");
         });
     });
 
@@ -296,6 +297,40 @@ describe("Import Definition page", () => {
 
           // Assert that the back-end is called
           expect(apiCall.isDone()).to.be.true;
+        });
+    });
+
+    it("should upload a valid Definition file and display any warnings from the import process", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      mock("http://localhost:4451")
+        .post("/import")
+        .reply(201, "Definition imported", {
+          "definition-import-warnings": "First warning,Second warning",
+        });
+
+      const file = {
+        buffer: new Buffer(8),
+        originalname: "dummy_filename.xlsx",
+      };
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .post("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .attach("file", file.buffer, file.originalname)
+        .then((res) => {
+          expect(res.statusCode).to.equal(201);
+          const dom = new JSDOM(res.text);
+          const result = dom.window.document.querySelector(".form-group").innerHTML;
+          expect(result).to.contain("Definition imported");
+          expect(result).to.contain("Warnings:");
+          expect(result).to.contain("First warning");
+          expect(result).to.contain("Second warning");
         });
     });
   });
