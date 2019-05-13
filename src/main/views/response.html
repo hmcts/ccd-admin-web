@@ -1,3 +1,11 @@
 {% if not error %}
 <p>{{ response.text if response else "Choose file containing case definitions" }}</p>
 {% endif %}
+{% if response.headers["definition-import-warnings"] %}
+<div>Warnings:</div>
+<ul>
+  {% for message in response.headers["definition-import-warnings"] | split(",") %}
+  <li>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}

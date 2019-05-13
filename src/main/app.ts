@@ -53,7 +53,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 new Helmet(config.get<HelmetConfig>("security")).enableFor(app);
 
-expressNunjucks(app);
+expressNunjucks(app, {
+  filters: {
+    split: (str, separator) => {
+      return str.split(separator);
+    },
+  },
+});
 
 // Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
 app.enable("trust proxy");

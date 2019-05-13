@@ -37,7 +37,13 @@ appTest.use(bodyParser.json());
 appTest.use(bodyParser.urlencoded({ extended: false }));
 appTest.use(cookieParser());
 
-expressNunjucks(appTest);
+expressNunjucks(appTest, {
+  filters: {
+    split: (str, separator) => {
+      return str.split(separator);
+    },
+  },
+});
 
 // Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
 appTest.enable("trust proxy");

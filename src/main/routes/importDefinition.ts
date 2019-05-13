@@ -38,7 +38,10 @@ router.post("/import", (req, res, next) => {
         uploadFile(req)
           .then((response) => {
             res.status(201);
-            res.render("importDefinition", {response});
+            const responseContent: { [k: string]: any } = {};
+            responseContent.user = JSON.stringify(req.authentication.user);
+            responseContent.response = response;
+            res.render("importDefinition", responseContent);
           })
           .catch((error) => {
             req.session.error = {

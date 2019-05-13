@@ -36,7 +36,13 @@ appTestWithAuthorizedAdminWebRoles.use(bodyParser.urlencoded({ extended: false }
 appTestWithAuthorizedAdminWebRoles.use(cookieParser());
 appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 
-expressNunjucks(appTestWithAuthorizedAdminWebRoles);
+expressNunjucks(appTestWithAuthorizedAdminWebRoles, {
+  filters: {
+    split: (str, separator) => {
+      return str.split(separator);
+    },
+  },
+});
 
 // Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
 appTestWithAuthorizedAdminWebRoles.enable("trust proxy");
