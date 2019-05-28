@@ -30,11 +30,6 @@ locals {
   nonPreviewResourceGroup = "${var.raw_product}-shared-${var.env}"
   sharedResourceGroup = "${(var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup}"
 
-  // Storage Account
-  previewStorageAccountName = "${var.raw_product}sharedaat"
-  nonPreviewStorageAccountName = "${var.raw_product}shared${var.env}"
-  storageAccountName = "${(var.env == "preview" || var.env == "spreview") ? local.previewStorageAccountName : local.nonPreviewStorageAccountName}"
-
   sharedAppServicePlan = "${var.raw_product}-${var.env}"
   sharedASPResourceGroup = "${var.raw_product}-shared-${var.env}"
 }
@@ -49,13 +44,6 @@ data "azurerm_key_vault" "s2s_vault" {
   resource_group_name = "rpe-service-auth-provider-${local.local_env}"
 }
 
-resource "azurerm_storage_container" "imports_container" {
-  name = "${local.app_full_name}-imports-${var.env}"
-  resource_group_name = "${local.sharedResourceGroup}"
-  storage_account_name = "${local.storageAccountName}"
-  container_access_type = "private"
-}
-
 data "azurerm_key_vault_secret" "idam_service_key" {
   name = "microservicekey-ccd-admin"
   key_vault_id = "${data.azurerm_key_vault.s2s_vault.id}"
@@ -63,16 +51,6 @@ data "azurerm_key_vault_secret" "idam_service_key" {
 
 data "azurerm_key_vault_secret" "oauth2_client_secret" {
   name = "ccd-admin-web-oauth2-client-secret"
-  key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
-}
-
-data "azurerm_key_vault_secret" "storageaccount_primary_connection_string" {
-  name = "storage-account-primary-connection-string"
-  key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
-}
-
-data "azurerm_key_vault_secret" "storageaccount_secondary_connection_string" {
-  name = "storage-account-secondary-connection-string"
   key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
 }
 
@@ -137,10 +115,5 @@ module "ccd-admin-web" {
     ADMINWEB_AUTHORIZATION_URL = "${local.def_store_url}/api/idam/adminweb/authorization"
     ADMINWEB_IMPORT_AUDITS_URL = "${local.def_store_url}/api/import-audits"
     ADMINWEB_ROLES_WHITELIST = "ccd-import,ccd-import-validate"
-
-    # Storage Account
-    STORAGEACCOUNT_PRIMARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_primary_connection_string.value}"
-    STORAGEACCOUNT_SECONDARY_CONNECTION_STRING = "${data.azurerm_key_vault_secret.storageaccount_secondary_connection_string.value}"
-    STORAGE_CONTAINER_IMPORTS_CONTAINER_NAME = "${azurerm_storage_container.imports_container.name}"
   }
 }
