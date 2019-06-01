@@ -12,7 +12,7 @@
 
   $(document).ready(function(){
           $('#createuserroleform').validate({ // initialize the plugin
-        onkeyup: false,
+        onkeyup: function(element) {$(element).valid()},
         onclick: false,
         onfocusout: false,
        errorPlacement: function (error, element) {
