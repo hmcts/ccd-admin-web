@@ -198,6 +198,18 @@ describe("Import Definition page", () => {
         .post("/import")
         .reply(201, "Definition imported");
 
+      const importAuditsApiCall = mock("http://localhost:4451")
+        .get("/api/import-audits")
+        .reply(200, [{
+          caseType: "I am 100% happy with this piece of work",
+          case_type: "I am si of it",
+          dateImported: "last century",
+          date_imported: "next century",
+          fileName: "x343EWFMVl",
+          filename: "9343EWFMVl",
+          whoImported: "xID_3",
+          who_imported: "ID_3"}]);
+
       const file = {
         buffer: new Buffer(8),
         originalname: "dummy_filename.xlsx",
@@ -213,6 +225,21 @@ describe("Import Definition page", () => {
           const result = dom.window.document.querySelector(".form-group").innerHTML;
           expect(result).to.contain("Definition imported");
           expect(result).not.to.contain("Warnings:");
+          // Assert that the Import Audits API is called
+          expect(importAuditsApiCall.isDone()).to.be.true;
+          // Check that the Import Audits table is visible and showing the expected data
+          expect(res.text).to.contain("<th>Date Imported</th>");
+          expect(res.text).to.contain("<th>Who Imported</th>");
+          expect(res.text).to.contain("<th>Case Type</th>");
+          expect(res.text).to.contain("<th>Filename</th>");
+          expect(res.text).to.contain("next century");
+          expect(res.text).to.contain("ID_3");
+          expect(res.text).to.contain("I am si of it");
+          expect(res.text).to.contain("9343EWFMVl");
+          expect(res.text).not.to.contain("last century");
+          expect(res.text).not.to.contain("xID_3");
+          expect(res.text).not.to.contain("I am 100% happy with this piece of work");
+          expect(res.text).not.to.contain("x343EWFMVl");
         });
     });
 
@@ -314,6 +341,18 @@ describe("Import Definition page", () => {
           "definition-import-warnings": "First warning,Second warning",
         });
 
+      const importAuditsApiCall = mock("http://localhost:4451")
+        .get("/api/import-audits")
+        .reply(200, [{
+          caseType: "I am 100% happy with this piece of work",
+          case_type: "I am si of it",
+          dateImported: "last century",
+          date_imported: "next century",
+          fileName: "x343EWFMVl",
+          filename: "9343EWFMVl",
+          whoImported: "xID_3",
+          who_imported: "ID_3"}]);
+
       const file = {
         buffer: new Buffer(8),
         originalname: "dummy_filename.xlsx",
@@ -331,6 +370,8 @@ describe("Import Definition page", () => {
           expect(result).to.contain("Warnings:");
           expect(result).to.contain("First warning");
           expect(result).to.contain("Second warning");
+          // Assert that the Import Audits API is called
+          expect(importAuditsApiCall.isDone()).to.be.true;
         });
     });
   });
