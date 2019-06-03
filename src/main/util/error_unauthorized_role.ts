@@ -4,6 +4,8 @@ export function error_unauthorized_role(req) {
   const responseContent: { [k: string]: any } = {};
   responseContent.error = ERROR_UNAUTHORIZED_ROLE;
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
-  responseContent.user = JSON.stringify(req.authentication.user);
+  if (req.authentication) {
+    responseContent.user = JSON.stringify(req.authentication.user);
+  }
   return responseContent;
 }
