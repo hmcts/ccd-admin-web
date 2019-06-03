@@ -32,7 +32,7 @@ router.get("/createdefinition", (req, res, next) => {
       next(error);
     });
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 
@@ -61,7 +61,7 @@ router.post("/createdefinition", (req, res) => {
       res.redirect(302, "/createdefinition");
     });
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 

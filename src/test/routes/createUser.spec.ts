@@ -2,10 +2,11 @@ import { app } from "../../main/app";
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
+import { get } from "config";
+import { JSDOM } from "jsdom";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
-import { get } from "config";
 
 const CCD_IMPORT_ROLE = "ccd-import";
 
@@ -32,7 +33,7 @@ describe("on Get /createuser", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
+      .reply(200, {canImportDefinition: true});
 
     return request(app)
       .get("/createuser")
@@ -41,7 +42,12 @@ describe("on Get /createuser", () => {
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
+        // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
+        const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
+        expect(menuItem).to.equal("Import Case Definition");
       });
   });
 
@@ -77,7 +83,7 @@ describe("on Get /createuser", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, [{}]);
+      .reply(200, {});
 
     return request(app)
       .get("/createuser")
@@ -127,7 +133,9 @@ describe("on POST /createuser", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
       });
   });
 
@@ -206,7 +214,9 @@ describe("on POST /createuser", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
       });
   });
 

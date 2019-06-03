@@ -43,7 +43,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
+        .reply(200, {canManageUserProfile: true});
 
       return request(app)
         .get("/import")
@@ -58,7 +58,12 @@ describe("Import Definition page", () => {
           expect(res.text).not.to.contain("ID_3");
           expect(res.text).not.to.contain("I am si of it");
           expect(res.text).not.to.contain("9343EWFMVl");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          const dom = new JSDOM(res.text);
+          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+          expect(errorHeading).to.equal("Unauthorised role");
+          // The "Manage User Profiles" menu item should still be displayed (as this user is authorised for that)
+          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
+          expect(menuItem).to.equal("Manage User Profiles");
         });
     });
 
@@ -68,7 +73,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {});
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -128,7 +133,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {});
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -160,7 +165,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {canManageUserProfile: true});
 
       const apiCall = mock("http://localhost:4451")
         .post("/import")
@@ -178,8 +183,11 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const result = dom.window.document.querySelector(".heading-large").innerHTML;
-          expect(result).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+          expect(errorHeading).to.equal("Unauthorised role");
+          // The "Manage User Profiles" menu item should still be displayed (as this user is authorised for that)
+          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
+          expect(menuItem).to.equal("Manage User Profiles");
 
           // Assert that the back-end is not called
           expect(apiCall.isDone()).to.be.false;
@@ -192,7 +200,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {});
 
       mock("http://localhost:4451")
         .post("/import")
@@ -222,7 +230,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {});
 
       const apiCall = mock("http://localhost:4451")
         .post("/import")
@@ -252,7 +260,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {});
 
       const apiCall = mock("http://localhost:4451")
         .post("/import")
@@ -276,7 +284,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {});
 
       const apiCall = mock("http://localhost:4451")
         .post("/import")
@@ -306,7 +314,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {});
 
       mock("http://localhost:4451")
         .post("/import")
@@ -331,6 +339,40 @@ describe("Import Definition page", () => {
           expect(result).to.contain("Warnings:");
           expect(result).to.contain("First warning");
           expect(result).to.contain("Second warning");
+        });
+    });
+
+    it("should display an error page if there is an error not handled elsewhere", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(403, "Forbidden");
+
+      const apiCall = mock("http://localhost:4451")
+        .post("/import")
+        .reply(201, "Definition imported");
+
+      const file = {
+        buffer: new Buffer(8),
+        originalname: "dummy_filename.xlsx",
+      };
+
+      return request(app)
+        .post("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .attach("file", file.buffer, file.originalname)
+        .then((res) => {
+          expect(res.statusCode).to.equal(403);
+          const dom = new JSDOM(res.text);
+          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+          expect(errorHeading).to.equal("Error");
+          const errorSummary = dom.window.document.querySelector("div.error-summary.govuk-error-message > p").innerHTML;
+          expect(errorSummary).to.equal("Forbidden (403)");
+
+          // Assert that the back-end is not called
+          expect(apiCall.isDone()).to.be.false;
         });
     });
   });

@@ -34,7 +34,7 @@ router.get("/user-roles", (req, res, next) => {
       next(error);
     });
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 
@@ -61,7 +61,7 @@ router.get("/user-roles-list", (req, res, next) => {
       next(error);
     });
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 
@@ -85,7 +85,7 @@ router.get("/create-user-role-form", (req, res, next) => {
     }
     res.render("user-roles/create-user-roles", responseContent);
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 
@@ -153,7 +153,7 @@ router.post("/createuserrole", validateCreate, (req, res, next) => {
       res.redirect(302, "/create-user-role-form");
     });
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 
@@ -174,7 +174,7 @@ router.post("/updateuserroleform", validateUpdateForm, (req, res, next) => {
     }
     res.render("user-roles/create-user-roles", responseContent);
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 
@@ -193,7 +193,7 @@ router.post("/updateuserrole", validateUpdate, (req, res, next) => {
         res.redirect(302, "/create-user-role-form");
       });
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 

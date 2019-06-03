@@ -2,10 +2,11 @@ import { app } from "../../main/app";
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
+import { get } from "config";
+import { JSDOM } from "jsdom";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
-import { get } from "config";
 
 const CCD_IMPORT_ROLE = "ccd-import";
 
@@ -29,7 +30,7 @@ describe("on Get /create-user-role-form", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, [{}]);
+      .reply(200, {});
 
     return request(app)
       .get("/create-user-role-form")
@@ -47,7 +48,7 @@ describe("on Get /create-user-role-form", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, [{}]);
+      .reply(200, {});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/create-user-role-form")
@@ -86,7 +87,7 @@ describe("on Get /user-roles-list", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, [{}]);
+      .reply(200, {canImportDefinition: true});
 
     return request(app)
       .get("/user-roles-list")
@@ -94,7 +95,12 @@ describe("on Get /user-roles-list", () => {
       .then((res) => {
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Create User Role");
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
+        // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
+        const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
+        expect(menuItem).to.equal("Import Case Definition");
       });
   });
 
@@ -110,7 +116,7 @@ describe("on Get /user-roles-list", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, [{}]);
+      .reply(200, {});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/user-roles-list")
@@ -148,7 +154,7 @@ describe("on Get /user-roles", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, [{}]);
+      .reply(200, {});
 
     return request(app)
       .get("/user-roles")
@@ -171,7 +177,7 @@ describe("on Get /user-roles", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, [{}]);
+      .reply(200, {});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/user-roles")
@@ -188,7 +194,7 @@ describe("on POST /createuserrole", () => {
     mock.cleanAll();
   });
 
-  it("should respond with user roles page and populated response when authenticated but not authorized", () => {
+  it("should not respond with user roles page or populated response when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
@@ -315,7 +321,7 @@ describe("on POST /updateuserrole", () => {
     mock.cleanAll();
   });
 
-  it("should respond with user roles page and populated response when authenticated but not authorized", () => {
+  it("should not respond with user roles page or populated response when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
@@ -436,7 +442,7 @@ describe("on POST /updateuserroleform", () => {
     mock.cleanAll();
   });
 
-  it("should respond with update user form and populated response when authenticated but not authorized", () => {
+  it("should not respond with update user form or populated response when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 

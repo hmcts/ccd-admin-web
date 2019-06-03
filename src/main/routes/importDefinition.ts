@@ -54,7 +54,7 @@ router.post("/import", (req, res, next) => {
       }
     });
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 
@@ -80,7 +80,7 @@ router.get("/import", (req, res, next) => {
         next(error);
       });
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 
