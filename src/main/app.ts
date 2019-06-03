@@ -1,3 +1,4 @@
+import * as healthcheck from "@hmcts/nodejs-healthcheck";
 import { Express, Logger } from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
 import * as config from "config";
@@ -7,6 +8,7 @@ import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
+
 import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
 import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
@@ -21,6 +23,8 @@ import { COOKIE_ACCESS_TOKEN } from "./user/user-request-authorizer";
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
+const appHealth: express.Express = express();
+
 app.locals.ENV = env;
 
 // Session
@@ -33,6 +37,12 @@ app.use(cookieSession({
 
 // setup logging of HTTP requests
 app.use(Express.accessLogger());
+
+const healthConfig = {
+  checks: {},
+};
+healthcheck.addTo(appHealth, healthConfig);
+app.use(appHealth);
 
 const logger = Logger.getLogger("app");
 
