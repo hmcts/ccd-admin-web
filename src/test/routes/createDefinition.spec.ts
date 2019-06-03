@@ -23,7 +23,32 @@ describe("on GET /createdefinition", () => {
       });
   });
 
-  it("should respond with Create Definition form and populated response when authenticated but not authorized", () => {
+  it("should not respond with form / populated response if authenticated but not authorized", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+
+    mock("http://localhost:4451")
+      .get("/api/data/jurisdictions")
+      .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
+
+    mock("http://localhost:4451")
+      .get("/api/idam/adminweb/authorization")
+      .reply(200, {});
+
+    return request(app)
+      .get("/createdefinition")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.text).not.to.contain("Jurisdiction 1");
+        expect(res.text).not.to.contain("Jurisdiction 2");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
+      });
+  });
+
+  it("should not respond with form / populated response if authenticated but without required authorized role", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 
@@ -115,7 +140,7 @@ describe("on POST /createdefinition when unauthorized", () => {
     mock.cleanAll();
   });
 
-  it("should not be calling api to `creating a Definition`", () => {
+  it("should not be calling api to `create a Definition`", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")

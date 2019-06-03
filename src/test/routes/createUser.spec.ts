@@ -23,7 +23,32 @@ describe("on Get /createuser", () => {
       });
   });
 
-  it("should not respond with create user form when authenticated but not authorized", () => {
+  it("should not respond with Create User form when authenticated but not authorized", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+
+    mock("http://localhost:4451")
+      .get("/api/data/jurisdictions")
+      .reply(200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]);
+
+    mock("http://localhost:4451")
+      .get("/api/idam/adminweb/authorization")
+      .reply(200, {});
+
+    return request(app)
+      .get("/createuser")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.text).not.to.contain("Jurisdiction 1");
+        expect(res.text).not.to.contain("Jurisdiction 2");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
+      });
+  });
+
+  it("should not respond with Create User form when authenticated but without required authorized role", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 
@@ -51,7 +76,7 @@ describe("on Get /createuser", () => {
       });
   });
 
-  it("should respond with create user form and populated response when authenticated and authorized", () => {
+  it("should respond with Create User form and populated response when authenticated and authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 
@@ -73,7 +98,7 @@ describe("on Get /createuser", () => {
       });
   });
 
-  it("should handle error when accessing create user form page when not authorized", () => {
+  it("should handle error when accessing Create User form page when not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 
@@ -92,7 +117,7 @@ describe("on Get /createuser", () => {
       .expect(200);
   });
 
-  it("should handle error when accessing create user form page when authorized", () => {
+  it("should handle error when accessing Create User form page when authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 
@@ -116,7 +141,7 @@ describe("on POST /createuser", () => {
     mock.cleanAll();
   });
 
-  it("should respond with create user form when authenticated but not authorized", () => {
+  it("should not respond with Create User form when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
@@ -139,7 +164,7 @@ describe("on POST /createuser", () => {
       });
   });
 
-  it("should respond with create user form and populated response when authenticated and authorized", () => {
+  it("should respond with Create User form and populated response when authenticated and authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
@@ -196,7 +221,7 @@ describe("on POST /createuser", () => {
       });
   });
 
-  it("should not respond with create user form when not authorized", () => {
+  it("should not respond with Create User form when not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
@@ -220,7 +245,7 @@ describe("on POST /createuser", () => {
       });
   });
 
-  it("should respond with create user form due to server error", () => {
+  it("should respond with Create User form due to server error", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
