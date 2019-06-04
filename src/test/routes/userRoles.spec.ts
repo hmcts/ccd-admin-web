@@ -30,7 +30,7 @@ describe("on Get /create-user-role-form", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
+      .reply(200);
 
     return request(app)
       .get("/create-user-role-form")
@@ -154,7 +154,7 @@ describe("on Get /user-roles", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
+      .reply(200);
 
     return request(app)
       .get("/user-roles")
