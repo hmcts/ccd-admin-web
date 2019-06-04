@@ -43,7 +43,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200);
+        .reply(200, [{}]);
 
       return request(app)
         .get("/import")
@@ -204,7 +204,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200);
+        .reply(200, [{}]);
 
       const apiCall = mock("http://localhost:4451")
         .post("/import")
