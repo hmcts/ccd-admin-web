@@ -43,8 +43,8 @@
 
   $(document).ready(function(){
         $('#createuserform').validate({ // initialize the plugin
-            onkeyup: false,
-            onclick: false,
+            onkeyup: function(element) {$(element).valid()},
+            onclick: function(element) {$(element).valid()},
             onfocusout: false,
         errorPlacement: function (error, element) {
                 error.insertBefore(element);
