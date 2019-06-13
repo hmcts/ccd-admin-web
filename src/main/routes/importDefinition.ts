@@ -41,8 +41,16 @@ router.post("/import", (req, res, next) => {
             const responseContent: { [k: string]: any } = {};
             responseContent.adminWebAuthorization = req.adminWebAuthorization;
             responseContent.user = JSON.stringify(req.authentication.user);
-            responseContent.response = response;
-            res.render("importDefinition", responseContent);
+            // Re-fetch the Import Audits data
+            fetch(req, url).then((data) => {
+              responseContent.importAudits = JSON.parse(data);
+              responseContent.response = response;
+              res.render("importDefinition", responseContent);
+            })
+              .catch((error) => {
+                // Call the next middleware, which is the error handler
+                next(error);
+              });
           })
           .catch((error) => {
             req.session.error = {
