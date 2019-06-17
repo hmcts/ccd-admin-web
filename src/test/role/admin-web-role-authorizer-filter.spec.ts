@@ -26,6 +26,7 @@ describe("admin-web-role-authorizer-filter", () => {
       serviceAuthToken: "serviceToken",
     };
     req.get.withArgs("host").returns("localhost");
+    req.session = {};
     res = {};
 
     const config = {
@@ -76,6 +77,7 @@ describe("admin-web-role-authorizer-filter", () => {
         try {
           expect(error).to.be.undefined;
           expect(req.adminWebAuthorization).not.to.be.undefined;
+          expect(req.session.adminWebAuthorization).to.equal(req.adminWebAuthorization);
           expect(JSON.stringify(req.adminWebAuthorization)).to.be.equal(JSON.stringify(authorization));
           done();
         } catch (e) {

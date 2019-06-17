@@ -35,7 +35,7 @@ router.post("/updatedefinition", (req, res, next) => {
     next(error);
   });
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 
 });

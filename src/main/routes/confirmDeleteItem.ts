@@ -30,7 +30,7 @@ router.get("/deleteitem", (req, res, next) => {
     }
     res.render("confirm-delete-item", responseContent);
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 

@@ -34,7 +34,7 @@ describe("Confirm Delete page", () => {
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
+        .reply(200, {canImportDefinition: true});
 
       return request(app)
         .get("/deleteitem")
@@ -42,10 +42,18 @@ describe("Confirm Delete page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
           const dom = new JSDOM(res.text);
-          expect (dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
-          expect (dom.window.document.querySelector("#currentUser").getAttribute("value")).to.be.empty;
+          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+          expect(errorHeading).to.equal("Unauthorised role");
+          expect(dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
+          const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
+          expect(currentUserHiddenInput).not.to.be.empty;
+          const user = JSON.parse(currentUserHiddenInput);
+          expect(user.forename).to.equal("Test");
+          expect(user.surname).to.equal("User");
+          // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
+          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
+          expect(menuItem).to.equal("Import Case Definition");
         });
     });
 
@@ -55,7 +63,7 @@ describe("Confirm Delete page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {canImportDefinition: true});
 
       return request(app)
         .get("/deleteitem")
@@ -66,10 +74,18 @@ describe("Confirm Delete page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
           const dom = new JSDOM(res.text);
-          expect (dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
-          expect (dom.window.document.querySelector("#currentUser").getAttribute("value")).to.be.empty;
+          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+          expect(errorHeading).to.equal("Unauthorised role");
+          expect(dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
+          const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
+          expect(currentUserHiddenInput).not.to.be.empty;
+          const user = JSON.parse(currentUserHiddenInput);
+          expect(user.forename).to.equal("Test");
+          expect(user.surname).to.equal("User");
+          // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
+          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
+          expect(menuItem).to.equal("Import Case Definition");
         });
     });
 
@@ -90,10 +106,10 @@ describe("Confirm Delete page", () => {
           const result = dom.window.document.querySelector(".govuk-fieldset__legend--xl").innerHTML;
           expect(result).to.equal("Are you sure you would like to delete user anas@yahoo.com?");
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
-          expect (currentUserHiddenInput).not.to.be.empty;
+          expect(currentUserHiddenInput).not.to.be.empty;
           const user = JSON.parse(currentUserHiddenInput);
-          expect (user.forename).to.equal("Test");
-          expect (user.surname).to.equal("User");
+          expect(user.forename).to.equal("Test");
+          expect(user.surname).to.equal("User");
         });
     });
 
@@ -103,7 +119,7 @@ describe("Confirm Delete page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/deleteitem")
@@ -118,10 +134,10 @@ describe("Confirm Delete page", () => {
           const result = dom.window.document.querySelector(".govuk-fieldset__legend--xl").innerHTML;
           expect(result).to.equal("Are you sure you would like to delete the selected definition?");
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
-          expect (currentUserHiddenInput).not.to.be.empty;
+          expect(currentUserHiddenInput).not.to.be.empty;
           const user = JSON.parse(currentUserHiddenInput);
-          expect (user.forename).to.equal("Test");
-          expect (user.surname).to.equal("User");
+          expect(user.forename).to.equal("Test");
+          expect(user.surname).to.equal("User");
         });
     });
   });

@@ -32,7 +32,7 @@ router.post("/deletedefinition", (req, res, next) => {
           + `&version=${req.body.definitionVersion}`);
     }
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 

@@ -3,6 +3,7 @@ import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
 import { get } from "config";
+import { JSDOM } from "jsdom";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
@@ -22,7 +23,7 @@ describe("on GET /createdefinition", () => {
       });
   });
 
-  it("should respond with Create Definition form and populated response when authenticated but not authorized", () => {
+  it("should not respond with form / populated response if authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 
@@ -32,7 +33,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
+      .reply(200, [{}]);
 
     return request(app)
       .get("/createdefinition")
@@ -41,7 +42,37 @@ describe("on GET /createdefinition", () => {
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
+      });
+  });
+
+  it("should not respond with form / populated response if authenticated but without required authorized role", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+
+    mock("http://localhost:4451")
+      .get("/api/data/jurisdictions")
+      .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
+
+    mock("http://localhost:4451")
+      .get("/api/idam/adminweb/authorization")
+      .reply(200, {canImportDefinition: true});
+
+    return request(app)
+      .get("/createdefinition")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.text).not.to.contain("Jurisdiction 1");
+        expect(res.text).not.to.contain("Jurisdiction 2");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
+        // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
+        const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
+        expect(menuItem).to.equal("Import Case Definition");
       });
   });
 
@@ -109,7 +140,7 @@ describe("on POST /createdefinition when unauthorized", () => {
     mock.cleanAll();
   });
 
-  it("should not be calling api to `creating a Definition`", () => {
+  it("should not be calling api to `create a Definition`", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")
@@ -125,7 +156,9 @@ describe("on POST /createdefinition when unauthorized", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
       });
   });
 
@@ -145,7 +178,9 @@ describe("on POST /createdefinition when unauthorized", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
       });
   });
 
@@ -165,7 +200,9 @@ describe("on POST /createdefinition when unauthorized", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
       });
   });
 

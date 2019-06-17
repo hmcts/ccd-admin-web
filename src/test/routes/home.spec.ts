@@ -30,7 +30,7 @@ describe("Home page", () => {
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
-        .reply(200, [{}]);
+        .reply(200, {});
 
       return request(app)
         .get("/")

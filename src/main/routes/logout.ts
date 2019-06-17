@@ -22,6 +22,8 @@ export const logout = (req, res, next) => {
     fetch(get("idam.oauth2.logout_endpoint").replace(TOKEN_PLACEHOLDER, accessToken), options)
       .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
+        // Delete the session
+        req.session = null;
         // Redirect to / (index), which will itself redirect to IdAM login page, as the user is not authenticated
         res.redirect(302, "/");
       })

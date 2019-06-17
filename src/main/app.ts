@@ -113,5 +113,10 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   }
 
   res.status(err.status || 500);
-  res.render("error");
+  const responseContent: { [k: string]: any } = {};
+  responseContent.adminWebAuthorization = req.session.adminWebAuthorization;
+  if (req.authentication) {
+    responseContent.user = JSON.stringify(req.authentication.user);
+  }
+  res.render("error", responseContent);
 });

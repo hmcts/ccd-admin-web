@@ -14,7 +14,7 @@ router.post("/userprofiles", validate, (req, res, next) => {
     const query = {jurisdiction: req.body.jurisdictionName};
     render(req, res, next, url, query, userProfilesPage);
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 
@@ -26,7 +26,7 @@ router.get("/userprofiles", (req, res, next) => {
     // Jurisdiction is expected to be set already on the session, hence it can be used for the query
     render(req, res, next, url, query, userProfilesPage);
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 

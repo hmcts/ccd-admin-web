@@ -34,6 +34,7 @@ describe("logout", () => {
       cookies: {
         [COOKIE_ACCESS_TOKEN]: ACCESS_TOKEN,
       },
+      session: {},
     });
     response = sinonExpressMock.mockRes();
     next = sinon.stub();
@@ -54,6 +55,7 @@ describe("logout", () => {
           + Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"));
         expect(next).not.to.be.called;
         expect(response.clearCookie).to.be.calledWith(COOKIE_ACCESS_TOKEN);
+        expect(request.session).to.be.null;
         expect(response.redirect).to.be.calledWith(302, "/");
         done();
       } catch (e) {

@@ -15,7 +15,7 @@ router.post("/definitions", validate, (req, res, next) => {
     const query = {jurisdiction: req.body.jurisdictionName};
     render(req, res, next, url, query, definitionsPage);
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 
@@ -27,7 +27,7 @@ router.get("/definitions", (req, res, next) => {
     const query = req.session.jurisdiction ? {jurisdiction: req.session.jurisdiction} : {};
     render(req, res, next, url, query, definitionsPage);
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 

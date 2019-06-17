@@ -31,7 +31,7 @@ router.post("/deleteuser", (req, res, next) => {
       res.redirect(302, `/deleteitem?item=${req.body.itemToDelete}&idamId=${req.body.idamId}`);
     }
   } else {
-    res.render(errorPage, error_unauthorized_role());
+    res.render(errorPage, error_unauthorized_role(req));
   }
 });
 

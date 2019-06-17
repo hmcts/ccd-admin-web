@@ -15,6 +15,9 @@ export const adminWebRoleAuthorizerFilter = (req, res, next) => {
     logger.info(response);
     debug("response", response);
     req.adminWebAuthorization = JSON.parse(response);
+    // Copy adminWebAuthorization to req.session, as the error handler requires this to display the menu bar on the
+    // Error page
+    req.session.adminWebAuthorization = req.adminWebAuthorization;
     debug("req.adminWebAuthorization", req.adminWebAuthorization);
     next();
   }).catch((error) => {
