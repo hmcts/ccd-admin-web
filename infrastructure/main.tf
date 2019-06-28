@@ -77,7 +77,7 @@ data "azurerm_key_vault_secret" "storageaccount_secondary_connection_string" {
 }
 
 module "ccd-admin-web" {
-  source = "git@github.com:hmcts/moj-module-webapp?ref=master"
+  source = "git@github.com:hmcts/cnp-module-webapp?ref=Bump-JCV"
   product = "${local.app_full_name}"
   location = "${var.location}"
   appinsights_location = "${var.location}"
