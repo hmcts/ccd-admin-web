@@ -15,17 +15,17 @@ router.post("/updatedefinition", (req, res, next) => {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
-    responseContent.jurisdictions = JSON.stringify(response);
+    responseContent.jurisdictions = sanitize(JSON.stringify(response));
     responseContent.currentjurisdiction = sanitize(req.session.jurisdiction);
     responseContent.casetypes = sanitize(req.body.casetypes);
     responseContent.description = sanitize(req.body.description);
     responseContent.status = sanitize(req.body.status);
-    responseContent.version = req.body.version;
+    responseContent.version = sanitize(req.body.version);
     responseContent.update = "true";
     responseContent.heading = "Update Definition";
     responseContent.submitButtonText = "Update";
     if (req.session.error) {
-      responseContent.error = req.session.error;
+      responseContent.error = sanitize(req.session.error);
       delete req.session.error;
     }
     res.render("definition/create-definition-form", responseContent);

@@ -38,7 +38,7 @@ yarn install
 ```
 Setup styles:
 ```bash
-yarn run setup
+yarn setup
 ```
 
 ### Running
@@ -47,6 +47,8 @@ Start the application by executing the following command:
 ```bash
 yarn start
 ```
+
+To be able to log on and use the application you have to have a IDAM user with `ccd-import` role created.
 
 **Note:** You can also start the application by executing:
 ```bash
@@ -57,6 +59,4 @@ node server.js
 
 The application uses HTTP, port 3100 by default. Point your browser at http://localhost:3100 to login.
 
-### Using
 
-To be able to log on and use the application you have to have a IDAM user with ccd-import role created.

@@ -12,12 +12,12 @@ router.get("/jurisdiction", (req, res, next) => {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
-    responseContent.jurisdictions = JSON.parse(response);
+    responseContent.jurisdictions = sanitize(JSON.parse(response));
     if (req.query.dest) {
-      responseContent.destination = req.query.dest;
+      responseContent.destination = sanitize(req.query.dest);
     }
     if (req.session.error) {
-      responseContent.error = req.session.error;
+      responseContent.error = sanitize(req.session.error);
       delete req.session.error;
     }
     res.render("jurisdiction", responseContent);

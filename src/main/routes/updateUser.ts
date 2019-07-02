@@ -21,7 +21,7 @@ router.post("/updateuser", validateUpdate, (req, res, next) => {
         const responseContent: { [k: string]: any } = {};
         responseContent.adminWebAuthorization = req.adminWebAuthorization;
         responseContent.user = sanitize(JSON.stringify(req.authentication.user));
-        responseContent.jurisdictions = JSON.stringify(response);
+        responseContent.jurisdictions = sanitize(JSON.stringify(response));
         responseContent.idamId = sanitize(req.body.idamId);
         responseContent.jurisdiction = sanitize(req.body.jurisdiction);
         responseContent.currentjurisdiction = sanitize(req.body.currentjurisdiction);
@@ -31,7 +31,7 @@ router.post("/updateuser", validateUpdate, (req, res, next) => {
         responseContent.heading = "Update User Profile";
         responseContent.submitButtonText = "Update";
         if (req.session.error) {
-            responseContent.error = req.session.error;
+            responseContent.error = sanitize(req.session.error);
             delete req.session.error;
         }
         res.render("user-profiles/create-user-form", responseContent);

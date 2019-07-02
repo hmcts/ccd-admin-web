@@ -8,13 +8,13 @@ export function render(req, res, next, url, query, page) {
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
     responseContent.currentjurisdiction =
-      req.session.jurisdiction ? req.session.jurisdiction : req.body.jurisdictionName;
+      req.session.jurisdiction ? sanitize(req.session.jurisdiction) : sanitize(req.body.jurisdictionName);
     responseContent.dataItems = JSON.parse(response);
     if (req.session.error) {
-      responseContent.error = req.session.error;
+      responseContent.error = sanitize(req.session.error);
     }
     if (req.session.success) {
-      responseContent.success = req.session.success;
+      responseContent.success = sanitize(req.session.success);
       // Clear success message so it doesn't appear subsequently
       delete req.session.success;
     }

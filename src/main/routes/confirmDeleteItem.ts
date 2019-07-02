@@ -10,18 +10,18 @@ router.get("/deleteitem", (req, res, next) => {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
-    responseContent.response = req.session.response;
-    responseContent.itemToDelete = req.query.item;
+    responseContent.response = sanitize(req.session.response);
+    responseContent.itemToDelete = sanitize(req.query.item);
 
     if (req.query.item === "user") {
-      responseContent.idamId = req.query.idamId;
-      responseContent.warning = `Are you sure you would like to delete user ${req.query.idamId}?`;
+      responseContent.idamId = sanitize(req.query.idamId);
+      responseContent.warning = sanitize(`Are you sure you would like to delete user ${req.query.idamId}?`);
       responseContent.headingItem = "User Profile";
     }
 
     if (req.query.item === "definition") {
-      responseContent.currentJurisdiction = req.query.jurisdictionId;
-      responseContent.version = req.query.version;
+      responseContent.currentJurisdiction = sanitize(req.query.jurisdictionId);
+      responseContent.version = sanitize(req.query.version);
       responseContent.warning = "Are you sure you would like to delete the selected definition?";
       responseContent.headingItem = "Definition";
     }

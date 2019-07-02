@@ -44,8 +44,8 @@ router.post("/import", (req, res, next) => {
             responseContent.user = sanitize(JSON.stringify(req.authentication.user));
             // Re-fetch the Import Audits data
             fetch(req, url).then((data) => {
-              responseContent.importAudits = JSON.parse(data);
-              responseContent.response = response;
+              responseContent.importAudits = sanitize(JSON.parse(data));
+              responseContent.response = sanitize(response);
               res.render("importDefinition", responseContent);
             })
               .catch((error) => {
@@ -76,12 +76,12 @@ router.get("/import", (req, res, next) => {
       const responseContent: { [k: string]: any } = {};
       responseContent.adminWebAuthorization = req.adminWebAuthorization;
       responseContent.user = sanitize(JSON.stringify(req.authentication.user));
-      responseContent.importAudits = JSON.parse(response);
+      responseContent.importAudits = sanitize(JSON.parse(response));
       if (req.query.page) {
         delete req.session.error;
       }
       if (req.session.error) {
-        responseContent.error = req.session.error;
+        responseContent.error = sanitize(req.session.error);
         delete req.session.error;
       }
       res.render("importDefinition", responseContent);

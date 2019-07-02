@@ -17,15 +17,16 @@ router.get("/createuser", (req, res, next) => {
       res.status(200);
       const responseContent: { [k: string]: any } = {};
       responseContent.adminWebAuthorization = req.adminWebAuthorization;
-      responseContent.user = JSON.stringify(req.authentication.user);
+      responseContent.user = sanitize(JSON.stringify(req.authentication.user));
       responseContent.user = sanitize(responseContent.user);
-      responseContent.jurisdictions = JSON.stringify(response);
-      responseContent.currentjurisdiction = req.session.jurisdiction;
+      responseContent.jurisdictions = sanitize(JSON.stringify(response));
+      responseContent.currentjurisdiction = sanitize(req.session.jurisdiction);
       responseContent.heading = "Create User Profile";
       responseContent.submitButtonText = "Create";
-      responseContent.jurisdiction = req.query.jurisdiction ? req.query.jurisdiction : req.session.jurisdiction;
+      responseContent.jurisdiction = req.query.jurisdiction ? sanitize(req.query.jurisdiction)
+        : sanitize(req.session.jurisdiction);
       if (req.session.error) {
-        responseContent.error = req.session.error;
+        responseContent.error = sanitize(req.session.error);
         delete req.session.error;
       }
       res.render("user-profiles/create-user-form", responseContent);
