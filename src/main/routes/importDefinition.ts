@@ -45,7 +45,7 @@ router.post("/import", (req, res, next) => {
             // Re-fetch the Import Audits data
             fetch(req, url).then((data) => {
               responseContent.importAudits = sanitize(JSON.parse(data));
-              responseContent.response = sanitize(response);
+              responseContent.response = response;
               res.render("importDefinition", responseContent);
             })
               .catch((error) => {

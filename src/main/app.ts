@@ -15,7 +15,6 @@ import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-f
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { importAll } from "./import-all/index";
 
-const logger = Logger.getLogger(__filename);
 const enableAppInsights = require("./app-insights/app-insights");
 
 enableAppInsights();
@@ -116,7 +115,6 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 
   res.status(err.status || 500);
   const responseContent: { [k: string]: any } = {};
-
   responseContent.adminWebAuthorization = req.session.adminWebAuthorization;
   if (req.authentication) {
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));

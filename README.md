@@ -58,5 +58,3 @@ node server.js
 ### Accessing the service
 
 The application uses HTTP, port 3100 by default. Point your browser at http://localhost:3100 to login.
-
-

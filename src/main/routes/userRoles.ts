@@ -26,7 +26,7 @@ router.get("/user-roles", (req, res, next) => {
   delete req.session.success;
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     fetch(req, url).then((response) => {
-        responseContent.userroles = sanitize(JSON.parse(response));
+        responseContent.userroles = JSON.parse(sanitize(response));
         res.render("user-roles", responseContent);
     })
     .catch((error) => {
@@ -53,7 +53,7 @@ router.get("/user-roles-list", (req, res, next) => {
   }
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     fetch(req, url).then((response) => {
-      responseContent.userroles = sanitize(JSON.parse(response));
+      responseContent.userroles = JSON.parse(sanitize(response));
       res.render("user-roles", responseContent);
     })
     .catch((error) => {
@@ -75,7 +75,7 @@ router.get("/create-user-role-form", (req, res, next) => {
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
     responseContent.submitUserRoleEndPoint = "/createuserrole";
-    responseContent.securityClassifications = sanitize(classifications);
+    responseContent.securityClassifications = classifications;
     responseContent.heading = sanitize(createUserRoleHeading);
     responseContent.submitButtonText = sanitize(createUserRoleText);
 
@@ -119,7 +119,7 @@ function validateUpdate(req, res, next) {
     responseContent.update = true;
     responseContent.role = sanitize(req.body.role);
     responseContent.submitUserRoleEndPoint = "/updateuserrole";
-    responseContent.securityClassifications = sanitize(classifications);
+    responseContent.securityClassifications = classifications;
     responseContent.chosenClassification = sanitize(req.body.classification);
     responseContent.heading = sanitize(updateUserRoleHeading);
     responseContent.submitButtonText = sanitize(updateUserRoleText);
@@ -165,7 +165,7 @@ router.post("/updateuserroleform", validateUpdateForm, (req, res, next) => {
     responseContent.update = true;
     responseContent.role = sanitize(req.body.role);
     responseContent.submitUserRoleEndPoint = "/updateuserrole";
-    responseContent.securityClassifications = sanitize(classifications);
+    responseContent.securityClassifications = classifications;
     responseContent.chosenClassification = sanitize(req.body.classification);
     responseContent.heading = sanitize(updateUserRoleHeading);
     responseContent.submitButtonText = sanitize(updateUserRoleText);

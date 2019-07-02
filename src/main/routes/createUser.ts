@@ -18,13 +18,12 @@ router.get("/createuser", (req, res, next) => {
       const responseContent: { [k: string]: any } = {};
       responseContent.adminWebAuthorization = req.adminWebAuthorization;
       responseContent.user = sanitize(JSON.stringify(req.authentication.user));
-      responseContent.user = sanitize(responseContent.user);
       responseContent.jurisdictions = sanitize(JSON.stringify(response));
       responseContent.currentjurisdiction = sanitize(req.session.jurisdiction);
       responseContent.heading = "Create User Profile";
       responseContent.submitButtonText = "Create";
-      responseContent.jurisdiction = req.query.jurisdiction ? sanitize(req.query.jurisdiction)
-        : sanitize(req.session.jurisdiction);
+      responseContent.jurisdiction = req.query.jurisdiction ?
+        sanitize(req.query.jurisdiction) : sanitize(req.session.jurisdiction);
       if (req.session.error) {
         responseContent.error = sanitize(req.session.error);
         delete req.session.error;
