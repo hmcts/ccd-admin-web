@@ -1,4 +1,5 @@
 import * as express from "express";
+import { sanitize } from "../util/sanitize";
 
 const router = express.Router();
 
@@ -6,7 +7,7 @@ const router = express.Router();
 router.get("/", (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
-  responseContent.user = JSON.stringify(req.authentication.user);
+  responseContent.user = sanitize(JSON.stringify(req.authentication.user));
   res.render("home", responseContent);
 });
 

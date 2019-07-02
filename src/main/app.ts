@@ -8,6 +8,7 @@ import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
+import { sanitize } from "./util/sanitize";
 
 import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
 import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
@@ -116,7 +117,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   const responseContent: { [k: string]: any } = {};
   responseContent.adminWebAuthorization = req.session.adminWebAuthorization;
   if (req.authentication) {
-    responseContent.user = JSON.stringify(req.authentication.user);
+    responseContent.user = sanitize(JSON.stringify(req.authentication.user));
   }
   res.render("error", responseContent);
 });

@@ -1,11 +1,12 @@
 import { fetch } from "../service/get-service";
+import { sanitize } from "../util/sanitize";
 
 export function render(req, res, next, url, query, page) {
   fetch(req, url, query).then((response) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
-    responseContent.user = JSON.stringify(req.authentication.user);
+    responseContent.user = sanitize(JSON.stringify(req.authentication.user));
     responseContent.currentjurisdiction =
       req.session.jurisdiction ? req.session.jurisdiction : req.body.jurisdictionName;
     responseContent.dataItems = JSON.parse(response);

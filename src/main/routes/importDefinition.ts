@@ -4,6 +4,7 @@ import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { fetch } from "../service/get-service";
 import * as multer from "multer";
 import { uploadFile } from "../service/import-service";
+import { sanitize } from "../util/sanitize";
 
 const errorPage = "error";
 const router = express.Router();
@@ -40,7 +41,7 @@ router.post("/import", (req, res, next) => {
             res.status(201);
             const responseContent: { [k: string]: any } = {};
             responseContent.adminWebAuthorization = req.adminWebAuthorization;
-            responseContent.user = JSON.stringify(req.authentication.user);
+            responseContent.user = sanitize(JSON.stringify(req.authentication.user));
             // Re-fetch the Import Audits data
             fetch(req, url).then((data) => {
               responseContent.importAudits = JSON.parse(data);
@@ -74,7 +75,7 @@ router.get("/import", (req, res, next) => {
       res.status(200);
       const responseContent: { [k: string]: any } = {};
       responseContent.adminWebAuthorization = req.adminWebAuthorization;
-      responseContent.user = JSON.stringify(req.authentication.user);
+      responseContent.user = sanitize(JSON.stringify(req.authentication.user));
       responseContent.importAudits = JSON.parse(response);
       if (req.query.page) {
         delete req.session.error;

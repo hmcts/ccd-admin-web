@@ -36,6 +36,10 @@ The project uses [yarn](https://yarnpkg.com/lang/en/). To build it, execute the 
 ```bash
 yarn install
 ```
+Setup styles:
+```bash
+yarn run setup
+```
 
 ### Running
 
@@ -52,3 +56,7 @@ node server.js
 ### Accessing the service
 
 The application uses HTTP, port 3100 by default. Point your browser at http://localhost:3100 to login.
+
+### Using
+
+To be able to log on and use the application you have to have a IDAM user with ccd-import role created.

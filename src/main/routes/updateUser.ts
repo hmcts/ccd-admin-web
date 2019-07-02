@@ -20,7 +20,7 @@ router.post("/updateuser", validateUpdate, (req, res, next) => {
         res.status(200);
         const responseContent: { [k: string]: any } = {};
         responseContent.adminWebAuthorization = req.adminWebAuthorization;
-        responseContent.user = JSON.stringify(req.authentication.user);
+        responseContent.user = sanitize(JSON.stringify(req.authentication.user));
         responseContent.jurisdictions = JSON.stringify(response);
         responseContent.idamId = sanitize(req.body.idamId);
         responseContent.jurisdiction = sanitize(req.body.jurisdiction);

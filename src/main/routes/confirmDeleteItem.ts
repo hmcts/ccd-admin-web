@@ -1,5 +1,6 @@
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import router from "./home";
+import { sanitize } from "../util/sanitize";
 
 const errorPage = "error";
 
@@ -8,7 +9,7 @@ router.get("/deleteitem", (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
-    responseContent.user = JSON.stringify(req.authentication.user);
+    responseContent.user = sanitize(JSON.stringify(req.authentication.user));
     responseContent.response = req.session.response;
     responseContent.itemToDelete = req.query.item;
 

@@ -18,6 +18,7 @@ router.get("/createuser", (req, res, next) => {
       const responseContent: { [k: string]: any } = {};
       responseContent.adminWebAuthorization = req.adminWebAuthorization;
       responseContent.user = JSON.stringify(req.authentication.user);
+      responseContent.user = sanitize(responseContent.user);
       responseContent.jurisdictions = JSON.stringify(response);
       responseContent.currentjurisdiction = req.session.jurisdiction;
       responseContent.heading = "Create User Profile";
