@@ -9,9 +9,7 @@ const router = express.Router();
 router.get("/", (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
 
-  logger.info("11111111111 req adminWebAuthorization=", req.session.adminWebAuthorization);
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
-  logger.info("22222222222 res adminWebAuthorization=", responseContent.adminWebAuthorization);
 
   responseContent.user = sanitize(JSON.stringify(req.authentication.user));
   res.render("home", responseContent);
