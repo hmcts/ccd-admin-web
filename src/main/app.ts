@@ -117,9 +117,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   res.status(err.status || 500);
   const responseContent: { [k: string]: any } = {};
 
-  logger.info("11111111111 req adminWebAuthorization=", req.session.adminWebAuthorization);
   responseContent.adminWebAuthorization = req.session.adminWebAuthorization;
-  logger.info("22222222222 res adminWebAuthorization=", responseContent.adminWebAuthorization);
   if (req.authentication) {
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
   }
