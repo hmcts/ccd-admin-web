@@ -33,7 +33,8 @@ describe("on POST /updatedefinition", () => {
       });
   });
 
-  it("should respond with Update Definition form populated with response when authenticated and authorized", () => {
+  it(
+    "should respond with Update Definition form populated with response when authenticated and authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451")
