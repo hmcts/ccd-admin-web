@@ -34,7 +34,7 @@
 
       let getJurisdiction = () => {
         let jurisdictionString = {{ jurisdictions | safe }};
-        let jurisdictionLookups = jurisdictionString;
+        let jurisdictionLookups = $.parseJSON(jurisdictionString);
         return jurisdictionLookups.filter(jurisdiction => {
           return jurisdiction.id === "{{ currentjurisdiction }}";
         })[0];
