@@ -55,7 +55,7 @@ data "azurerm_key_vault_secret" "oauth2_client_secret" {
 }
 
 module "ccd-admin-web" {
-  source = "git@github.com:hmcts/cnp-module-webapp?ref=master"
+  source = "git@github.com:hmcts/cnp-module-webapp?ref=Bump-JCV"
   product = "${local.app_full_name}"
   location = "${var.location}"
   appinsights_location = "${var.location}"
