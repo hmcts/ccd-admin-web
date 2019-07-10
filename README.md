@@ -36,6 +36,10 @@ The project uses [yarn](https://yarnpkg.com/lang/en/). To build it, execute the 
 ```bash
 yarn install
 ```
+Setup styles:
+```bash
+yarn setup
+```
 
 ### Running
 
@@ -43,6 +47,8 @@ Start the application by executing the following command:
 ```bash
 yarn start
 ```
+
+To be able to log on and use the application you have to have a IDAM user with `ccd-import` role created.
 
 **Note:** You can also start the application by executing:
 ```bash

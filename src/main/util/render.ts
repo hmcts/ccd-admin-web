@@ -1,19 +1,20 @@
 import { fetch } from "../service/get-service";
+import { sanitize } from "../util/sanitize";
 
 export function render(req, res, next, url, query, page) {
   fetch(req, url, query).then((response) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
-    responseContent.user = JSON.stringify(req.authentication.user);
+    responseContent.user = sanitize(JSON.stringify(req.authentication.user));
     responseContent.currentjurisdiction =
-      req.session.jurisdiction ? req.session.jurisdiction : req.body.jurisdictionName;
+      req.session.jurisdiction ? sanitize(req.session.jurisdiction) : sanitize(req.body.jurisdictionName);
     responseContent.dataItems = JSON.parse(response);
     if (req.session.error) {
-      responseContent.error = req.session.error;
+      responseContent.error = sanitize(req.session.error);
     }
     if (req.session.success) {
-      responseContent.success = req.session.success;
+      responseContent.success = sanitize(req.session.success);
       // Clear success message so it doesn't appear subsequently
       delete req.session.success;
     }

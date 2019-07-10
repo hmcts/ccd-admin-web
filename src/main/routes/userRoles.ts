@@ -21,12 +21,32 @@ const url = config.get("adminWeb.alluserroles_url");
 router.get("/user-roles", (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
-  responseContent.user = JSON.stringify(req.authentication.user);
+  responseContent.user = sanitize(JSON.stringify(req.authentication.user));
   delete req.session.error;
   delete req.session.success;
+  fetchUserRolesIfAuthorizedOrError(req, res, next, responseContent);
+});
+
+/* GET User roles landing page. */
+router.get("/user-roles-list", (req, res, next) => {
+  const responseContent: { [k: string]: any } = {};
+  responseContent.adminWebAuthorization = req.adminWebAuthorization;
+  responseContent.user = sanitize(JSON.stringify(req.authentication.user));
+  if (req.session.error) {
+    responseContent.error = sanitize(req.session.error);
+  }
+  if (req.session.success) {
+    responseContent.success = sanitize(req.session.success);
+    // Clear success message so it doesn't appear subsequently
+    delete req.session.success;
+  }
+  fetchUserRolesIfAuthorizedOrError(req, res, next, responseContent);
+});
+
+function fetchUserRolesIfAuthorizedOrError(req, res, next, responseContent) {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     fetch(req, url).then((response) => {
-        responseContent.userroles = JSON.parse(response);
+        responseContent.userroles = JSON.parse(sanitize(response));
         res.render("user-roles", responseContent);
     })
     .catch((error) => {
@@ -36,34 +56,7 @@ router.get("/user-roles", (req, res, next) => {
   } else {
     res.render(errorPage, error_unauthorized_role(req));
   }
-});
-
-/* GET User roles landing page. */
-router.get("/user-roles-list", (req, res, next) => {
-  const responseContent: { [k: string]: any } = {};
-  responseContent.adminWebAuthorization = req.adminWebAuthorization;
-  responseContent.user = JSON.stringify(req.authentication.user);
-  if (req.session.error) {
-    responseContent.error = req.session.error;
-  }
-  if (req.session.success) {
-    responseContent.success = req.session.success;
-    // Clear success message so it doesn't appear subsequently
-    delete req.session.success;
-  }
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
-    fetch(req, url).then((response) => {
-      responseContent.userroles = JSON.parse(response);
-      res.render("user-roles", responseContent);
-    })
-    .catch((error) => {
-      // Call the next middleware, which is the error handler
-      next(error);
-    });
-  } else {
-    res.render(errorPage, error_unauthorized_role(req));
-  }
-});
+}
 
 /* GET create user roles form. */
 router.get("/create-user-role-form", (req, res, next) => {
@@ -73,14 +66,14 @@ router.get("/create-user-role-form", (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
-    responseContent.user = JSON.stringify(req.authentication.user);
+    responseContent.user = sanitize(JSON.stringify(req.authentication.user));
     responseContent.submitUserRoleEndPoint = "/createuserrole";
     responseContent.securityClassifications = classifications;
-    responseContent.heading = createUserRoleHeading;
-    responseContent.submitButtonText = createUserRoleText;
+    responseContent.heading = sanitize(createUserRoleHeading);
+    responseContent.submitButtonText = sanitize(createUserRoleText);
 
     if (req.session.error) {
-      responseContent.error = req.session.error;
+      responseContent.error = sanitize(req.session.error);
       responseContent.update = req.session.error.errorBy === "update";
     }
     res.render("user-roles/create-user-roles", responseContent);
@@ -113,20 +106,7 @@ function validateAndRedirect(req, res, next, path) {
 // Validate update
 function validateUpdate(req, res, next) {
   if (validate(req, res, next)) {
-    const responseContent: { [k: string]: any } = {};
-    responseContent.adminWebAuthorization = req.adminWebAuthorization;
-    responseContent.user = JSON.stringify(req.authentication.user);
-    responseContent.update = true;
-    responseContent.role = req.body.role;
-    responseContent.submitUserRoleEndPoint = "/updateuserrole";
-    responseContent.securityClassifications = classifications;
-    responseContent.chosenClassification = req.body.classification;
-    responseContent.heading = updateUserRoleHeading;
-    responseContent.submitButtonText = updateUserRoleText;
-    if (req.session.error) {
-      responseContent.error = req.session.error;
-    }
-    res.render("user-roles/create-user-roles", responseContent);
+    processResponse(req, res);
   } else {
     delete req.session.error;
     next();
@@ -159,20 +139,7 @@ router.post("/createuserrole", validateCreate, (req, res, next) => {
 
 router.post("/updateuserroleform", validateUpdateForm, (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
-    const responseContent: { [k: string]: any } = {};
-    responseContent.adminWebAuthorization = req.adminWebAuthorization;
-    responseContent.user = JSON.stringify(req.authentication.user);
-    responseContent.update = true;
-    responseContent.role = req.body.role;
-    responseContent.submitUserRoleEndPoint = "/updateuserrole";
-    responseContent.securityClassifications = classifications;
-    responseContent.chosenClassification = req.body.classification;
-    responseContent.heading = updateUserRoleHeading;
-    responseContent.submitButtonText = updateUserRoleText;
-    if (req.session.error) {
-      responseContent.error = req.session.error;
-    }
-    res.render("user-roles/create-user-roles", responseContent);
+    processResponse(req, res);
   } else {
     res.render(errorPage, error_unauthorized_role(req));
   }
@@ -196,5 +163,22 @@ router.post("/updateuserrole", validateUpdate, (req, res, next) => {
     res.render(errorPage, error_unauthorized_role(req));
   }
 });
+
+function processResponse(req, res) {
+  const responseContent: { [k: string]: any } = {};
+  responseContent.adminWebAuthorization = req.adminWebAuthorization;
+  responseContent.user = sanitize(JSON.stringify(req.authentication.user));
+  responseContent.update = true;
+  responseContent.role = sanitize(req.body.role);
+  responseContent.submitUserRoleEndPoint = "/updateuserrole";
+  responseContent.securityClassifications = classifications;
+  responseContent.chosenClassification = sanitize(req.body.classification);
+  responseContent.heading = sanitize(updateUserRoleHeading);
+  responseContent.submitButtonText = sanitize(updateUserRoleText);
+  if (req.session.error) {
+    responseContent.error = sanitize(req.session.error);
+  }
+  res.render("user-roles/create-user-roles", responseContent);
+}
 
 export default router;

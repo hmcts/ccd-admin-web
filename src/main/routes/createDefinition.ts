@@ -16,13 +16,13 @@ router.get("/createdefinition", (req, res, next) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
-    responseContent.user = JSON.stringify(req.authentication.user);
-    responseContent.jurisdictions = JSON.stringify(response);
-    responseContent.currentjurisdiction = req.session.jurisdiction;
+    responseContent.user = sanitize(JSON.stringify(req.authentication.user));
+    responseContent.jurisdictions = sanitize(JSON.stringify(response));
+    responseContent.currentjurisdiction = sanitize(req.session.jurisdiction);
     responseContent.heading = "Create Definition";
     responseContent.submitButtonText = "Create";
     if (req.session.error) {
-      responseContent.error = req.session.error;
+      responseContent.error = sanitize(req.session.error);
       delete req.session.error;
     }
     res.render("definition/create-definition-form", responseContent);
