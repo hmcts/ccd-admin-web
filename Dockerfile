@@ -1,5 +1,7 @@
 # ---- Base Image ----
-FROM hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-8 as base
+ARG base=hmctspublic.azurecr.io/base/node/stretch-slim-lts-8:8-stretch-slim
+
+FROM ${base} as base
 USER root
 RUN apt-get update \
   && apt-get install -y bzip2 patch --no-install-recommends \
@@ -14,6 +16,6 @@ COPY . .
 RUN yarn sass && sleep 1 && yarn install --production
 
 # ---- Runtime Image ----
-FROM hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-8 as runtime
+FROM ${base} as runtime
 COPY --from=build $WORKDIR .
 EXPOSE 3100
