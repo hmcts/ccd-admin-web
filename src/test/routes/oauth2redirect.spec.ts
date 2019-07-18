@@ -52,8 +52,8 @@ describe("oauth2redirect", () => {
       expires_in: 3600,
     };
 
-    let request;
-    let response;
+    let req;
+    let res;
     let next;
     let config;
     let accessTokenRequest;
@@ -64,12 +64,12 @@ describe("oauth2redirect", () => {
         get: sinon.stub(),
       };
 
-      request = sinonExpressMock.mockReq();
-      request.query = {code: "code", redirect_uri: "https://localhost:5000"};
-      response = sinonExpressMock.mockRes();
+      req = sinonExpressMock.mockReq();
+      req.query = {code: "code", redirect_uri: "https://localhost:5000"};
+      res = sinonExpressMock.mockRes();
       next = sinon.stub();
       accessTokenRequest = sinon.stub();
-      accessTokenRequest.withArgs(request).returns(Promise.resolve(TOKEN));
+      accessTokenRequest.withArgs(req).returns(Promise.resolve(TOKEN));
 
       oauth2redirect = proxyquire("../../main/routes/oauth2redirect", {
         "../oauth2/access-token-request": accessTokenRequest,
@@ -80,19 +80,19 @@ describe("oauth2redirect", () => {
     it("should set an accessToken cookie with the 'secure' flag enabled", (done) => {
       config.get.withArgs("security.secure_auth_cookie_enabled").returns(true);
 
-      response.redirect.callsFake(() => {
+      res.redirect.callsFake(() => {
         try {
           expect(config.get).to.be.calledWith("security.secure_auth_cookie_enabled");
-          expect(response.cookie).to.be.calledWith(COOKIE_ACCESS_TOKEN, TOKEN.access_token,
+          expect(res.cookie).to.be.calledWith(COOKIE_ACCESS_TOKEN, TOKEN.access_token,
             {httpOnly: true, maxAge: 28800000, secure: true});
-          expect(response.redirect).to.be.calledWith(302, "/");
+          expect(res.redirect).to.be.calledWith(302, "/");
           done();
         } catch (e) {
           done(e);
         }
       });
 
-      oauth2redirect(request, response, next);
+      oauth2redirect(req, res, next);
     });
 
   });
