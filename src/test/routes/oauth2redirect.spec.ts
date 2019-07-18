@@ -1,9 +1,16 @@
 import { app } from "../../main/app";
 import * as cookie from "cookie";
+import * as chai from "chai";
 import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
 import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as request from "supertest";
+import * as proxyquire from "proxyquire";
+import * as sinon from "sinon";
+import * as sinonChai from "sinon-chai";
+import * as sinonExpressMock from "sinon-express-mock";
+
+chai.use(sinonChai);
 
 describe("oauth2redirect", () => {
 
@@ -37,4 +44,57 @@ describe("oauth2redirect", () => {
         });
     });
   });
+
+  describe("OAuth2 redirect with secure flag", () => {
+
+    const TOKEN = {
+      access_token: "ey123.ey456",
+      expires_in: 3600,
+    };
+
+    let request;
+    let response;
+    let next;
+    let config;
+    let accessTokenRequest;
+    let oauth2redirect;
+
+    beforeEach(() => {
+      config = {
+        get: sinon.stub(),
+      };
+
+      request = sinonExpressMock.mockReq();
+      request.query = {code: "code", redirect_uri: "https://localhost:5000"};
+      response = sinonExpressMock.mockRes();
+      next = sinon.stub();
+      accessTokenRequest = sinon.stub();
+      accessTokenRequest.withArgs(request).returns(Promise.resolve(TOKEN));
+
+      oauth2redirect = proxyquire("../../main/routes/oauth2redirect", {
+        "../oauth2/access-token-request": accessTokenRequest,
+        "config": config,
+      }).oauth2redirect;
+    });
+
+    it("should set an accessToken cookie with the 'secure' flag enabled", (done) => {
+      config.get.withArgs("security.secure_auth_cookie_enabled").returns(true);
+
+      response.redirect.callsFake(() => {
+        try {
+          expect(config.get).to.be.calledWith("security.secure_auth_cookie_enabled");
+          expect(response.cookie).to.be.calledWith(COOKIE_ACCESS_TOKEN, TOKEN.access_token,
+            {httpOnly: true, maxAge: 28800000, secure: true});
+          expect(response.redirect).to.be.calledWith(302, "/");
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+
+      oauth2redirect(request, response, next);
+    });
+
+  });
+
 });
