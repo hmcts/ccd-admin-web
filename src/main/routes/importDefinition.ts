@@ -81,7 +81,7 @@ router.get("/import", (req, res, next) => {
         delete req.session.error;
       }
       if (req.session.error) {
-        responseContent.error = sanitize(req.session.error);
+        responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
         delete req.session.error;
       }
       res.render("importDefinition", responseContent);

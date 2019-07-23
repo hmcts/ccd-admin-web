@@ -25,7 +25,7 @@ router.post("/updatedefinition", (req, res, next) => {
     responseContent.heading = "Update Definition";
     responseContent.submitButtonText = "Update";
     if (req.session.error) {
-      responseContent.error = sanitize(req.session.error);
+      responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
       delete req.session.error;
     }
     res.render("definition/create-definition-form", responseContent);

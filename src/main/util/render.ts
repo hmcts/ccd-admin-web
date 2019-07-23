@@ -11,7 +11,7 @@ export function render(req, res, next, url, query, page) {
       req.session.jurisdiction ? sanitize(req.session.jurisdiction) : sanitize(req.body.jurisdictionName);
     responseContent.dataItems = JSON.parse(response);
     if (req.session.error) {
-      responseContent.error = sanitize(req.session.error);
+      responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
     }
     if (req.session.success) {
       responseContent.success = sanitize(req.session.success);

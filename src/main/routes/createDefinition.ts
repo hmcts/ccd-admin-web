@@ -22,7 +22,7 @@ router.get("/createdefinition", (req, res, next) => {
     responseContent.heading = "Create Definition";
     responseContent.submitButtonText = "Create";
     if (req.session.error) {
-      responseContent.error = sanitize(req.session.error);
+      responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
       delete req.session.error;
     }
     res.render("definition/create-definition-form", responseContent);
