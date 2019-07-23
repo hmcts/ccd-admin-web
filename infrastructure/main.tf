@@ -76,6 +76,7 @@ module "ccd-admin-web" {
     // Node specific vars
     USE_CSRF_PROTECTION = "${var.use_csrf_protection}"
     SECURITY_REFERRER_POLICY = "${var.security_referrer_policy}"
+    SECURE_AUTH_COOKIE_ENABLED = "true"
     HPKP_MAX_AGE = "${var.hpkp_max_age}"
     HPKP_SHA256S = "${var.hpkp_sha256s}"
     NODE_ENV = "${var.node_env}"

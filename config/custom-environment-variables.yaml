@@ -5,6 +5,7 @@ security:
     maxAge: HPKP_MAX_AGE
     sha256s: HPKP_SHA256S
   roles_whitelist: ADMINWEB_ROLES_WHITELIST
+  secure_auth_cookie_enabled: SECURE_AUTH_COOKIE_ENABLED
 idam:
   base_url: IDAM_BASE_URL
   s2s_url: IDAM_S2S_URL
