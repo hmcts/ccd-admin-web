@@ -14,6 +14,7 @@ security:
     frameSrc: 'none'
     imgSrc: ['self', 'www.google-analytics.com', 'hmctspiwik.useconnect.co.uk']
   roles_whitelist: "ccd-import"
+  secure_auth_cookie_enabled: false
 idam:
   base_url: http://localhost:5000
   s2s_url: http://localhost:4502
