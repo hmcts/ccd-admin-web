@@ -33,7 +33,7 @@ router.get("/user-roles-list", (req, res, next) => {
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
   responseContent.user = sanitize(JSON.stringify(req.authentication.user));
   if (req.session.error) {
-    responseContent.error = sanitize(req.session.error);
+    responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
   }
   if (req.session.success) {
     responseContent.success = sanitize(req.session.success);
@@ -73,7 +73,7 @@ router.get("/create-user-role-form", (req, res, next) => {
     responseContent.submitButtonText = sanitize(createUserRoleText);
 
     if (req.session.error) {
-      responseContent.error = sanitize(req.session.error);
+      responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
       responseContent.update = req.session.error.errorBy === "update";
     }
     res.render("user-roles/create-user-roles", responseContent);
@@ -176,7 +176,7 @@ function processResponse(req, res) {
   responseContent.heading = sanitize(updateUserRoleHeading);
   responseContent.submitButtonText = sanitize(updateUserRoleText);
   if (req.session.error) {
-    responseContent.error = sanitize(req.session.error);
+    responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
   }
   res.render("user-roles/create-user-roles", responseContent);
 }

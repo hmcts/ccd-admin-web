@@ -25,7 +25,7 @@ router.get("/createuser", (req, res, next) => {
       responseContent.jurisdiction = req.query.jurisdiction ?
         sanitize(req.query.jurisdiction) : sanitize(req.session.jurisdiction);
       if (req.session.error) {
-        responseContent.error = sanitize(req.session.error);
+        responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
         delete req.session.error;
       }
       res.render("user-profiles/create-user-form", responseContent);

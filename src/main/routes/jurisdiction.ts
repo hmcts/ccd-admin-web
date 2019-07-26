@@ -17,7 +17,7 @@ router.get("/jurisdiction", (req, res, next) => {
       responseContent.destination = sanitize(req.query.dest);
     }
     if (req.session.error) {
-      responseContent.error = sanitize(req.session.error);
+      responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
       delete req.session.error;
     }
     res.render("jurisdiction", responseContent);
