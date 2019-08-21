@@ -1,6 +1,6 @@
 nodejs:
-  ingressHost: ${SERVICE_FQDN}
   image: ${IMAGE_NAME}
+  ingressHost: ${SERVICE_FQDN}
   environment:
     # Application vars
     # IDAM
