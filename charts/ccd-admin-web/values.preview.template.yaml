@@ -1,0 +1,10 @@
+nodejs:
+  ingressHost: ${SERVICE_FQDN}
+  image: ${IMAGE_NAME}
+  environment:
+    # Application vars
+    # IDAM
+    IDAM_ADMIN_WEB_SERVICE_KEY: ${IDAM_SERVICE_KEY}
+    
+    IDAM_OAUTH2_AW_CLIENT_SECRET: ${OAUTH2_CLIENT_SECRET}
+    ADMINWEB_LOGIN_URL: https://idam-test.dev.ccidam.reform.hmcts.net/login

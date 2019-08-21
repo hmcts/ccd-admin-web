@@ -1,0 +1,27 @@
+nodejs:
+  image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
+  releaseNameOverride: "{{ .Release.Name }}-nodejs"
+  applicationPort: 3100
+  cpuLimits: 1
+  environment:
+    # Node specific vars
+    USE_CSRF_PROTECTION: true
+    SECURITY_REFERRER_POLICY: origin
+    HPKP_MAX_AGE: 2592000
+    HPKP_SHA256S: Set-proper-SHA256s
+    NODE_ENV: production
+    UV_THREADPOOL_SIZE: 64
+    NODE_CONFIG_DIR: ./config
+    TS_BASE_URL: ./src/main
+
+    # Logging vars
+    REFORM_TEAM: ccd
+    REFORM_SERVICE_NAME: admin-web
+    IDAM_SERVICE_NAME: ccd_admin
+    SECURE_AUTH_COOKIE_ENABLED: true
+    IDAM_OAUTH2_CLIENT_ID: ccd_admin
+
+    IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
+    IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
+    IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
