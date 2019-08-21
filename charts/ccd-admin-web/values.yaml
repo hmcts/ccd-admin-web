@@ -1,6 +1,6 @@
 nodejs:
   image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
-  releaseNameOverride: "{{ .Release.Name }}-nodejs"
+  #releaseNameOverride: "{{ .Release.Name }}-nodejs"
   applicationPort: 3100
   cpuLimits: 1
   environment:
