@@ -32,21 +32,5 @@ adminWeb:
   import_audits_url : ADMINWEB_IMPORT_AUDITS_URL
   authorization_url: ADMINWEB_AUTHORIZATION_URL
 
-
-    login_url: https://localhost:3501/login
-    import_url: http://localhost:4451/import
-    whoami_url: http://localhost:4451/api/idam/profile
-    authorization_url: http://localhost:4451/api/idam/adminweb/authorization
-    jurisdiction_url: http://localhost:4451/api/data/jurisdictions
-    userprofiles_url: http://localhost:4453/users
-    saveuserprofiles_url: http://localhost:4453/users/save
-    userrole_url: http://localhost:4451/api/user-role
-    alluserroles_url: http://localhost:4451/api/user-roles
-    import_audits_url: http://localhost:4451/api/import-audits
-    createdefinition_url: http://localhost:4451/api/draft
-    updatedefinition_url: http://localhost:4451/api/draft/save
-    deletedefinition_url: http://localhost:4451/api/draft
-    definitions_url: http://localhost:4451/api/drafts
-
 appInsights:
   instrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY
