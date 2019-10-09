@@ -16,13 +16,13 @@ security:
   roles_whitelist: "ccd-import"
   secure_auth_cookie_enabled: false
 idam:
-  base_url: http://localhost:5000
+  base_url: http://localhost:5555
   s2s_url: http://localhost:4502
   admin_web_service_key: AAAAAAAAAAAAAAAD
   service_name: ccd_admin
   oauth2:
-    token_endpoint: http://localhost:5000/oauth2/token
-    logout_endpoint: http://localhost:5000/session/:token
+    token_endpoint: http://localhost:5555/oauth2/token
+    logout_endpoint: http://localhost:5555/session/:token
     client_id: ccd_admin
     client_secret: IIIIIIIIIIIIIIII
 adminWeb:
