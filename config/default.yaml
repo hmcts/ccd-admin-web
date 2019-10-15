@@ -41,6 +41,6 @@ adminWeb:
   deletedefinition_url: http://localhost:4451/api/draft
   definitions_url: http://localhost:4451/api/drafts
 appInsights:
-  instrumentationKey: "some-key"
+  instrumentationKey: "key"
   enabled: true
   roleName: "ccd-admin-web"

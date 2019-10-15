@@ -45,6 +45,7 @@ router.get("/user-roles-list", (req, res, next) => {
 
 function fetchUserRolesIfAuthorizedOrError(req, res, next, responseContent) {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
+    console.log('url!!!!!! '+url)
     fetch(req, url).then((response) => {
         responseContent.userroles = JSON.parse(sanitize(response));
         res.render("user-roles", responseContent);

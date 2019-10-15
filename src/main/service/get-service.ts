@@ -9,6 +9,22 @@ export function fetch(req, url: any, query?: object) {
     };
 
     logger.info(`Fetch query parameter: ${ JSON.stringify(query) }`);
+
+  console.log('headers.Authorization !!!!!! '+ headers.Authorization);
+  console.log('headers.ServiceAuthorization !!!!!! '+ headers.ServiceAuthorization);
+  console.log('query ------ !!!!!! '+ query);
+  console.log('method!!' +req.method);
+  console.log('headers!!' + req.headers);
+
+  for (var property in req.headers) {
+    if (req.headers.hasOwnProperty(property)) {
+      console.log(property + ': VALUE ' + req.headers[property])
+    }
+  }
+
+  console.log('req url!!!' + req.url);
+  console.log('url!!! fin' + url);
+
     return request
         .get(url)
         .query(query)
@@ -19,6 +35,7 @@ export function fetch(req, url: any, query?: object) {
         })
         .catch((error) => {
             if (error.response) {
+                logger.error(`Error retrieving data: ${error.response}`);
                 logger.error(`Error retrieving data: ${error.response.text}`);
                 throw error;
             } else {
