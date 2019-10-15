@@ -30,10 +30,10 @@ nodejs:
     IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
   idam-pr:
     releaseNameOverride: ${SERVICE_NAME}-ccd-admin-web-idam-pr
-      api:
-        url: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
-      web_public:
-        url: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
+    api:
+      url: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+    web_public:
+      url: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
     redirect_uris:
       CCD Admin:
         - https://admin-web-${SERVICE_FQDN}/oauth2redirect
