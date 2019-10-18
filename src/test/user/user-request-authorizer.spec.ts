@@ -45,17 +45,7 @@ describe("UserRequestAuthorizer", () => {
       });
     });
 
-    it("should reject missing Authorization header AND Authorization cookie", (done) => {
-      request.get.returns(null);
-      request.cookies = null;
 
-      userRequestAuthorizer.authorize(request)
-        .then(() => done(new Error("Promise should have been rejected")))
-        .catch((error) => {
-          expect(error).to.equal(userRequestAuthorizer.ERROR_TOKEN_MISSING);
-          done();
-        });
-    });
 
     it("should reject when user cannot be resolved", (done) => {
       const ERROR = { error: "oops", status: 401 };

@@ -1,7 +1,6 @@
 import Debug from "debug";
 import { get } from "config";
 import { isUserAuthorized as checkUserRoles } from "./whitelist-roles-authorizer";
-import {AUTHORIZATION} from "../user/user-request-authorizer";
 
 const debug = Debug("ccd-admin-web:roles-based-authorizer");
 
