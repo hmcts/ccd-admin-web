@@ -5,6 +5,8 @@ export const serviceFilter = (req, res, next) => {
   const logger = Logger.getLogger(__filename);
   serviceTokenGenerator()
     .then((t) => {
+      console.log('t serviceTokenGenerator'+ t);
+      console.log('adding serviceAuthToken');
       req.serviceAuthToken = t;
       next();
     })

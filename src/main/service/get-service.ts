@@ -9,7 +9,7 @@ export function fetch(req, url: any, query?: object) {
     };
 
     logger.info(`Fetch query parameter: ${ JSON.stringify(query) }`);
-
+  console.log('get-service.ts !!!!!!' );
   console.log('headers.Authorization !!!!!! '+ headers.Authorization);
   console.log('headers.ServiceAuthorization !!!!!! '+ headers.ServiceAuthorization);
   console.log('query ------ !!!!!! '+ query);
