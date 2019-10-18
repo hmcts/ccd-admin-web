@@ -4,8 +4,8 @@ security:
   hpkp:
     maxAge: 2592000
     sha256s:
-      - TODO
-      - Set-proper-SHA256s
+    - TODO
+    - Set-proper-SHA256s
   directives:
     fontSrc: 'self data:'
     scriptSrc: ['self', 'unsafe-inline', 'www.google-analytics.com', 'hmctspiwik.useconnect.co.uk']
@@ -16,13 +16,13 @@ security:
   roles_whitelist: "ccd-import"
   secure_auth_cookie_enabled: false
 idam:
-  base_url: http://localhost:5555
+  base_url: http://localhost:5000
   s2s_url: http://localhost:4502
   admin_web_service_key: AAAAAAAAAAAAAAAD
   service_name: ccd_admin
   oauth2:
-    token_endpoint: http://localhost:5555/oauth2/token
-    logout_endpoint: http://localhost:5555/session/:token
+    token_endpoint: http://localhost:5000/oauth2/token
+    logout_endpoint: http://localhost:5000/session/:token
     client_id: ccd_admin
     client_secret: IIIIIIIIIIIIIIII
 adminWeb:
@@ -41,6 +41,6 @@ adminWeb:
   deletedefinition_url: http://localhost:4451/api/draft
   definitions_url: http://localhost:4451/api/drafts
 appInsights:
-  instrumentationKey: "key"
+  instrumentationKey: "some-key"
   enabled: true
   roleName: "ccd-admin-web"

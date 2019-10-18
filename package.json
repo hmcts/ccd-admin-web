@@ -8,7 +8,7 @@
   },
   "scripts": {
     "setup": "gulp sass copy-files",
-    "start": "node  $NODE_DEBUG_OPTION  server.js",
+    "start": "node server.js",
     "lint": "tslint --project tsconfig.json --type-check && sass-lint -v -q",
     "sass": "gulp sass copy-files",
     "watch": "gulp develop",
