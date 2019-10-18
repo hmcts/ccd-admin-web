@@ -1,5 +1,6 @@
 import { getTokenDetails } from "./user-resolver";
 import { isUserAuthorized } from "../role/roles-based-authorizer";
+import { Logger } from "@hmcts/nodejs-logging";
 
 export const ERROR_TOKEN_MISSING = {
   error: "Bearer token missing",
@@ -20,6 +21,8 @@ export const ERROR_UNAUTHORIZED_USER_ID = {
 export const COOKIE_ACCESS_TOKEN = "accessToken";
 export const AUTHORIZATION = "Authorization";
 
+const logger = Logger.getLogger(__filename);
+
 const authorizeRoles = (user) => new Promise((resolve, reject) => {
   if (!isUserAuthorized(user)) {
     reject(ERROR_UNAUTHORIZED_ROLE);
@@ -31,13 +34,8 @@ const authorizeRoles = (user) => new Promise((resolve, reject) => {
 export const authorize = (request) => {
   let user;
   const bearerToken = request.get(AUTHORIZATION) || (request.cookies ? request.cookies[COOKIE_ACCESS_TOKEN] : null);
-  console.log('Inside user request authorizer. ');
-  console.log('Inside user request authorizer.  + request.cookies');
-
-  console.log('request.get(AUTHORIZATION) ' + request.get(AUTHORIZATION));
-  console.log('request.cookies[COOKIE_ACCESS_TOKEN]  ' + request.cookies[COOKIE_ACCESS_TOKEN] );
   if (!bearerToken) {
-    console.log('inside the if ready to do promise ');
+    logger.info("inside the if ready to do promise ");
     return Promise.reject(ERROR_TOKEN_MISSING);
   }
 

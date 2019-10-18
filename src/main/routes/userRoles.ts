@@ -6,16 +6,18 @@ import { sanitize } from "../util/sanitize";
 import { saveUserRole } from "../service/update-user-role";
 import { UserRole } from "../domain/userrole";
 import { Validator } from "../validators/validate";
+import { Logger } from "@hmcts/nodejs-logging";
 
 const router = express.Router();
 const errorPage = "error";
 const classifications = [{ id: "PUBLIC", name: "PUBLIC" },
-{ id: "PRIVATE", name: "PRIVATE" }, { id: "RESTRICTED", name: "RESTRICTED" }];
+  { id: "PRIVATE", name: "PRIVATE" }, { id: "RESTRICTED", name: "RESTRICTED" }];
 const createUserRoleText = "Create";
 const updateUserRoleText = "Update";
 const createUserRoleHeading = "Create User Role";
 const updateUserRoleHeading = "Update User Role";
 const url = config.get("adminWeb.alluserroles_url");
+const logger = Logger.getLogger(__filename);
 
 /* GET User roles landing page. */
 router.get("/user-roles", (req, res, next) => {
@@ -45,15 +47,15 @@ router.get("/user-roles-list", (req, res, next) => {
 
 function fetchUserRolesIfAuthorizedOrError(req, res, next, responseContent) {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
-    console.log('url!!!!!! '+url)
+    logger.info("url!!!!!!" + url);
     fetch(req, url).then((response) => {
-        responseContent.userroles = JSON.parse(sanitize(response));
-        res.render("user-roles", responseContent);
+      responseContent.userroles = JSON.parse(sanitize(response));
+      res.render("user-roles", responseContent);
     })
-    .catch((error) => {
-      // Call the next middleware, which is the error handler
-      next(error);
-    });
+      .catch((error) => {
+        // Call the next middleware, which is the error handler
+        next(error);
+      });
   } else {
     res.render(errorPage, error_unauthorized_role(req));
   }
@@ -121,18 +123,18 @@ function validateUpdateForm(req, res, next) {
 
 router.post("/createuserrole", validateCreate, (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
-  saveUserRole(req, new UserRole(sanitize(req.body.role), sanitize(req.body.classification)), true)
-    .then((response) => {
-      req.session.success = `User role created.`;
-      res.redirect(302, "/user-roles-list");
-    })
-    .catch((error) => {
-      req.session.error = {
-        status: 400, text: error.rawResponse ? error.rawResponse :
-          error.message ? error.message : "Invalid data",
-      };
-      res.redirect(302, "/create-user-role-form");
-    });
+    saveUserRole(req, new UserRole(sanitize(req.body.role), sanitize(req.body.classification)), true)
+      .then((response) => {
+        req.session.success = `User role created.`;
+        res.redirect(302, "/user-roles-list");
+      })
+      .catch((error) => {
+        req.session.error = {
+          status: 400, text: error.rawResponse ? error.rawResponse :
+            error.message ? error.message : "Invalid data",
+        };
+        res.redirect(302, "/create-user-role-form");
+      });
   } else {
     res.render(errorPage, error_unauthorized_role(req));
   }

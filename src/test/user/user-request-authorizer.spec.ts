@@ -45,8 +45,6 @@ describe("UserRequestAuthorizer", () => {
       });
     });
 
-
-
     it("should reject when user cannot be resolved", (done) => {
       const ERROR = { error: "oops", status: 401 };
       userResolver.getTokenDetails.returns(Promise.reject(ERROR));
