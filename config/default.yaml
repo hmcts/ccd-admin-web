@@ -4,8 +4,8 @@ security:
   hpkp:
     maxAge: 2592000
     sha256s:
-    - TODO
-    - Set-proper-SHA256s
+      - TODO
+      - Set-proper-SHA256s
   directives:
     fontSrc: 'self data:'
     scriptSrc: ['self', 'unsafe-inline', 'www.google-analytics.com', 'hmctspiwik.useconnect.co.uk']
