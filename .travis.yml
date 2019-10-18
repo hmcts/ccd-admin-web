@@ -12,8 +12,8 @@ install:
 script:
   - yarn --version
   - yarn sass
-  - yarn check || echo 'yarn check failed'
-  - yarn lint
+  # - yarn check || echo 'yarn check failed'
+  #- yarn lint
   - yarn test
   - yarn test:routes
   - yarn test:a11y
