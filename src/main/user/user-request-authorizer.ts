@@ -32,12 +32,17 @@ const authorizeRoles = (user) => new Promise((resolve, reject) => {
 });
 
 export const authorize = (request) => {
+  logger.info("inside user-request-authorizer ");
+  logger.info("authorization header: " + request.get(AUTHORIZATION));
+
   let user;
   const bearerToken = request.get(AUTHORIZATION) || (request.cookies ? request.cookies[COOKIE_ACCESS_TOKEN] : null);
   if (!bearerToken) {
     logger.info("inside the if ready to do promise ");
     return Promise.reject(ERROR_TOKEN_MISSING);
   }
+
+  logger.info("bearer token: " + bearerToken);
 
   request.accessToken = bearerToken.startsWith("Bearer ") ? bearerToken : "Bearer " + bearerToken;
 
