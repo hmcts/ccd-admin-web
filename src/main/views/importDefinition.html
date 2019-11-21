@@ -11,7 +11,9 @@
         {% include "response.html" %}
         {% if error %}
           <div class="error-summary govuk-error-message">
-            {{ errorDisplay(error) }}
+            <p>
+                {{ error.text }}
+            </p>
           </div>
         {% endif %}
         <input type="file" id="file" name="file" accept=".xlsx"/>
