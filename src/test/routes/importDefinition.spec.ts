@@ -399,7 +399,6 @@ describe("Import Definition page", () => {
         .attach("file", file.buffer, file.originalname)
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          expect(res.headers.location).to.equal("/import");
 
           // Assert that the back-end is called
           expect(apiCall.isDone()).to.be.true;
