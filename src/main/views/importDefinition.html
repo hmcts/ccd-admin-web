@@ -10,10 +10,8 @@
       <div class="form-group">
         {% include "response.html" %}
         {% if error %}
-          <div class="error-summary govuk-error-message">
-            <p>
-                {{ error.text }}
-            </p>
+        <div class="error-summary govuk-error-message">
+            {{ errorDisplay(error) }}
           </div>
         {% endif %}
         <input type="file" id="file" name="file" accept=".xlsx"/>
