@@ -59,7 +59,12 @@ router.post("/import", (req, res, next) => {
               status: error.status ? error.status : 400,
               text: error.response ? error.response.text : "An error occurred on import",
             };
-            res.redirect(302, "/import");
+            const responseContent: { [k: string]: any } = {};
+            responseContent.adminWebAuthorization = req.adminWebAuthorization;
+            responseContent.user = sanitize(JSON.stringify(req.authentication.user));
+            responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
+            delete req.session.error;
+            res.render("importDefinition", responseContent);
           });
       }
     });

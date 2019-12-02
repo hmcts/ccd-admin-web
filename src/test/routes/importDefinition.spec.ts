@@ -398,8 +398,7 @@ describe("Import Definition page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .attach("file", file.buffer, file.originalname)
         .then((res) => {
-          expect(res.statusCode).to.equal(302);
-          expect(res.headers.location).to.equal("/import");
+          expect(res.statusCode).to.equal(200);
 
           // Assert that the back-end is called
           expect(apiCall.isDone()).to.be.true;
