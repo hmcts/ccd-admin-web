@@ -74,6 +74,7 @@ module "ccd-admin-web" {
 
   app_settings = {
     // Node specific vars
+    WEBSITE_NODE_DEFAULT_VERSION = "~12"
     USE_CSRF_PROTECTION = "${var.use_csrf_protection}"
     SECURITY_REFERRER_POLICY = "${var.security_referrer_policy}"
     SECURE_AUTH_COOKIE_ENABLED = "true"
