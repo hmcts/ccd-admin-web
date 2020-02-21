@@ -5,7 +5,7 @@ import { get } from "config";
 
 const idamS2SUrl = get("idam.s2s_url");
 const serviceName = get("idam.service_name");
-const secret = get("ccd.secrets.microservicekey-ccd-admin");
+const secret = get("secrets.ccd.microservicekey-ccd-admin");
 
 // TODO Caching should be handled by a singleton service
 const cache = {};
