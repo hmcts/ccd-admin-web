@@ -1,9 +1,7 @@
-tags:
-  idam-pr: false
-
 nodejs:
+  aadIdentityName: ccd
   image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
-  #releaseNameOverride: "{{ .Release.Name }}-nodejs"
+  ingressHost: www-ccd.{{ .Values.global.environment }}.platform.hmcts.net
   applicationPort: 3100
   cpuLimits: 1
   environment:
@@ -20,21 +18,34 @@ nodejs:
     # Logging vars
     REFORM_TEAM: ccd
     REFORM_SERVICE_NAME: admin-web
+    REFORM_ENVIRONMENT: "{{ .Values.global.environment }}"
     IDAM_SERVICE_NAME: ccd_admin
     SECURE_AUTH_COOKIE_ENABLED: true
     IDAM_OAUTH2_CLIENT_ID: ccd_admin
 
-    IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-    IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
-    IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
-    IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
-#  provide a good default here once idam pr charts have been enhanced
-#  idam-pr:
-#    releaseNameOverride: ccd-admin-web-idam-pr
-#    api:
-#      url: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
-#    web_public:
-#      url: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
-#    redirect_uris:
-#      CCD Admin:
-#        - https://admin-web/oauth2redirect
+    IDAM_S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    IDAM_BASE_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+    IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/token
+    IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/session/:token
+    
+    ADMINWEB_LOGIN_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login"
+    ADMINWEB_IMPORT_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/import"
+    ADMINWEB_JURISDICTIONS_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/data/jurisdictions"
+    ADMINWEB_USER_PROFILE_URL: "http://ccd-user-profile-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/users"
+    ADMINWEB_SAVE_USER_PROFILE_URL: "http://ccd-user-profile-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/users/save"
+    ADMINWEB_USER_ROLE_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/user-role"
+    ADMIN_ALL_USER_ROLES_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/user-roles"
+    ADMINWEB_CREATE_DEFINITION_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/draft"
+    ADMINWEB_UPDATE_DEFINITION_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/draft/save"
+    ADMINWEB_DELETE_DEFINITION_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/draft"
+    ADMINWEB_DEFINITIONS_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/drafts"
+    ADMINWEB_WHOAMI_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/idam/profile"
+    ADMINWEB_AUTHORIZATION_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/idam/adminweb/authorization"
+    ADMINWEB_IMPORT_AUDITS_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/import-audits"
+    ADMINWEB_ROLES_WHITELIST: "ccd-import,ccd-import-validate"
+  keyVaults:
+    ccd:
+      secrets:
+        - microservicekey-ccd-admin
+        - ccd-admin-web-oauth2-client-secret
+        - AppInsightsInstrumentationKey
