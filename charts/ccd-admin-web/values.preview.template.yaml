@@ -3,3 +3,6 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
   environment:
     ADMINWEB_LOGIN_URL: https://idam-test.dev.ccidam.reform.hmcts.net/login
+
+idam-pr:
+  enabled: true
