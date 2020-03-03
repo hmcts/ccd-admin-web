@@ -45,8 +45,8 @@ withPipeline("nodejs", product, component) {
         enableSlackNotifications('#ccd-pr-builds')
     }
 
-    enableDockerBuild()
     installCharts()
+    enableAksStagingDeployment()
 
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
