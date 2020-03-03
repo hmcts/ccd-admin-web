@@ -18,13 +18,11 @@ security:
 idam:
   base_url: http://localhost:5000
   s2s_url: http://localhost:4502
-  admin_web_service_key: AAAAAAAAAAAAAAAD
   service_name: ccd_admin
   oauth2:
     token_endpoint: http://localhost:5000/oauth2/token
     logout_endpoint: http://localhost:5000/session/:token
     client_id: ccd_admin
-    client_secret: IIIIIIIIIIIIIIII
 adminWeb:
   login_url: https://localhost:3501/login
   import_url: http://localhost:4451/import
@@ -41,6 +39,11 @@ adminWeb:
   deletedefinition_url: http://localhost:4451/api/draft
   definitions_url: http://localhost:4451/api/drafts
 appInsights:
-  instrumentationKey: "some-key"
   enabled: true
   roleName: "ccd-admin-web"
+
+secrets:
+  ccd:
+    microservicekey-ccd-admin: AAAAAAAAAAAAAAAD
+    ccd-admin-web-oauth2-client-secret: IIIIIIIIIIIIIIII
+    AppInsightsInstrumentationKey: "some-key"

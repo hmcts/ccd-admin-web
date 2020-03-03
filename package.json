@@ -15,15 +15,14 @@
     "test": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*') --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-admin-web-unit",
     "test:routes": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=routes,inlineAssets=true,reportTitle=ccd-admin-web-routes",
     "test:a11y": "NODE_PATH=.",
-    "test:nsp": "echo 'Node Security Platform (NSP) no longer available'",
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'src/test/**/*.spec.js' --reporter spec --recursive",
     "test:coverage": "NODE_ENV=mocha LOG_LEVEL=OFF nyc mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*')",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/**,coverage/**,src/main/modules/**,src/main/routes/**,src/main/util/**,src/main/app.ts,src/main/app.test.ts,src/main/server.ts -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect",
-    "prepublish": "npm run snyk-protect"
+    "snyk-protect": "echo 'snyk protect'",
+    "prepare": "echo 'npm run snyk-protect'",
+    "prepublish": "echo 'npm run snyk-protect'"
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.5.1",
@@ -63,7 +62,7 @@
     "supertest-session": "^3.3.0",
     "ts-node": "^3.3.0",
     "tsconfig-paths": "^3.5.0",
-    "typescript": "^2.6.2",
+    "typescript": "^3.2.1",
     "validator": "^10.7.0",
     "xss-filters": "^1.2.7"
   },
@@ -90,7 +89,6 @@
     "mochawesome": "^3.1.1",
     "mock-session": "^0.0.5",
     "nock": "^9.1.4",
-    "nsp": "^2.8.0",
     "nyc": "^12.0.2",
     "pa11y": "^4.13.2",
     "proxyquire": "^2.0.1",
