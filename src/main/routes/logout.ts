@@ -13,7 +13,7 @@ export const logout = (req, res, next) => {
     const options = {
       headers: {
         "Authorization": "Basic "
-          + Buffer.from(get("idam.oauth2.client_id") + ":" + get("idam.oauth2.client_secret"))
+          + Buffer.from(get("idam.oauth2.client_id") + ":" + get("secrets.ccd.ccd-admin-web-oauth2-client-secret"))
             .toString("base64"),
         "Content-Type": "application/x-www-form-urlencoded",
       },
