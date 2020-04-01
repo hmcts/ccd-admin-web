@@ -102,6 +102,9 @@
     "supertest-session": "^3.3.0",
     "tslint": "^5.7.0"
   },
+  "resolutions": {
+    "express-nunjucks/assign-deep": "^1.0.1"
+  },
   "nyc": {
     "extension": [
       ".ts"
