@@ -53,6 +53,7 @@ withPipeline("nodejs", product, component) {
 
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
+    disableLegacyDeployment()
 
     afterCheckout {
         sh "yarn cache clean"
