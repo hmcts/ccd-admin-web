@@ -11,7 +11,7 @@ export const defaultAuthToken =
 
 export function resolveRetrieveUserFor(id: string, ...roles: string[]) {
   return mock(idamApiBaseUrl)
-    .get("/details")
+    .get("/o/userinfo")
     .reply(HttpStatus.OK, { id, roles, email: "user@example.com", forename: "Test", surname: "User" });
 }
 
@@ -39,7 +39,7 @@ export function rejectInvalidateSession(token: string = defaultAuthToken, reason
 
 export function rejectRetrieveUserFor(reason: string) {
   return mock(idamApiBaseUrl)
-    .get("/details")
+    .get("/o/userinfo")
     .reply(HttpStatus.FORBIDDEN, reason);
 }
 
