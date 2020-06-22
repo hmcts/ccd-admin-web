@@ -3670,10 +3670,10 @@ govuk_frontend_toolkit@^6.0.2, govuk_frontend_toolkit@~6.0.1:
   resolved "https://registry.yarnpkg.com/govuk_frontend_toolkit/-/govuk_frontend_toolkit-6.0.4.tgz#fc4b741b16d27ec1a3cd1c4f3830972d333c7044"
   integrity sha512-8N9uuzenxapzqgFHC6dMu6MpKTcKfpMKDDzxEW2xmgsSaBUgOnqBawo0aqeVWjz1CPEvWaDV+1M7fm4/UyZ6xg==
 
-govuk_template_jinja@^0.23.0:
-  version "0.23.3"
-  resolved "https://registry.yarnpkg.com/govuk_template_jinja/-/govuk_template_jinja-0.23.3.tgz#b15360b4931b9b51021d52f8500bfca96c1ea875"
-  integrity sha1-sVNgtJMbm1ECHVL4UAv8qWweqHU=
+govuk_template_jinja@^0.26.0:
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/govuk_template_jinja/-/govuk_template_jinja-0.26.0.tgz#168b72810c4e2857cfef22dc2a2f0e81f6ec1deb"
+  integrity sha512-peTKDMzLJvj4YxOK1NqPQEcsplsz13XmJ0cNIuzZfeGHX60uEnw6cxSlLY9o7rLtppBorAY9EiBTAODHKBII1Q==
 
 govuk_template_mustache@^0.19.0:
   version "0.19.2"
