@@ -3665,10 +3665,15 @@ govuk-frontend@^1.0.0:
   resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-1.3.0.tgz#b145d8c5d6bd7e88a5b34b340867799f328bbb03"
   integrity sha512-NROJGh4wZgOSWhEzJOkcijIMR7GeFBOinG45wouVwK7ne6ihR4uyS/LQBkG/GGEkNkLZYuOG8cb+6fMVwP2W7Q==
 
-govuk_frontend_toolkit@^6.0.2, govuk_frontend_toolkit@~6.0.1:
+govuk_frontend_toolkit@^6.0.2:
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/govuk_frontend_toolkit/-/govuk_frontend_toolkit-6.0.4.tgz#fc4b741b16d27ec1a3cd1c4f3830972d333c7044"
   integrity sha512-8N9uuzenxapzqgFHC6dMu6MpKTcKfpMKDDzxEW2xmgsSaBUgOnqBawo0aqeVWjz1CPEvWaDV+1M7fm4/UyZ6xg==
+
+govuk_frontend_toolkit@~9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/govuk_frontend_toolkit/-/govuk_frontend_toolkit-9.0.0.tgz#3634b4323c5f0dbf7580b6e32dc5c36b2b614eda"
+  integrity sha512-ZhG3TumoxOURR/YRxy7rtre45BCbwF7a+dEDddaJYwf0T5qtN/s6xU/RnDvSbm4Ljpy8OL+5WrIWA3cUOM/uAA==
 
 govuk_template_jinja@^0.23.0:
   version "0.23.3"
