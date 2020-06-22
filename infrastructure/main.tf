@@ -1,5 +1,5 @@
 provider "azurerm" {
-  version = "1.22.1"
+  version = "2.15.0"
 }
 
 data "azurerm_key_vault" "ccd_shared_key_vault" {
