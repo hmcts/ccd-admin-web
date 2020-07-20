@@ -54,6 +54,8 @@ withPipeline("nodejs", product, component) {
     loadVaultSecrets(secrets)
     disableLegacyDeployment()
 
+    before('securitychecks') {sh 'yarn test:audit'}
+
     afterCheckout {
         sh "yarn cache clean"
     }
