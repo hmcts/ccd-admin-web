@@ -48,12 +48,13 @@ withPipeline("nodejs", product, component) {
         enableSlackNotifications('#ccd-pr-builds')
     }
 
-    installCharts()
     enableAksStagingDeployment()
 
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
     disableLegacyDeployment()
+
+    before('securitychecks') {sh 'yarn test:audit'}
 
     afterCheckout {
         sh "yarn cache clean"
