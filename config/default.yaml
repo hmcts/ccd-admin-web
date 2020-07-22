@@ -41,9 +41,3 @@ adminWeb:
 appInsights:
   enabled: true
   roleName: "ccd-admin-web"
-
-secrets:
-  ccd:
-    microservicekey-ccd-admin: AAAAAAAAAAAAAAAD
-    ccd-admin-web-oauth2-client-secret: IIIIIIIIIIIIIIII
-    AppInsightsInstrumentationKey: "some-key"
