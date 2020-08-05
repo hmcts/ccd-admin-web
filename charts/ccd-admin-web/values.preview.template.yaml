@@ -2,7 +2,7 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    ADMINWEB_LOGIN_URL: https://idam-test.dev.ccidam.reform.hmcts.net/login
+    ADMINWEB_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
     ADMINWEB_IMPORT_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/import
     ADMINWEB_JURISDICTIONS_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/data/jurisdictions
     ADMINWEB_USER_PROFILE_URL: http://ccd-user-profile-api-pr-224.service.core-compute-preview.internal/users
