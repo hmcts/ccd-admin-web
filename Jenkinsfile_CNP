@@ -9,6 +9,9 @@ properties(
 def product = "ccd"
 def component = "admin-web"
 
+// Variables to switch pipeline logic and wiring per type of build
+def adminWebDevelopPr = "PR-332" // This doesn't change frequently, but when it does, only change this value.
+
 def secrets = [
     'ccd-${env}': [
         secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
@@ -38,7 +41,7 @@ withPipeline("nodejs", product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')
     }
-    if (env.BRANCH_NAME == 'develop') {
+    if (env.BRANCH_NAME.equalsIgnoreCase(adminWebDevelopPr)) {
         enableSlackNotifications('#ccd-develop-builds')
     }
     onDemo {
