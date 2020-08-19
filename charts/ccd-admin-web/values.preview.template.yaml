@@ -20,3 +20,6 @@ nodejs:
 
 idam-pr:
   enabled: true
+  redirect_uris:
+    CCD Admin:
+      - https://${SERVICE_FQDN}/oauth2redirect
