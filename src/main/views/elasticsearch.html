@@ -23,13 +23,13 @@
     {% endif %}
 
     {% if groupedCaseTypes %}
-    <div>A total of {{ groupedCaseTypes.total }} case types have had their index recreated in Elasticsearch, as
-      summarised below:</div>
-    <table border="1">
+    <p id="index-result">A total of {{ groupedCaseTypes.total }} case types have had their index recreated in Elasticsearch, as
+      summarised below:</p>
+    <table border="1" aria-describedby="index-result">
       <thead>
         <tr>
-          <th>Jurisdiction</th>
-          <th>Case Types</th>
+          <th scope="col">Jurisdiction</th>
+          <th scope="col">Case Types</th>
         </tr>
       </thead>
       <tbody>
