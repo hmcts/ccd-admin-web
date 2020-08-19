@@ -178,8 +178,8 @@ describe("Index Elasticsearch page", () => {
           const dom = new JSDOM(res.text);
           // Check that the summary table is visible
           expect(res.text).to.contain("4 case types have had their index recreated in Elasticsearch");
-          expect(res.text).to.contain("<th>Jurisdiction</th>");
-          expect(res.text).to.contain("<th>Case Types</th>");
+          expect(res.text).to.contain("<th scope=\"col\">Jurisdiction</th>");
+          expect(res.text).to.contain("<th scope=\"col\">Case Types</th>");
           const cells = dom.window.document.querySelectorAll("tbody > tr > td");
           expect(cells[0].innerHTML).to.equal("jur1");
           expect(cells[1].innerHTML).to.equal("CT1, CT2, CT3");
