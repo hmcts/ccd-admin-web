@@ -8,7 +8,10 @@
     {% if not groupedCaseTypes %}
     <form action="/elasticsearch" method="post" enctype="multipart/form-data">
       <div class="form-group">
-        <p>{{ response.text if response else "Create Elasticsearch indices for all known case types." }}</p>
+        <p>Create Elasticsearch indices for all known case types.</p>
+        <p>This functionality removes the need to upload all spreadsheet definitions whenever all 
+          Elasticsearch indices are required to be recreated - for example during a reindex of Elasticsearch. 
+          It should only be used for its intended purpose to avoid potential performance issues.</p>
 
         {% if error %}
         <div class="error-summary govuk-error-message">
