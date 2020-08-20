@@ -10,7 +10,7 @@ def product = "ccd"
 def component = "admin-web"
 
 // Variables to switch pipeline logic and wiring per type of build
-def adminWebDevelopPr = "PR-332" // This doesn't change frequently, but when it does, only change this value.
+def adminWebDevelopPr = "PR-325" // This doesn't change frequently, but when it does, only change this value.
 
 def secrets = [
     'ccd-${env}': [
@@ -56,8 +56,6 @@ withPipeline("nodejs", product, component) {
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
     disableLegacyDeployment()
-
-    before('securitychecks') {sh 'yarn test:audit'}
 
     afterCheckout {
         sh "yarn cache clean"
