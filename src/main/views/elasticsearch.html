@@ -1,0 +1,50 @@
+{% extends "layout_template.html" %}
+{% from "macros/formElements.html" import errorDisplay %}
+{% block content %}
+{% include "menu.html" %}
+<h2 class="heading-large padding">Create Elasticsearch Indices</h2>
+<div class="grid-row padding">
+  <div class="column-two-thirds">
+    {% if not groupedCaseTypes %}
+    <form action="/elasticsearch" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <p>Create Elasticsearch indices for all known case types.</p>
+        <p>This functionality removes the need to upload all spreadsheet definitions whenever all 
+          Elasticsearch indices are required to be recreated - for example during a reindex of Elasticsearch. 
+          It should only be used for its intended purpose to avoid potential performance issues.</p>
+
+        {% if error %}
+        <div class="error-summary govuk-error-message">
+          {{ errorDisplay(error) }}
+        </div>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <button type="submit" class="button" value="Submit">Submit</button>
+      </div>
+    </form>
+    {% endif %}
+
+    {% if groupedCaseTypes %}
+    <p id="index-result">A total of {{ groupedCaseTypes.total }} case types have had their index recreated in Elasticsearch, as
+      summarised below:</p>
+    <table border="1" aria-describedby="index-result">
+      <thead>
+        <tr>
+          <th scope="col">Jurisdiction</th>
+          <th scope="col">Case Types</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for jurisdiction, caseTypes in groupedCaseTypes.case_types %}
+        <tr>
+          <td>{{ jurisdiction }}</td>
+          <td>{{ caseTypes | join(', ') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
