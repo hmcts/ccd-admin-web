@@ -52,7 +52,7 @@
     "jsdom": "^11.11.0",
     "jwt-decode": "^2.2.0",
     "multer": "^1.4.1",
-    "node-fetch": "^2.1.2",
+    "node-fetch": "^2.6.1",
     "node-sass": "^4.12.0",
     "nunjucks": "^3.2.0",
     "otp": "^0.1.3",
