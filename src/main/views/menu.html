@@ -17,5 +17,9 @@
     <a href="/jurisdiction?dest=definitions">Manage Definitions</a>
   {% endif %}
 
+  {% if adminWebAuthorization.canImportDefinition %}
+    <a href="/elasticsearch">Create Elasticsearch Indices</a>
+  {% endif %}
+
   {% endif %}
 </div>
