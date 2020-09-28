@@ -29,6 +29,7 @@ adminWeb:
   whoami_url : ADMINWEB_WHOAMI_URL
   import_audits_url : ADMINWEB_IMPORT_AUDITS_URL
   authorization_url: ADMINWEB_AUTHORIZATION_URL
+  elastic_index_url: ADMINWEB_ELASTIC_INDEX_URL
 
 secrets:
   ccd:
