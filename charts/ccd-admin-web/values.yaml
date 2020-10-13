@@ -42,6 +42,7 @@ nodejs:
     ADMINWEB_WHOAMI_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/idam/profile"
     ADMINWEB_AUTHORIZATION_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/idam/adminweb/authorization"
     ADMINWEB_IMPORT_AUDITS_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/import-audits"
+    ADMINWEB_ELASTIC_INDEX_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/elastic-support/index"
     ADMINWEB_ROLES_WHITELIST: "ccd-import,ccd-import-validate"
   keyVaults:
     ccd:
