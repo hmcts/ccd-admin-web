@@ -1,6 +1,5 @@
 // Infrastructural variables
 variable "product" {
-  type = "string"
 }
 
 variable "raw_product" {
@@ -8,10 +7,12 @@ variable "raw_product" {
 }
 
 variable "component" {
-  type = "string"
 }
 
 variable "env" {
-  type = "string"
   description = "(Required) The environment in which to deploy the application infrastructure."
+}
+
+variable "common_tags" {
+  type = map(string)
 }
