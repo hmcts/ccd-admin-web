@@ -15,7 +15,7 @@ if (app.locals.ENV === "development") {
   const sslOptions = {
     cert: fs.readFileSync(path.join(sslDirectory, "localhost.crt")),
     key: fs.readFileSync(path.join(sslDirectory, "localhost.key")),
-    secureProtocol: 'TLS_method',
+    secureProtocol: "TLS_method",
   };
   const server = https.createServer(sslOptions, app);
   server.listen(port, () => {
