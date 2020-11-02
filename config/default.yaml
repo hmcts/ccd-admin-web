@@ -38,6 +38,7 @@ adminWeb:
   updatedefinition_url: http://localhost:4451/api/draft/save
   deletedefinition_url: http://localhost:4451/api/draft
   definitions_url: http://localhost:4451/api/drafts
+  elastic_index_url: http://localhost:4451/elastic-support/index
 appInsights:
   enabled: true
   roleName: "ccd-admin-web"
