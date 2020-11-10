@@ -25,7 +25,7 @@
     "prepublish": "echo 'npm run snyk-protect'"
   },
   "dependencies": {
-    "@hmcts/nodejs-healthcheck": "^1.6.0",
+    "@hmcts/nodejs-healthcheck": "^1.7.0",
     "@hmcts/nodejs-logging": "^3.0.0",
     "@hmcts/properties-volume": "0.0.9",
     "@types/node": "^10.5.4",
