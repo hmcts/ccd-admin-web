@@ -4,6 +4,9 @@ nodejs:
   ingressHost: ccd-admin-web.{{ .Values.global.environment }}.platform.hmcts.net
   applicationPort: 3100
   cpuLimits: 1
+  autoscaling:
+    enabled: true 
+    maxReplicas: 4
   environment:
     # Node specific vars
     USE_CSRF_PROTECTION: true
