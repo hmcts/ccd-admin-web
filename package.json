@@ -47,7 +47,7 @@
     "govuk_template_mustache": "^0.19.0",
     "helmet": "^3.18.0",
     "jquery": "^3.5.1",
-    "jquery-validation": "^1.17.0",
+    "jquery-validation": "^1.19.3",
     "jsdom": "^11.11.0",
     "jwt-decode": "^2.2.0",
     "multer": "^1.4.1",
