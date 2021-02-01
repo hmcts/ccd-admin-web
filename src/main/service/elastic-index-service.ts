@@ -18,13 +18,8 @@ export function getCaseTypes(req) {
     .catch((error) => {
       if (error.response) {
         logger.error(`Error retrieving case type references from Definition Store: ${error.response.text}`);
-        throw error;
-      } else {
-        const errMsg = "Error retrieving case type references from Definition Store: no error response";
-        logger.error(errMsg);
-        error.text = errMsg;
-        throw error;
       }
+      throw error;
     });
 }
 
@@ -49,12 +44,7 @@ export function createElasticIndex(req) {
     .catch((error) => {
       if (error.response) {
         logger.error(`Error creating Elasticsearch index via Case Definition Store: ${error.response.text}`);
-        throw error;
-      } else {
-        const errMsg = "Error creating Elasticsearch index via Case Definition Store: no error response";
-        logger.error(errMsg);
-        error.text = errMsg;
-        throw error;
       }
+      throw error;
     });
 }
