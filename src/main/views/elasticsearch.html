@@ -1,50 +1,68 @@
 {% extends "layout_template.html" %}
 {% from "macros/formElements.html" import errorDisplay %}
+
+{% block head %}
+  {{ super() }}
+
+  <script type="text/javascript">
+
+    const indexButtonId = '#index-btn'; 
+    const indexResultId = '#index-result';
+
+    $(document).ready(function() {
+      $(indexButtonId).click(function() {
+        $.get(`{{caseTypesUrl}}`, function(caseTypes) { 
+          initIndicesCreation(caseTypes);
+        });
+      });
+    });
+
+    function initIndicesCreation(caseTypes) {
+      $(indexButtonId).remove();
+      $(indexResultId).append($(`<div>[STARTING] Creating indexes for ${caseTypes.length} case types</div>`));
+      createIndices(caseTypes, 0, function() {
+        $(indexResultId).append($('<div>[FINISHED] Processing complete</div>'));
+      });
+    }
+
+    function createIndices(caseTypes, index, completed) {
+      if (caseTypes.length == index) {
+        completed();
+        return;
+      }
+
+      const currentCaseType = caseTypes[index];
+      const prefix = (index + 1).toLocaleString(undefined, {minimumIntegerDigits: 3});
+
+      $(indexResultId).append($(`<div>[${prefix}] Creating index for case type '${currentCaseType}'</div>`));
+
+      $.post(`{{indexingUrl}}?ctid=${currentCaseType}`, function(data) {
+        const jurisdiction = Object.keys(data.case_types)[0];
+        $(indexResultId).append($(`<div>[${prefix}] Created index for case type '${currentCaseType}', jurisdiction '${jurisdiction}'</div>`));
+      }).fail(function(error) {
+        $(indexResultId).append($(`<div style="color: red;">[${prefix}] Error occurred for case type '${currentCaseType}': ${error.responseText}</div>`));
+      }).always(function() {
+        createIndices(caseTypes, index + 1, completed);
+      });      
+    }
+
+  </script>
+{% endblock %}
+
 {% block content %}
 {% include "menu.html" %}
-<h2 class="heading-large padding">Create Elasticsearch Indices</h2>
+<h2 class="heading-large padding">Create Elasticsearch Indices {{ test }}</h2>
 <div class="grid-row padding">
   <div class="column-two-thirds">
-    {% if not groupedCaseTypes %}
-    <form action="/elasticsearch" method="post" enctype="multipart/form-data">
-      <div class="form-group">
-        <p>Create Elasticsearch indices for all known case types.</p>
-        <p>This functionality removes the need to upload all spreadsheet definitions whenever all 
-          Elasticsearch indices are required to be recreated - for example during a reindex of Elasticsearch. 
-          It should only be used for its intended purpose to avoid potential performance issues.</p>
-
-        {% if error %}
-        <div class="error-summary govuk-error-message">
-          {{ errorDisplay(error) }}
-        </div>
-        {% endif %}
-      </div>
-      <div class="form-group">
-        <button type="submit" class="button" value="Submit">Submit</button>
-      </div>
-    </form>
-    {% endif %}
-
-    {% if groupedCaseTypes %}
-    <p id="index-result">A total of {{ groupedCaseTypes.total }} case types have had their index recreated in Elasticsearch, as
-      summarised below:</p>
-    <table border="1" aria-describedby="index-result">
-      <thead>
-        <tr>
-          <th scope="col">Jurisdiction</th>
-          <th scope="col">Case Types</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for jurisdiction, caseTypes in groupedCaseTypes.case_types %}
-        <tr>
-          <td>{{ jurisdiction }}</td>
-          <td>{{ caseTypes | join(', ') }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endif %}
+    <div>
+      <p>Create Elasticsearch indices for all known case types.</p>
+      <p>This functionality removes the need to upload all spreadsheet definitions whenever all 
+        Elasticsearch indices are required to be recreated - for example during a reindex of Elasticsearch. 
+        It should only be used for its intended purpose to avoid potential performance issues.</p>
+      <p>Any errors encountered during processing are highlighted in red.</p>
+      <button id="index-btn" type="submit" class="button" value="Submit">Submit</button>
+    </div>
+    <div id="index-result" style="font-family: monospace;"></div>
   </div>
 </div>
 {% endblock %}
