@@ -124,7 +124,8 @@
     "hosted-git-info": "^3.0.8",
     "xmlhttprequest-ssl": "^1.6.2",
     "handlebars": "^4.7.7",
-    "merge": "^2.1.1"
+    "merge": "^2.1.1",
+    "trim-newlines": "^3.0.1"
   },
   "nyc": {
     "extension": [
