@@ -7,18 +7,17 @@ RUN apk update \
   && apk add bzip2 patch \
   && rm -rf /var/lib/apt/lists/* \
   && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+COPY . .
+RUN chown -R hmcts:hmcts .
 USER hmcts
 
-COPY package.json yarn.lock .snyk ./
 RUN yarn install --ignore-optional
 
 # ---- Build Image ----
 FROM base as build
-COPY . .
 
-USER root
 RUN yarn sass
-USER hmcts
 
 RUN sleep 1 && yarn install --ignore-optional --production && yarn cache clean
 
