@@ -1,6 +1,7 @@
 import { deleteDefinition } from "../service/delete-definition-service";
 import { deleteSessionVariables } from "../util/clearSession";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
+import { sanitize } from "../util/sanitize";
 import router from "./home";
 
 const errorPage = "error";
@@ -19,8 +20,8 @@ router.post("/deletedefinition", (req, res, next) => {
                 status: 400, text: error.rawResponse ? error.rawResponse :
                     "Unexpected error : Please contact your administrator",
             };
-            res.redirect(302, `/deleteitem?item=${req.body.itemToDelete}&jurisdictionId=${req.body.jurisdictionId}`
-              + `&version=${req.body.definitionVersion}`);
+            res.redirect(302, `/deleteitem?item=${sanitize(req.body.itemToDelete)}&jurisdictionId=${sanitize(req.body.jurisdictionId)}`
+              + `&version=${sanitize(req.body.definitionVersion)}`);
         });
     } else if (req.body.deleteItem === "No") {
         deleteSessionVariables(req);
@@ -28,8 +29,8 @@ router.post("/deletedefinition", (req, res, next) => {
     } else {
         deleteSessionVariables(req);
         req.session.response = { error: "Please choose Yes or No" };
-        res.redirect(302, `/deleteitem?item=${req.body.itemToDelete}&jurisdictionId=${req.body.jurisdictionId}`
-          + `&version=${req.body.definitionVersion}`);
+        res.redirect(302, `/deleteitem?item=${sanitize(req.body.itemToDelete)}&jurisdictionId=${sanitize(req.body.jurisdictionId)}`
+          + `&version=${sanitize(req.body.definitionVersion)}`);
     }
   } else {
     res.render(errorPage, error_unauthorized_role(req));
