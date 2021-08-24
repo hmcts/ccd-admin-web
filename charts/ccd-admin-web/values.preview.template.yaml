@@ -3,19 +3,19 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
   environment:
     ADMINWEB_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
-    ADMINWEB_IMPORT_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/import
-    ADMINWEB_JURISDICTIONS_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/api/data/jurisdictions
-    ADMINWEB_USER_PROFILE_URL: http://ccd-user-profile-api-pr-322.service.core-compute-preview.internal/users
-    ADMINWEB_SAVE_USER_PROFILE_URL: http://ccd-user-profile-api-pr-322.service.core-compute-preview.internal/users/save
-    ADMINWEB_USER_ROLE_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/api/user-role
-    ADMIN_ALL_USER_ROLES_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/api/user-roles
-    ADMINWEB_CREATE_DEFINITION_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/api/draft
-    ADMINWEB_UPDATE_DEFINITION_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/api/draft/save
-    ADMINWEB_DELETE_DEFINITION_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/api/draft
-    ADMINWEB_DEFINITIONS_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/api/drafts
-    ADMINWEB_WHOAMI_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/api/idam/profile
-    ADMINWEB_AUTHORIZATION_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/api/idam/adminweb/authorization
-    ADMINWEB_IMPORT_AUDITS_URL: http://ccd-definition-store-api-pr-759.service.core-compute-preview.internal/api/import-audits
+    ADMINWEB_IMPORT_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/import
+    ADMINWEB_JURISDICTIONS_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/data/jurisdictions
+    ADMINWEB_USER_PROFILE_URL: http://ccd-user-profile-api-pr-335.service.core-compute-preview.internal/users
+    ADMINWEB_SAVE_USER_PROFILE_URL: http://ccd-user-profile-api-pr-335.service.core-compute-preview.internal/users/save
+    ADMINWEB_USER_ROLE_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/user-role
+    ADMIN_ALL_USER_ROLES_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/user-roles
+    ADMINWEB_CREATE_DEFINITION_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/draft
+    ADMINWEB_UPDATE_DEFINITION_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/draft/save
+    ADMINWEB_DELETE_DEFINITION_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/draft
+    ADMINWEB_DEFINITIONS_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/drafts
+    ADMINWEB_WHOAMI_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/idam/profile
+    ADMINWEB_AUTHORIZATION_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/idam/adminweb/authorization
+    ADMINWEB_IMPORT_AUDITS_URL: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal/api/import-audits
 
 
 idam-pr:
