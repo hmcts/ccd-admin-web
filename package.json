@@ -132,7 +132,8 @@
     "ws": "^6.2.2",
     "tar": "^6.1.9",
     "jszip": "^3.7.0",
-    "path-parse": "^1.0.7"
+    "path-parse": "^1.0.7",
+    "pac-resolver": "^5.0.0"
   },
   "nyc": {
     "extension": [
