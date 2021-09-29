@@ -8,8 +8,10 @@ import * as mock from "nock";
 import * as request from "supertest";
 import { ERROR_UNAUTHORIZED_ROLE } from "user/user-request-authorizer";
 
-describe("Index Global Search page", () => {
+describe("Global Search Indices page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
+  const GLOBAL_SEARCH_PAGE_ENDPOINT = "/globalsearch";
+  const GLOBAL_SEARCH_POST_ENDPOINT = "/elastic-support/global-search/index";
 
   beforeEach(() => {
     mock.cleanAll();
@@ -19,7 +21,7 @@ describe("Index Global Search page", () => {
 
     it("should redirect to IdAM login page when not authenticated", () => {
       return request(app)
-        .get("/globalsearch")
+        .get(GLOBAL_SEARCH_PAGE_ENDPOINT)
         .then((res) => {
           expect(res.statusCode).to.equal(302);
           expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
@@ -35,7 +37,7 @@ describe("Index Global Search page", () => {
         .reply(200, [{}]);
 
       return request(app)
-        .get("/globalsearch")
+        .get(GLOBAL_SEARCH_PAGE_ENDPOINT)
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
@@ -54,7 +56,7 @@ describe("Index Global Search page", () => {
         .reply(200, {canManageUserProfile: true});
 
       return request(app)
-        .get("/globalsearch")
+        .get(GLOBAL_SEARCH_PAGE_ENDPOINT)
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
@@ -76,7 +78,7 @@ describe("Index Global Search page", () => {
         .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
-        .get("/globalsearch")
+        .get(GLOBAL_SEARCH_PAGE_ENDPOINT)
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
@@ -89,7 +91,7 @@ describe("Index Global Search page", () => {
 
     it("should redirect to IdAM login page when not authenticated", () => {
       return request(app)
-        .get("/elastic-support/global-search/index")
+        .get(GLOBAL_SEARCH_POST_ENDPOINT)
         .then((res) => {
           expect(res.statusCode).to.equal(302);
           expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
@@ -105,11 +107,11 @@ describe("Index Global Search page", () => {
         .reply(200, [{}]);
 
       const apiCall = mock("http://localhost:4451")
-        .post("/elastic-support/global-search/index")
+        .post(GLOBAL_SEARCH_POST_ENDPOINT)
         .reply(201, "Created");
 
       return request(app)
-        .post("/elastic-support/global-search/index")
+        .post(GLOBAL_SEARCH_POST_ENDPOINT)
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(apiCall.isDone()).to.be.false;
@@ -130,11 +132,11 @@ describe("Index Global Search page", () => {
         .reply(200, {canManageUserProfile: true});
 
       const apiCall = mock("http://localhost:4451")
-        .post("/elastic-support/global-search/index")
+        .post(GLOBAL_SEARCH_POST_ENDPOINT)
         .reply(201, ["A"]);
 
       return request(app)
-        .post("/elastic-suppors/global-search/index")
+        .post(GLOBAL_SEARCH_POST_ENDPOINT)
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(apiCall.isDone()).to.be.false;
@@ -155,11 +157,11 @@ describe("Index Global Search page", () => {
         .reply(200, {});
 
       const apiCall = mock("http://localhost:4451")
-        .post("/elastic-supports/global-search/index")
+        .post(GLOBAL_SEARCH_POST_ENDPOINT)
         .reply(201, "Created");
 
       return request(appTestWithAuthorizedAdminWebRoles)
-        .post("/elasticsearch/index")
+        .post(GLOBAL_SEARCH_POST_ENDPOINT)
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
