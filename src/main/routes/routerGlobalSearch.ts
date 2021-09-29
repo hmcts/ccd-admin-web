@@ -10,7 +10,7 @@ const globalSearchIndexUrl = "/elastic-support/global-search/index";
 
 // load global search index page
 routerGlobalSearch.get(`/${globalSearch}`, (req, res) => {
-  if (req.adminWebAuthorization) {
+  if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
