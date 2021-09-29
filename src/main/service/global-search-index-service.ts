@@ -15,12 +15,12 @@ export function createGlobalSearchIndex(req) {
     .post(url)
     .set(headers)
     .then((res) => {
-      logger.info(`Create Global Search ES index, response: ${res.text}`);
+      logger.info(`Create Global Search Indices, response: ${res.text}`);
       return res;
     })
     .catch((error) => {
       if (error.response) {
-        logger.error(`Error creating Global Search ES index: ${error.response.text}`);
+        logger.error(`Error creating Global Search Indices: ${error.response.text}`);
       }
       throw error;
     });
