@@ -26,7 +26,7 @@ describe("Index Global Search page", () => {
         });
     });
 
-    it("should not return Index Global Search page when authenticated but not authorized", () => {
+    it("should not return Global Search Index page when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
@@ -45,7 +45,7 @@ describe("Index Global Search page", () => {
         });
     });
 
-    it("should not return Index Global Search page when authenticated but without required authorized role", () => {
+    it("should not return Global Search Index page when authenticated but without required authorized role", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
@@ -67,7 +67,7 @@ describe("Index Global Search page", () => {
         });
     });
 
-    it("should return Index Global Search page when authenticated and authorized", () => {
+    it("should return Global Search Index page when authenticated and authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
@@ -80,8 +80,7 @@ describe("Index Global Search page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          expect(res.text).to.contain("Create Elasticsearch Indices");
-          expect(res.text).to.contain("Create Elasticsearch indices for all known case types.");
+          expect(res.text).to.contain("Create Global Search Indices");
         });
     });
   });
