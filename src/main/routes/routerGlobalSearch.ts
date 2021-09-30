@@ -9,7 +9,7 @@ const globalSearch = "globalsearch";
 const globalSearchIndexUrl = "/elastic-support/global-search/index";
 
 // load global search index page
-routerGlobalSearch.get(`/${globalSearch}`, (req, res) => {
+routerGlobalSearch.get(`/${globalSearch}`, (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
@@ -23,7 +23,7 @@ routerGlobalSearch.get(`/${globalSearch}`, (req, res) => {
 });
 
 // perform (re)creation of global search indices
-routerGlobalSearch.post(globalSearchIndexUrl, (req, res) => {
+routerGlobalSearch.post(globalSearchIndexUrl, (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     createGlobalSearchIndex(req).then((response) => {
       res.status(200).send(response.body);

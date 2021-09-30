@@ -161,7 +161,7 @@ describe("Global Search Indices page", () => {
         .reply(201, "Created");
 
       return request(appTestWithAuthorizedAdminWebRoles)
-        .post("/elasticsearch/index")
+        .post(GLOBAL_SEARCH_POST_ENDPOINT)
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
