@@ -6,7 +6,6 @@ import * as idamServiceMock from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
 import * as mock from "nock";
 import * as request from "supertest";
-import { ERROR_UNAUTHORIZED_ROLE } from "user/user-request-authorizer";
 
 describe("Global Search Indices page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
@@ -116,10 +115,6 @@ describe("Global Search Indices page", () => {
         .then((res) => {
           expect(apiCall.isDone()).to.be.false;
           expect(res.status).to.equal(403);
-          const error = JSON.parse(res.text);
-          expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
-          expect(error.error.message).to.equal(ERROR_UNAUTHORIZED_ROLE.message);
-          expect(error.error.status).to.equal(ERROR_UNAUTHORIZED_ROLE.status);
         });
     });
 
@@ -141,10 +136,6 @@ describe("Global Search Indices page", () => {
         .then((res) => {
           expect(apiCall.isDone()).to.be.false;
           expect(res.status).to.equal(403);
-          const error = JSON.parse(res.text);
-          expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
-          expect(error.error.message).to.equal(ERROR_UNAUTHORIZED_ROLE.message);
-          expect(error.error.status).to.equal(ERROR_UNAUTHORIZED_ROLE.status);
         });
     });
 
