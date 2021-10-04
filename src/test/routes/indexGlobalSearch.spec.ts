@@ -6,17 +6,19 @@ import { JSDOM } from "jsdom";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
+import { ERROR_UNAUTHORIZED_ROLE } from "user/user-request-authorizer";
 
 describe("Global Search Indices page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
   const GLOBAL_SEARCH_PAGE_ENDPOINT = "/globalsearch";
   const GLOBAL_SEARCH_POST_ENDPOINT = "/elastic-support/global-search/index";
+  const COOKIE_TOKEN = "accessToken=ey456.ey789";
 
   beforeEach(() => {
     mock.cleanAll();
   });
 
-  describe("on GET /globalsearch", () => {
+  describe("on GET " + GLOBAL_SEARCH_PAGE_ENDPOINT, () => {
 
     it("should redirect to IdAM login page when not authenticated", () => {
       return request(app)
@@ -37,7 +39,7 @@ describe("Global Search Indices page", () => {
 
       return request(app)
         .get(GLOBAL_SEARCH_PAGE_ENDPOINT)
-        .set("Cookie", "accessToken=ey123.ey456")
+        .set("Cookie", COOKIE_TOKEN)
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
@@ -56,7 +58,7 @@ describe("Global Search Indices page", () => {
 
       return request(app)
         .get(GLOBAL_SEARCH_PAGE_ENDPOINT)
-        .set("Cookie", "accessToken=ey123.ey456")
+        .set("Cookie", COOKIE_TOKEN)
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
@@ -78,15 +80,16 @@ describe("Global Search Indices page", () => {
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get(GLOBAL_SEARCH_PAGE_ENDPOINT)
-        .set("Cookie", "accessToken=ey123.ey456")
+        .set("Cookie", COOKIE_TOKEN)
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Create Global Search Indices");
+          expect(res.text).to.contain("Create or Recreate Global Search Indices");
         });
     });
   });
 
-  describe("on POST /elastic-support/global-search/index", () => {
+  describe("on POST " + GLOBAL_SEARCH_POST_ENDPOINT, () => {
 
     it("should redirect to IdAM login page when not authenticated", () => {
       return request(app)
@@ -111,10 +114,14 @@ describe("Global Search Indices page", () => {
 
       return request(app)
         .post(GLOBAL_SEARCH_POST_ENDPOINT)
-        .set("Cookie", "accessToken=ey123.ey456")
+        .set("Cookie", COOKIE_TOKEN)
         .then((res) => {
           expect(apiCall.isDone()).to.be.false;
           expect(res.status).to.equal(403);
+          const error = JSON.parse(res.text);
+          expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
+          expect(error.error.message).to.equal(ERROR_UNAUTHORIZED_ROLE.message);
+          expect(error.error.status).to.equal(ERROR_UNAUTHORIZED_ROLE.status);
         });
     });
 
@@ -132,10 +139,14 @@ describe("Global Search Indices page", () => {
 
       return request(app)
         .post(GLOBAL_SEARCH_POST_ENDPOINT)
-        .set("Cookie", "accessToken=ey123.ey456")
+        .set("Cookie", COOKIE_TOKEN)
         .then((res) => {
           expect(apiCall.isDone()).to.be.false;
           expect(res.status).to.equal(403);
+          const error = JSON.parse(res.text);
+          expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
+          expect(error.error.message).to.equal(ERROR_UNAUTHORIZED_ROLE.message);
+          expect(error.error.status).to.equal(ERROR_UNAUTHORIZED_ROLE.status);
         });
     });
 
@@ -153,7 +164,7 @@ describe("Global Search Indices page", () => {
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post(GLOBAL_SEARCH_POST_ENDPOINT)
-        .set("Cookie", "accessToken=ey123.ey456")
+        .set("Cookie", COOKIE_TOKEN)
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           expect(apiCall.isDone()).to.be.true;

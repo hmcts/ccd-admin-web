@@ -4,18 +4,18 @@ import { createGlobalSearchIndex } from "../service/global-search-index-service"
 import {sanitize} from "../util/sanitize";
 
 const errorPage = "error";
-const routerGlobalSearch = express.Router();
+const router = express.Router();
 const globalSearch = "globalsearch";
-const globalSearchIndexUrl = "/elastic-support/global-search/index";
+const globalSearchIndexingUrl = "/elastic-support/global-search/index";
 
 // load global search index page
-routerGlobalSearch.get(`/${globalSearch}`, (req, res, next) => {
+router.get(`/${globalSearch}`, (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
-    responseContent.globalSearchIndexUrl = globalSearchIndexUrl;
+    responseContent.globalSearchIndexingUrl = globalSearchIndexingUrl;
     res.render(globalSearch, responseContent);
   } else {
     res.render(errorPage, error_unauthorized_role(req));
@@ -23,7 +23,7 @@ routerGlobalSearch.get(`/${globalSearch}`, (req, res, next) => {
 });
 
 // perform (re)creation of global search indices
-routerGlobalSearch.post(globalSearchIndexUrl, (req, res, next) => {
+router.post(globalSearchIndexingUrl, (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     createGlobalSearchIndex(req).then((response) => {
       res.status(200).send(response.body);
@@ -36,4 +36,4 @@ routerGlobalSearch.post(globalSearchIndexUrl, (req, res, next) => {
   }
 });
 
-export default routerGlobalSearch;
+export default router;
