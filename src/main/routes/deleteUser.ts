@@ -1,6 +1,7 @@
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { deleteSessionVariables } from "../util/clearSession";
 import { deleteUserProfile } from "../service/delete-user-service";
+import { sanitize } from "../util/sanitize";
 import router from "./home";
 
 const errorPage = "error";
@@ -20,7 +21,7 @@ router.post("/deleteuser", (req, res, next) => {
           status: 400, text: error.rawResponse ? error.rawResponse :
             "Unexpected error : Please contact your administrator",
         };
-        res.redirect(302, `/deleteitem?item=${req.body.itemToDelete}&idamId=${req.body.idamId}`);
+        res.redirect(302, `/deleteitem?item=${sanitize(req.body.itemToDelete)}&idamId=${sanitize(req.body.idamId)}`);
       });
     } else if (req.body.deleteItem === "No") {
       deleteSessionVariables(req);
@@ -28,7 +29,7 @@ router.post("/deleteuser", (req, res, next) => {
     } else {
       deleteSessionVariables(req);
       req.session.response = {error: "Please choose Yes or No"};
-      res.redirect(302, `/deleteitem?item=${req.body.itemToDelete}&idamId=${req.body.idamId}`);
+      res.redirect(302, `/deleteitem?item=${sanitize(req.body.itemToDelete)}&idamId=${sanitize(req.body.idamId)}`);
     }
   } else {
     res.render(errorPage, error_unauthorized_role(req));

@@ -19,6 +19,7 @@
     "test:coverage": "NODE_ENV=mocha LOG_LEVEL=OFF nyc mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*')",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
+    "fortifyScan": "./src/test/java/gradlew -p src/test/java fortifyScan",
     "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/**,coverage/**,src/main/modules/**,src/main/routes/**,src/main/util/**,src/main/app.ts,src/main/app.test.ts,src/main/server.ts -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info",
     "snyk-protect": "echo 'snyk protect'",
     "prepare": "echo 'npm run snyk-protect'",
@@ -128,7 +129,11 @@
     "trim-newlines": "^3.0.1",
     "glob-parent": "^5.1.2",
     "normalize-url": "^4.5.1",
-    "ws": "^6.2.2"
+    "ws": "^6.2.2",
+    "tar": "^6.1.9",
+    "jszip": "^3.7.0",
+    "path-parse": "^1.0.7",
+    "pac-resolver": "^5.0.0"
   },
   "nyc": {
     "extension": [
