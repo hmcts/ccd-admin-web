@@ -133,7 +133,10 @@
     "tar": "^6.1.9",
     "jszip": "^3.7.0",
     "path-parse": "^1.0.7",
-    "pac-resolver": "^5.0.0"
+    "pac-resolver": "^5.0.0",
+    "ansi-regex": "^5.0.1",
+    "set-value": "^4.0.1",
+    "ssh2": "^1.4.0"
   },
   "nyc": {
     "extension": [
