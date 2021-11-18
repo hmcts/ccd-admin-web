@@ -138,7 +138,8 @@
     "set-value": "^4.0.1",
     "ssh2": "^1.4.0",
     "vm2": "^3.9.5",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "is-my-json-valid": "^2.20.6"
   },
   "nyc": {
     "extension": [
