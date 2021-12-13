@@ -10,6 +10,7 @@ properties([
 def type = "nodejs"
 def product = "ccd"
 def component = "admin-web"
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 withNightlyPipeline(type, product, component) {
     enableSlackNotifications('#ccd-nightly-builds')
@@ -21,7 +22,8 @@ withNightlyPipeline(type, product, component) {
     }
 
     after('build') {
-        sh 'yarn setup'
+        //sh 'yarn setup'
+        yarnBuilder.yarn('build')
     }
 
     //after('fortify-scan') {
