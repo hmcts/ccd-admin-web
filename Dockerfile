@@ -6,7 +6,9 @@ USER root
 RUN apk update \
   && apk add bzip2 patch \
   && rm -rf /var/lib/apt/lists/* \
-  && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+  && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH" \
+  && addgroup -g 1001 -S hmcts && \
+  && adduser -u 1001 -S hmcts -G hmcts -s /bin/sh
 
 COPY . .
 RUN chown -R hmcts:hmcts .
