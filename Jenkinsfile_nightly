@@ -18,12 +18,11 @@ withNightlyPipeline(type, product, component) {
     //enableFortifyScan()
 
     afterCheckout {
-        sh "yarn cache clean"
+        yarnBuilder.yarn('cache clean')
     }
 
     after('build') {
-        //sh 'yarn setup'
-        yarnBuilder.yarn('audit')
+        yarnBuilder.yarn('setup')
     }
 
     //after('fortify-scan') {
