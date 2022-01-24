@@ -28,7 +28,7 @@
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.7.0",
     "@hmcts/nodejs-logging": "^3.0.0",
-    "@hmcts/properties-volume": "0.0.9",
+    "@hmcts/properties-volume": "^0.0.13",
     "@types/node": "^10.5.4",
     "applicationinsights": "^1.0.8",
     "body-parser": "^1.19.0",
@@ -141,7 +141,8 @@
     "vm2": "^3.9.5",
     "validator": "^13.7.0",
     "is-my-json-valid": "^2.20.6",
-    "json-schema": "0.4.0"
+    "json-schema": "0.4.0",
+    "@snyk/snyk-docker-pull": "^3.7.2"
   },
   "nyc": {
     "extension": [
