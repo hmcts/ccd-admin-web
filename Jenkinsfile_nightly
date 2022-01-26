@@ -13,8 +13,7 @@ def component = "admin-web"
 
 withNightlyPipeline(type, product, component) {
     enableSlackNotifications('#ccd-nightly-builds')
-    // Temporarily disable fortify scan stage until fortify access re-enabled
-    //enableFortifyScan()
+    enableFortifyScan()
 
     afterCheckout {
         sh "yarn cache clean"
@@ -24,8 +23,8 @@ withNightlyPipeline(type, product, component) {
         sh 'yarn setup'
     }
 
-    //after('fortify-scan') {
-    //  steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
-    //}
+    after('fortify-scan') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+    }
 
 }
