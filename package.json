@@ -142,7 +142,8 @@
     "validator": "^13.7.0",
     "is-my-json-valid": "^2.20.6",
     "json-schema": "0.4.0",
-    "@snyk/snyk-docker-pull": "^3.7.2"
+    "@snyk/snyk-docker-pull": "^3.7.2",
+    "copy-props": "^2.0.5"
   },
   "nyc": {
     "extension": [
