@@ -143,6 +143,7 @@
     "is-my-json-valid": "^2.20.6",
     "json-schema": "0.4.0",
     "@snyk/snyk-docker-pull": "^3.7.2",
+    "follow-redirects": "^1.14.7",
     "copy-props": "^2.0.5"
   },
   "nyc": {
