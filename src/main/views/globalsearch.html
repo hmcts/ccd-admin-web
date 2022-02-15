@@ -1,0 +1,43 @@
+{% extends "layout_template.html" %}
+{% from "macros/formElements.html" import errorDisplay %}
+
+{% block head %}
+  {{ super() }}
+
+  <script type="text/javascript">
+
+    const indexButtonId = '#index-btn';
+    const indexResultId = '#index-result';
+
+    $(document).ready(function() {
+      $(indexButtonId).click(function() {
+        $(indexResultId).append($(`<div>[STARTING] Creating Global Search Indices</div>`));
+
+        $.post(`{{globalSearchIndexingUrl}}`, function() {
+          $(indexResultId).append($(`<div>[FINISHED] Processing complete</div>`));
+        }).fail(function(error) {
+          $(indexResultId).append($(`<div style="color: red;">Error occurred : ${error.responseText}</div>`));
+        });
+
+      });
+    });
+
+  </script>
+{% endblock %}
+
+{% block content %}
+{% include "menu.html" %}
+<h2 class="heading-large padding">Create Global Search Indices</h2>
+<div class="grid-row padding">
+  <div class="column-two-thirds">
+    <div>
+      <p>Create or Recreate Global Search Indices.</p>
+      <p>This functionality allows ad-hoc initiation of reindexing of the
+        Global Search indices.</p>
+      <p>Any errors encountered during processing are highlighted in red.</p>
+      <button id="index-btn" type="submit" class="button" value="Submit">Submit</button>
+    </div>
+    <div id="index-result" style="font-family: monospace;"></div>
+  </div>
+</div>
+{% endblock %}

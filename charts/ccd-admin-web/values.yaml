@@ -5,7 +5,7 @@ nodejs:
   applicationPort: 3100
   cpuLimits: 1
   autoscaling:
-    enabled: true 
+    enabled: true
     maxReplicas: 4
   environment:
     # Node specific vars
@@ -30,7 +30,7 @@ nodejs:
     IDAM_BASE_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
     IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/token
     IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/session/:token
-    
+
     ADMINWEB_LOGIN_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login"
     ADMINWEB_IMPORT_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/import"
     ADMINWEB_JURISDICTIONS_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/data/jurisdictions"
@@ -47,6 +47,7 @@ nodejs:
     ADMINWEB_IMPORT_AUDITS_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/import-audits"
     ADMINWEB_ELASTIC_INDEX_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/elastic-support/index"
     ADMINWEB_ELASTIC_CASE_TYPES_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/elastic-support/case-types"
+    ADMINWEB_GLOBAL_SEARCH_INDEX_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/elastic-support/global-search/index"
     ADMINWEB_ROLES_WHITELIST: "ccd-import,ccd-import-validate"
   keyVaults:
     ccd:
