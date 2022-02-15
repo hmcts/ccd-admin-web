@@ -40,6 +40,7 @@ adminWeb:
   definitions_url: http://localhost:4451/api/drafts
   elastic_index_url: http://localhost:4451/elastic-support/index
   elastic_case_types_url: http://localhost:4451/elastic-support/case-types
+  global_search_index_url: http://localhost:4451/elastic-support/global-search/index
 appInsights:
   enabled: true
   roleName: "ccd-admin-web"

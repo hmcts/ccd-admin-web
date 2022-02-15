@@ -31,6 +31,7 @@ adminWeb:
   authorization_url: ADMINWEB_AUTHORIZATION_URL
   elastic_index_url: ADMINWEB_ELASTIC_INDEX_URL
   elastic_case_types_url: ADMINWEB_ELASTIC_CASE_TYPES_URL
+  global_search_index_url: ADMINWEB_GLOBAL_SEARCH_INDEX_URL
 
 secrets:
   ccd:
