@@ -144,7 +144,8 @@
     "follow-redirects": "^1.14.8",
     "copy-props": "^2.0.5",
     "ajv": "^6.12.3",
-    "minimist": "^1.2.6"
+    "minimist": "^1.2.6",
+    "moment": "^2.29.2"
   },
   "nyc": {
     "extension": [
