@@ -149,7 +149,8 @@
     "copy-props": "^2.0.5",
     "ajv": "^6.12.3",
     "minimist": "^1.2.6",
-    "moment": "^2.29.2"
+    "moment": "^2.29.2",
+    "pathval": "^1.1.1"
   },
   "nyc": {
     "extension": [
