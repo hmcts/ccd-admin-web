@@ -63,7 +63,7 @@ describe("welshDictionaryService::getWelshDictionary", () => {
         .post("/dictionary")
         .reply(403, expectedResult);
 
-      createGlobalSearchIndex(req).catch((err) => {
+      getWelshDictionary(req).catch((err) => {
         try {
           expect(err.status).to.equal(403);
           expect(err.response.body.error).to.equal(expectedResult.error);
