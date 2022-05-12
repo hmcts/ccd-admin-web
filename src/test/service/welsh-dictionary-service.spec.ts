@@ -12,7 +12,7 @@ describe("welshDictionaryService::getWelshDictionary", () => {
   const indexingUrl = "http://localhost:9999/dictionary";
 
   let req;
-  let getWelshDictionary;
+  let getDictionary;
 
   beforeEach(() => {
     req = {
@@ -25,9 +25,9 @@ describe("welshDictionaryService::getWelshDictionary", () => {
     };
     config.get.withArgs("adminWeb.welsh_translation_get_dictionary_url").returns(indexingUrl);
 
-    getWelshDictionary = proxyquire("../../main/service/welsh-dictionary-service", {
+    getDictionary = proxyquire("../../main/service/welsh-dictionary-service", {
       config,
-    }).getWelshDictionary;
+    }).getDictionary;
   });
 
   describe("Successful get Welsh dictionary", () => {
@@ -35,10 +35,10 @@ describe("welshDictionaryService::getWelshDictionary", () => {
       const expectedResult = "Obtained the latest dictionary successfully";
 
       nock("http://localhost:9999")
-        .post("/dictionary")
+        .get("/dictionary")
         .reply(200, expectedResult);
 
-      getWelshDictionary(req).then((res) => {
+      getDictionary(req).then((res) => {
         try {
           expect(res.status).to.equal(200);
           expect(res.text).to.equal(expectedResult);
@@ -60,10 +60,10 @@ describe("welshDictionaryService::getWelshDictionary", () => {
       };
 
       nock("http://localhost:9999")
-        .post("/dictionary")
+        .get("/dictionary")
         .reply(403, expectedResult);
 
-      getWelshDictionary(req).catch((err) => {
+      getDictionary(req).catch((err) => {
         try {
           expect(err.status).to.equal(403);
           expect(err.response.body.error).to.equal(expectedResult.error);
