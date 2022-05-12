@@ -1,0 +1,41 @@
+{% extends "layout_template.html" %}
+{% from "macros/formElements.html" import errorDisplay %}
+
+
+{% block head %}
+  {{ super() }}
+  <script type="text/javascript">
+    const indexButtonId = '#index-btn';
+    const indexResultId = '#index-result';
+
+  $(document).ready(function() {
+      $(indexButtonId).click(function() {
+        $(indexResultId).append($(`<div>[STARTING] Invoking get Welsh dictionary</div>`));
+        $.get(`{{dictionaryUrl}}`, function() {
+          $(indexResultId).append($(`<div>[FINISHED] completed</div>`));
+        }).fail(function(error) {
+          $(indexResultId).append($(`<div style="color: red;">Error occurred : ${error.responseText}</div>`));
+        });
+
+      });
+    });
+
+  </script>
+{% endblock %}
+
+{% block content %}
+{% include "menu.html" %}
+<h2 class="heading-large padding">Welsh Dictionary</h2>
+<div class="grid-row padding">
+  <div class="column-two-thirds">
+    <div>
+      <p>Retrieve Welsh Dictionary</p>
+      <p>This functionality retrieves the latest Welsh dictionary and converts to a .csv file.</p>
+      <button id="index-btn" type="submit" class="button" value="Submit">Download</button>
+    </div>
+    <div id="index-result" style="font-family: monospace;"></div>
+  </div>
+</div>
+{% endblock %}
+
+
