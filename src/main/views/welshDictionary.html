@@ -14,7 +14,8 @@
           $.get(`{{dictionaryUrl}}`, function(response) {
           var d = new Date();
           const year = d.getFullYear()
-          const month = d.getMonth()
+<!--      In JavaScript, the first month (January) is month number 0, so December returns month number 11.-->
+          const month = d.getMonth() + 1
           const date = d.getDate()
           const hour = d.getHours()
           const minute = d.getMinutes()
