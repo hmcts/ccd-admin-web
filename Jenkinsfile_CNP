@@ -19,7 +19,7 @@ def secrets = [
         secret('storage-account-secondary-connection-string', 'STORAGEACCOUNT_SECONDARY_CONNECTION_STRING'),
     ],
     's2s-${env}': [
-        secret('microservicekey-ccd-admin', 'IDAM_SERVICE_KEY'),
+        secret('microservicekey-ccd-admin', 'IDAM_ADMIN_WEB_SERVICE_KEY'),
     ]
 ]
 

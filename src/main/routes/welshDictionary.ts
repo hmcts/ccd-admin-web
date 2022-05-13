@@ -2,16 +2,13 @@ import * as express from "express";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { getDictionary } from "../service/welsh-dictionary-service";
 import { sanitize } from "../util/sanitize";
-import { Logger } from "@hmcts/nodejs-logging";
-import * as moment from "moment";
-import downloadCsv from "download-csv";
+import { creatCsvFile} from "download-csv";
 
 const errorPage = "error";
 const welshDictionary = "welshDictionary";
 const router = express.Router();
 const dictionaryUrl = "/dictionary";
 
-// load global search index page
 router.get(`/${welshDictionary}`, (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     res.status(200);
@@ -27,15 +24,12 @@ router.get(`/${welshDictionary}`, (req, res, next) => {
 
 // retrieve latest welsh dictionary and convert to csv
 router.get(dictionaryUrl, (req, res, next) => {
-  const logger = Logger.getLogger(__filename);
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     getDictionary(req).then((response) => {
-      const formattedDate = (moment(new Date())).format("yyyyMMDDHHmmSS");
       const data = JSON.parse(response.text).translations;
-      logger.info("successfully parsed response");
-      downloadCsv(data, null, `${formattedDate}` + ".csv");
-       logger.info("successfully coverted to a csv");
-      res.status(200).send(response.body);
+      var csvContent = creatCsvFile(data, null);
+      const download = Buffer.from(csvContent, 'utf8');
+      res.end(download);
     })
     .catch((error) => {
       res.status(400).send(error.response.text);
