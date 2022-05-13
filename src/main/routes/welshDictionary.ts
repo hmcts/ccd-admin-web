@@ -5,7 +5,6 @@ import { sanitize } from "../util/sanitize";
 import { Logger } from "@hmcts/nodejs-logging";
 import * as moment from "moment";
 import downloadCsv from "download-csv";
-import { creatCsvFile, downloadFile} from "download-csv";
 
 const errorPage = "error";
 const welshDictionary = "welshDictionary";
@@ -33,7 +32,9 @@ router.get(dictionaryUrl, (req, res, next) => {
     getDictionary(req).then((response) => {
       const formattedDate = (moment(new Date())).format("yyyyMMDDHHmmSS");
       const data = JSON.parse(response.text).translations;
+      logger.info("successfully parsed response");
       downloadCsv(data, null, `${formattedDate}` + ".csv");
+       logger.info("successfully coverted to a csv");
       res.status(200).send(response.body);
     })
     .catch((error) => {
