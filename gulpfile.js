@@ -31,7 +31,11 @@ gulp.task('sass', (done) => {
 // copy js, stylesheets and images from dependencies to frontend's public directory
 gulp.task('copy-files', (done) => {
   gulp.src([
+    './node_modules/moment/dist/moment.js',
+    './node_modules/download-csv/dist/*.js',
+    './node_modules/download-csv/index.js',
     './node_modules/jquery/dist/jquery.min.js',
+    './src/main/routes/welshDictionary.ts',
     './node_modules/jquery-validation/dist/jquery.validate.min.js',
     './node_modules/govuk_frontend_toolkit/javascripts/**/*.js',
     './node_modules/govuk_template_jinja/assets/javascripts/**/*.js'

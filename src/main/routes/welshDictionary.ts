@@ -33,8 +33,6 @@ router.get(dictionaryUrl, (req, res, next) => {
     getDictionary(req).then((response) => {
       const formattedDate = (moment(new Date())).format("yyyyMMDDHHmmSS");
       const data = JSON.parse(response.text).translations;
-      downloadFile(creatCsvFile(data, null), "temp.csv");
-      logger.info("COMPLETED SUCCESS");
       downloadCsv(data, null, `${formattedDate}` + ".csv");
       res.status(200).send(response.body);
     })

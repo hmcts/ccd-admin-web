@@ -4,6 +4,12 @@
 
 {% block head %}
   {{ super() }}
+  <script type="text/javascript" src="src/main/routes/welshDictionary.ts"></script>
+  <script type="text/javascript" src="js/lib/moment.js"></script>
+  <script type="text/javascript" src="js/lib/index.js"></script>
+  <script type="text/javascript" src="js/lib/creatCSVFile.js"></script>
+  <script type="text/javascript" src="js/lib/downloadFile.js"></script>
+  <script type="text/javascript" src="js/lib/detectionClientType.js"></script>
   <script type="text/javascript">
     const indexButtonId = '#index-btn';
     const indexResultId = '#index-result';
@@ -13,6 +19,10 @@
         $(indexResultId).append($(`<div>[STARTING] Invoking get Welsh dictionary</div>`));
         $.get(`{{dictionaryUrl}}`, function() {
           $(indexResultId).append($(`<div>[FINISHED] completed</div>`));
+          const formattedDate = (moment(new Date())).format("yyyyMMDDHHmmSS");
+          const data = JSON.parse(response.text).translations;
+          downloadFile(creatCsvFile(data, null), "temp.csv");
+          downloadCsv(data, null, `${formattedDate}` + ".csv");
         }).fail(function(error) {
           $(indexResultId).append($(`<div style="color: red;">Error occurred : ${error.responseText}</div>`));
         });
