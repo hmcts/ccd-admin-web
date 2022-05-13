@@ -27,8 +27,8 @@ router.get(dictionaryUrl, (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     getDictionary(req).then((response) => {
       const data = JSON.parse(response.text).translations;
-      var csvContent = creatCsvFile(data, null);
-      const download = Buffer.from(csvContent, 'utf8');
+      const csvContent = creatCsvFile(data, null);
+      const download = Buffer.from(csvContent, "utf8");
       res.end(download);
     })
     .catch((error) => {
