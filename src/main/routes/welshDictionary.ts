@@ -10,7 +10,7 @@ const router = express.Router();
 const dictionaryUrl = "/dictionary";
 
 router.get(`/${welshDictionary}`, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
+   if (req.adminWebAuthorization && req.adminWebAuthorization.canRetrieveWelshTranslation) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
@@ -24,7 +24,7 @@ router.get(`/${welshDictionary}`, (req, res, next) => {
 
 // retrieve latest welsh dictionary and convert to csv
 router.get(dictionaryUrl, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
+   if (req.adminWebAuthorization && req.adminWebAuthorization.canRetrieveWelshTranslation) {
     getDictionary(req).then((response) => {
       const data = JSON.parse(response.text).translations;
       const csvContent = creatCsvFile(data, null);

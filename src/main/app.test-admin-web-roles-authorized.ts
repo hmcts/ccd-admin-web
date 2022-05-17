@@ -63,6 +63,8 @@ appTestWithAuthorizedAdminWebRoles.use((req, res, next) => {
     canManageDefinition: true,
     canManageUserProfile: true,
     canManageUserRole: true,
+    canManageWelshTranslation: true,
+    canRetrieveWelshTranslation: true
   };
   req.serviceAuthToken = "serviceAuthToken";
   next();
