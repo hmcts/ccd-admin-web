@@ -60,11 +60,11 @@ appTestWithAuthorizedAdminWebRoles.use((req, res, next) => {
   };
   req.adminWebAuthorization = {
     canImportDefinition: true,
+    canLoadWelshTranslation: true,
     canManageDefinition: true,
     canManageUserProfile: true,
     canManageUserRole: true,
     canManageWelshTranslation: true,
-    canLoadWelshTranslation: true,
   };
   req.serviceAuthToken = "serviceAuthToken";
   next();
