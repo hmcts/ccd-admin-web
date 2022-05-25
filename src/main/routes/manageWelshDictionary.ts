@@ -23,7 +23,7 @@ const upload = multer({
 
 router.post(`/${welshDictionary}`, (req, res, next) => {
 if (req.adminWebAuthorization &&
-   (req.adminWebAuthorization.canRetrieveWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
+   (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
      upload(req, res, (err) => {
       console.log("STEP 5");
       if (err) {
@@ -71,7 +71,7 @@ if (req.adminWebAuthorization &&
 /* GET Import Translation page. */
 router.get(`/${welshDictionary}`, (req, res, next) => {
 if (req.adminWebAuthorization &&
-   (req.adminWebAuthorization.canRetrieveWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
+   (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
         res.status(200);
         console.log("STEP 1");
         const responseContent: { [k: string]: any } = {};
