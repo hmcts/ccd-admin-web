@@ -29,5 +29,9 @@
   <a href="/welshDictionary">Welsh Translations</a>
   {% endif %}
 
+  {% if adminWebAuthorization.canRetrieveWelshTranslation or adminWebAuthorization.canManageWelshTranslation %}
+  <a href="/manageWelshDictionary">Manage Welsh Translations</a>
+  {% endif %}
+
   {% endif %}
 </div>
