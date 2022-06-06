@@ -42,7 +42,7 @@ export async function uploadFile(req) {
       "ServiceAuthorization": req.serviceAuthToken,
   };
 
-  const fileRef = filePath + req.file.originalname;
+  const fileRef = filePath + "/" + req.file.originalname;
   const stream = fs.createReadStream(fileRef);
   logger.info("fileRef: " + fileRef);
 
