@@ -28,7 +28,11 @@
             $(indexResultId).append($(`<div>[FINISHED] completed</div>`));
           },
           error: function(error) {
-            $(indexResultId).append($(`<div style="color: red;">Error occurred: ${error.responseText}</div>`));
+            var shownErrorMessage = error.responseText;
+            if (shownErrorMessage == null){
+              shownErrorMessage = "generic download error - service may not be available";
+            }
+            $(indexResultId).append($(`<div style="color: red;">Error occurred: ${shownErrorMessage}</div>`));
           }
         });
 
