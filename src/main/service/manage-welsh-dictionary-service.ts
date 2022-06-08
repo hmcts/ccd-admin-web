@@ -32,9 +32,10 @@ function getRowDataArrayFromCsv(stream) {
     });
 }
 
-export async function uploadFile(req) {
+export async function uploadTranslations(req) {
   const url = config.get("adminWeb.welsh_translation_get_dictionary_url");
   const filePath = config.get("adminWeb.welsh_translation_upload_dictionary_file_path");
+  logger.info("filePath:", filePath);
   const headers = {
       "Accept": "application/json",
       "Authorization": req.accessToken,
@@ -43,8 +44,9 @@ export async function uploadFile(req) {
   };
 
   const fileRef = filePath + "/" + req.file.originalname;
-  const stream = fs.createReadStream(fileRef);
   logger.info("fileRef: " + fileRef);
+  const stream = fs.createReadStream(fileRef);
+  logger.info("create stream...");
 
   const data = await getRowDataArrayFromCsv(stream);
   logger.debug("data:", data);
@@ -62,15 +64,15 @@ export async function uploadFile(req) {
         .set("enctype", "multipart/form-data")
         .send(dictionary)
         .then((res) => {
-          logger.debug("Dictionary uploaded from file " + fileRef + " to Translation Service, response: " + res.text);
-          if (res.text == null) {
+         logger.debug("Dictionary uploaded from file " + fileRef + " to Translation Service, response: " + res.text);
+         if (res.text.length === 0) {
             res.text = "Dictionary successfully updated";
           }
-          return res;
+         return res;
         })
         .catch((error) => {
           if (error.response) {
-            logger.error(`Error uploading Dictionary data to Translation Service: ${error.response.text}`);
+            logger.error("Error uploading Dictionary data to Translation Service: ", error.response.text);
             throw error;
           } else {
             const errMsg = "Error uploading Dictionary data to Translation Service: no error response";
