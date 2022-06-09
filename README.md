@@ -28,7 +28,6 @@ The following environment variables are required:
 | IDAM_OAUTH2_AW_CLIENT_SECRET | - | Secret to be passed to IdAM when obtaining an OAuth2 token. This must match the IdAM instance it's being run against.                                                  |
 | ADMINWEB_LOGIN_URL | - | URL of the IdAM Authentication Web `login` page. `https://localhost:3501/login` for the dockerised local instance.                                                     |
 | ADMINWEB_IMPORT_URL | - | URL of the Case Definition Store API `import` endpoint. `http://localhost:4451/import` for the dockerised local instance.                                              |
-| ADMINWEB_UPLOAD_DICTIONARY_FILE_PATH | - | Local directory path to Welsh Translation Dictionary CSV files.                                                                                       |
 | APPINSIGHTS_INSTRUMENTATIONKEY | - | Secret for Microsoft Insights logging, can be a dummy string in local.                                                                                                 |
 
 ### Building

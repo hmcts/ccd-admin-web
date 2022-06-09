@@ -1,9 +1,9 @@
 import * as config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 import * as request from "superagent";
-const logger = Logger.getLogger(__filename);
+const { Readable } = require("stream");
 
-const fs = require("fs");
+const logger = Logger.getLogger(__filename);
 const csv = require("fast-csv");
 
 function buildTranslationsJson(data) {
@@ -43,10 +43,9 @@ export async function uploadTranslations(req) {
       "ServiceAuthorization": req.serviceAuthToken,
   };
 
-  const fileRef = filePath + "/" + req.file.originalname;
-  logger.info("fileRef: " + fileRef);
-  const stream = fs.createReadStream(fileRef);
-  logger.info("create stream...");
+  const file = req.file;
+  logger.debug("create stream...");
+  const stream = Readable.from(file.buffer);
 
   const data = await getRowDataArrayFromCsv(stream);
   logger.debug("data:", data);
@@ -64,7 +63,8 @@ export async function uploadTranslations(req) {
         .set("enctype", "multipart/form-data")
         .send(dictionary)
         .then((res) => {
-         logger.debug("Dictionary uploaded from file " + fileRef + " to Translation Service, response: " + res.text);
+         logger.debug("Dictionary uploaded from file " + req.file.originalname + " to Translation Service, response: "
+             + res.text);
          if (res.text.length === 0) {
             res.text = "Dictionary successfully updated";
           }
