@@ -61,7 +61,6 @@ router.post(`/${welshDictionary}`, (req, res, next) => {
   }
 });
 
-
 /* GET Import Translation page. */
 router.get(`/${welshDictionary}`, (req, res, next) => {
 if (req.adminWebAuthorization &&

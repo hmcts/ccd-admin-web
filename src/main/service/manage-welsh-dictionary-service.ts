@@ -46,9 +46,7 @@ export async function uploadTranslations(req) {
 
   const data = await getRowDataArrayFromCsv(req);
   logger.debug("data:", data);
-
   const translations = buildTranslationsJson(data);
-
   const dictionary = "{\"translations\":{" + translations + "}}";
   logger.debug("dictionary: {}", dictionary);
 
