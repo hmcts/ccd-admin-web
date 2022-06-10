@@ -39,6 +39,7 @@ router.post(`/${welshDictionary}`, (req, res, next) => {
           .then((response) => {
             res.status(201);
             const responseContent: { [k: string]: any } = {};
+
             responseContent.adminWebAuthorization = req.adminWebAuthorization;
             responseContent.user = sanitize(JSON.stringify(req.authentication.user));
           })
