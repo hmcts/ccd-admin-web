@@ -17,7 +17,10 @@ function buildTranslationsJson(data) {
   return translations;
 }
 
-function getRowDataArrayFromCsv(stream) {
+export function getRowDataArrayFromCsv(req) {
+    const file = req.file;
+    logger.debug("create stream...");
+    const stream = Readable.from(file.buffer);
     return new Promise((resolve, reject) => {
         const data = [];
         csv
@@ -34,8 +37,6 @@ function getRowDataArrayFromCsv(stream) {
 
 export async function uploadTranslations(req) {
   const url = config.get("adminWeb.welsh_translation_get_dictionary_url");
-  const filePath = config.get("adminWeb.welsh_translation_upload_dictionary_file_path");
-  logger.info("filePath:", filePath);
   const headers = {
       "Accept": "application/json",
       "Authorization": req.accessToken,
@@ -43,11 +44,7 @@ export async function uploadTranslations(req) {
       "ServiceAuthorization": req.serviceAuthToken,
   };
 
-  const file = req.file;
-  logger.debug("create stream...");
-  const stream = Readable.from(file.buffer);
-
-  const data = await getRowDataArrayFromCsv(stream);
+  const data = await getRowDataArrayFromCsv(req);
   logger.debug("data:", data);
 
   const translations = buildTranslationsJson(data);
