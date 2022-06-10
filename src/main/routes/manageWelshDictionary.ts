@@ -28,7 +28,8 @@ router.post(`/${welshDictionary}`, (req, res, next) => {
       if (err) {
         // Construct error message manually since err cannot be passed via req.session.error (it is cleared on redirect)
         req.session.error = err.name + ": " + err.message;
-        // Redirect back to /manageWelshDictionary, to let the Import Definition page handle displ§aying the error message
+        // Redirect back to /manageWelshDictionary, to let the Import Definition page handle
+        // displaying the error message
         res.redirect(302, "/manageWelshDictionary");
       } else if (req.file === undefined) {
         req.session.error = "No file selected! Please select a translations csv file to import";
