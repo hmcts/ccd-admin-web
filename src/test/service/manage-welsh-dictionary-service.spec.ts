@@ -29,7 +29,6 @@ describe("test manage Welsh Dictionary Service", () => {
     };
     config.get.withArgs("adminWeb.welsh_translation_get_dictionary_url").returns(manageDictionaryUrl);
 
-
     manageDictionary = proxyquire("../../main/service/manage-welsh-dictionary-service", {
       config,
     }).uploadTranslations;
@@ -45,10 +44,9 @@ describe("test manage Welsh Dictionary Service", () => {
 
       manageDictionary(req).then((res) => {
         try {
-          console.log(res);
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
-//          expect(res.file.originalname).to.equal("dummy_filename.csv");
+          // expect(res.file.originalname).to.equal("dummy_filename.csv");
           done();
         } catch (e) {
           done(e);
