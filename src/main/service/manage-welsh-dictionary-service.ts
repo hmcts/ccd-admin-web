@@ -1,9 +1,7 @@
 import * as config from "config";
-import { Logger } from "@hmcts/nodejs-logging";
 import * as request from "superagent";
 const { Readable } = require("stream");
 
-const logger = Logger.getLogger(__filename);
 const csv = require("fast-csv");
 
 function buildTranslationsJson(data) {
@@ -19,7 +17,6 @@ function buildTranslationsJson(data) {
 
 export function getRowDataArrayFromCsv(req) {
     const file = req.file;
-    logger.debug("create stream...");
     const stream = Readable.from(file.buffer);
     return new Promise((resolve, reject) => {
         const data = [];
@@ -45,12 +42,8 @@ export async function uploadTranslations(req) {
   };
 
   const data = await getRowDataArrayFromCsv(req);
-  logger.debug("data:", data);
   const translations = buildTranslationsJson(data);
   const dictionary = "{\"translations\":{" + translations + "}}";
-  logger.debug("dictionary: {}", dictionary);
-
-  logger.info("Putting dictionary...");
 
   return request
         .put(url)
@@ -58,8 +51,6 @@ export async function uploadTranslations(req) {
         .set("enctype", "multipart/form-data")
         .send(dictionary)
         .then((res) => {
-         logger.debug("Dictionary uploaded from file " + req.file.originalname + " to Translation Service, response: "
-             + res.text);
          if (res.text.length === 0) {
             res.text = "Dictionary successfully updated";
           }
@@ -67,12 +58,9 @@ export async function uploadTranslations(req) {
         })
         .catch((error) => {
           if (error.response) {
-            logger.error("Error uploading Dictionary data to Translation Service: ", error.response.text);
             throw error;
           } else {
-            const errMsg = "Error uploading Dictionary data to Translation Service: no error response";
-            logger.error(errMsg);
-            error.text = errMsg;
+            error.text = "Error uploading Dictionary data to Translation Service: no error response";
             throw error;
           }
         });
