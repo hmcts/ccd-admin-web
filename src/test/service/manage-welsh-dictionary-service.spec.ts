@@ -93,9 +93,9 @@ describe("test manage Welsh Dictionary Service", () => {
   describe("test three rows of  data", () => {
     it("should get good JSON message from data", (done) => {
 
-      Promise.resolve([{englishPhrase:"phrase 1", welshPhrase:"trans phase 1"},
-                             {englishPhrase:"phrase 2", welshPhrase:"trans phase 2"},
-                             {englishPhrase:"phrase 3", welshPhrase:"trans phase 3"}])
+      Promise.resolve([{englishPhrase: "phrase 1", welshPhrase: "trans phase 1"},
+                             {englishPhrase: "phrase 2", welshPhrase: "trans phase 2"},
+                             {englishPhrase: "phrase 3", welshPhrase: "trans phase 3"}])
           .then((result) => {
             const jsonString = buildTranslationsJson(result);
             expect(jsonString.length).eq(80);
