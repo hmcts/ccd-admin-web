@@ -3,6 +3,7 @@ import * as nock from "nock";
 import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
+import {buildTranslationsJson} from "../../main/service/manage-welsh-dictionary-service";
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -80,4 +81,30 @@ describe("test manage Welsh Dictionary Service", () => {
       });
     });
   });
+
+  describe("test empty data", () => {
+    it("should get empty JSON message from data", (done) => {
+      const json = buildTranslationsJson(Promise.resolve([]));
+      expect(json.length).eq(0);
+      done();
+    });
+  });
+
+  describe("test three rows of  data", () => {
+    it("should get good JSON message from data", (done) => {
+
+      Promise.resolve([{englishPhrase:"phrase 1", welshPhrase:"trans phase 1"},
+                             {englishPhrase:"phrase 2", welshPhrase:"trans phase 2"},
+                             {englishPhrase:"phrase 3", welshPhrase:"trans phase 3"}])
+          .then((result) => {
+            const jsonString = buildTranslationsJson(result);
+            expect(jsonString.length).eq(80);
+            done();
+          })
+          .catch(() => {
+            throw new Error("Promise should have been resolved");
+          });
+    });
+  });
+
 });

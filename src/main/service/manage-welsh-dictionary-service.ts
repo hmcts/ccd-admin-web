@@ -1,10 +1,9 @@
 import * as config from "config";
 import * as request from "superagent";
 const { Readable } = require("stream");
-
 const csv = require("fast-csv");
 
-function buildTranslationsJson(data) {
+export function buildTranslationsJson(data) {
   let translations = "";
   for (const element of data) {
       if (translations.length > 0) {
@@ -15,7 +14,7 @@ function buildTranslationsJson(data) {
   return translations;
 }
 
-export function getRowDataArrayFromCsv(req) {
+function getRowDataArrayFromCsv(req) {
     const file = req.file;
     const stream = Readable.from(file.buffer);
     return new Promise((resolve, reject) => {
