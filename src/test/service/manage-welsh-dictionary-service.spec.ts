@@ -47,7 +47,7 @@ describe("test manage Welsh Dictionary Service", () => {
         try {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
-          expect(res.file.originalname).to.equal("dummy_filename.csv");
+          expect(req.file.originalname).to.equal("dummy_filename.csv");
           done();
         } catch (e) {
           done(e);
