@@ -3,8 +3,8 @@ import * as nock from "nock";
 import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
-import {buildTranslationsJson} from "../../main/service/manage-welsh-dictionary-service";
-
+import {buildTranslationsJson, getRowDataArrayFromCsv} from "../../main/service/manage-welsh-dictionary-service";
+const { PassThrough } = require("stream");
 const expect = chai.expect;
 chai.use(sinonChai);
 
@@ -47,7 +47,7 @@ describe("test manage Welsh Dictionary Service", () => {
         try {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
-          // expect(res.file.originalname).to.equal("dummy_filename.csv");
+          expect(res.file.originalname).to.equal("dummy_filename.csv");
           done();
         } catch (e) {
           done(e);
@@ -82,10 +82,28 @@ describe("test manage Welsh Dictionary Service", () => {
     });
   });
 
+  describe("test stream", () => {
+    it("should get empty JSON message from stream", (done) => {
+      const mockedStream = new PassThrough();
+      const data = getRowDataArrayFromCsv(mockedStream);
+      const translations = buildTranslationsJson(data);
+      expect(translations.length).eq(0);
+      done();
+    });
+  });
+
   describe("test empty data", () => {
     it("should get empty JSON message from data", (done) => {
-      const json = buildTranslationsJson(Promise.resolve([]));
-      expect(json.length).eq(0);
+      const jsonString = buildTranslationsJson(Promise.resolve([]));
+      expect(jsonString.length).eq(0);
+      done();
+    });
+  });
+
+  describe("test unexpected data", () => {
+    it("should get empty JSON message from unexpected data", (done) => {
+      const jsonString = buildTranslationsJson(Promise.resolve([{englishPhraseNot: "phrase 1", welshPhraseNot: "trans phase 1"}]));
+      expect(jsonString.length).eq(0);
       done();
     });
   });

@@ -14,9 +14,7 @@ export function buildTranslationsJson(data) {
   return translations;
 }
 
-function getRowDataArrayFromCsv(req) {
-    const file = req.file;
-    const stream = Readable.from(file.buffer);
+export function getRowDataArrayFromCsv(stream) {
     return new Promise((resolve, reject) => {
         const data = [];
         csv
@@ -40,7 +38,9 @@ export async function uploadTranslations(req) {
       "ServiceAuthorization": req.serviceAuthToken,
   };
 
-  const data = await getRowDataArrayFromCsv(req);
+  const file = req.file;
+  const stream = Readable.from(file.buffer);
+  const data = await getRowDataArrayFromCsv(stream);
   const translations = buildTranslationsJson(data);
   const dictionary = "{\"translations\":{" + translations + "}}";
 
