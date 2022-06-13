@@ -23,7 +23,7 @@ const upload = multer({
 
 router.post(`/${welshDictionary}`, (req, res, next) => {
     if (req.adminWebAuthorization &&
-   (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
+    (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
      upload(req, res, (err) => {
       if (err) {
         // Construct error message manually since err cannot be passed via req.session.error (it is cleared on redirect)
@@ -37,11 +37,12 @@ router.post(`/${welshDictionary}`, (req, res, next) => {
       } else {
         uploadTranslations(req)
           .then((response) => {
-            res.status(201);
             const responseContent: { [k: string]: any } = {};
-
             responseContent.adminWebAuthorization = req.adminWebAuthorization;
             responseContent.user = sanitize(JSON.stringify(req.authentication.user));
+            req.session.success = "Successfully uploaded the translations from " + req.file.originalname + ".";
+            responseContent.success = req.session.success;
+            res.render("manageWelshDictionary", responseContent);
           })
           .catch((error) => {
             req.session.error = {

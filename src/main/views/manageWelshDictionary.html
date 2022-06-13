@@ -2,6 +2,10 @@
 {% from "macros/formElements.html" import errorDisplay %}
 {% block content %}
 {% include "menu.html" %}
+{% if success%}
+<div class="success"><div class="admin-ui">{{success}}</div></div>
+{% endif%}
+
 <h2 class="heading-large padding">Import Welsh Translations</h2>
 <div class="grid-row">
   <div class="column-two-thirds padding">
