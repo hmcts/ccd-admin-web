@@ -1,4 +1,5 @@
 import * as config from "config";
+import { Logger } from "@hmcts/nodejs-logging";
 import * as request from "superagent";
 const { Readable } = require("stream");
 const csv = require("fast-csv");
@@ -38,6 +39,7 @@ export async function uploadTranslations(req) {
       "ServiceAuthorization": req.serviceAuthToken,
   };
 
+  const logger = Logger.getLogger(__filename);
   const file = req.file;
   const stream = Readable.from(file.buffer);
   const data = await getRowDataArrayFromCsv(stream);
@@ -50,10 +52,7 @@ export async function uploadTranslations(req) {
         .set("enctype", "multipart/form-data")
         .send(dictionary)
         .then((res) => {
-         if (res.text.length === 0) {
-            res.text = "Dictionary successfully updated";
-          }
-         return res;
+            logger.info(`Received successful response: ${res.text}`);         return res;
         })
         .catch((error) => {
           if (error.response) {
