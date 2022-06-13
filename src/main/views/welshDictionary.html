@@ -11,20 +11,29 @@
   $(document).ready(function() {
       $(indexButtonId).click(function() {
         $(indexResultId).append($(`<div>[STARTING] Invoking get Welsh dictionary</div>`));
-          $.get(`{{dictionaryUrl}}`, function(response) {
-          var d = new Date();
-          const year = d.getFullYear()
-<!--      In JavaScript, the first month (January) is month number 0, so December returns month number 11.-->
-          const month = d.getMonth() + 1
-          const date = d.getDate()
-          const hour = d.getHours()
-          const minute = d.getMinutes()
-          const second = d.getSeconds()
-          const formatted = `${year}${month}${date}${hour}${minute}${second}.csv`
-          saveData(new Blob([response], {type: "text/csv"}), formatted);
-          $(indexResultId).append($(`<div>[FINISHED] completed</div>`));
-        }).fail(function(error) {
-          $(indexResultId).append($(`<div style="color: red;">Error occurred : ${error.responseText}</div>`));
+        $.ajax({
+          url: '{{dictionaryUrl}}',
+          type: 'GET',
+          success: function(response) {
+            var d = new Date();
+            const year = d.getFullYear();
+                    <!--      In JavaScript, the first month (January) is month number 0, so December returns month number 11.-->
+            const month = d.getMonth() + 1;
+            const date = d.getDate();
+            const hour = d.getHours();
+            const minute = d.getMinutes();
+            const second = d.getSeconds();
+            const formatted = `${year}${month}${date}${hour}${minute}${second}.csv`;
+            saveData(new Blob([response], {type: "text/csv"}), formatted);
+            $(indexResultId).append($(`<div>[FINISHED] completed</div>`));
+          },
+          error: function(error) {
+            var shownErrorMessage = error.responseText;
+            if (shownErrorMessage == null){
+              shownErrorMessage = "generic download error - service may not be available";
+            }
+            $(indexResultId).append($(`<div style="color: red;">Error occurred: ${shownErrorMessage}</div>`));
+          }
         });
 
       });
