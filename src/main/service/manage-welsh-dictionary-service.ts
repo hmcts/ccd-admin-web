@@ -52,7 +52,8 @@ export async function uploadTranslations(req) {
         .set("enctype", "multipart/form-data")
         .send(dictionary)
         .then((res) => {
-            logger.info(`Received successful response: ${res.text}`);         return res;
+            logger.info(`Received successful response: ${res.text}`);
+            return res;
         })
         .catch((error) => {
           if (error.response) {
