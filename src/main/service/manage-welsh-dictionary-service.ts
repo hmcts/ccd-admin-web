@@ -10,7 +10,7 @@ export function buildTranslationsJson(data) {
       if (translations.length > 0) {
           translations += ",";
       }
-      translations += "\"" + element.englishPhrase + "\":\"" + element.welshPhrase + "\"";
+      translations += "\"" + element[0] + "\":\"" + element[1] + "\"";
   }
   return translations;
 }
@@ -19,7 +19,7 @@ export function getRowDataArrayFromCsv(stream) {
     return new Promise((resolve, reject) => {
         const data = [];
         csv
-            .parseStream(stream, {headers : true})
+            .parseStream(stream, {headers : false})
             .on("error", reject)
             .on("data", (row) => {
                 data.push(row);

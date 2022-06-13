@@ -13,7 +13,7 @@
     <form action="/manageWelshDictionary" method="post" enctype="multipart/form-data">
       <div class="form-group">
         {% if not error %}
-        <p>Choose a csv file containing translations with header record is "englishPhrase,welshPhrase"</p>
+        <p>Choose a csv file containing translations of format "englishPhrase"[,"welshPhrase"]</p>
         {% endif %}
         {% if error %}
         <div class="error-summary govuk-error-message">
