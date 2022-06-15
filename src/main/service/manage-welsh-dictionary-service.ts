@@ -6,7 +6,7 @@ const csv = require("fast-csv");
 export function buildTranslationsJson(data) {
   let translations = "";
   for (const element of data) {
-      if (translations.length > 0) {translations += ",";}
+      if (translations.length > 0) { translations += ","; }
       translations += "\"" + element[0] + "\":\"" + element[1] + "\"";
   }
   return translations;
