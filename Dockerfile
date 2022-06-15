@@ -1,7 +1,5 @@
 # ---- Base Image ----
-ARG base=hmctspublic.azurecr.io/base/node:14-alpine
-
-FROM ${base} as base
+FROM hmctspublic.azurecr.io/base/node:14-alpine as base
 USER root
 RUN apk update \
   && apk add bzip2 patch \
@@ -22,6 +20,6 @@ RUN yarn sass
 RUN sleep 1 && yarn install --ignore-optional --production && yarn cache clean
 
 # ---- Runtime Image ----
-FROM ${base} as runtime
+FROM hmctspublic.azurecr.io/base/node:14-alpine as runtime
 COPY --from=build $WORKDIR .
 EXPOSE 3100
