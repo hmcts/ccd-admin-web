@@ -1,5 +1,4 @@
 import * as config from "config";
-import { Logger } from "@hmcts/nodejs-logging";
 import * as request from "superagent";
 const { Readable } = require("stream");
 const csv = require("fast-csv");
@@ -7,9 +6,7 @@ const csv = require("fast-csv");
 export function buildTranslationsJson(data) {
   let translations = "";
   for (const element of data) {
-      if (translations.length > 0) {
-          translations += ",";
-      }
+      if (translations.length > 0) {translations += ","}
       translations += "\"" + element[0] + "\":\"" + element[1] + "\"";
   }
   return translations;
@@ -21,12 +18,8 @@ export function getRowDataArrayFromCsv(stream) {
         csv
             .parseStream(stream, {headers : false})
             .on("error", reject)
-            .on("data", (row) => {
-                data.push(row);
-            })
-            .on("end", () => {
-                resolve(data);
-            });
+            .on("data", (row) => data.push(row))
+            .on("end", () => resolve(data));
     });
 }
 
@@ -39,7 +32,6 @@ export async function uploadTranslations(req) {
       "ServiceAuthorization": req.serviceAuthToken,
   };
 
-  const logger = Logger.getLogger(__filename);
   const file = req.file;
   const stream = Readable.from(file.buffer);
   const data = await getRowDataArrayFromCsv(stream);
@@ -51,13 +43,10 @@ export async function uploadTranslations(req) {
         .set(headers)
         .set("enctype", "multipart/form-data")
         .send(dictionary)
-        .then((res) => {
-            logger.info(`Received successful response: ${res.text}`);
-            return res;
-        })
+        .then((res) => res)
         .catch((error) => {
           if (error.response) {
-            throw error;
+              throw error;
           } else {
             error.text = "Error uploading Dictionary data to Translation Service: no error response";
             throw error;
