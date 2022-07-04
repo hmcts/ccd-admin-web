@@ -1,4 +1,5 @@
 # ---- Base Image ----
+
 ARG PLATFORM=""
 FROM hmctspublic.azurecr.io/base/node${PLATFORM}:14-alpine as base
 
