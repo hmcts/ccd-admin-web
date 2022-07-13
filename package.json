@@ -20,7 +20,7 @@
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "fortifyScan": "./src/test/java/gradlew -p src/test/java fortifyScan",
-    "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/**,coverage/**,src/main/modules/**,src/main/routes/**,src/main/util/**,src/main/app.ts,src/main/app.test.ts,src/main/server.ts -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info",
+    "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/** -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info",
     "snyk-protect": "echo 'snyk protect'",
     "prepare": "echo 'npm run snyk-protect'",
     "prepublish": "echo 'npm run snyk-protect'"
