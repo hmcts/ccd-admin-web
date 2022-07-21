@@ -58,7 +58,6 @@
     "sass": "^1.45.0",
     "serve-favicon": "^2.4.4",
     "sinon-stub-promise": "^4.0.0",
-    "snyk": "^1.958.0",
     "superagent": "^3.8.3",
     "supertest-session": "^3.3.0",
     "ts-node": "^10.7.0",
@@ -142,7 +141,6 @@
     "validator": "^13.7.0",
     "is-my-json-valid": "^2.20.6",
     "json-schema": "0.4.0",
-    "@snyk/snyk-docker-pull": "^3.7.2",
     "follow-redirects": "^1.14.8",
     "copy-props": "^2.0.5",
     "ajv": "^6.12.3",
@@ -172,6 +170,5 @@
     ],
     "report-dir": "coverage",
     "all": true
-  },
-  "snyk": true
+  }
 }
