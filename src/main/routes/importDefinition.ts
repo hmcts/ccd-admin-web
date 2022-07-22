@@ -17,7 +17,7 @@ const upload = multer({
     return cb(null, true);
   },
   limits: {
-    fileSize: 8000000, //amended from 10485760 to Compliant value: 8MB
+    fileSize: 8000000, // amended from 10485760 to Compliant value: 8MB
   },
   storage,
 }).single("file");
