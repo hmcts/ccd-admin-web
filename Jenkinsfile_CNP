@@ -54,6 +54,7 @@ withPipeline("nodejs", product, component) {
     }
 
     enableAksStagingDeployment()
+    enableFortifyScan()
 
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
