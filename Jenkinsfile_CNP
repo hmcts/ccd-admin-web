@@ -54,7 +54,6 @@ withPipeline("nodejs", product, component) {
     }
 
     enableAksStagingDeployment()
-    enableFortifyScan()
 
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
@@ -66,9 +65,5 @@ withPipeline("nodejs", product, component) {
 
     after('build') {
          sh "yarn setup"
-    }
-
-    after('fortify-scan') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
     }
 }
