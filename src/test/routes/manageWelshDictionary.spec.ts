@@ -25,6 +25,34 @@ describe("on POST /manageWelshDictionary", () => {
     };
   });
 
+  it("should respond with csv error when authenticated and authorized", () => {
+    it("should return Entry page when authenticated and authorized", () => {
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+
+    req = {
+      accessToken: "userAuthToken",
+      file: {
+        buffer: new Buffer(8),
+        originalname: "dummy_filename.xslx",
+      },
+      serviceAuthToken: "serviceAuthToken",
+    };
+
+    mock("http://localhost:4451")
+      .get("/api/idam/adminweb/authorization")
+      .reply(200, {});
+
+    return request(appTestWithAuthorizedAdminWebRoles)
+      .post("/manageWelshDictionary")
+      .send({ req, res, next })
+      .set("Cookie", "accessToken=ey123.ey456")
+      .then((res) => {
+        expect(res.statusCode).to.equal(302);
+      });
+    });
+  });
+
   it("should respond with Welsh Translation response when authenticated and authorized", () => {
     it("should return Confirm Delete Definition page when authenticated and authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
