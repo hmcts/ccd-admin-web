@@ -13,6 +13,8 @@ describe("on POST /manageWelshDictionary", () => {
 
   beforeEach(() => {
     mock.cleanAll();
+    res = {};
+    next = {};
     req = {
       accessToken: "userAuthToken",
       file: {
@@ -34,7 +36,7 @@ describe("on POST /manageWelshDictionary", () => {
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .post("/manageWelshDictionary")
-      .send({ req: req, res: res, next: next})
+      .send({ req, res, next })
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
         expect(res.statusCode).to.equal(200);
