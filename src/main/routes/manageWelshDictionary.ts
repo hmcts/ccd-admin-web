@@ -3,7 +3,6 @@ import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { uploadTranslations } from "../service/manage-welsh-dictionary-service";
 import { sanitize } from "../util/sanitize";
 import * as multer from "multer";
-
 const errorPage = "error";
 const welshDictionary = "manageWelshDictionary";
 const router = express.Router();
@@ -15,9 +14,7 @@ const upload = multer({
     }
     return cb(null, true);
   },
-  limits: {
-    fileSize: 10485760,
-  },
+  limits: { fileSize: 10485760 },
   storage,
 }).single("file");
 
@@ -26,10 +23,7 @@ router.post(`/${welshDictionary}`, (req, res, next) => {
     (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
      upload(req, res, (err) => {
       if (err) {
-        // Construct error message manually since err cannot be passed via req.session.error (it is cleared on redirect)
         req.session.error = err.name + ": " + err.message;
-        // Redirect back to /manageWelshDictionary, to let the Import Definition page handle
-        // displaying the error message
         res.redirect(302, "/manageWelshDictionary");
       } else if (req.file === undefined) {
         req.session.error = "No file selected! Please select a translations csv file to import";
@@ -59,12 +53,9 @@ router.post(`/${welshDictionary}`, (req, res, next) => {
           });
       }
     });
-  } else {
-    res.render(errorPage, error_unauthorized_role(req));
-  }
+  } else { res.render(errorPage, error_unauthorized_role(req)); }
 });
 
-/* GET Import Translation page. */
 router.get(`/${welshDictionary}`, (req, res, next) => {
 if (req.adminWebAuthorization &&
    (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
@@ -84,5 +75,4 @@ if (req.adminWebAuthorization &&
      res.render(errorPage, error_unauthorized_role(req));
    }
 });
-
 export default router;
