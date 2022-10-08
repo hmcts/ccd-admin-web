@@ -9,14 +9,8 @@ describe("test route manage Welsh Dictionary", () => {
   describe("on POST /manageWelshDictionary", () => {
     const CCD_IMPORT_ROLE = "ccd-import";
 
-    let req;
-    let res;
-    let next;
-
     beforeEach(() => {
       nock.cleanAll();
-      res = {};
-      next = {};
     });
 
     it("should respond with Not CSV error when authenticated and authorized", () => {
@@ -24,7 +18,7 @@ describe("test route manage Welsh Dictionary", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
-      req = {
+      const req = {
         accessToken: "userAuthToken",
         file: {
           buffer: new Buffer(8),
@@ -37,10 +31,15 @@ describe("test route manage Welsh Dictionary", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});
 
+        // tslint:disable-next-line:prefer-const
+      let res;
+        // tslint:disable-next-line:prefer-const
+      let next;
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/manageWelshDictionary")
         .send({ req, res, next })
         .set("Cookie", "accessToken=ey123.ey456")
+          // tslint:disable-next-line:no-shadowed-variable
         .then((res) => {
           expect(res.statusCode).to.equal(400);
         });
@@ -51,7 +50,7 @@ describe("test route manage Welsh Dictionary", () => {
       it("should return Confirm Delete Definition page when authenticated and authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
-      req = {
+      const req = {
         accessToken: "userAuthToken",
         file: {
           buffer: new Buffer(8),
@@ -63,12 +62,17 @@ describe("test route manage Welsh Dictionary", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});
 
+        // tslint:disable-next-line:prefer-const
+      let res;
+        // tslint:disable-next-line:prefer-const
+      let next;
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/manageWelshDictionary")
         .send({ req, res, next })
         .set("Cookie", "accessToken=ey123.ey456")
+          // tslint:disable-next-line:no-shadowed-variable
         .then((res) => {
-          expect(res.statusCode).to.equal(302);
+          expect(res.statusCode).to.equal(200);
         });
       });
     });
@@ -97,7 +101,7 @@ describe("test route manage Welsh Dictionary", () => {
           currentJurisdiction: "TEST", description: "Test draft", version: 1,
         })
         .set("Cookie", "accessToken=ey123.ey456")
-        .then((res) => {
+        .then((res: { statusCode: any; }) => {
           expect(res.statusCode).to.equal(200);
         });
       });
