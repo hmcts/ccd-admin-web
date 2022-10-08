@@ -1,103 +1,105 @@
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
-import * as mock from "nock";
+import * as nock from "nock";
 import * as request from "supertest";
 
-describe("on POST /manageWelshDictionary", () => {
-  const CCD_IMPORT_ROLE = "ccd-import";
+describe("test route manage Welsh Dictionary", () => {
 
-  let req;
-  let res;
-  let next;
+  describe("on POST /manageWelshDictionary", () => {
+    const CCD_IMPORT_ROLE = "ccd-import";
 
-  beforeEach(() => {
-    mock.cleanAll();
-    res = {};
-    next = {};
-    req = {
-      accessToken: "userAuthToken",
-      file: {
-        buffer: new Buffer(8),
-        originalname: "dummy_filename.csv",
-      },
-      serviceAuthToken: "serviceAuthToken",
-    };
-  });
+    let req;
+    let res;
+    let next;
 
-  it("should respond with csv error when authenticated and authorized", () => {
-    it("should return Entry page when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    beforeEach(() => {
+      nock.cleanAll();
+      res = {};
+      next = {};
+    });
 
-    req = {
-      accessToken: "userAuthToken",
-      file: {
-        buffer: new Buffer(8),
-        originalname: "dummy_filename.xslx",
-      },
-      serviceAuthToken: "serviceAuthToken",
-    };
+    it("should respond with Not CSV error when authenticated and authorized", () => {
+      it("should return Entry page when authenticated and authorized", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
 
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
+      req = {
+        accessToken: "userAuthToken",
+        file: {
+          buffer: new Buffer(8),
+          originalname: "dummy_filename.xslx",
+        },
+        serviceAuthToken: "serviceAuthToken",
+      };
 
-    return request(appTestWithAuthorizedAdminWebRoles)
-      .post("/manageWelshDictionary")
-      .send({ req, res, next })
-      .set("Cookie", "accessToken=ey123.ey456")
-      .then((res) => {
-        expect(res.statusCode).to.equal(302);
+      nock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, {});
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .post("/manageWelshDictionary")
+        .send({ req, res, next })
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(400);
+        });
       });
     });
-  });
 
-  it("should respond with Welsh Translation response when authenticated and authorized", () => {
-    it("should return Confirm Delete Definition page when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    it("should respond with Welsh Translation response when authenticated and authorized", () => {
+      it("should return Confirm Delete Definition page when authenticated and authorized", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+      req = {
+        accessToken: "userAuthToken",
+        file: {
+          buffer: new Buffer(8),
+          originalname: "dummy_filename.csv",
+        },
+        serviceAuthToken: "serviceAuthToken",
+      };
+      nock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, {});
 
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
-
-    return request(appTestWithAuthorizedAdminWebRoles)
-      .post("/manageWelshDictionary")
-      .send({ req, res, next })
-      .set("Cookie", "accessToken=ey123.ey456")
-      .then((res) => {
-        expect(res.statusCode).to.equal(200);
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .post("/manageWelshDictionary")
+        .send({ req, res, next })
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(302);
+        });
       });
     });
+
   });
 
-});
+  describe("on GET /manageWelshDictionary", () => {
+    const CCD_IMPORT_ROLE = "ccd-import";
 
-describe("on GET /manageWelshDictionary", () => {
-  const CCD_IMPORT_ROLE = "ccd-import";
+    beforeEach(() => {
+      nock.cleanAll();
+    });
 
-  beforeEach(() => {
-    mock.cleanAll();
-  });
+    it("should respond with Welsh Translation csvfile response when authenticated and authorized", () => {
+      it("should return Confirm Delete Definition page when authenticated and authorized", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
 
-  it("should respond with Welsh Translation csvfile response when authenticated and authorized", () => {
-    it("should return Confirm Delete Definition page when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+      nock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, {});
 
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
-
-    return request(appTestWithAuthorizedAdminWebRoles)
-      .get("/manageWelshDictionary")
-      .send({
-        currentJurisdiction: "TEST", description: "Test draft", version: 1,
-      })
-      .set("Cookie", "accessToken=ey123.ey456")
-      .then((res) => {
-        expect(res.statusCode).to.equal(200);
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/manageWelshDictionary")
+        .send({
+          currentJurisdiction: "TEST", description: "Test draft", version: 1,
+        })
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+        });
       });
     });
   });
