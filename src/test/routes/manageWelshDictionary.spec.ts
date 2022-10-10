@@ -13,35 +13,6 @@ describe("test route manage Welsh Dictionary", () => {
       nock.cleanAll();
     });
 
-    it("should respond with No file selected error when authenticated and authorized", () => {
-      it("should return Entry page when authenticated and authorized", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        idamServiceMock.resolveRetrieveServiceToken();
-
-        const req = {
-          accessToken: "userAuthToken",
-          serviceAuthToken: "serviceAuthToken",
-        };
-
-        nock("http://localhost:4451")
-            .get("/api/idam/adminweb/authorization")
-            .reply(200, {});
-
-        // tslint:disable-next-line:prefer-const
-        let res;
-        // tslint:disable-next-line:prefer-const
-        let next;
-        return request(appTestWithAuthorizedAdminWebRoles)
-            .post("/manageWelshDictionary")
-            .send({ req, res, next })
-            .set("Cookie", "accessToken=ey123.ey456")
-            // tslint:disable-next-line:no-shadowed-variable
-            .then((res) => {
-              expect(res.statusCode).to.equal(302);
-            });
-      });
-    });
-
     it("should respond with Not CSV error when authenticated and authorized", () => {
       it("should return Entry page when authenticated and authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
@@ -113,45 +84,6 @@ describe("test route manage Welsh Dictionary", () => {
 
     beforeEach(() => {
       nock.cleanAll();
-    });
-
-    it("should respond with bad Request when NOT authenticated", () => {
-      it("should return Confirm Delete Definition page when authenticated and authorized", () => {
-
-        nock("http://localhost:4451")
-            .get("/api/idam/adminweb/authorization")
-            .reply(302, {});
-
-        return request(appTestWithAuthorizedAdminWebRoles)
-            .get("/manageWelshDictionary")
-            .send({
-              currentJurisdiction: "TEST", description: "Test draft", version: 1,
-            })
-            .set("Cookie", "accessToken=ey123.ey456")
-            .then((res: { statusCode: any; }) => {
-              expect(res.statusCode).to.equal(302);
-            });
-      });
-    });
-
-    it("should respond with bad Request when authenticated and NOT authorized", () => {
-      it("should return Login page when Not authenticated", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-
-        nock("http://localhost:4451")
-            .get("/api/idam/adminweb/authorization")
-            .reply(200, {});
-
-        return request(appTestWithAuthorizedAdminWebRoles)
-            .get("/manageWelshDictionary")
-            .send({
-              currentJurisdiction: "TEST", description: "Test draft", version: 1,
-            })
-            .set("Cookie", "accessToken=ey123.ey456")
-            .then((res: { statusCode: any; }) => {
-              expect(res.statusCode).to.equal(302);
-            });
-      });
     });
 
     it("should respond with Welsh Translation csvfile response when authenticated and authorized", () => {
