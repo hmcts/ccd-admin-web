@@ -297,8 +297,8 @@ describe("test route manage Welsh Dictionary", () => {
           const req = {
             accessToken: "userAuthToken",
             adminWebAuthorization: {
-              canLoadWelshTranslation: true,
-              canManageWelshTranslation: true,
+              canLoadWelshTranslation: false,
+              canManageWelshTranslation: false,
             },
             file: {
               buffer: new Buffer(8),
