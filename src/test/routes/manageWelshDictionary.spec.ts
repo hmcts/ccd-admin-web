@@ -85,7 +85,7 @@ describe("test route manage Welsh Dictionary", () => {
     const res = "";
     const req = {
       authentication: {
-        user: "test_user",
+        user: "",
       },
       file: {
         originalname: "dummy_filename.xslx",
@@ -104,7 +104,7 @@ describe("test route manage Welsh Dictionary", () => {
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
-          user: "test_user",
+          user: "",
         },
         file: {
           originalname: "dummy_filename.xslx",
@@ -127,7 +127,7 @@ describe("test route manage Welsh Dictionary", () => {
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
-          user: "test_user",
+          user: "",
         },
         file: {
           originalname: "dummy_filename.xslx",
@@ -149,7 +149,7 @@ describe("test route manage Welsh Dictionary", () => {
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
-          user: "test_user",
+          user: "",
         },
         file: {
           originalname: "dummy_filename.xslx",
@@ -170,7 +170,7 @@ describe("test route manage Welsh Dictionary", () => {
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
-          user: "test_user",
+          user: "",
         },
         file: {
           originalname: "dummy_filename.xslx",
@@ -207,7 +207,6 @@ describe("test route manage Welsh Dictionary", () => {
         serviceAuthToken: "serviceAuthToken",
         session: {
           error: {
-            text: "testing",
           },
           success: "",
         },
@@ -286,18 +285,21 @@ describe("test route manage Welsh Dictionary", () => {
       });
     });
 
-    describe("on POST /manageWelshDictionary 3", () => {
+    describe("on POST /manageWelshDictionary 2", () => {
       const CCD_IMPORT_ROLE = "ccd-import";
       beforeEach(() => {
         nock.cleanAll();
       });
-      it("should respond with error when NOT authenticated and NOT authorized", () => {
-        it("should return Error page when not authenticated and not authorized", () => {
+      it("should respond with Not CSV error when authenticated and authorized", () => {
+        it("should return Entry page when authenticated and authorized", () => {
           idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
           idamServiceMock.resolveRetrieveServiceToken();
           const req = {
             accessToken: "userAuthToken",
-            adminWebAuthorization: { },
+            adminWebAuthorization: {
+              canLoadWelshTranslation: false,
+              canManageWelshTranslation: false,
+            },
             file: {
               buffer: new Buffer(8),
               originalname: "dummy_filename.xslx",
