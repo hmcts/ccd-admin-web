@@ -1,10 +1,57 @@
-import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
-import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
+import * as chai from "chai";
 import * as nock from "nock";
+import * as sinonChai from "sinon-chai";
+import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
+import {doUploadTranslationsThen, doUploadTranslationsCatch} from "routes/manageWelshDictionary";
+import * as idamServiceMock from "../http-mocks/idam";
 import * as request from "supertest";
 
+const expect = chai.expect;
+chai.use(sinonChai);
+
 describe("test route manage Welsh Dictionary", () => {
+
+  describe("test function doUploadTranslationsThen", () => {
+    const req = {
+      authentication: {
+        user: "",
+      },
+      file: {
+        originalname: "dummy_filename.csv",
+      },
+      serviceAuthToken: "serviceAuthToken",
+      session: {
+        error: "",
+        success: "",
+      },
+    };
+    const expectedSuccess = "Successfully uploaded the translations from " + req.file.originalname + ".";
+    const responseContent = doUploadTranslationsThen(req);
+    expect(responseContent.success).to.equal(expectedSuccess);
+  });
+
+  describe("test function doUploadTranslationsCatch", () => {
+    const error = {
+      text: "",
+    };
+    const req = {
+      authentication: {
+        user: "",
+      },
+      file: {
+        originalname: "dummy_filename.csv",
+      },
+      serviceAuthToken: "serviceAuthToken",
+      session: {
+        error: "",
+        success: "",
+      },
+    };
+    const expectedErrorMessage = "Bad Request";
+
+    const responseContent = doUploadTranslationsCatch(req, error);
+    expect(responseContent.error.message).to.equal(expectedErrorMessage);
+  });
 
   describe("on POST /manageWelshDictionary", () => {
     const CCD_IMPORT_ROLE = "ccd-import";

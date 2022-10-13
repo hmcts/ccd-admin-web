@@ -19,16 +19,16 @@ const upload = multer({
   storage,
 }).single("file");
 
-function doUploadTranslationsThen(req, res) {
+export function doUploadTranslationsThen(req) {
   const responseContent: { [k: string]: any } = {};
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
   responseContent.user = sanitize(JSON.stringify(req.authentication.user));
   req.session.success = "Successfully uploaded the translations from " + req.file.originalname + ".";
   responseContent.success = req.session.success;
-  res.render("manageWelshDictionary", responseContent);
+  return responseContent;
 }
 
-function doUploadTranslationsCatch(req, res, error) {
+export function doUploadTranslationsCatch(req, error) {
   req.session.error = {
     message: error.message ? error.message : "Bad Request",
     status: error.status ? error.status : 400,
@@ -39,16 +39,16 @@ function doUploadTranslationsCatch(req, res, error) {
   responseContent.user = sanitize(JSON.stringify(req.authentication.user));
   responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
   delete req.session.error;
-  res.render("manageWelshDictionary", responseContent);
+  return responseContent;
 }
 
 function doUploadTranslations(req, res) {
     uploadTranslations(req)
         .then(() => {
-          doUploadTranslationsThen(req, res);
+            res.render ? res.render("manageWelshDictionary", doUploadTranslationsThen(req)) : "";
         })
         .catch((error) => {
-          doUploadTranslationsCatch(req, res, error);
+          res.render("manageWelshDictionary", doUploadTranslationsCatch(req, error));
         });
 }
 
