@@ -338,4 +338,35 @@ describe("test route manage Welsh Dictionary", () => {
       });
     });
    });
+
+  describe("on GET /manageWelshDictionary 3", () => {
+    // const CCD_IMPORT_ROLE = "ccd-import";
+    beforeEach(() => {
+      nock.cleanAll();
+    });
+    it("should respond with Welsh Translation csvfile response when NOT authenticated and NOT authorized", () => {
+      it("should break when NOT authenticated and NOT authorized", () => {
+        // idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+        // idamServiceMock.resolveRetrieveServiceToken();
+        // nock("http://localhost:4451")
+        //     .get("/api/idam/adminweb/authorization")
+        //     .reply(200, {});
+        return request(null)
+            .get("/manageWelshDictionary")
+            .send({
+              adminWebAuthorization: {
+                canLoadWelshTranslation: false,
+                canManageWelshTranslation: false,
+              },
+              currentJurisdiction: "TEST",
+              description: "Test draft",
+              version: 1,
+            })
+            .set("Cookie", "accessToken=ey123.ey456")
+            .then((res: { statusCode: any; }) => {
+              expect(res.statusCode).to.equal(200);
+            });
+      });
+    });
+  });
 });
