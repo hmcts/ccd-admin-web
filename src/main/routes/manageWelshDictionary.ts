@@ -52,8 +52,7 @@ export function doUploadTranslations(req, res) {
         });
 }
 
-export function doGetWelshDictionary(req, res) {
-    res.status(200);
+export function doGetWelshDictionary(req) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
@@ -89,7 +88,8 @@ router.post(`/${welshDictionary}`, (req, res) => {
 router.get(`/${welshDictionary}`, (req, res) => {
     if (req.adminWebAuthorization &&
     (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
-        res.render("manageWelshDictionary", doGetWelshDictionary(req, res));
+        res.status(200);
+        res.render("manageWelshDictionary", doGetWelshDictionary(req));
     } else {
         res.render(errorPage, error_unauthorized_role(req));
     }

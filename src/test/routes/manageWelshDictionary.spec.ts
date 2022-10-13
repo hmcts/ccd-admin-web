@@ -2,7 +2,7 @@ import * as chai from "chai";
 import * as nock from "nock";
 import * as sinonChai from "sinon-chai";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
-import {doUploadTranslations, doUploadTranslationsThen, doUploadTranslationsCatch} from "../../main/routes/manageWelshDictionary";
+import {doUploadTranslations, doGetWelshDictionary, doUploadTranslationsThen, doUploadTranslationsCatch} from "../../main/routes/manageWelshDictionary";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as request from "supertest";
 
@@ -69,6 +69,30 @@ describe("test route manage Welsh Dictionary", () => {
       },
     };
     doUploadTranslations(req, res);
+  });
+
+  describe("test function doGetWelshDictionary", () => {
+    const req = {
+      adminWebAuthorization: "testAuth",
+      authentication: {
+        user: "",
+      },
+      file: {
+        originalname: "dummy_filename.xslx",
+      },
+      query: {
+        page: "test_page.html",
+      },
+      serviceAuthToken: "serviceAuthToken",
+      session: {
+        error: "",
+        success: "",
+      },
+    };
+
+    const adminWebAuthorization = "testAuth";
+    const responseContent = doGetWelshDictionary(req);
+    expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
   });
 
   describe("on POST /manageWelshDictionary", () => {
