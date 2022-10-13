@@ -285,7 +285,6 @@ describe("test route manage Welsh Dictionary", () => {
       });
     });
 
-
     describe("on POST /manageWelshDictionary 2", () => {
       const CCD_IMPORT_ROLE = "ccd-import";
       beforeEach(() => {
@@ -355,8 +354,6 @@ describe("test route manage Welsh Dictionary", () => {
         });
       });
     });
-
-
   });
 
   describe("on GET /manageWelshDictionary", () => {
