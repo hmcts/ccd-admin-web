@@ -145,8 +145,6 @@ describe("test route manage Welsh Dictionary", () => {
       expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
     });
 
-  });
-
   describe("test function doGetWelshDictionary without Page without Error", () => {
     const req = {
       adminWebAuthorization: "testAuth",
@@ -166,6 +164,35 @@ describe("test route manage Welsh Dictionary", () => {
     const adminWebAuthorization = "testAuth";
     const responseContent = doGetWelshDictionary(req);
     expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
+  });
+
+    describe("test function doGetWelshDictionary with Session Error", () => {
+      const req = {
+        adminWebAuthorization: "testAuth",
+        authentication: {
+          user: "",
+        },
+        file: {
+          originalname: "dummy_filename.xslx",
+        },
+        query: {
+        },
+        serviceAuthToken: "serviceAuthToken",
+        session: {
+          error: {
+            test1: "test 1",
+            test2: "test 2",
+            test3: "test 3",
+          },
+          success: "",
+        },
+      };
+      const adminWebAuthorization = "testAuth";
+      const responseContent = doGetWelshDictionary(req);
+      expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
+      expect(responseContent.error.test1).to.equal("test 1");
+    });
+
   });
 
   describe("on POST /manageWelshDictionary", () => {
