@@ -5,12 +5,10 @@ import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-we
 import {doUploadTranslations, doGetWelshDictionary, doUploadTranslationsThen, doUploadTranslationsCatch} from "../../main/routes/manageWelshDictionary";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as request from "supertest";
-
 const expect = chai.expect;
 chai.use(sinonChai);
 
 describe("test route manage Welsh Dictionary", () => {
-
   describe("test function doUploadTranslationsThen", () => {
     const req = {
       authentication: {
@@ -32,7 +30,6 @@ describe("test route manage Welsh Dictionary", () => {
 
   describe("test function doUploadTranslationsCatch", () => {
     const error = {
-      text: "",
     };
     const req = {
       authentication: {
@@ -71,7 +68,7 @@ describe("test route manage Welsh Dictionary", () => {
     doUploadTranslations(req, res);
   });
 
-  describe("test function doGetWelshDictionary", () => {
+  describe("test function doGetWelshDictionary with Page", () => {
     const req = {
       adminWebAuthorization: "testAuth",
       authentication: {
@@ -86,6 +83,51 @@ describe("test route manage Welsh Dictionary", () => {
       serviceAuthToken: "serviceAuthToken",
       session: {
         error: "",
+        success: "",
+      },
+    };
+
+    const adminWebAuthorization = "testAuth";
+    const responseContent = doGetWelshDictionary(req);
+    expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
+  });
+
+  describe("test function doGetWelshDictionary without Page", () => {
+    const req = {
+      adminWebAuthorization: "testAuth",
+      authentication: {
+        user: "",
+      },
+      file: {
+        originalname: "dummy_filename.xslx",
+      },
+      query: {
+      },
+      serviceAuthToken: "serviceAuthToken",
+      session: {
+        error: "",
+        success: "",
+      },
+    };
+
+    const adminWebAuthorization = "testAuth";
+    const responseContent = doGetWelshDictionary(req);
+    expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
+  });
+
+  describe("test function doGetWelshDictionary without Page without Error", () => {
+    const req = {
+      adminWebAuthorization: "testAuth",
+      authentication: {
+        user: "",
+      },
+      file: {
+        originalname: "dummy_filename.xslx",
+      },
+      query: {
+      },
+      serviceAuthToken: "serviceAuthToken",
+      session: {
         success: "",
       },
     };
