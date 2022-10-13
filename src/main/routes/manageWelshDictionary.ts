@@ -42,7 +42,7 @@ export function doUploadTranslationsCatch(req, error) {
   return responseContent;
 }
 
-function doUploadTranslations(req, res) {
+export function doUploadTranslations(req, res) {
     uploadTranslations(req)
         .then(() => {
             res.render ? res.render("manageWelshDictionary", doUploadTranslationsThen(req)) : "";
@@ -52,7 +52,7 @@ function doUploadTranslations(req, res) {
         });
 }
 
-function doGetWelshDictionary(req, res) {
+export function doGetWelshDictionary(req, res) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
@@ -64,7 +64,7 @@ function doGetWelshDictionary(req, res) {
         responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
         delete req.session.error;
     }
-    res.render("manageWelshDictionary", responseContent);
+    return responseContent;
 }
 
 router.post(`/${welshDictionary}`, (req, res) => {
@@ -89,7 +89,7 @@ router.post(`/${welshDictionary}`, (req, res) => {
 router.get(`/${welshDictionary}`, (req, res) => {
     if (req.adminWebAuthorization &&
     (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
-        doGetWelshDictionary(req, res);
+        res.render("manageWelshDictionary", doGetWelshDictionary(req, res));
     } else {
         res.render(errorPage, error_unauthorized_role(req));
     }
