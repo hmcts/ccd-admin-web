@@ -54,7 +54,7 @@ describe("test route manage Welsh Dictionary", () => {
   });
 
   describe("test function doUploadTranslations", () => {
-    const res;
+    const res = "";
     const req = {
       authentication: {
         user: "",
