@@ -3,7 +3,6 @@ import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { uploadTranslations } from "../service/manage-welsh-dictionary-service";
 import { sanitize } from "../util/sanitize";
 import * as multer from "multer";
-
 const errorPage = "error";
 const welshDictionary = "manageWelshDictionary";
 const router = express.Router();
@@ -18,7 +17,6 @@ const upload = multer({
   limits: { fileSize: 10485760 },
   storage,
 }).single("file");
-
 export function doUploadTranslationsThen(req) {
   const responseContent: { [k: string]: any } = {};
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
@@ -27,7 +25,6 @@ export function doUploadTranslationsThen(req) {
   responseContent.success = req.session.success;
   return responseContent;
 }
-
 export function doUploadTranslationsCatch(req, error) {
   req.session.error = {
     message: error.message ? error.message : "Bad Request",
@@ -41,7 +38,6 @@ export function doUploadTranslationsCatch(req, error) {
   delete req.session.error;
   return responseContent;
 }
-
 export function doUploadTranslations(req, res) {
     uploadTranslations(req)
         .then(() => {
@@ -51,7 +47,6 @@ export function doUploadTranslations(req, res) {
           res.render("manageWelshDictionary", doUploadTranslationsCatch(req, error));
         });
 }
-
 export function doGetWelshDictionary(req) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
@@ -65,7 +60,6 @@ export function doGetWelshDictionary(req) {
     }
     return responseContent;
 }
-
 router.post(`/${welshDictionary}`, (req, res) => {
     if (req.adminWebAuthorization &&
     (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
@@ -84,7 +78,6 @@ router.post(`/${welshDictionary}`, (req, res) => {
         res.render(errorPage, error_unauthorized_role(req));
   }
 });
-
 router.get(`/${welshDictionary}`, (req, res) => {
     if (req.adminWebAuthorization &&
     (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
@@ -94,5 +87,4 @@ router.get(`/${welshDictionary}`, (req, res) => {
         res.render(errorPage, error_unauthorized_role(req));
     }
 });
-
 export default router;
