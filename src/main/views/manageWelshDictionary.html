@@ -22,9 +22,13 @@
         {% endif %}
         <input type="file" id="file" name="file" accept=".csv"/>
       </div>
-      <div class="form-group">
-        <button type="submit" class="button" value="Submit">Submit</button>
-      </div>
+        {% if adminWebAuthorization.canLoadWelshTranslation or adminWebAuthorization.canManageWelshTranslation %}
+        <div class="form-group">
+          <button type="submit" class="button" value="Submit">Submit</button>
+        </div>
+        {% else %}
+        <p>User does not access rights</p>
+        {% endif %}
     </form>
 
   </div>

@@ -145,26 +145,26 @@ describe("test route manage Welsh Dictionary", () => {
       expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
     });
 
-  describe("test function doGetWelshDictionary without Page without Error", () => {
-    const req = {
-      adminWebAuthorization: "testAuth",
-      authentication: {
-        user: "",
-      },
-      file: {
-        originalname: "dummy_filename.xslx",
-      },
-      query: {
-      },
-      serviceAuthToken: "serviceAuthToken",
-      session: {
-        success: "",
-      },
-    };
-    const adminWebAuthorization = "testAuth";
-    const responseContent = doGetWelshDictionary(req);
-    expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
-  });
+    describe("test function doGetWelshDictionary without Page without Error", () => {
+      const req = {
+        adminWebAuthorization: "testAuth",
+        authentication: {
+          user: "",
+        },
+        file: {
+          originalname: "dummy_filename.xslx",
+        },
+        query: {
+        },
+        serviceAuthToken: "serviceAuthToken",
+        session: {
+          success: "",
+        },
+      };
+      const adminWebAuthorization = "testAuth";
+      const responseContent = doGetWelshDictionary(req);
+      expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
+    });
 
     describe("test function doGetWelshDictionary with Session Error", () => {
       const req = {
@@ -193,6 +193,28 @@ describe("test route manage Welsh Dictionary", () => {
       expect(responseContent.error.test1).to.equal("test 1");
     });
 
+    describe("test function doGetWelshDictionary with empty Session Error", () => {
+      const req = {
+        adminWebAuthorization: "testAuth",
+        authentication: {
+          user: "",
+        },
+        file: {
+          originalname: "dummy_filename.xslx",
+        },
+        query: {
+        },
+        serviceAuthToken: "serviceAuthToken",
+        session: {
+          error: {
+          },
+          success: "",
+        },
+      };
+      const adminWebAuthorization = "testAuth";
+      const responseContent = doGetWelshDictionary(req);
+      expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
+    });
   });
 
   describe("on POST /manageWelshDictionary", () => {
@@ -262,27 +284,31 @@ describe("test route manage Welsh Dictionary", () => {
   });
 
   describe("on GET /manageWelshDictionary", () => {
-    const CCD_IMPORT_ROLE = "ccd-import";
-    beforeEach(() => {
-      nock.cleanAll();
-    });
-    it("should respond with Welsh Translation csvfile response when authenticated and authorized", () => {
-      it("should return Confirm Delete Definition page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-      nock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-      return request(appTestWithAuthorizedAdminWebRoles)
-        .get("/manageWelshDictionary")
-        .send({
-          currentJurisdiction: "TEST", description: "Test draft", version: 1,
-        })
-        .set("Cookie", "accessToken=ey123.ey456")
-        .then((res: { statusCode: any; }) => {
-          expect(res.statusCode).to.equal(200);
+    describe("on GET /manageWelshDictionary 1", () => {
+      const CCD_IMPORT_ROLE = "ccd-import";
+      beforeEach(() => {
+        nock.cleanAll();
+      });
+      it("should respond with Welsh Translation csvfile response when authenticated and authorized", () => {
+        it("should return Confirm Delete Definition page when authenticated and authorized", () => {
+          idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+          idamServiceMock.resolveRetrieveServiceToken();
+          nock("http://localhost:4451")
+              .get("/api/idam/adminweb/authorization")
+              .reply(200, {});
+          return request(appTestWithAuthorizedAdminWebRoles)
+              .get("/manageWelshDictionary")
+              .send({
+                currentJurisdiction: "TEST",
+                description: "Test draft",
+                version: 1,
+              })
+              .set("Cookie", "accessToken=ey123.ey456")
+              .then((res: { statusCode: any; }) => {
+                expect(res.statusCode).to.equal(200);
+              });
         });
       });
     });
-  });
+   });
 });

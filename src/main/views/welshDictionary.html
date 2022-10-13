@@ -63,7 +63,11 @@
     <div>
       <p>Retrieve Welsh Dictionary</p>
       <p>This functionality retrieves the latest Welsh dictionary and converts to a .csv file.</p>
+      {% if adminWebAuthorization.canManageWelshTranslation %}
       <button id="index-btn" type="submit" class="button" value="Submit">Download</button>
+      {% else %}
+      <p>User does not access rights</p>
+      {% endif %}
     </div>
     <div id="index-result" style="font-family: monospace;"></div>
   </div>
