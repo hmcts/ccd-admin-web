@@ -78,7 +78,6 @@ router.post(`/${welshDictionary}`, (req, res) => {
         res.redirect(302, "/manageWelshDictionary");
       } else {
           doUploadTranslations(req, res);
-          console.info("Translations uploaded.");
       }
     });
   } else {
@@ -91,7 +90,6 @@ router.get(`/${welshDictionary}`, (req, res) => {
     (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
         res.status(200);
         res.render("manageWelshDictionary", doGetWelshDictionary(req));
-        console.info("Translations downloaded.");
     } else {
         res.render(errorPage, error_unauthorized_role(req));
     }
