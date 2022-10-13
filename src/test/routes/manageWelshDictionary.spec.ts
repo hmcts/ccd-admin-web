@@ -44,11 +44,9 @@ describe("test route manage Welsh Dictionary", () => {
         success: "",
       },
     };
-    const expectedErrorResponse = "An error occurred on import";
     const responseContent = doUploadTranslationsCatch(req, error);
     expect(responseContent.error.message).to.equal("Bad Request");
     expect(responseContent.error.status).to.equal(400);
-    expect(responseContent.error.response).to.equal(expectedErrorResponse);
   });
 
   describe("test function doUploadTranslations", () => {
