@@ -9,6 +9,7 @@ const expect = chai.expect;
 chai.use(sinonChai);
 
 describe("test route manage Welsh Dictionary", () => {
+
   describe("test function doUploadTranslationsThen", () => {
     const req = {
       authentication: {
@@ -29,24 +30,55 @@ describe("test route manage Welsh Dictionary", () => {
   });
 
   describe("test function doUploadTranslationsCatch", () => {
-    const error = {
-    };
-    const req = {
-      authentication: {
-        user: "",
-      },
-      file: {
-        originalname: "dummy_filename.xslx",
-      },
-      serviceAuthToken: "serviceAuthToken",
-      session: {
-        error: "",
-        success: "",
-      },
-    };
-    const responseContent = doUploadTranslationsCatch(req, error);
-    expect(responseContent.error.message).to.equal("Bad Request");
-    expect(responseContent.error.status).to.equal(400);
+
+    describe("test function doUploadTranslationsCatch with error", () => {
+      const error = {
+        message: "Problems!",
+        response: {
+          text: "Sort this out",
+        },
+        status: 500,
+      };
+      const req = {
+        authentication: {
+          user: "",
+        },
+        file: {
+          originalname: "dummy_filename.xslx",
+        },
+        serviceAuthToken: "serviceAuthToken",
+        session: {
+          error: "",
+          success: "",
+        },
+      };
+      const responseContent = doUploadTranslationsCatch(req, error);
+      expect(responseContent.error.message).to.equal("Problems!");
+      expect(responseContent.error.status).to.equal(500);
+      expect(responseContent.error.text).to.equal("Sort this out");
+    });
+
+    describe("test function doUploadTranslationsCatch without error", () => {
+      const error = {
+      };
+      const req = {
+        authentication: {
+          user: "",
+        },
+        file: {
+          originalname: "dummy_filename.xslx",
+        },
+        serviceAuthToken: "serviceAuthToken",
+        session: {
+          error: "",
+          success: "",
+        },
+      };
+      const responseContent = doUploadTranslationsCatch(req, error);
+      expect(responseContent.error.message).to.equal("Bad Request");
+      expect(responseContent.error.status).to.equal(400);
+      expect(responseContent.error.text).to.equal("An error occurred on import");
+    });
   });
 
   describe("test function doUploadTranslations", () => {
@@ -67,49 +99,52 @@ describe("test route manage Welsh Dictionary", () => {
     doUploadTranslations(req, res);
   });
 
-  describe("test function doGetWelshDictionary with Page", () => {
-    const req = {
-      adminWebAuthorization: "testAuth",
-      authentication: {
-        user: "",
-      },
-      file: {
-        originalname: "dummy_filename.xslx",
-      },
-      query: {
-        page: "test_page.html",
-      },
-      serviceAuthToken: "serviceAuthToken",
-      session: {
-        error: "",
-        success: "",
-      },
-    };
-    const adminWebAuthorization = "testAuth";
-    const responseContent = doGetWelshDictionary(req);
-    expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
-  });
+  describe("test function doGetWelshDictionary", () => {
+    describe("test function doGetWelshDictionary with Page", () => {
+      const req = {
+        adminWebAuthorization: "testAuth",
+        authentication: {
+          user: "",
+        },
+        file: {
+          originalname: "dummy_filename.xslx",
+        },
+        query: {
+          page: "test_page.html",
+        },
+        serviceAuthToken: "serviceAuthToken",
+        session: {
+          error: "",
+          success: "",
+        },
+      };
+      const adminWebAuthorization = "testAuth";
+      const responseContent = doGetWelshDictionary(req);
+      expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
+    });
 
-  describe("test function doGetWelshDictionary without Page", () => {
-    const req = {
-      adminWebAuthorization: "testAuth",
-      authentication: {
-        user: "",
-      },
-      file: {
-        originalname: "dummy_filename.xslx",
-      },
-      query: {
-      },
-      serviceAuthToken: "serviceAuthToken",
-      session: {
-        error: "",
-        success: "",
-      },
-    };
-    const adminWebAuthorization = "testAuth";
-    const responseContent = doGetWelshDictionary(req);
-    expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
+    describe("test function doGetWelshDictionary without Page", () => {
+      const req = {
+        adminWebAuthorization: "testAuth",
+        authentication: {
+          user: "",
+        },
+        file: {
+          originalname: "dummy_filename.xslx",
+        },
+        query: {
+        },
+        serviceAuthToken: "serviceAuthToken",
+        session: {
+          error: "",
+          success: "",
+        },
+      };
+      const adminWebAuthorization = "testAuth";
+      const responseContent = doGetWelshDictionary(req);
+      expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
+    });
+
   });
 
   describe("test function doGetWelshDictionary without Page without Error", () => {
