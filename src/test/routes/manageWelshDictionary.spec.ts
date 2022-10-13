@@ -44,10 +44,11 @@ describe("test route manage Welsh Dictionary", () => {
         success: "",
       },
     };
-    const expectedErrorMessage = "Bad Request";
-
+    const expectedErrorResponse = "An error occurred on import";
     const responseContent = doUploadTranslationsCatch(req, error);
-    expect(responseContent.error.message).to.equal(expectedErrorMessage);
+    expect(responseContent.error.message).to.equal("Bad Request");
+    expect(responseContent.error.status).to.equal(400);
+    expect(responseContent.error.response).to.equal(expectedErrorResponse);
   });
 
   describe("test function doUploadTranslations", () => {
@@ -86,7 +87,6 @@ describe("test route manage Welsh Dictionary", () => {
         success: "",
       },
     };
-
     const adminWebAuthorization = "testAuth";
     const responseContent = doGetWelshDictionary(req);
     expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
@@ -109,7 +109,6 @@ describe("test route manage Welsh Dictionary", () => {
         success: "",
       },
     };
-
     const adminWebAuthorization = "testAuth";
     const responseContent = doGetWelshDictionary(req);
     expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
@@ -131,7 +130,6 @@ describe("test route manage Welsh Dictionary", () => {
         success: "",
       },
     };
-
     const adminWebAuthorization = "testAuth";
     const responseContent = doGetWelshDictionary(req);
     expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
@@ -139,16 +137,13 @@ describe("test route manage Welsh Dictionary", () => {
 
   describe("on POST /manageWelshDictionary", () => {
     const CCD_IMPORT_ROLE = "ccd-import";
-
     beforeEach(() => {
       nock.cleanAll();
     });
-
     it("should respond with Not CSV error when authenticated and authorized", () => {
       it("should return Entry page when authenticated and authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
-
       const req = {
         accessToken: "userAuthToken",
         file: {
@@ -157,11 +152,9 @@ describe("test route manage Welsh Dictionary", () => {
         },
         serviceAuthToken: "serviceAuthToken",
       };
-
       nock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});
-
         // tslint:disable-next-line:prefer-const
       let res;
         // tslint:disable-next-line:prefer-const
@@ -192,7 +185,6 @@ describe("test route manage Welsh Dictionary", () => {
       nock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});
-
         // tslint:disable-next-line:prefer-const
       let res;
         // tslint:disable-next-line:prefer-const
@@ -207,25 +199,20 @@ describe("test route manage Welsh Dictionary", () => {
         });
       });
     });
-
   });
 
   describe("on GET /manageWelshDictionary", () => {
     const CCD_IMPORT_ROLE = "ccd-import";
-
     beforeEach(() => {
       nock.cleanAll();
     });
-
     it("should respond with Welsh Translation csvfile response when authenticated and authorized", () => {
       it("should return Confirm Delete Definition page when authenticated and authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
-
       nock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});
-
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/manageWelshDictionary")
         .send({
