@@ -194,11 +194,10 @@ describe("test route manage Welsh Dictionary", () => {
     });
 
     describe("doGetWelshDictionary with empty Session Error", () => {
-      const testuser = "test_useraaa";
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
-          user: testuser,
+          user: "",
         },
         file: {
           originalname: "dummy_filename.xslx",
@@ -215,7 +214,6 @@ describe("test route manage Welsh Dictionary", () => {
       const adminWebAuthorization = "testAuth";
       const responseContent = doGetWelshDictionary(req);
       expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
-      expect(responseContent.user).to.contain(testuser);
     });
   });
 
