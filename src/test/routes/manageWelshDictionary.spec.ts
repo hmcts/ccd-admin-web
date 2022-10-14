@@ -142,7 +142,6 @@ describe("test route manage Welsh Dictionary", () => {
       const adminWebAuthorization = "testAuth";
       const responseContent = doGetWelshDictionary(req);
       expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
-      expect(req.session.error).to.equal("");
     });
 
     describe("doGetWelshDictionary without Page without Error", () => {
