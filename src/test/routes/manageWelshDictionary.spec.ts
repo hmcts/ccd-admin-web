@@ -255,7 +255,32 @@ describe("test route manage Welsh Dictionary", () => {
       nock.cleanAll();
     });
 
-    it("should respond with Not CSV error when authenticated and authorized", () => {
+    describe("should respond with Welsh Translation response when NO authorisation", () => {
+      it("should return Session Error when no authorisationm", () => {
+        const req = {
+          accessToken: "userAuthToken",
+          file: {
+            buffer: new Buffer(8),
+            originalname: "dummy_filename.csv",
+          },
+          serviceAuthToken: "serviceAuthToken",
+        };
+        // tslint:disable-next-line:prefer-const
+        let res;
+        // tslint:disable-next-line:prefer-const
+        let next;
+        return request(appTestWithAuthorizedAdminWebRoles)
+            .post("/manageWelshDictionary")
+            .send({ req, res, next })
+            .set("Cookie", "accessToken=ey123.ey456")
+            // tslint:disable-next-line:no-shadowed-variable
+            .then((res) => {
+              expect(res.statusCode).to.equal(302);
+            });
+      });
+    });
+
+    describe("should respond with Not CSV error when authenticated and authorized", () => {
       it("should return Entry page when authenticated and authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
@@ -280,12 +305,12 @@ describe("test route manage Welsh Dictionary", () => {
         .set("Cookie", "accessToken=ey123.ey456")
           // tslint:disable-next-line:no-shadowed-variable
         .then((res) => {
-          expect(res.statusCode).to.equal(400);
+          expect(res.statusCode).to.equal(302);
         });
       });
 
-      it("should respond with Welsh Translation response when authenticated and authorized", () => {
-        it("should return Confirm Delete Definition page when authenticated and authorized", () => {
+      it("should respond with Welsh Translation response when authenticated and authorised", () => {
+        it("should return Updated page when authenticated and authorised", () => {
         idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
         idamServiceMock.resolveRetrieveServiceToken();
         const req = {
@@ -314,7 +339,7 @@ describe("test route manage Welsh Dictionary", () => {
         });
       });
 
-      it("should respond with Not CSV error when authenticated and authorized", () => {
+      describe("should respond with Not CSV error when authenticated and authorized", () => {
         it("should return Entry page when authenticated and authorized", () => {
           idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
           idamServiceMock.resolveRetrieveServiceToken();
@@ -343,13 +368,13 @@ describe("test route manage Welsh Dictionary", () => {
               .set("Cookie", "accessToken=ey123.ey456")
               // tslint:disable-next-line:no-shadowed-variable
               .then((res) => {
-                expect(res.statusCode).to.equal(400);
+                expect(res.statusCode).to.equal(302);
               });
         });
       });
 
-      it("should respond with Welsh Translation response when authenticated and authorized", () => {
-        it("should return Confirm Delete Definition page when authenticated and authorized", () => {
+      describe("should respond with Welsh Translation response when authenticated and authorized", () => {
+        it("should return Completed page when authenticated and authorized", () => {
           idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
           idamServiceMock.resolveRetrieveServiceToken();
           const req = {
@@ -373,7 +398,7 @@ describe("test route manage Welsh Dictionary", () => {
               .set("Cookie", "accessToken=ey123.ey456")
               // tslint:disable-next-line:no-shadowed-variable
               .then((res) => {
-                expect(res.statusCode).to.equal(200);
+                expect(res.statusCode).to.equal(302);
               });
         });
       });

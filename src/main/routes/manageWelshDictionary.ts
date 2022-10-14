@@ -63,20 +63,20 @@ export function doGetWelshDictionary(req) {
 router.post(`/${welshDictionary}`, (req, res) => {
     if (req.adminWebAuthorization &&
     (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
-     upload(req, res, (err) => {
-      if (err) {
-        req.session.error = err.name + ": " + err.message;
-        res.redirect(302, "/manageWelshDictionary");
-      } else if (req.file === undefined) {
-        req.session.error = "No file selected! Please select a translations csv file to import";
-        res.redirect(302, "/manageWelshDictionary");
-      } else {
-          doUploadTranslations(req, res);
-      }
-    });
-  } else {
+          upload(req, res, (err) => {
+              if (err) {
+                req.session.error = err.name + ": " + err.message;
+                res.redirect(302, "/manageWelshDictionary");
+              } else if (req.file === undefined) {
+                req.session.error = "No file selected! Please select a translations csv file to import";
+                res.redirect(302, "/manageWelshDictionary");
+              } else {
+                  doUploadTranslations(req, res);
+              }
+        });
+    } else {
         res.render(errorPage, error_unauthorized_role(req));
-  }
+    }
 });
 router.get(`/${welshDictionary}`, (req, res) => {
     if (req.adminWebAuthorization &&
