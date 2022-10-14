@@ -99,6 +99,7 @@ describe("test route manage Welsh Dictionary", () => {
                 },
             };
             doUploadTranslations(req, res);
+            expect(req.authentication.user).to.equal("");
         });
         it("test function doUploadTranslations with a CSV file", () => {
             const res = "";
@@ -116,6 +117,7 @@ describe("test route manage Welsh Dictionary", () => {
                 },
             };
             doUploadTranslations(req, res);
+            expect(req.authentication.user).to.equal("");
         });
         it("test function doUploadTranslations without a CSV file", () => {
             const res = "";
@@ -133,6 +135,7 @@ describe("test route manage Welsh Dictionary", () => {
                 },
             };
             doUploadTranslations(req, res);
+            expect(req.authentication.user).to.equal("");
         });
     });
 
