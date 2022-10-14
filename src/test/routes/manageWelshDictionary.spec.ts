@@ -80,22 +80,55 @@ describe("test route manage Welsh Dictionary", () => {
     });
   });
 
-  describe("test function doUploadTranslations with not CSV file", () => {
-    const res = "";
-    const req = {
-      authentication: {
-        user: "",
-      },
-      file: {
-        originalname: "dummy_filename.xslx",
-      },
-      serviceAuthToken: "serviceAuthToken",
-      session: {
-        error: "",
-        success: "",
-      },
-    };
-    doUploadTranslations(req, res);
+  describe("test function doUploadTranslations", () => {
+    describe("test function doUploadTranslations with no file", () => {
+      const res = "";
+      const req = {
+        authentication: {
+          user: "",
+        },
+        serviceAuthToken: "serviceAuthToken",
+        session: {
+          error: "",
+          success: "",
+        },
+      };
+      doUploadTranslations(req, res);
+    });
+    describe("test function doUploadTranslations with a CSV file", () => {
+      const res = "";
+      const req = {
+        authentication: {
+          user: "",
+        },
+        file: {
+          originalname: "dummy_filename.csv",
+        },
+        serviceAuthToken: "serviceAuthToken",
+        session: {
+          error: "",
+          success: "",
+        },
+      };
+      doUploadTranslations(req, res);
+    });
+    describe("test function doUploadTranslations without a CSV file", () => {
+      const res = "";
+      const req = {
+        authentication: {
+          user: "",
+        },
+        file: {
+          originalname: "dummy_filename.xslx",
+        },
+        serviceAuthToken: "serviceAuthToken",
+        session: {
+          error: "",
+          success: "",
+        },
+      };
+      doUploadTranslations(req, res);
+    });
   });
 
   describe("test function doGetWelshDictionary", () => {
@@ -390,9 +423,8 @@ describe("test route manage Welsh Dictionary", () => {
             });
       });
     });
-  });
 
-  it("should respond with Welsh Translation csvfile response when NOT authenticated and NOT authorized", () => {
+    it("should respond with Welsh Translation csvfile response when NOT authenticated and NOT authorized", () => {
     it("should break when NOT authenticated and NOT authorized", () => {
       return request(null)
           .get("/manageWelshDictionary")
@@ -410,5 +442,6 @@ describe("test route manage Welsh Dictionary", () => {
             expect(res.statusCode).to.equal(200);
           });
     });
+  });
   });
 });
