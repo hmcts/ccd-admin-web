@@ -6,7 +6,6 @@ import * as multer from "multer";
 const errorPage = "error";
 const welshDictionary = "manageWelshDictionary";
 const router = express.Router();
-const storage = multer.memoryStorage();
 const upload = multer({
   fileFilter: (req, file, cb) => {
     if (!file.originalname.match(/\.(csv)$/)) {
@@ -15,7 +14,7 @@ const upload = multer({
     return cb(null, true);
   },
   limits: { fileSize: 8000000 },
-  storage,
+  storage: multer.memoryStorage,
 }).single("file");
 export function doUploadTranslationsThen(req) {
   const responseContent: { [k: string]: any } = {};
