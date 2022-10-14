@@ -420,20 +420,6 @@ describe("test route manage Welsh Dictionary", () => {
                 });
         });
 
-        // it("should respond with Welsh Translation csvfile response when NOT authenticated and NOT authorized", () => {
-        //     return request(null)
-        //         .get("/manageWelshDictionary")
-        //         .send({
-        //             currentJurisdiction: "TEST",
-        //             description: "Test draft",
-        //             version: 1,
-        //         })
-        //         .set("Cookie", "accessToken=ey123.ey456")
-        //         .then((res: { statusCode: any; }) => {
-        //             expect(res.statusCode).to.equal(200);
-        //         });
-        // });
-
         it("should respond with Welsh Translation csvfile response when NOT authenticated and NOT authorized", () => {
             return request(appTestWithAuthorizedAdminWebRoles)
                 .get("/manageWelshDictionary")
