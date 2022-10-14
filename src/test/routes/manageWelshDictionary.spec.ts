@@ -30,7 +30,6 @@ describe("test route manage Welsh Dictionary", () => {
   });
 
   describe("test function doUploadTranslationsCatch", () => {
-
     describe("test function doUploadTranslationsCatch with error", () => {
       const error = {
         message: "Problems!",
@@ -81,7 +80,7 @@ describe("test route manage Welsh Dictionary", () => {
     });
   });
 
-  describe("test function doUploadTranslations", () => {
+  describe("test function doUploadTranslations with not CSV file", () => {
     const res = "";
     const req = {
       authentication: {
@@ -100,7 +99,7 @@ describe("test route manage Welsh Dictionary", () => {
   });
 
   describe("test function doGetWelshDictionary", () => {
-    describe("test function doGetWelshDictionary with Page", () => {
+    describe("doGetWelshDictionary with Page", () => {
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
@@ -123,7 +122,7 @@ describe("test route manage Welsh Dictionary", () => {
       expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
     });
 
-    describe("test function doGetWelshDictionary without Page", () => {
+    describe("doGetWelshDictionary without Page", () => {
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
@@ -145,7 +144,7 @@ describe("test route manage Welsh Dictionary", () => {
       expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
     });
 
-    describe("test function doGetWelshDictionary without Page without Error", () => {
+    describe("doGetWelshDictionary without Page without Error", () => {
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
@@ -166,7 +165,7 @@ describe("test route manage Welsh Dictionary", () => {
       expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
     });
 
-    describe("test function doGetWelshDictionary with Session Error", () => {
+    describe("doGetWelshDictionary with Session Error", () => {
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
@@ -193,7 +192,7 @@ describe("test route manage Welsh Dictionary", () => {
       expect(responseContent.error.test1).to.equal("test 1");
     });
 
-    describe("test function doGetWelshDictionary with empty Session Error", () => {
+    describe("doGetWelshDictionary with empty Session Error", () => {
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
@@ -218,39 +217,37 @@ describe("test route manage Welsh Dictionary", () => {
   });
 
   describe("on POST /manageWelshDictionary", () => {
+    const CCD_IMPORT_ROLE = "ccd-import";
+    beforeEach(() => {
+      nock.cleanAll();
+    });
 
-    describe("on POST /manageWelshDictionary 1", () => {
-      const CCD_IMPORT_ROLE = "ccd-import";
-      beforeEach(() => {
-        nock.cleanAll();
-      });
-      it("should respond with Not CSV error when authenticated and authorized", () => {
-        it("should return Entry page when authenticated and authorized", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        idamServiceMock.resolveRetrieveServiceToken();
-        const req = {
-          accessToken: "userAuthToken",
-          file: {
-            buffer: new Buffer(8),
-            originalname: "dummy_filename.xslx",
-          },
-          serviceAuthToken: "serviceAuthToken",
-        };
-        nock("http://localhost:4451")
-          .get("/api/idam/adminweb/authorization")
-          .reply(200, {});
-          // tslint:disable-next-line:prefer-const
-        let res;
-          // tslint:disable-next-line:prefer-const
-        let next;
-        return request(appTestWithAuthorizedAdminWebRoles)
-          .post("/manageWelshDictionary")
-          .send({ req, res, next })
-          .set("Cookie", "accessToken=ey123.ey456")
-            // tslint:disable-next-line:no-shadowed-variable
-          .then((res) => {
-            expect(res.statusCode).to.equal(400);
-          });
+    it("should respond with Not CSV error when authenticated and authorized", () => {
+      it("should return Entry page when authenticated and authorized", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+      const req = {
+        accessToken: "userAuthToken",
+        file: {
+          buffer: new Buffer(8),
+          originalname: "dummy_filename.xslx",
+        },
+        serviceAuthToken: "serviceAuthToken",
+      };
+      nock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, {});
+        // tslint:disable-next-line:prefer-const
+      let res;
+        // tslint:disable-next-line:prefer-const
+      let next;
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .post("/manageWelshDictionary")
+        .send({ req, res, next })
+        .set("Cookie", "accessToken=ey123.ey456")
+          // tslint:disable-next-line:no-shadowed-variable
+        .then((res) => {
+          expect(res.statusCode).to.equal(400);
         });
       });
 
@@ -283,13 +280,7 @@ describe("test route manage Welsh Dictionary", () => {
           });
         });
       });
-    });
 
-    describe("on POST /manageWelshDictionary 2", () => {
-      const CCD_IMPORT_ROLE = "ccd-import";
-      beforeEach(() => {
-        nock.cleanAll();
-      });
       it("should respond with Not CSV error when authenticated and authorized", () => {
         it("should return Entry page when authenticated and authorized", () => {
           idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
@@ -358,80 +349,21 @@ describe("test route manage Welsh Dictionary", () => {
   });
 
   describe("on GET /manageWelshDictionary", () => {
-    describe("on GET /manageWelshDictionary 1", () => {
-      const CCD_IMPORT_ROLE = "ccd-import";
-      beforeEach(() => {
-        nock.cleanAll();
-      });
-      it("should respond with Welsh Translation csvfile response when authenticated and authorized", () => {
-        it("should return Confirm Delete Definition page when authenticated and authorized", () => {
-          idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-          idamServiceMock.resolveRetrieveServiceToken();
-          nock("http://localhost:4451")
-              .get("/api/idam/adminweb/authorization")
-              .reply(200, {});
-          return request(appTestWithAuthorizedAdminWebRoles)
-              .get("/manageWelshDictionary")
-              .send({
-                currentJurisdiction: "TEST",
-                description: "Test draft",
-                version: 1,
-              })
-              .set("Cookie", "accessToken=ey123.ey456")
-              .then((res: { statusCode: any; }) => {
-                expect(res.statusCode).to.equal(200);
-              });
-        });
-      });
-    });
-
-    describe("on GET /manageWelshDictionary 2", () => {
-      // const CCD_IMPORT_ROLE = "ccd-import";
-      beforeEach(() => {
-        nock.cleanAll();
-      });
-      it("should respond with Welsh Translation csvfile response when NOT authenticated and NOT authorized", () => {
-        it("should break when NOT authenticated and NOT authorized", () => {
-          // idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-          // idamServiceMock.resolveRetrieveServiceToken();
-          // nock("http://localhost:4451")
-          //     .get("/api/idam/adminweb/authorization")
-          //     .reply(200, {});
-          return request(null)
-              .get("/manageWelshDictionary")
-              .send({
-                currentJurisdiction: "TEST",
-                description: "Test draft",
-                version: 1,
-              })
-              .set("Cookie", "accessToken=ey123.ey456")
-              .then((res: { statusCode: any; }) => {
-                expect(res.statusCode).to.equal(200);
-              });
-        });
-      });
-    });
-   });
-
-  describe("on GET /manageWelshDictionary 3", () => {
-    // const CCD_IMPORT_ROLE = "ccd-import";
+    const CCD_IMPORT_ROLE = "ccd-import";
     beforeEach(() => {
       nock.cleanAll();
     });
-    it("should respond with Welsh Translation csvfile response when NOT authenticated and NOT authorized", () => {
-      it("should break when NOT authenticated and NOT authorized", () => {
-        // idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        // idamServiceMock.resolveRetrieveServiceToken();
-        // nock("http://localhost:4451")
-        //     .get("/api/idam/adminweb/authorization")
-        //     .reply(200, {});
-        return request(null)
+
+    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    idamServiceMock.resolveRetrieveServiceToken();
+    nock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, {});
+    it("should respond with Welsh Translation csvfile response when authenticated and authorized", () => {
+      it("should return Confirm Delete Definition page when authenticated and authorized", () => {
+        return request(appTestWithAuthorizedAdminWebRoles)
             .get("/manageWelshDictionary")
             .send({
-              adminWebAuthorization: {
-                canLoadWelshTranslation: false,
-                canManageWelshTranslation: false,
-              },
               currentJurisdiction: "TEST",
               description: "Test draft",
               version: 1,
@@ -441,6 +373,42 @@ describe("test route manage Welsh Dictionary", () => {
               expect(res.statusCode).to.equal(200);
             });
       });
+    });
+
+    it("should respond with Welsh Translation csvfile response when NOT authenticated and NOT authorized", () => {
+      it("should break when NOT authenticated and NOT authorized", () => {
+        return request(null)
+            .get("/manageWelshDictionary")
+            .send({
+              currentJurisdiction: "TEST",
+              description: "Test draft",
+              version: 1,
+            })
+            .set("Cookie", "accessToken=ey123.ey456")
+            .then((res: { statusCode: any; }) => {
+              expect(res.statusCode).to.equal(200);
+            });
+      });
+    });
+  });
+
+  it("should respond with Welsh Translation csvfile response when NOT authenticated and NOT authorized", () => {
+    it("should break when NOT authenticated and NOT authorized", () => {
+      return request(null)
+          .get("/manageWelshDictionary")
+          .send({
+            adminWebAuthorization: {
+              canLoadWelshTranslation: false,
+              canManageWelshTranslation: false,
+            },
+            currentJurisdiction: "TEST",
+            description: "Test draft",
+            version: 1,
+          })
+          .set("Cookie", "accessToken=ey123.ey456")
+          .then((res: { statusCode: any; }) => {
+            expect(res.statusCode).to.equal(200);
+          });
     });
   });
 });
