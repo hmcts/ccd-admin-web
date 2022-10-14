@@ -103,7 +103,7 @@ describe("test route manage Welsh Dictionary", () => {
       const req = {
         adminWebAuthorization: "testAuth",
         authentication: {
-          user: "",
+          user: "testUser",
         },
         file: {
           originalname: "dummy_filename.xslx",
@@ -120,6 +120,7 @@ describe("test route manage Welsh Dictionary", () => {
       const adminWebAuthorization = "testAuth";
       const responseContent = doGetWelshDictionary(req);
       expect(responseContent.adminWebAuthorization).to.equal(adminWebAuthorization);
+      expect(responseContent.user).to.equal("\"testUser\"");
     });
 
     describe("doGetWelshDictionary without Page", () => {
