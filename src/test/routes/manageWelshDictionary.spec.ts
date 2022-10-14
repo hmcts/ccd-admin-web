@@ -281,34 +281,6 @@ describe("test route manage Welsh Dictionary", () => {
         });
       });
 
-      it("should respond with Welsh Translation response when NO ACCESS", () => {
-        it("should return ERROR PAGE", () => {
-          const req = {
-            accessToken: "userAuthToken",
-            file: {
-              buffer: new Buffer(8),
-              originalname: "dummy_filename.csv",
-            },
-            serviceAuthToken: "serviceAuthToken",
-          };
-          nock("http://localhost:4451")
-              .get("/api/idam/adminweb/authorization")
-              .reply(200, {});
-          // tslint:disable-next-line:prefer-const
-          let res;
-          // tslint:disable-next-line:prefer-const
-          let next;
-          return request()
-              .post("/manageWelshDictionary")
-              .send({ req, res, next })
-              .set("Cookie", "accessToken=ey123.ey456")
-              // tslint:disable-next-line:no-shadowed-variable
-              .then((res) => {
-                expect(res.statusCode).to.equal(200);
-              });
-        });
-      });
-
       it("should respond with Not CSV error when authenticated and authorized", () => {
         it("should return Entry page when authenticated and authorized", () => {
           idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
