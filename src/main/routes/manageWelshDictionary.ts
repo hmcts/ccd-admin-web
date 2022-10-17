@@ -14,7 +14,7 @@ const upload = multer({
     return cb(null, true);
   },
   limits: { fileSize: 8000000 },
-  storage: multer.memoryStorage(), //NOSONAR
+  storage: multer.memoryStorage(), // NOSONAR
 }).single("file");
 export function doUploadTranslationsThen(req) {
   const responseContent: { [k: string]: any } = {};
