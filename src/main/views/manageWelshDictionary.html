@@ -1,0 +1,37 @@
+{% extends "layout_template.html" %}
+{% from "macros/formElements.html" import errorDisplay %}
+{% block content %}
+{% include "menu.html" %}
+{% if success%}
+<div class="success"><div class="admin-ui">{{success}}</div></div>
+{% endif%}
+
+<h2 class="heading-large padding">Import Welsh Translations</h2>
+<div class="grid-row">
+  <div class="column-two-thirds padding">
+
+    <form action="/manageWelshDictionary" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        {% if not error %}
+        <p>Choose a csv file containing translations of format "englishPhrase","[welshPhrase]"</p>
+        {% endif %}
+        {% if error %}
+        <div class="error-summary govuk-error-message">
+          {{ errorDisplay(error) }}
+        </div>
+        {% endif %}
+        <input type="file" id="file" name="file" accept=".csv"/>
+      </div>
+        {% if adminWebAuthorization.canLoadWelshTranslation or adminWebAuthorization.canManageWelshTranslation %}
+        <div class="form-group">
+          <button type="submit" class="button" value="Submit">Submit</button>
+        </div>
+        {% else %}
+        <p>User does not access rights</p>
+        {% endif %}
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}
