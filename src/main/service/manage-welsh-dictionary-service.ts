@@ -7,7 +7,11 @@ export function buildTranslationsJson(data) {
   let translations = "";
   for (const element of data) {
       if (translations.length > 0) { translations += ","; }
-      translations += "\"" + element[0] + "\":\"" + element[1] + "\"";
+      if (element[1] === undefined || element[1] === null) {
+        translations += JSON.stringify(element[0]) + ":" + JSON.stringify(null);
+      } else {
+        translations += JSON.stringify(element[0]) + ":" + JSON.stringify(element[1]);
+      }
   }
   return translations;
 }
