@@ -87,8 +87,9 @@ describe("test route manage Welsh Dictionary", () => {
 
     describe("test function doUploadTranslations", () => {
         const res = {
-            render: function(renderInput, responseContent) {
-            }
+            render(renderInput, responseContent) {
+                // empty
+            },
         };
 
         it("test function doUploadTranslations with no file", () => {
