@@ -86,8 +86,13 @@ describe("test route manage Welsh Dictionary", () => {
     });
 
     describe("test function doUploadTranslations", () => {
+        const res = {
+            render(renderInput, responseContent) {
+                // empty
+            },
+        };
+
         it("test function doUploadTranslations with no file", () => {
-            const res = "";
             const req = {
                 authentication: {
                     user: "",
@@ -102,7 +107,6 @@ describe("test route manage Welsh Dictionary", () => {
             expect(req.authentication.user).to.equal("");
         });
         it("test function doUploadTranslations with a CSV file", () => {
-            const res = "";
             const req = {
                 authentication: {
                     user: "",
@@ -120,7 +124,6 @@ describe("test route manage Welsh Dictionary", () => {
             expect(req.authentication.user).to.equal("");
         });
         it("test function doUploadTranslations without a CSV file", () => {
-            const res = "";
             const req = {
                 authentication: {
                     user: "",
