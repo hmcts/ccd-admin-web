@@ -6,11 +6,11 @@ export function deleteDefinition(req) {
   const logger = Logger.getLogger(__filename);
   const url = config.get("adminWeb.deletedefinition_url");
 
-  logger.info("JCDEBUG: url: " + url);
-  logger.info("JCDEBUG: accessToken: " + req.accessToken);
-  logger.info("JCDEBUG: serviceAuthToken: " + req.serviceAuthToken);
-  logger.info("JCDEBUG: jurisdictionId: " + req.body.jurisdictionId);
-  logger.info("JCDEBUG: definitionVersion: " + req.body.definitionVersion);
+  logger.info("JCDEBUG: deleteDefinition: url: " + url);
+  logger.info("JCDEBUG: deleteDefinition: accessToken: " + req.accessToken);
+  logger.info("JCDEBUG: deleteDefinition: serviceAuthToken: " + req.serviceAuthToken);
+  logger.info("JCDEBUG: deleteDefinition: jurisdictionId: " + req.body.jurisdictionId);
+  logger.info("JCDEBUG: deleteDefinition: definitionVersion: " + req.body.definitionVersion);
 
   const headers = {
     Accept: "application/json",
@@ -22,15 +22,15 @@ export function deleteDefinition(req) {
     .set("Content-Type", "application/json")
     .set(headers)
     .then((res) => {
-      logger.info(`JCDEBUG 1: Delete Definition: ${res.text}`);
+      logger.info(`JCDEBUG 1: deleteDefinition: Delete Definition: ${res.text}`);
       return res;
     })
     .catch((error) => {
       if (error.response) {
-        logger.error(`JCDEBUG 2: Error deleting Definition: ${error.response.text}`);
+        logger.error(`JCDEBUG 2: deleteDefinition: Error deleting Definition: ${error.response.text}`);
         throw error;
       } else {
-        const errMsg = "JCDEBUG 3: Error deleting Definition: no error response";
+        const errMsg = "JCDEBUG 3: deleteDefinition: Error deleting Definition: no error response";
         logger.error(errMsg);
         error.text = errMsg;
         throw error;
