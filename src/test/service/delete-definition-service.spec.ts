@@ -56,7 +56,7 @@ describe("Test Delete Definition service", () => {
     });
   });
 
-  // Test 1
+  // Test 2
   it("should return an HTTP 403 status and error message", (done) => {
     req.serviceAuthToken = "invalid_token";
 
