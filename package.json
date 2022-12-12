@@ -12,7 +12,7 @@
     "lint": "tslint --project tsconfig.json --type-check && sass-lint -v -q",
     "sass": "gulp sass copy-files",
     "watch": "gulp develop",
-    "test": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*') --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-admin-web-unit",
+    "test": "NODE_ENV=mocha LOG_LEVEL=DEBUG mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name 'delete-definition-service.spec.ts' \\) ! -path '*a11y*') --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-admin-web-unit",
     "test:routes": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=routes,inlineAssets=true,reportTitle=ccd-admin-web-routes",
     "test:a11y": "NODE_PATH=.",
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'src/test/**/*.spec.js' --reporter spec --recursive",
