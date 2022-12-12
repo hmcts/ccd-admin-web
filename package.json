@@ -16,7 +16,7 @@
     "test:routes": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) -path '*/routes/*') --reporter mochawesome --reporter-options reportFilename=routes,inlineAssets=true,reportTitle=ccd-admin-web-routes",
     "test:a11y": "NODE_PATH=.",
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'src/test/**/*.spec.js' --reporter spec --recursive",
-    "test:coverage": "NODE_ENV=mocha LOG_LEVEL=OFF nyc mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*')",
+    "test:coverage": "NODE_ENV=mocha LOG_LEVEL=DEBUG nyc mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*')",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "fortifyScan": "./src/test/java/gradlew -p src/test/java fortifyScan",
