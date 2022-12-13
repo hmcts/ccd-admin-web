@@ -37,7 +37,7 @@ describe("Test Delete Definition service", () => {
   });
 
   it("should return an HTTP 204 status and success message", (done) => {
-    const expectedResult = "JCDEBUG: Definition deleted successfully";
+    const expectedResult = "Definition deleted successfully";
 
     nock("http://localhost:4451")
       .delete(`/api/draft/${req.body.jurisdictionId}/${req.body.definitionVersion}`)
