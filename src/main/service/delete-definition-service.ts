@@ -6,11 +6,11 @@ export function deleteDefinition(req) {
   const logger = Logger.getLogger(__filename);
   const url = config.get("adminWeb.deletedefinition_url");
 
-  logger.info("JCDEBUG: deleteDefinition: url: " + url);
-  logger.info("JCDEBUG: deleteDefinition: accessToken: " + req.accessToken);
-  logger.info("JCDEBUG: deleteDefinition: serviceAuthToken: " + req.serviceAuthToken);
-  logger.info("JCDEBUG: deleteDefinition: jurisdictionId: " + req.body.jurisdictionId);
-  logger.info("JCDEBUG: deleteDefinition: definitionVersion: " + req.body.definitionVersion);
+    logger.info("JCDEBUG: deleteDefinition: url: " + url + " , "
+        + "accessToken: " + req.accessToken + " , "
+        + "serviceAuthToken: " + req.serviceAuthToken + " , "
+        + "jurisdictionId: " + req.body.jurisdictionId + " , "
+        + "definitionVersion: " + req.body.definitionVersion);
 
   const headers = {
     Accept: "application/json",
