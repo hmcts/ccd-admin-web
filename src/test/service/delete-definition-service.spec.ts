@@ -7,7 +7,6 @@ import * as nock from "nock";
 const expect = chai.expect;
 chai.use(sinonChai);
 
-// Unit tests for Delete Definition service
 describe("Test Delete Definition service", () => {
 
   const deleteDefinitionUrl = "http://localhost:4451/api/draft";
@@ -37,7 +36,6 @@ describe("Test Delete Definition service", () => {
     }).deleteDefinition;
   });
 
-  // Test 1
   it("should return an HTTP 204 status and success message", (done) => {
     const expectedResult = "JCDEBUG: Definition deleted successfully";
 
@@ -58,7 +56,6 @@ describe("Test Delete Definition service", () => {
     });
   });
 
-  // Test 2
   it("should return an HTTP 403 status and error message", (done) => {
     req.serviceAuthToken = "invalid_token";
 
