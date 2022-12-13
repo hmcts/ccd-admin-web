@@ -6,7 +6,7 @@ export function deleteDefinition(req) {
   const logger = Logger.getLogger(__filename);
   const url = config.get("adminWeb.deletedefinition_url");
 
-    logger.info("JCDEBUG: deleteDefinition: url: " + url + " , "
+  logger.info("JCDEBUG: deleteDefinition: url: " + url + " , "
         + "accessToken: " + req.accessToken + " , "
         + "serviceAuthToken: " + req.serviceAuthToken + " , "
         + "jurisdictionId: " + req.body.jurisdictionId + " , "
