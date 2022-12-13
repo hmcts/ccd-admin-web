@@ -7,6 +7,7 @@ import * as nock from "nock";
 const expect = chai.expect;
 chai.use(sinonChai);
 
+// Unit tests for delete user profile service
 describe("test delete user profile service", () => {
 
   const deleteUserProfileURL = "http://localhost:4453/users";

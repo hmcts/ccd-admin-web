@@ -7,6 +7,7 @@ import * as nock from "nock";
 const expect = chai.expect;
 chai.use(sinonChai);
 
+// Unit tests for Delete Definition service
 describe("Test Delete Definition service", () => {
 
   const deleteDefinitionUrl = "http://localhost:4451/api/draft";
