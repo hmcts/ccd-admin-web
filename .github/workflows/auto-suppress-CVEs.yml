@@ -29,10 +29,12 @@ jobs:
 
       - name: Append new suppressions to yarn-audit-new-issues report
         run: fgrep -vf yarn-audit-known-issues.bak yarn-audit-known-issues >> yarn-audit-new-issues
+        continue-on-error: true
 
       - name: Commit updated CVE suppressions
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           skip_dirty_check: true
           commit_message: "Auto-suppress CVEs"
-          # branch: master
+          commit_options: "--allow-empty"
+          branch: ${{ github.head_ref }}
