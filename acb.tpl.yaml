@@ -1,7 +1,7 @@
 version: 1.0-preview-1
 steps:
   - id: pull-hmcts-base-amd64
-    cmd: docker pull --platform linux/amd64 hmctspublic.azurecr.io/base/node:14-alpine && docker tag hmctspublic.azurecr.io/base/node:14-alpine hmctspublic.azurecr.io/base/node/linux/amd64:14-alpine
+    cmd: docker pull --platform linux/amd64 hmctspublic.azurecr.io/base/node:16-alpine && docker tag hmctspublic.azurecr.io/base/node:16-alpine hmctspublic.azurecr.io/base/node/linux/amd64:16-alpine
     when: ["-"]
 
   - id: pull-base-amd64
