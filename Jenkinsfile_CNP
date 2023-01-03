@@ -69,7 +69,7 @@ withPipeline("nodejs", product, component) {
         sh "yarn cache clean"
     }
 
-    after('build') {
+    afterAlways('build') {
          sh "yarn setup"
     }
 }
