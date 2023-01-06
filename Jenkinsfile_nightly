@@ -16,7 +16,7 @@ withNightlyPipeline(type, product, component) {
     enableSlackNotifications('#ccd-nightly-builds')
     enableFortifyScan()
 
-    afterCheckout {
+    afterAlways('checkout') {
         sh "yarn cache clean"
     }
 

@@ -65,7 +65,7 @@ withPipeline("nodejs", product, component) {
     loadVaultSecrets(secrets)
     disableLegacyDeployment()
 
-    afterCheckout {
+    afterAlways('checkout') {
         sh "yarn cache clean"
     }
 
