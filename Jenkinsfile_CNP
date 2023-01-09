@@ -70,6 +70,6 @@ withPipeline("nodejs", product, component) {
     }
 
     afterAlways('build') {
-         sh "yarn setup"
+         sh "yarn check"
     }
 }
