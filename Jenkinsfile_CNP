@@ -7,6 +7,8 @@ properties(
 
 @Library("Infrastructure")
 
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+
 def product = "ccd"
 def component = "admin-web"
 
@@ -70,6 +72,8 @@ withPipeline("nodejs", product, component) {
     }
 
     afterAlways('build') {
-         sh "yarn check"
+         //sh "yarn check"
+         yarnBuilder.yarn('setup')
     }
+    
 }
