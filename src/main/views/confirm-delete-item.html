@@ -17,9 +17,13 @@
     </div>
   {% endif %}
   <div class="padding-deeper">
+    <h1 style="color:red;">JCDEBUG: POST to route /delete{{ itemToDelete }}</h1>
     <form id="confirmdelete" name="confirmdelete" method="POST" action="/delete{{ itemToDelete }}">
       {% if (itemToDelete === "user") %}
         <input id="idamId" name="idamId" type="hidden" value="{{ idamId }}"/>
+      {% endif %}
+      {% if (itemToDelete === "role") %}
+        <input id="role" name="role" type="hidden" value="{{ role }}"/>
       {% endif %}
       {% if (itemToDelete === "definition") %}
         <input id="jurisdictionId" name="jurisdictionId" type="hidden" value="{{ currentJurisdiction }}"/>
