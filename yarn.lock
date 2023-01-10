@@ -7123,7 +7123,7 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-snyk@^1.1064.0:
+snyk@^1.1081.0:
   version "1.1082.0"
   resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1082.0.tgz#547979e0ed38f91a1a5ff624584d517f1c6cc28c"
   integrity sha512-EqfjdQ/oTw65/f5QJW/2jYXweufqFKwEf5xWvdMM7DPSGJXqPm/x0SZnv6YTM7wAg86lsoxnVJSD01aCtbMQag==

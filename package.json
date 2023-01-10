@@ -61,7 +61,7 @@
     "sass": "^1.45.0",
     "serve-favicon": "^2.4.4",
     "sinon-stub-promise": "^4.0.0",
-    "snyk": "^1.1064.0",
+    "snyk": "^1.1081.0",
     "superagent": "^3.8.3",
     "supertest-session": "^3.3.0",
     "ts-node": "^10.7.0",
