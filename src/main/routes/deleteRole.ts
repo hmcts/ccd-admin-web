@@ -21,7 +21,8 @@ router.post("/deleterole", (req, res, next) => {
           status: 400, text: error.rawResponse ? error.rawResponse :
             "Unexpected error : Please contact your administrator",
         };
-        res.redirect(302, `/deleteitem?item=${sanitize(req.body.itemToDelete)}&roleParameter=${sanitize(req.body.role)}`);
+        res.redirect(302,
+            `/deleteitem?item=${sanitize(req.body.itemToDelete)}&roleParameter=${sanitize(req.body.role)}`);
       });
     } else if (req.body.deleteItem === "No") {
       deleteSessionVariables(req);
@@ -29,7 +30,8 @@ router.post("/deleterole", (req, res, next) => {
     } else {
       deleteSessionVariables(req);
       req.session.response = {error: "Please choose Yes or No"};
-      res.redirect(302, `/deleteitem?item=${sanitize(req.body.itemToDelete)}&roleParameter=${sanitize(req.body.role)}`);
+      res.redirect(302,
+          `/deleteitem?item=${sanitize(req.body.itemToDelete)}&roleParameter=${sanitize(req.body.role)}`);
     }
   } else {
     res.render(errorPage, error_unauthorized_role(req));
