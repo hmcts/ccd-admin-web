@@ -126,7 +126,7 @@ describe("Confirm Delete page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          //expect(res.headers.location.startsWith("/user-roles")).to.be.true;
+          // expect(res.headers.location.startsWith("/user-roles")).to.be.true;
         });
     });
 
