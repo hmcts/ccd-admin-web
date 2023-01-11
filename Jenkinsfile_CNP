@@ -72,7 +72,6 @@ withPipeline("nodejs", product, component) {
     }
 
     afterAlways('build') {
-         //sh "yarn check"
          yarnBuilder.yarn('setup')
     }
     
