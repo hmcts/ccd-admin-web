@@ -35,10 +35,10 @@ describe("test delete role service", () => {
     }).deleteRole;
   });
 
-  it("should return an HTTP 204 status and success message", (done) => {
+  it("TEST ONE - should return an HTTP 204 status and success message", (done) => {
     const expectedResult = "User role deleted successfully";
 
-    nock("http://localhost:4453")
+    nock("http://localhost:4451")
       .delete("/api/user-role")
       .query({ role: "test-role", jid: "test" })
       .reply(204, expectedResult);
@@ -56,7 +56,7 @@ describe("test delete role service", () => {
     });
   });
 
-  it("should return an HTTP 403 status and error message", (done) => {
+  it("TEST TWO - should return an HTTP 403 status and error message", (done) => {
     req.serviceAuthToken = "invalid_token";
 
     const expectedResult = {
@@ -64,7 +64,7 @@ describe("test delete role service", () => {
       message: "Access Denied",
     };
 
-    nock("http://localhost:4453")
+    nock("http://localhost:4451")
       .delete("/api/user-role")
       .query({ role: "test-role", jid: "test" })
       .reply(403, expectedResult);

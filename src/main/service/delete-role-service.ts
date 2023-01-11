@@ -4,7 +4,7 @@ import { Logger } from "@hmcts/nodejs-logging";
 
 export function deleteRole(req) {
     const logger = Logger.getLogger(__filename);
-    const url = config.get("adminWeb.userrole_url");
+    const url = config.get("adminWeb.userrole_url");  // "userrole_url: http://localhost:4451/api/user-role"
 
     const headers = {
         Accept: "application/json",
