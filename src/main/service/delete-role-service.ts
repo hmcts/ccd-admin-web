@@ -23,6 +23,8 @@ export function deleteRole(req) {
         .catch((error) => {
             if (error.response) {
                 logger.error(`Error deleting role: ${error.response.text}`);
+                logger.error(`JCDEBUG: url = ` + url);
+                logger.error(`JCDEBUG: jid = ` + req.session.jurisdiction);
                 throw error;
             } else {
                 const errMsg = "Error deleting role: no error response";
