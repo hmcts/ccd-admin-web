@@ -13,7 +13,7 @@ export function deleteRole(req) {
     };
     return request
         .delete(url)
-        .query({ role: req.body.role, jid: req.session.jurisdiction })
+        .query({ role: req.body.role })
         .set("Content-Type", "application/json")
         .set(headers)
         .then((res) => {

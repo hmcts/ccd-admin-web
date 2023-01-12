@@ -40,7 +40,7 @@ describe("test delete role service", () => {
 
     nock("http://localhost:4451")
       .delete("/api/user-role")
-      .query({ role: "test-role", jid: "test" })
+      .query({ role: "test-role" })
       .reply(204, expectedResult);
 
     deleteRole(req).then((res) => {
@@ -66,7 +66,7 @@ describe("test delete role service", () => {
 
     nock("http://localhost:4451")
       .delete("/api/user-role")
-      .query({ role: "test-role", jid: "test" })
+      .query({ role: "test-role" })
       .reply(403, expectedResult);
 
     deleteRole(req).catch((err) => {
