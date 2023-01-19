@@ -1,6 +1,8 @@
 #!groovy
 @Library("Infrastructure") _
 
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+
 properties([
   parameters([
     string(name: 'PRODUCT_NAME', defaultValue: 'ccd', description: ''),
@@ -21,7 +23,7 @@ withParameterizedPipeline(params.TYPE, params.PRODUCT_NAME, params.APP, params.E
   }
 
   afterAlways('build') {
-    sh 'yarn setup'
+    yarnBuilder.yarn('setup')
   }
 
 }
