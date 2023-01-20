@@ -7,6 +7,7 @@ properties(
 
 @Library("Infrastructure")
 
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def product = "ccd"
 def component = "admin-web"
 
@@ -65,11 +66,12 @@ withPipeline("nodejs", product, component) {
     loadVaultSecrets(secrets)
     disableLegacyDeployment()
 
-    afterCheckout {
+    afterAlways('checkout') {
         sh "yarn cache clean"
     }
 
     afterAlways('build') {
-         sh "yarn setup"
+         yarnBuilder.yarn('setup')
     }
+    
 }

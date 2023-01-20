@@ -1935,10 +1935,10 @@ decimal.js@^10.3.1:
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.3.1.tgz#d8c3a444a9c6774ba60ca6ad7261c3a94fd5e783"
   integrity sha512-V0pfhfr8suzyPGOx3nmq4aHqabehUZn6Ch9kyFpV79TGDTWFmHqUqXdabR7QHqxzrYolF4+tVmJhUG4OURg5dQ==
 
-decode-uri-component@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
-  integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
+decode-uri-component@^0.2.0, decode-uri-component@^0.2.1:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.2.tgz#e69dbe25d37941171dd540e024c444cd5188e1e9"
+  integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
 decompress-response@^6.0.0:
   version "6.0.0"
@@ -7123,10 +7123,10 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-snyk@^1.996.0:
-  version "1.1035.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1035.0.tgz#0e03ddf9fb1a127a2605630a815d17dc96d45e3b"
-  integrity sha512-EE6mguhgPZnT06eHn8F7nwLjQcwfx7p+ovuJicOD7DkVAanpeoYso6gKDJbLtBUihgT3urGQFKRNoBo1tKoWiw==
+snyk@^1.1081.0:
+  version "1.1081.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1081.0.tgz#1b035cf4d0203177ff0c65e9f2eaf149de19fc74"
+  integrity sha512-vezueoJQSmQM7iVhfHFgABigBzX4Y+KxIol6kLSK5FbyFYxerAKx5nXH0SjGLwqt06QAX6JzEhYXdEL0vG4cRg==
 
 socket.io-adapter@~2.4.0:
   version "2.4.0"

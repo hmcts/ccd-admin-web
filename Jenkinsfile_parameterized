@@ -1,6 +1,8 @@
 #!groovy
 @Library("Infrastructure") _
 
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+
 properties([
   parameters([
     string(name: 'PRODUCT_NAME', defaultValue: 'ccd', description: ''),
@@ -16,12 +18,12 @@ properties([
 withParameterizedPipeline(params.TYPE, params.PRODUCT_NAME, params.APP, params.ENVIRONMENT, params.SUBSCRIPTION) {
   enableSlackNotifications('#ccd-param-builds')
 
-  afterCheckout {
+  afterAlways('checkout') {
     sh "yarn cache clean"
   }
 
   afterAlways('build') {
-    sh 'yarn setup'
+    yarnBuilder.yarn('setup')
   }
 
 }
