@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "^14.18.1",
+    "node": "^16.15.0",
     "yarn": "^1.12.3"
   },
   "scripts": {
@@ -61,7 +61,7 @@
     "sass": "^1.45.0",
     "serve-favicon": "^2.4.4",
     "sinon-stub-promise": "^4.0.0",
-    "snyk": "^1.996.0",
+    "snyk": "^1.1081.0",
     "superagent": "^3.8.3",
     "supertest-session": "^3.3.0",
     "ts-node": "^10.7.0",
@@ -153,7 +153,8 @@
     "pathval": "^1.1.1",
     "minimatch": "^3.0.5",
     "engine.io": "^6.2.1",
-    "json5": "^2.2.2"
+    "json5": "^2.2.2",
+    "decode-uri-component": "^0.2.1"
   },
   "nyc": {
     "extension": [
