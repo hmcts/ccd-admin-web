@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "^16.15.0",
-    "yarn": "^1.12.3"
+    "node": "^16.15.0"
   },
   "scripts": {
     "setup": "gulp sass copy-files",
@@ -179,5 +178,6 @@
     "report-dir": "coverage",
     "all": true
   },
-  "snyk": true
+  "snyk": true,
+  "packageManager": "yarn@3.4.1"
 }
