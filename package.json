@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "^16.15.0",
-    "yarn": "^1.12.3"
+    "node": "^16.15.0"
   },
   "scripts": {
     "setup": "gulp sass copy-files",
-    "start": "node server.js",
+    "start": "yarn node server.js",
     "lint": "tslint --project tsconfig.json --type-check && sass-lint -v -q",
     "sass": "gulp sass copy-files",
     "watch": "gulp develop",
@@ -27,8 +26,8 @@
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.8.0",
-    "@hmcts/nodejs-logging": "^3.0.0",
-    "@hmcts/properties-volume": "^0.0.13",
+    "@hmcts/nodejs-logging": "^4.0.4",
+    "@hmcts/properties-volume": "^0.0.14",
     "@types/node": "^10.5.4",
     "applicationinsights": "^1.0.8",
     "body-parser": "^1.20.1",
@@ -100,7 +99,7 @@
     "sinon": "^7.3.2",
     "sinon-chai": "^2.13.0",
     "sinon-express-mock": "^2.0.4",
-    "sonar-scanner": "^3.0.3",
+    "sonar-scanner": "^3.1.0",
     "supertest": "^3.0.0",
     "supertest-session": "^3.3.0",
     "tslint": "^5.7.0"
@@ -180,5 +179,6 @@
     "report-dir": "coverage",
     "all": true
   },
-  "snyk": true
+  "snyk": true,
+  "packageManager": "yarn@3.4.1"
 }
