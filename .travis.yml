@@ -11,7 +11,7 @@ install:
 script:
   - yarn --version
   - yarn sass
-  - yarn check || echo 'yarn check failed'
+  - yarn --check-cache || echo 'yarn --check-cache failed'
   - yarn lint
   - yarn test
   - yarn test:routes
