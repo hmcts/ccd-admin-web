@@ -56,7 +56,7 @@ withPipeline("nodejs", product, component) {
 
         def githubApi = new GithubAPI(this)
         if (!githubApi.getLabelsbyPattern(env.BRANCH_NAME, "keep-helm")) {
-            enableCleanupOfHelmReleaseOnSuccess()
+          enableCleanupOfHelmReleaseAlways()
         }
     }
 
@@ -73,5 +73,5 @@ withPipeline("nodejs", product, component) {
     afterAlways('build') {
          yarnBuilder.yarn('setup')
     }
-    
+
 }
