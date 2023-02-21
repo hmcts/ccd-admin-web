@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "^16.15.0",
-    "yarn": "^1.12.3"
+    "node": "^16.15.0"
   },
   "scripts": {
     "setup": "gulp sass copy-files",
-    "start": "node server.js",
+    "start": "yarn node server.js",
     "lint": "tslint --project tsconfig.json --type-check && sass-lint -v -q",
     "sass": "gulp sass copy-files",
     "watch": "gulp develop",
@@ -21,14 +20,15 @@
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "fortifyScan": "./src/test/java/gradlew -p src/test/java fortifyScan",
     "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/** -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info",
-    "snyk-protect": "echo 'snyk protect'",
+    "snyk-protect": "echo 'snyk-protect'",
     "prepare": "echo 'npm run snyk-protect'",
     "prepublish": "echo 'npm run snyk-protect'"
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.8.0",
-    "@hmcts/nodejs-logging": "^3.0.0",
-    "@hmcts/properties-volume": "^0.0.13",
+    "@hmcts/nodejs-logging": "^4.0.4",
+    "@hmcts/properties-volume": "^0.0.14",
+    "@snyk/protect": "^1.1103.0",
     "@types/node": "^10.5.4",
     "applicationinsights": "^1.0.8",
     "body-parser": "^1.20.1",
@@ -61,7 +61,6 @@
     "sass": "^1.45.0",
     "serve-favicon": "^2.4.4",
     "sinon-stub-promise": "^4.0.0",
-    "snyk": "^1.1081.0",
     "superagent": "^3.8.3",
     "supertest-session": "^3.3.0",
     "ts-node": "^10.7.0",
@@ -100,7 +99,7 @@
     "sinon": "^7.3.2",
     "sinon-chai": "^2.13.0",
     "sinon-express-mock": "^2.0.4",
-    "sonar-scanner": "^3.0.3",
+    "sonar-scanner": "^3.1.0",
     "supertest": "^3.0.0",
     "supertest-session": "^3.3.0",
     "tslint": "^5.7.0"
@@ -182,5 +181,6 @@
     "report-dir": "coverage",
     "all": true
   },
-  "snyk": true
+  "snyk": true,
+  "packageManager": "yarn@3.4.1"
 }
