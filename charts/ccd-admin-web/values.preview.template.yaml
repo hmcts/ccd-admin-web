@@ -7,7 +7,7 @@ nodejs:
     ADMINWEB_JURISDICTIONS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/data/jurisdictions
     ADMINWEB_USER_PROFILE_URL: http://ccd-user-profile-api-aat.service.core-compute-aat.internal/users
     ADMINWEB_SAVE_USER_PROFILE_URL: http://ccd-user-profile-api-aat.service.core-compute-aat.internal/users/save
-    ADMINWEB_USER_ROLE_URL: https://ccd-definition-store-api-pr-1345.service.core-compute-preview.internal/api/user-role
+    ADMINWEB_USER_ROLE_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/user-roles
     ADMIN_ALL_USER_ROLES_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/user-roles
     ADMINWEB_CREATE_DEFINITION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/draft
     ADMINWEB_UPDATE_DEFINITION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/draft/save

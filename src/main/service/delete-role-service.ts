@@ -26,7 +26,7 @@ export function deleteRole(req) {
                 logger.error(`**** JCDEBUG: response = ` + error.response);
                 // url = http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/user-role
                 logger.error(`**** JCDEBUG: url = ` + url);
-                logger.error(`**** JCDEBUG: jid = ` + req.session.jurisdiction);
+                logger.error(`**** JCDEBUG: role = ` + req.body.role);
                 throw error;
             } else {
                 const errMsg = "Error deleting role: no error response";
