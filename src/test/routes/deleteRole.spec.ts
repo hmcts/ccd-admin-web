@@ -5,13 +5,11 @@ import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
 
-// Based on "deleteUser.spec.ts".   **** Converted from USER to ROLE ****
-
 describe("Confirm Delete page", () => {
   describe("on POST /deleterole when unauthorized", () => {
         const CCD_IMPORT_ROLE = "ccd-import";
 
-        it("TEST 1 - should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
+        it("should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
             idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
             idamServiceMock.resolveRetrieveServiceToken();
 
@@ -25,7 +23,7 @@ describe("Confirm Delete page", () => {
                     expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
                 });
         });
-        it("TEST 2 - should redirect to the Roles list when No is chosen", () => {
+        it("should redirect to the Roles list when No is chosen", () => {
             idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
             idamServiceMock.resolveRetrieveServiceToken();
 
@@ -40,7 +38,7 @@ describe("Confirm Delete page", () => {
                 });
         });
 
-        it("TEST 3 - should redirect to the Roles list when Yes is chosen", () => {
+        it("should redirect to the Roles list when Yes is chosen", () => {
             idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
             idamServiceMock.resolveRetrieveServiceToken();
 
@@ -60,7 +58,7 @@ describe("Confirm Delete page", () => {
                 });
         });
 
-        it("TEST 4 - should redirect to the Roles list when Yes is chosen but an error occurred", () => {
+        it("should redirect to the Roles list when Yes is chosen but an error occurred", () => {
             idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
             idamServiceMock.resolveRetrieveServiceToken();
 
@@ -84,7 +82,7 @@ describe("Confirm Delete page", () => {
   describe("on POST /deleterole when authorized", () => {
     const CCD_IMPORT_ROLE = "ccd-import";
 
-    it("TEST 5 - should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
+    it("should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
@@ -97,7 +95,7 @@ describe("Confirm Delete page", () => {
           expect(res.headers.location.startsWith("/deleteitem?item=role&roleParameter=test-role")).to.be.true;
         });
     });
-    it("TEST 6 - should redirect to the Roles list when No is chosen", () => {
+    it("should redirect to the Roles list when No is chosen", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
@@ -111,7 +109,7 @@ describe("Confirm Delete page", () => {
         });
     });
 
-    it("TEST 7 - should redirect to the Roles list when Yes is chosen", () => {
+    it("should redirect to the Roles list when Yes is chosen", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
@@ -126,11 +124,10 @@ describe("Confirm Delete page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          // expect(res.headers.location.startsWith("/user-roles")).to.be.true;
         });
     });
 
-    it("TEST 8 - should redirect to the Roles list when Yes is chosen but an error occurred", () => {
+    it("should redirect to the Roles list when Yes is chosen but an error occurred", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 

@@ -1,13 +1,13 @@
-import { error_unauthorized_role } from "../util/error_unauthorized_role";    // Generic
-import { deleteSessionVariables } from "../util/clearSession";                // Generic
+import { error_unauthorized_role } from "../util/error_unauthorized_role";
+import { deleteSessionVariables } from "../util/clearSession";
 import { deleteRole } from "../service/delete-role-service";
-import { sanitize } from "../util/sanitize";                                  // Generic
-import router from "./home";                                                  // Generic
+import { sanitize } from "../util/sanitize";
+import router from "./home";
 
 const errorPage = "error";
 
 /**
- * Delete Role  --  W.I.P. , See "CCD-267 NOTES.txt"
+ * Delete User Role.
  */
 router.post("/deleterole", (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
