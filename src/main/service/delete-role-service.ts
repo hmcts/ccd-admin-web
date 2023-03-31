@@ -21,6 +21,7 @@ export function deleteRole(req) {
             return res;
         })
         .catch((error) => {
+            logger.error(`**** JCDEBUG: url = ` + url);
             if (error.response) {
                 logger.error(`Error deleting role: ${error.response.text}`);
                 throw error;
