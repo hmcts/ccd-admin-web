@@ -1,4 +1,4 @@
-name: x
+name: Auto-suppress CVEs
 
 on:
   schedule:
