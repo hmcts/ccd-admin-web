@@ -128,8 +128,7 @@ describe("test manage Welsh Dictionary Service", () => {
   describe("test three rows of data with yesOrNo", () => {
     it("should get good JSON message from data", (done) => {
 
-      Promise.resolve([
-            {0: "phrase 1", 1: "trans phase 1", 2: true, 3: "yes translation", 4: "no translation"},
+      Promise.resolve([{0: "phrase 1", 1: "trans phase 1", 2: true, 3: "yes translation", 4: "no translation"},
             {0: "phrase 2", 1: "trans phase 2", 2: false, 3: "invalid", 4: "invalid"},
             {0: "phrase 3", 1: "trans phase 3", 2: "true", 3: "yes translation", 4: "no translation"}])
         .then((result) => {
