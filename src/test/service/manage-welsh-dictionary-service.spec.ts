@@ -131,8 +131,8 @@ describe("test manage Welsh Dictionary Service", () => {
       Promise.resolve([
             {0: "phrase 1", 1: "trans phase 1", 2: true, 3: "yes translation", 4: "no translation"},
             {0: "phrase 2", 1: "trans phase 2", 2: false, 3: "invalid", 4: "invalid"},
-            {0: "phrase 3", 1: "trans phase 3", 2: "true", 3: "yes translation", 4: "no translation"}
-        ]).then((result) => {
+            {0: "phrase 3", 1: "trans phase 3", 2: "true", 3: "yes translation", 4: "no translation"}])
+        .then((result) => {
             const jsonString = buildTranslationsJson(result);
             expect(jsonString.length).eq(250);
             expect(jsonString.includes("invalid")).eq(false);
