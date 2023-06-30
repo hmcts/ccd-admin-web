@@ -7,11 +7,14 @@ export function buildTranslationsJson(data) {
   let translations = "";
   for (const element of data) {
       if (translations.length > 0) { translations += ","; }
-      if (element[1] === undefined || element[1] === null) {
-        translations += JSON.stringify(element[0]) + ":" + JSON.stringify(null);
-      } else {
-        translations += JSON.stringify(element[0]) + ":" + JSON.stringify(element[1]);
+      translations += JSON.stringify(element[0]) + ":{";
+      translations += "\"translation\":" + JSON.stringify(element[1] ? element[1] : null);
+      if (element[2]) {
+        translations += ",\"yesOrNo\":" + JSON.stringify(element[2] ? true : false);
+        translations += ",\"yes\":" + JSON.stringify(element[3] ? element[3] : null);
+        translations += ",\"no\":" + JSON.stringify(element[4] ? element[4] : null);
       }
+      translations += "}";
   }
   return translations;
 }
