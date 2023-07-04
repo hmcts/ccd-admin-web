@@ -3,7 +3,7 @@ import * as nock from "nock";
 import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
-import {buildTranslationsJson, getRowDataArrayFromCsv} from "../../main/service/manage-welsh-dictionary-service";
+import {buildTranslationsJson, rowToTranslationJson, getRowDataArrayFromCsv} from "../../main/service/manage-welsh-dictionary-service";
 const { PassThrough } = require("stream");
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -135,6 +135,21 @@ describe("test manage Welsh Dictionary Service", () => {
             const jsonString = buildTranslationsJson(result);
             expect(jsonString.length).eq(250);
             expect(jsonString.includes("invalid")).eq(false);
+            done();
+          })
+          .catch(() => {
+            throw new Error("Promise should have been resolved");
+          });
+    });
+  });
+
+  describe("test row of data with just english pharse and yesOrNo as true", () => {
+    it("should get good JSON message from data", (done) => {
+
+      Promise.resolve([{0: "phrase 1", 1: null, 2: true}])
+        .then((result) => {
+            const jsonString = rowToTranslationJson(result[0]);
+            expect(jsonString).eq("\"phrase 1\":{\"translation\":null,\"yesOrNo\":true,\"yes\":null,\"no\":null}");
             done();
           })
           .catch(() => {
