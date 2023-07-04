@@ -7,7 +7,7 @@ export function buildTranslationsJson(data) {
   let translations = "";
   for (const element of data) {
       if (translations.length > 0) { translations += ","; }
-      translations += rowToTranslationJson(element)
+      translations += rowToTranslationJson(element);
   }
   return translations;
 }
