@@ -47,7 +47,7 @@ export function flattenJsonResponse(res: object) {
     str = str + "," + (v.yesOrNo ? v.yesOrNo : "");
     str = str + "," + (v.yes ? v.yes : "");
     str = str + "," + (v.no ? v.no : "");
-    flat.push(str.replace(/[,]+$/g, ""));
+    flat.push(str.replace(/[,]{1,4}$/g, ""));
   });
   return flat.join("\r\n");
 }
