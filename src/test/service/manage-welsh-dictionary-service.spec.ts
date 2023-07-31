@@ -146,10 +146,10 @@ describe("test manage Welsh Dictionary Service", () => {
   describe("test row of data with just english pharse and yesOrNo as true", () => {
     it("should get good JSON message from data", (done) => {
 
-      Promise.resolve([{0: "phrase 1", 1: null, 2: true}])
+      Promise.resolve([{0: "phrase 1", 1: undefined, 2: true}])
         .then((result) => {
             const jsonString = rowToTranslationJson(result[0]);
-            expect(jsonString).eq("\"phrase 1\":{\"translation\":null,\"yesOrNo\":true,\"yes\":null,\"no\":null}");
+            expect(jsonString).eq("\"phrase 1\":{\"translation\":\"\",\"yesOrNo\":true,\"yes\":\"\",\"no\":\"\"}");
             done();
           })
           .catch(() => {

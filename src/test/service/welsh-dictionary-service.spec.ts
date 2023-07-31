@@ -1,6 +1,7 @@
 import * as chai from "chai";
 import * as nock from "nock";
 import * as proxyquire from "proxyquire";
+import { flattenJsonResponse } from "routes/welshDictionary";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
 
@@ -73,6 +74,47 @@ describe("welshDictionaryService::getWelshDictionary", () => {
           done(e);
         }
       });
+    });
+  });
+
+  describe("Successful flatten recieved Welsh dictionary response", () => {
+    it("should return array of strings ", (done) => {
+      const dict =
+      `{
+        "translations": {
+            "texta": {
+                "translation": "welsha",
+                "yesOrNo": true,
+                "yes": "yesa",
+                "no": "noa"
+            },
+            "texty": {
+                "translation": "welshy",
+                "yesOrNo": false
+            },
+            "textz": {
+                "translation": "welshz"
+            },
+            "text": {
+                "translation": ""
+            }
+        }
+      }`;
+
+      const data = JSON.parse(dict).translations;
+      const csvContent = flattenJsonResponse(data);
+      const flat = csvContent.split('\r\n');
+
+      try {
+        expect(flat.length).to.equal(4);
+        expect(flat[0]).to.equal("texta,welsha,true,yesa,noa");
+        expect(flat[1]).to.equal("texty,welshy");
+        expect(flat[2]).to.equal("textz,welshz");
+        expect(flat[3]).to.equal("text");
+        done();
+      } catch (e) {
+        done(e);
+      }
     });
   });
 

@@ -2,7 +2,6 @@ import * as express from "express";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { getDictionary } from "../service/welsh-dictionary-service";
 import { sanitize } from "../util/sanitize";
-import { creatCsvFile} from "download-csv";
 
 const errorPage = "error";
 const welshDictionary = "welshDictionary";
@@ -27,7 +26,7 @@ router.get(dictionaryUrl, (req, res, next) => {
    if (req.adminWebAuthorization && req.adminWebAuthorization.canManageWelshTranslation) {
     getDictionary(req).then((response) => {
       const data = JSON.parse(response.text).translations;
-      const csvContent = creatCsvFile(data, null);
+      const csvContent = flattenJsonResponse(data);
       const download = Buffer.from(csvContent, "utf8");
       res.end(download);
     })
@@ -38,5 +37,19 @@ router.get(dictionaryUrl, (req, res, next) => {
     res.status(403).send(error_unauthorized_role(req));
   }
 });
+
+export function flattenJsonResponse(res: object) {
+  let flat = [];
+  Object.keys(res).forEach((k) => {
+    let str = k;
+    let v = res[k];
+    str = str + "," + (v['translation'] ? v['translation'] : '');
+    str = str + "," + (v['yesOrNo'] ? v['yesOrNo'] : '');
+    str = str + "," + (v['yes'] ? v['yes'] : '');
+    str = str + "," + (v['no'] ? v['no'] : '');
+    flat.push(str.replace(/[,]+$/g, ''));
+  });
+  return flat.join('\r\n');
+}
 
 export default router;
