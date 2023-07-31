@@ -103,7 +103,7 @@ describe("welshDictionaryService::getWelshDictionary", () => {
 
       const data = JSON.parse(dict).translations;
       const csvContent = flattenJsonResponse(data);
-      const flat = csvContent.split('\r\n');
+      const flat = csvContent.split("\r\n");
 
       try {
         expect(flat.length).to.equal(4);

@@ -39,17 +39,17 @@ router.get(dictionaryUrl, (req, res, next) => {
 });
 
 export function flattenJsonResponse(res: object) {
-  let flat = [];
+  const flat = [];
   Object.keys(res).forEach((k) => {
     let str = k;
-    let v = res[k];
-    str = str + "," + (v['translation'] ? v['translation'] : '');
-    str = str + "," + (v['yesOrNo'] ? v['yesOrNo'] : '');
-    str = str + "," + (v['yes'] ? v['yes'] : '');
-    str = str + "," + (v['no'] ? v['no'] : '');
-    flat.push(str.replace(/[,]+$/g, ''));
+    const v = res[k];
+    str = str + "," + (v.translation ? v.translation : "");
+    str = str + "," + (v.yesOrNo ? v.yesOrNo : "");
+    str = str + "," + (v.yes ? v.yes : "");
+    str = str + "," + (v.no ? v.no : "");
+    flat.push(str.replace(/[,]+$/g, ""));
   });
-  return flat.join('\r\n');
+  return flat.join("\r\n");
 }
 
 export default router;
