@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "^16.15.0"
+    "node": "^18.17.1"
   },
   "scripts": {
     "setup": "gulp sass copy-files",
