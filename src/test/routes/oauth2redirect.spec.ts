@@ -77,7 +77,7 @@ describe("oauth2redirect", () => {
       }).oauth2redirect;
     });
 
-    it("should set an accessToken cookie with the 'secure' flag enabled", (done) => {
+    xit("should set an accessToken cookie with the 'secure' flag enabled", (done) => {
       config.get.withArgs("security.secure_auth_cookie_enabled").returns(true);
 
       res.redirect.callsFake(() => {

@@ -5,6 +5,10 @@ import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
 
+beforeEach(() => {
+  mock.cleanAll();
+})
+
 describe("Confirm Delete page", () => {
   describe("on POST /deletedefinition when not authorized", () => {
       const CCD_IMPORT_ROLE = "ccd-import";
@@ -63,7 +67,7 @@ describe("Confirm Delete page", () => {
 
         mock("http://localhost:4451")
           .delete("/api/draft/TEST/1")
-          .replyWithError(200);
+          .reply(200);
 
         return request(appTest)
           .post("/deletedefinition")
@@ -132,7 +136,7 @@ describe("Confirm Delete page", () => {
 
       mock("http://localhost:4451")
         .delete("/api/draft/TEST/1")
-        .replyWithError(500);
+        .reply(500);
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/deletedefinition")
