@@ -7,7 +7,7 @@ import * as request from "supertest";
 
 beforeEach(() => {
   mock.cleanAll();
-})
+});
 
 describe("Confirm Delete page", () => {
   describe("on POST /deletedefinition when not authorized", () => {
