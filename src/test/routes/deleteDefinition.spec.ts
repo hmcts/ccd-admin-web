@@ -63,7 +63,7 @@ describe("Confirm Delete page", () => {
 
         mock("http://localhost:4451")
           .delete("/api/draft/TEST/1")
-          .replyWithError(200);
+          .replyWithError("200");
 
         return request(appTest)
           .post("/deletedefinition")
@@ -132,7 +132,7 @@ describe("Confirm Delete page", () => {
 
       mock("http://localhost:4451")
         .delete("/api/draft/TEST/1")
-        .replyWithError(500);
+        .replyWithError("500");
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/deletedefinition")
