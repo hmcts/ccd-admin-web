@@ -1,6 +1,6 @@
 {
   "name": "ccd-admin-web",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "engines": {
     "node": "^18.17.0"
@@ -64,11 +64,11 @@
     "supertest-session": "^3.3.0",
     "ts-node": "^10.7.0",
     "tsconfig-paths": "^3.14.1",
-    "typescript": "^3.2.1",
     "validator": "^13.7.0",
     "xss-filters": "^1.2.7"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^16.2.0",
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^2.2.43",
     "@types/sinon-chai": "^3.2.0",
@@ -88,6 +88,7 @@
     "jsonwebtoken": "^9.0.0",
     "karma": "^6.4.2",
     "karma-chrome-launcher": "^3.2.0",
+    "karma-cli": "^2.0.0",
     "karma-coverage": "^2.2.1",
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
@@ -99,14 +100,15 @@
     "pa11y": "^6.1.1",
     "proxyquire": "^2.0.1",
     "sass-lint": "^1.13.1",
-    "sinon": "^7.5.0",
-    "sinon-chai": "^2.14.0",
+    "sinon": "^15.2.0",
+    "sinon-chai": "^3.7.0",
     "sinon-express-mock": "^2.2.1",
     "sinon-stub-promise": "^4.0.0",
     "sonar-scanner": "^3.1.0",
     "supertest": "^3.0.0",
     "supertest-session": "^3.3.0",
     "tslint": "^5.7.0",
+    "typescript": "^5.2.2",
     "yargs-parser": "^21.1.1"
   },
   "resolutions": {
