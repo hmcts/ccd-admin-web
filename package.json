@@ -164,7 +164,7 @@
     "cookiejar": "^2.1.4",
     "ua-parser-js": "^0.7.33",
     "http-cache-semantics": "^4.1.1",
-    "yargs": "^13.3.2"
+    "yargs": "^13.3.2",
   },
   "nyc": {
     "extension": [
