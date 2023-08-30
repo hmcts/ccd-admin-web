@@ -116,7 +116,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
-        .replyWithError(500);
+        .reply(500);
 
       return request(app)
         .get("/import")
@@ -176,7 +176,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
-        .replyWithError(500);
+        .reply(500);
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/import")
@@ -386,7 +386,7 @@ describe("Import Definition page", () => {
 
       const apiCall = mock("http://localhost:4451")
         .post("/import")
-        .replyWithError(500, "Error on Definition import");
+        .reply(500, "Error on Definition import");
 
       const file = {
         buffer: new Buffer(8),
