@@ -123,7 +123,9 @@ describe("welshDictionaryService::getWelshDictionary", () => {
       const dict =
       `{
         "translations": {
-          "<details><summary><u>Help with interest rates</u></summary><div class=\"panel\">\n\n You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example, if you have a contract with a specific rate. \n\n The court will decide if you're entitled to some, or all, of the interest claimed.</div></details><br />": {
+      `
+      + "\"<details><summary><u>Help with interest rates</u></summary><div class=\\\"panel\\\">\\n\\n You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example, if you have a contract with a specific rate. \\n\\n The court will decide if you're entitled to some, or all, of the interest claimed.</div></details><br />\": {"
+      + `
                 "translation": "welsha",
                 "yesOrNo": true,
                 "yes": "yesa",

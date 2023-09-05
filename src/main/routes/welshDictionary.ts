@@ -43,10 +43,10 @@ export function flattenJsonResponse(res: object) {
   Object.keys(res).forEach((k) => {
     let str = wrapSpecialCharacters(k);
     const v = res[k];
-    str = str + "," + (wrapSpecialCharacters(v.translation) ? v.translation : "");
+    str = str + "," + (v.translation ? wrapSpecialCharacters(v.translation) : "");
     str = str + "," + (v.yesOrNo ? v.yesOrNo : "");
-    str = str + "," + (wrapSpecialCharacters(v.yes) ? v.yes : "");
-    str = str + "," + (wrapSpecialCharacters(v.no) ? v.no : "");
+    str = str + "," + (v.yes ? wrapSpecialCharacters(v.yes) : "");
+    str = str + "," + (v.no ? wrapSpecialCharacters(v.no) : "");
     flat.push(str.replace(/[,]{1,4}$/g, "")); // remove trailing commas
   });
   return flat.join("\r\n");
@@ -55,7 +55,7 @@ export function flattenJsonResponse(res: object) {
 function wrapSpecialCharacters(text: string): string {
 
   // Return if no special characters
-  if (!text.match(/[,\n\"]/g)) {
+  if (typeof text != "string" || !text.match(/[,\n\"]/g)) {
     return text;
   }
 
