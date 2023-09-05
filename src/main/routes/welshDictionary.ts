@@ -55,7 +55,7 @@ export function flattenJsonResponse(res: object) {
 function wrapSpecialCharacters(text: string): string {
 
   // Return if no special characters
-  if (typeof text != "string" || !text.match(/[,\n\"]/g)) {
+  if (typeof text !== "string" || !text.match(/[,\n\"]/g)) {
     return text;
   }
 
