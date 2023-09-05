@@ -41,15 +41,25 @@ router.get(dictionaryUrl, (req, res, next) => {
 export function flattenJsonResponse(res: object) {
   const flat = [];
   Object.keys(res).forEach((k) => {
-    let str = k;
+    let str = wrapSpecialCharacters(k);
     const v = res[k];
-    str = str + "," + (v.translation ? v.translation : "");
+    str = str + "," + (wrapSpecialCharacters(v.translation) ? v.translation : "");
     str = str + "," + (v.yesOrNo ? v.yesOrNo : "");
-    str = str + "," + (v.yes ? v.yes : "");
-    str = str + "," + (v.no ? v.no : "");
-    flat.push(str.replace(/[,]{1,4}$/g, ""));
+    str = str + "," + (wrapSpecialCharacters(v.yes) ? v.yes : "");
+    str = str + "," + (wrapSpecialCharacters(v.no) ? v.no : "");
+    flat.push(str.replace(/[,]{1,4}$/g, "")); // remove trailing commas
   });
   return flat.join("\r\n");
+}
+
+function wrapSpecialCharacters(text: string): string {
+
+  // Return if no special characters
+  if (!text.match(/[,\n\"]/g)) {
+    return text;
+  }
+
+  return "\"" + text.replace(/[\"]/g, "\"\"") + "\"";
 }
 
 export default router;

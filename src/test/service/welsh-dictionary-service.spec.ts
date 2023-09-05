@@ -118,4 +118,50 @@ describe("welshDictionaryService::getWelshDictionary", () => {
     });
   });
 
+  describe("Successful handle special characters in recieved Welsh dictionary response", () => {
+    it("should return correctly formatted array of strings ", (done) => {
+      const dict =
+      `{
+        "translations": {
+          "<details><summary><u>Help with interest rates</u></summary><div class=\"panel\">\n\n You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example, if you have a contract with a specific rate. \n\n The court will decide if you're entitled to some, or all, of the interest claimed.</div></details><br />": {
+                "translation": "welsha",
+                "yesOrNo": true,
+                "yes": "yesa",
+                "no": "noa"
+            },
+            "texty": {
+                "translation": "welshy",
+                "yesOrNo": false
+            },
+            "textz": {
+                "translation": "welshz"
+            },
+            "text": {
+                "translation": ""
+            }
+        }
+      }`;
+
+      const data = JSON.parse(dict).translations;
+      const csvContent = flattenJsonResponse(data);
+      const flat = csvContent.split("\r\n");
+
+      try {
+        expect(flat.length).to.equal(4);
+        expect(flat[0]).to.equal(
+          "\"<details><summary><u>Help with interest rates</u></summary><div class=\"\"panel\"\">\n\n" +
+          "You can claim 8% interest on money owed to you. This is the statutory rate. If you know that" +
+          "a different rate applies you can use that. For example, if you have a contract with a specific rate. \n\n" +
+          "The court will decide if you're entitled to some, or all, of the interest claimed.</div></details><br />\"" +
+          ",welsha,true,yesa,noa");
+        expect(flat[1]).to.equal("texty,welshy");
+        expect(flat[2]).to.equal("textz,welshz");
+        expect(flat[3]).to.equal("text");
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+  });
+
 });
