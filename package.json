@@ -156,7 +156,8 @@
     "decode-uri-component": "^0.2.1",
     "cookiejar": "^2.1.4",
     "ua-parser-js": "^0.7.33",
-    "http-cache-semantics": "^4.1.1"
+    "http-cache-semantics": "^4.1.1",
+    "jackspeak": "2.1.1"
   },
   "nyc": {
     "extension": [
