@@ -16,6 +16,7 @@ nodejs:
     ADMINWEB_WHOAMI_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/idam/profile
     ADMINWEB_AUTHORIZATION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/idam/adminweb/authorization
     ADMINWEB_IMPORT_AUDITS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/import-audits
+    ADMINWEB_GET_DICTIONARY_URL: https://ts-translation-service-pr-226.preview.platform.hmcts.net/dictionary
 
 
 idam-pr:

@@ -7,13 +7,22 @@ export function buildTranslationsJson(data) {
   let translations = "";
   for (const element of data) {
       if (translations.length > 0) { translations += ","; }
-      if (element[1] === undefined || element[1] === null) {
-        translations += JSON.stringify(element[0]) + ":" + JSON.stringify(null);
-      } else {
-        translations += JSON.stringify(element[0]) + ":" + JSON.stringify(element[1]);
-      }
+      translations += rowToTranslationJson(element);
   }
   return translations;
+}
+
+export function rowToTranslationJson(element) {
+  let translation = "";
+  translation += JSON.stringify(element[0]) + ":{";
+  translation += "\"translation\":" + JSON.stringify(element[1] ? element[1] : "");
+  if (element[2]) {
+    translation += ",\"yesOrNo\":" + JSON.stringify(element[2] ? true : false);
+    translation += ",\"yes\":" + JSON.stringify(element[3] ? element[3] :  "");
+    translation += ",\"no\":" + JSON.stringify(element[4] ? element[4] :  "");
+  }
+  translation += "}";
+  return translation;
 }
 
 export function getRowDataArrayFromCsv(stream) {
