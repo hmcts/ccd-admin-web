@@ -21,6 +21,9 @@
       {% if (itemToDelete === "user") %}
         <input id="idamId" name="idamId" type="hidden" value="{{ idamId }}"/>
       {% endif %}
+      {% if (itemToDelete === "role") %}
+        <input id="role" name="role" type="hidden" value="{{ role }}"/>
+      {% endif %}
       {% if (itemToDelete === "definition") %}
         <input id="jurisdictionId" name="jurisdictionId" type="hidden" value="{{ currentJurisdiction }}"/>
         <input id="definitionVersion" name="definitionVersion" type="hidden" value="{{ version }}"/>
