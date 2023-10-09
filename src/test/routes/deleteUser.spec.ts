@@ -65,7 +65,7 @@ describe("Confirm Delete page", () => {
             mock("http://localhost:4453")
                 .delete("/users")
                 .query({ uid: "anas@yahoo.com" })
-                .replyWithError(500);
+                .reply(500);
 
             return request(appTest)
                 .post("/deleteuser")
@@ -135,7 +135,7 @@ describe("Confirm Delete page", () => {
       mock("http://localhost:4453")
         .delete("/users")
         .query({ uid: "anas@yahoo.com" })
-        .replyWithError(500);
+        .reply(500);
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/deleteuser")

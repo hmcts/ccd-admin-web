@@ -77,7 +77,7 @@ describe("welshDictionaryService::getWelshDictionary", () => {
     });
   });
 
-  describe("Successful flatten recieved Welsh dictionary response", () => {
+  describe("Successful flatten received Welsh dictionary response", () => {
     it("should return array of strings ", (done) => {
       const dict =
       `{
@@ -118,7 +118,7 @@ describe("welshDictionaryService::getWelshDictionary", () => {
     });
   });
 
-  describe("Successful handle special characters in recieved Welsh dictionary response", () => {
+  describe("Successful handle special characters in received Welsh dictionary response", () => {
     it("should return correctly formatted array of strings ", (done) => {
       const dict =
       `{
