@@ -3312,16 +3312,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"engine.io-parser@npm:~5.0.3":
-  version: 5.0.4
-  resolution: "engine.io-parser@npm:5.0.4"
-  checksum: d4ad0cef6ff63c350e35696da9bb3dbd180f67b56e93e90375010cc40393e6c0639b780d5680807e1d93a7e2e3d7b4a1c3b27cf75db28eb8cbf605bc1497da03
+"engine.io-parser@npm:~5.2.1":
+  version: 5.2.1
+  resolution: "engine.io-parser@npm:5.2.1"
+  checksum: 55b0e8e18500f50c1573675c53597c5552554ead08d3f30ff19fde6409e48f882a8e01f84e9772cd155c18a1d653d06f6bf57b4e1f8b834c63c9eaf3b657b88e
   languageName: node
   linkType: hard
 
 "engine.io@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "engine.io@npm:6.2.1"
+  version: 6.5.3
+  resolution: "engine.io@npm:6.5.3"
   dependencies:
     "@types/cookie": ^0.4.1
     "@types/cors": ^2.8.12
@@ -3331,9 +3331,9 @@ __metadata:
     cookie: ~0.4.1
     cors: ~2.8.5
     debug: ~4.3.1
-    engine.io-parser: ~5.0.3
-    ws: ~8.2.3
-  checksum: 626d7a77f2f6d3e1f888c43932e2f34222201b6c0bc4bcbb0ead054cc170a1df3bf0d6f8b34432e68d7223346b7aa5ed34fbda1e706ef02b7801789465e34f40
+    engine.io-parser: ~5.2.1
+    ws: ~8.11.0
+  checksum: b71769b17a663d07b14a2ba6de7a729bce47cef936a25b46dcc1cc75e42b377d82548cfbaf66ce4a0b237536c488a29d301c2514ab1cafbdc1f594bd327fc498
   languageName: node
   linkType: hard
 
