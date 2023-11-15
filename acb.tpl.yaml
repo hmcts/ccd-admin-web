@@ -133,8 +133,6 @@ steps:
     cmd: docker manifest create hmctspublic.azurecr.io/ccd/ccd-admin-web/base hmctspublic.azurecr.io/ccd/ccd-admin-web/base:amd64 hmctspublic.azurecr.io/ccd/ccd-admin-web/base:arm64
     when:
       - push-images
-    retries: 3
-    retryDelay: 3
 
   - id: manifest-push-base
     cmd: docker manifest push --purge hmctspublic.azurecr.io/ccd/ccd-admin-web/base
@@ -145,8 +143,6 @@ steps:
     cmd: docker manifest create hmctspublic.azurecr.io/ccd/ccd-admin-web/build hmctspublic.azurecr.io/ccd/ccd-admin-web/build:amd64 hmctspublic.azurecr.io/ccd/ccd-admin-web/build:arm64
     when:
       - push-images
-    retries: 3
-    retryDelay: 3
 
   - id: manifest-push-build
     cmd: docker manifest push --purge hmctspublic.azurecr.io/ccd/ccd-admin-web/build
@@ -157,8 +153,6 @@ steps:
     cmd: docker manifest create {{.Run.Registry}}/{{CI_IMAGE_TAG}} {{.Run.Registry}}/{{CI_IMAGE_TAG}}-amd64 {{.Run.Registry}}/{{CI_IMAGE_TAG}}-arm64
     when:
       - push-images
-    retries: 3
-    retryDelay: 3
 
   - id: manifest-push-runtime
     cmd: docker manifest push --purge {{.Run.Registry}}/{{CI_IMAGE_TAG}}
