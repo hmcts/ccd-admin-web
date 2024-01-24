@@ -44,13 +44,9 @@ describe("test route Welsh Dictionary", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector(
-            "h2.heading-large.padding"
-          ).innerHTML;
+          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
           expect(errorHeading).to.equal("Unauthorised role");
-          expect(
-            dom.window.document.querySelector(".govuk-fieldset__legend--xl")
-          ).to.be.null;
+          expect(dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
           const currentUserHiddenInput = dom.window.document
             .querySelector("#currentUser")
             .getAttribute("value");
