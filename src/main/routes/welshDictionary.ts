@@ -9,7 +9,7 @@ const router = express.Router();
 const dictionaryUrl = "/dictionary";
 
 router.get(`/${welshDictionary}`, (req, res, next) => {
-   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageWelshTranslation) {
+  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageWelshTranslation) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
@@ -23,15 +23,16 @@ router.get(`/${welshDictionary}`, (req, res, next) => {
 
 // retrieve latest welsh dictionary and convert to csv
 router.get(dictionaryUrl, (req, res, next) => {
-   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageWelshTranslation) {
+  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageWelshTranslation) {
     getDictionary(req).then((response) => {
       const data = JSON.parse(response.text).translations;
       const csvContent = flattenJsonResponse(data);
-      const download = Buffer.from(csvContent, "utf8");
-      res.end(download);
-    })
-    .catch((error) => {
-      res.status(400).send(error.response.text);
+      const download = "\ufeff\ufeff" + // utf-8 BOM for excel (must be twice as browsers strip out first one)
+        Buffer.from(csvContent, "utf8").toString("utf8");
+      res.set({ "content-type": "text/csv; charset=utf-8" });
+      res.send(download);
+    }).catch((error) => {
+      res.status(400).send(error.response);
     });
   } else {
     res.status(403).send(error_unauthorized_role(req));
@@ -53,7 +54,6 @@ export function flattenJsonResponse(res: object) {
 }
 
 function wrapSpecialCharacters(text: string): string {
-
   // Return if no special characters
   if (typeof text !== "string" || !text.match(/[,\n\"]/g)) {
     return text;
