@@ -14,7 +14,8 @@ export function getDictionary(req) {
     .get(url)
     .set(headers)
     .then((res) => {
-          logger.info(`Received successful response: ${res.text}`);
+          logger.info(`Received successful response for getDictionary`);
+          logger.debug(`${res.text}`);
           return res;
         })
     .catch((error) => {
