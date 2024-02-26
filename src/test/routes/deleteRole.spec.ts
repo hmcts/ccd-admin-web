@@ -65,7 +65,7 @@ describe("Confirm Delete page", () => {
             mock("http://localhost:4453")
                 .delete("/api/user-role")
                 .query({ role: "test-role" })
-                .replyWithError(500);
+                .reply(500);
 
             return request(appTest)
                 .post("/deleterole")
@@ -134,7 +134,7 @@ describe("Confirm Delete page", () => {
       mock("http://localhost:4453")
         .delete("/api/user-role")
         .query({ role: "test-role" })
-        .replyWithError(500);
+        .reply(500);
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/deleterole")
