@@ -8,8 +8,8 @@ export function deleteRole(req) {
     const url = config.get("adminWeb.userrole_url");
 
     logger.info(`**** JCDEBUG: delete-role-service`);
-    var str = sanitize(JSON.stringify(req));
-    logger.info(`**** JCDEBUG: delete-role-service: req = ` + var);
+    const str = sanitize(JSON.stringify(req));
+    logger.info(`**** JCDEBUG: delete-role-service: req = ` + str);
 
     const headers = {
         Accept: "application/json",
