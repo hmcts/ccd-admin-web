@@ -7,7 +7,7 @@ export function deleteRole(req) {
     const url = config.get("adminWeb.userrole_url");
 
     logger.info(`**** JCDEBUG: delete-role-service`);
-    logger.info(`**** JCDEBUG: delete-role-service: req = ` + req);
+    logger.info(`**** JCDEBUG: delete-role-service: req = ` + JSON.stringify(req));
 
     const headers = {
         Accept: "application/json",
