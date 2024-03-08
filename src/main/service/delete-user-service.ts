@@ -6,6 +6,9 @@ export function deleteUserProfile(req) {
     const logger = Logger.getLogger(__filename);
     const url = config.get("adminWeb.userprofiles_url");
 
+    logger.info(`**** JCDEBUG: delete-user-service`);
+    logger.info(`**** JCDEBUG: delete-user-service: req = ` + req);
+
     const headers = {
         Accept: "application/json",
         Authorization: req.accessToken,
