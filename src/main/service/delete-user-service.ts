@@ -8,7 +8,7 @@ export function deleteUserProfile(req) {
     const url = config.get("adminWeb.userprofiles_url");
 
     logger.info(`**** JCDEBUG: delete-user-service`);
-    logger.info(`**** JCDEBUG: delete-user-service: req = ` + sanitize(JSON.stringify(req));
+    logger.info(`**** JCDEBUG: delete-user-service: req = ` + sanitize(JSON.stringify(req)));
 
     const headers = {
         Accept: "application/json",
