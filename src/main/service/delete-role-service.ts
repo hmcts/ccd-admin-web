@@ -1,15 +1,14 @@
 import * as request from "superagent";
 import * as config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
-import { sanitize } from "../util/sanitize";
 
 export function deleteRole(req) {
     const logger = Logger.getLogger(__filename);
     const url = config.get("adminWeb.userrole_url");
 
     logger.info(`**** JCDEBUG: delete-role-service`);
-    const str = sanitize(JSON.stringify(req));
-    logger.info(`**** JCDEBUG: delete-role-service: req = ` + str);
+    const mystringify = require("json-stringify-safe");
+    logger.info(`**** JCDEBUG: delete-role-service: req = ` + mystringify(req));
 
     const headers = {
         Accept: "application/json",
