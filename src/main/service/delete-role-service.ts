@@ -1,24 +1,13 @@
 import * as request from "superagent";
 import * as config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
+import { stringifyCircularJSON } from "../util/sanitize";
 
 export function deleteRole(req) {
     const logger = Logger.getLogger(__filename);
     const url = config.get("adminWeb.userrole_url");
 
     logger.info(`**** JCDEBUG: delete-role-service`);
-    const stringifyCircularJSON = (obj) => {
-      const seen = new WeakSet();
-      return JSON.stringify(obj, (k, v) => {
-        if (v !== null && typeof v === "object") {
-          if (seen.has(v)) {
-            return;
-          }
-          seen.add(v);
-        }
-        return v;
-      });
-    };
     logger.info(`**** JCDEBUG: delete-role-service: req = ` + stringifyCircularJSON(req));
 
     const headers = {
