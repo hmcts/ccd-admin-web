@@ -1,7 +1,6 @@
 import * as request from "superagent";
 import * as config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
-import { stringifyCircularJSON } from "../util/sanitize";
 
 export function deleteUserProfile(req) {
     const logger = Logger.getLogger(__filename);
