@@ -7,8 +7,19 @@ export function deleteUserProfile(req) {
     const url = config.get("adminWeb.userprofiles_url");
 
     logger.info(`**** JCDEBUG: delete-user-service`);
-    const mystringify = require("json-stringify-safe");
-    logger.info(`**** JCDEBUG: delete-user-service: req = ` + mystringify(req));
+    const stringifyCircularJSON = (obj) => {
+      const seen = new WeakSet();
+      return JSON.stringify(obj, (k, v) => {
+        if (v !== null && typeof v === "object") {
+          if (seen.has(v)) {
+            return;
+          }
+          seen.add(v);
+        }
+        return v;
+      });
+    };
+    logger.info(`**** JCDEBUG: delete-user-service: req = ` + stringifyCircularJSON(req));
 
     const headers = {
         Accept: "application/json",
