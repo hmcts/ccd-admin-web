@@ -19,6 +19,12 @@ router.get("/deleteitem", (req, res, next) => {
       responseContent.headingItem = "User Profile";
     }
 
+    if (req.query.item === "role") {
+      responseContent.role = sanitize(req.query.roleParameter);
+      responseContent.warning = sanitize(`Are you sure you would like to delete role ${req.query.roleParameter}?`);
+      responseContent.headingItem = "User Role";
+    }
+
     if (req.query.item === "definition") {
       responseContent.currentJurisdiction = sanitize(req.query.jurisdictionId);
       responseContent.version = sanitize(req.query.version);
