@@ -140,5 +140,30 @@ describe("Confirm Delete page", () => {
           expect(user.surname).to.equal("User");
         });
     });
+
+    it("should return Confirm Delete User Role page when authenticated and authorized", () => {
+      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      idamServiceMock.resolveRetrieveServiceToken();
+      mock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, {});
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/deleteitem")
+        .query({ roleParameter: "TEST-ROLE", item: "role" })
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+          const result = dom.window.document.querySelector(".govuk-fieldset__legend--xl").innerHTML;
+          expect(result).to.equal("Are you sure you would like to delete role TEST-ROLE?");
+          const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
+          expect(currentUserHiddenInput).not.to.be.empty;
+          const user = JSON.parse(currentUserHiddenInput);
+          expect(user.forename).to.equal("Test");
+          expect(user.surname).to.equal("User");
+        });
+    });
+
   });
 });
