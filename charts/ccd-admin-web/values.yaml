@@ -5,7 +5,7 @@ nodejs:
   applicationPort: 3100
   cpuLimits: 1
   autoscaling:
-    enabled: false
+    enabled: true
     maxReplicas: 4
   environment:
     # Node specific vars
