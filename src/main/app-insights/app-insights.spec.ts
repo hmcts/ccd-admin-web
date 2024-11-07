@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { expect } from "chai";
 
 describe("Application insights", () => {
   it("should initialize properly", () => {
