@@ -1,4 +1,4 @@
-const expect = chai.expect;
+import { expect } from 'chai';
 
 describe("Application insights", () => {
   it("should initialize properly", () => {
