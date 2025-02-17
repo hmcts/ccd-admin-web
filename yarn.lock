@@ -1382,7 +1382,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.20.3, body-parser@npm:^1.19.0, body-parser@npm:^1.20.1":
+"body-parser@npm:1.20.3, body-parser@npm:^1.19.0, body-parser@npm:^1.20.3":
   version: 1.20.3
   resolution: "body-parser@npm:1.20.3"
   dependencies:
@@ -1644,7 +1644,7 @@ __metadata:
     "@types/node": ^10.5.4
     "@types/sinon-chai": ^3.2.0
     applicationinsights: ^1.0.8
-    body-parser: ^1.20.1
+    body-parser: ^1.20.3
     chai: ^4.3.6
     chai-as-promised: ^7.1.1
     config: ^2.0.1
