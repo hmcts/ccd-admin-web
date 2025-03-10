@@ -13,24 +13,18 @@ RUN apk update \
   && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 
-
-COPY . .
-RUN chown -R hmcts:hmcts .
-
 USER root
  RUN corepack enable
  USER hmcts
+
+ COPY --chown=hmcts:hmcts . .
 
  RUN yarn config set httpProxy "$http_proxy" \
       && yarn config set httpsProxy "$https_proxy" \
       && yarn workspaces focus --all --production \
       && rm -rf $(yarn cache clean)
 
-      USER hmcts
 
-      RUN yarn config set yarn-offline-mirror ~/npm-packages-offline-cache && \
-        yarn config set yarn-offline-mirror-pruning true && \
-        yarn install --prefer-offline --ignore-optional --network-timeout 1200000
 
 
 # ---- Build Image ----
