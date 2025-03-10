@@ -1,7 +1,7 @@
 # ---- Base Image ----
 
 ARG PLATFORM=""
-FROM hmctspublic.azurecr.io/base/node${PLATFORM}:18-alpine as bas
+FROM hmctspublic.azurecr.io/base/node${PLATFORM}:18-alpine as base
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
