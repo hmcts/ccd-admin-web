@@ -1,7 +1,7 @@
 # ---- Base Image ----
 
 ARG PLATFORM=""
-FROM hmctspublic.azurecr.io/base/node${PLATFORM}:18-alpine as base
+FROM hmctspublic.azurecr.io/base/node${PLATFORM}:18-alpine as bas
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
@@ -17,11 +17,16 @@ RUN apk update \
 
 COPY . .
 RUN chown -R hmcts:hmcts .
-USER hmcts
 
-RUN yarn config set yarn-offline-mirror ~/npm-packages-offline-cache && \
-  yarn config set yarn-offline-mirror-pruning true && \
-  yarn install --prefer-offline --ignore-optional --network-timeout 1200000
+USER root
+ RUN corepack enable
+ USER hmcts
+
+ RUN yarn config set httpProxy "$http_proxy" \
+      && yarn config set httpsProxy "$https_proxy" \
+      && yarn workspaces focus --all --production \
+      && rm -rf $(yarn cache clean)
+
 
 # ---- Build Image ----
 FROM base as build
