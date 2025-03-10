@@ -13,6 +13,8 @@ RUN apk update \
   && rm -rf /var/lib/apt/lists/* \
   && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
+
+
 COPY . .
 RUN chown -R hmcts:hmcts .
 USER hmcts
