@@ -22,8 +22,7 @@ USER hmcts
 #  yarn config set yarn-offline-mirror-pruning true && \
 #  yarn install --prefer-offline --ignore-optional --network-timeout 1200000
 
-RUN yarn workspaces focus \
-  && yarn cache clean
+RUN yarn workspaces focus --all --production && rm -rf "$(yarn cache clean)"
 
 # ---- Build Image ----
 FROM base as build
