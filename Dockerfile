@@ -18,20 +18,13 @@ COPY . .
 RUN chown -R hmcts:hmcts .
 USER hmcts
 
-#RUN yarn config set yarn-offline-mirror ~/npm-packages-offline-cache && \
-#  yarn config set yarn-offline-mirror-pruning true && \
-#  yarn install --prefer-offline --ignore-optional --network-timeout 1200000
-
-#RUN yarn install --prefer-offline --ignore-optional --network-timeout 1200000
 RUN yarn install && yarn cache clean
-#RUN yarn cache clean
 
 # ---- Build Image ----
 FROM base as build
 
 RUN yarn sass
 
-#RUN sleep 1 && yarn install --ignore-optional --production --network-timeout 1200000 && yarn cache clean
 RUN sleep 1 && yarn install && yarn cache clean
 
 
