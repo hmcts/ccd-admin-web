@@ -8,6 +8,7 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
 USER root
+RUN corepack enable
 RUN apk update \
   && apk add bzip2 patch python3 py3-pip make gcc g++ \
   && rm -rf /var/lib/apt/lists/* \
@@ -19,6 +20,7 @@ USER hmcts
 
 RUN yarn config set yarn-offline-mirror ~/npm-packages-offline-cache && \
   yarn config set yarn-offline-mirror-pruning true && \
+  yarn yarn workspaces focus --all --production && \
   yarn install --prefer-offline --ignore-optional --network-timeout 1200000
 
 # ---- Build Image ----
