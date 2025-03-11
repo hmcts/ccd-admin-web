@@ -31,7 +31,9 @@ FROM base as build
 
 RUN yarn sass
 
-RUN sleep 1 && yarn install --ignore-optional --production --network-timeout 1200000 && yarn cache clean
+#RUN sleep 1 && yarn install --ignore-optional --production --network-timeout 1200000 && yarn cache clean
+RUN sleep 1 && yarn install && yarn cache clean
+
 
 # ---- Runtime Image ----
 FROM hmctspublic.azurecr.io/base/node${PLATFORM}:18-alpine as runtime
