@@ -18,9 +18,11 @@ COPY . .
 RUN chown -R hmcts:hmcts .
 USER hmcts
 
-RUN yarn config set yarn-offline-mirror ~/npm-packages-offline-cache && \
-  yarn config set yarn-offline-mirror-pruning true && \
-  yarn install --prefer-offline --ignore-optional --network-timeout 1200000
+#RUN yarn config set yarn-offline-mirror ~/npm-packages-offline-cache && \
+#  yarn config set yarn-offline-mirror-pruning true && \
+#  yarn install --prefer-offline --ignore-optional --network-timeout 1200000
+
+RUN yarn workspaces focus --all --production && rm -rf $(yarn cache clean)
 
 # ---- Build Image ----
 FROM base as build
