@@ -7,6 +7,8 @@
 !package.json
 !yarn.lock
 !.snyk
+!.yarnrc.yml
+!.yarn/**
 
 !gulpfile.js
 !tsconfig.json
