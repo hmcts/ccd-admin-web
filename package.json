@@ -31,7 +31,7 @@
     "@snyk/protect": "^1.1103.0",
     "@types/node": "^10.5.4",
     "applicationinsights": "^1.0.8",
-    "body-parser": "^1.20.1",
+    "body-parser": "^1.20.3",
     "config": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
@@ -164,7 +164,8 @@
     "ip": "2.0.1",
     "micromatch": "^4.0.8",
     "cross-spawn": "^7.0.6",
-    "path-to-regexp": "^0.1.12"
+    "path-to-regexp": "^0.1.12",
+    "body-parser": "^1.20.3"
   },
   "nyc": {
     "extension": [
