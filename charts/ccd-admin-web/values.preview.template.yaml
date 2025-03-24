@@ -2,20 +2,20 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    ADMINWEB_LOGIN_URL: https://idam-web-public.demo.platform.hmcts.net
+    ADMINWEB_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
     ADMINWEB_IMPORT_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/import
-    ADMINWEB_JURISDICTIONS_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/api/data/jurisdictions
-    ADMINWEB_USER_PROFILE_URL: http://ccd-user-profile-api-demo.service.core-compute-demo.internal/users
-    ADMINWEB_SAVE_USER_PROFILE_URL: http://ccd-user-profile-api-demo.service.core-compute-demo.internal/users/save
-    ADMINWEB_USER_ROLE_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/api/user-role
-    ADMIN_ALL_USER_ROLES_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/api/user-roles
-    ADMINWEB_CREATE_DEFINITION_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/api/draft
-    ADMINWEB_UPDATE_DEFINITION_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/api/draft/save
-    ADMINWEB_DELETE_DEFINITION_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/api/draft
-    ADMINWEB_DEFINITIONS_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/api/drafts
-    ADMINWEB_WHOAMI_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/api/idam/profile
-    ADMINWEB_AUTHORIZATION_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/api/idam/adminweb/authorization
-    ADMINWEB_IMPORT_AUDITS_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/api/import-audits
+    ADMINWEB_JURISDICTIONS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/data/jurisdictions
+    ADMINWEB_USER_PROFILE_URL: http://ccd-user-profile-api-aat.service.core-compute-aat.internal/users
+    ADMINWEB_SAVE_USER_PROFILE_URL: http://ccd-user-profile-api-aat.service.core-compute-aat.internal/users/save
+    ADMINWEB_USER_ROLE_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/user-role
+    ADMIN_ALL_USER_ROLES_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/user-roles
+    ADMINWEB_CREATE_DEFINITION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/draft
+    ADMINWEB_UPDATE_DEFINITION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/draft/save
+    ADMINWEB_DELETE_DEFINITION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/draft
+    ADMINWEB_DEFINITIONS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/drafts
+    ADMINWEB_WHOAMI_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/idam/profile
+    ADMINWEB_AUTHORIZATION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/idam/adminweb/authorization
+    ADMINWEB_IMPORT_AUDITS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/import-audits
     ADMINWEB_GET_DICTIONARY_URL: https://ts-translation-service-pr-226.preview.platform.hmcts.net/dictionary
 
 
