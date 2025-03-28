@@ -9,6 +9,10 @@ export function uploadFile(req) {
     ServiceAuthorization: req.serviceAuthToken,
   };
   const logger = Logger.getLogger(__filename);
+  logger.info(`JCDEBUG: Uploading file ${req.file.originalname} to Case Definition Store at ${url}`);
+  logger.debug(`JCDEBUG: Uploading file ${req.file.originalname} to Case Definition Store at ${url}`);
+  logger.info(`JCDEBUG: Headers: ${JSON.stringify(headers)}`);
+  logger.debug(`JCDEBUG: Headers: ${JSON.stringify(headers)}`);
   return request
     .post(url)
     .set(headers)

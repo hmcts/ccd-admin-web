@@ -3,7 +3,7 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
   environment:
     ADMINWEB_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
-    ADMINWEB_IMPORT_URL: http://ccd-definition-store-api-demo.service.core-compute-demo.internal/import
+    ADMINWEB_IMPORT_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/import
     ADMINWEB_JURISDICTIONS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/data/jurisdictions
     ADMINWEB_USER_PROFILE_URL: http://ccd-user-profile-api-aat.service.core-compute-aat.internal/users
     ADMINWEB_SAVE_USER_PROFILE_URL: http://ccd-user-profile-api-aat.service.core-compute-aat.internal/users/save
