@@ -18,6 +18,7 @@ export function uploadFile(req) {
     .set(headers)
     .set("enctype", "multipart/form-data")
     .attach("file", req.file.buffer, { filename: req.file.originalname })
+    .timeout(99000)
     .then((res) => {
       logger.info(`Uploaded file ${req.file.originalname} to Case Definition Store, response: ${res.text}`);
       return res;
