@@ -18,7 +18,7 @@ export function uploadFile(req) {
 
   const body = req.body || {};
   const reindex = body.reindex === "true" || false;
-  const deleteOldIndex = body.deleteOldIndex === "true" || (reindex && true);
+  const deleteOldIndex = (reindex && body.deleteOldIndex === "true")  || false ;
 
   if (reindex) {
     requestObj.query({ reindex: true, deleteOldIndex });
