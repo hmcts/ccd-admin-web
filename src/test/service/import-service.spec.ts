@@ -20,14 +20,14 @@ describe("importService", () => {
   beforeEach(() => {
     req = {
       accessToken: "userAuthToken",
+      body: {},
       file: {
         buffer: Buffer.from(new Uint8Array(8)),
         originalname: "dummy_filename.abc",
       },
       serviceAuthToken: "serviceAuthToken",
-      body: {},
     };
-    
+
     requestQuerySpy.resetHistory();
 
     const config = {
