@@ -18,16 +18,31 @@
       </div>
       <div class="form-group">
         <div class="multiple-choice">
-          <input id="reindex" name="reindex" type="checkbox" value="true">
+          <input id="reindex" name="reindex" type="checkbox" value="true" onchange="toggleDeleteOldIndex()">
           <label for="reindex">Reindex</label>
         </div>
       </div>
       <div class="form-group">
         <div class="multiple-choice">
-          <input id="deleteOldIndex" name="deleteOldIndex" type="checkbox" value="true">
+          <input id="deleteOldIndex" name="deleteOldIndex" type="checkbox" value="true" title="Delete Old Index option is only available when Reindex is checked" disabled>
           <label for="deleteOldIndex">Delete Old Index</label>
         </div>
       </div>
+      <script type="text/javascript">
+        function toggleDeleteOldIndex() {
+          const reindexChecked = document.getElementById('reindex').checked;
+          const deleteOldIndexCheckbox = document.getElementById('deleteOldIndex');
+          
+          deleteOldIndexCheckbox.disabled = !reindexChecked;
+          
+          if (!reindexChecked) {
+            deleteOldIndexCheckbox.checked = false;
+          }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', toggleDeleteOldIndex);
+      </script>
       <div class="form-group">
         <button type="submit" class="button" value="Submit">Submit</button>
       </div>
