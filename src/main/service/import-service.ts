@@ -9,11 +9,16 @@ export function uploadFile(req) {
     ServiceAuthorization: req.serviceAuthToken,
   };
   const logger = Logger.getLogger(__filename);
+  logger.info(`JCDEBUG: Uploading file ${req.file.originalname} to Case Definition Store at ${url}`);
+  logger.debug(`JCDEBUG: Uploading file ${req.file.originalname} to Case Definition Store at ${url}`);
+  logger.info(`JCDEBUG: Headers: ${JSON.stringify(headers)}`);
+  logger.debug(`JCDEBUG: Headers: ${JSON.stringify(headers)}`);
   return request
     .post(url)
     .set(headers)
     .set("enctype", "multipart/form-data")
     .attach("file", req.file.buffer, { filename: req.file.originalname })
+    .timeout({ response: 180000, deadline: 180000 })
     .then((res) => {
       logger.info(`Uploaded file ${req.file.originalname} to Case Definition Store, response: ${res.text}`);
       return res;
