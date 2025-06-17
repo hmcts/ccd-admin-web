@@ -1726,7 +1726,7 @@ __metadata:
     chai: ^4.3.6
     chai-as-promised: ^7.1.1
     config: ^2.0.1
-    cookie: ^0.3.1
+    cookie: ^0.7.0
     cookie-parser: ^1.4.3
     cookie-session: ^2.0.0-beta.3
     csurf: ^1.9.0
@@ -2360,7 +2360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.3.1, cookie@npm:^0.3.1":
+"cookie@npm:0.3.1":
   version: 0.3.1
   resolution: "cookie@npm:0.3.1"
   checksum: 5309937344947a049283573861c24bed054fac3334ce5a0fa74b9bc6bf39bd387d3a0fca7f3ed6f4a09f112de82c00b541a0e7d6ce7a8de0f5d1301eec799730
@@ -2374,7 +2374,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.7.2, cookie@npm:~0.7.2":
+"cookie@npm:0.7.2, cookie@npm:^0.7.0, cookie@npm:~0.7.2":
   version: 0.7.2
   resolution: "cookie@npm:0.7.2"
   checksum: 9bf8555e33530affd571ea37b615ccad9b9a34febbf2c950c86787088eb00a8973690833b0f8ebd6b69b753c62669ea60cec89178c1fb007bf0749abed74f93e
