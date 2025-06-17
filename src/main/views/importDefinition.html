@@ -3,7 +3,7 @@
 {% block content %}
 {% include "menu.html" %}
 <h2 class="heading-large padding">Import Case Definition</h2>
-<div class="grid-row padding">
+<div class="grid-row">
   <div class="column-two-thirds padding">
 
     <form action="/import" method="post" enctype="multipart/form-data">
@@ -16,33 +16,6 @@
         {% endif %}
         <input type="file" id="file" name="file" accept=".xlsx"/>
       </div>
-      <div class="form-group">
-        <div class="multiple-choice">
-          <input id="reindex" name="reindex" type="checkbox" value="true" onchange="toggleDeleteOldIndex()">
-          <label for="reindex">Reindex</label>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="multiple-choice">
-          <input id="deleteOldIndex" name="deleteOldIndex" type="checkbox" value="true" title="Delete Old Index option is only available when Reindex is checked" disabled>
-          <label for="deleteOldIndex">Delete Old Index</label>
-        </div>
-      </div>
-      <script type="text/javascript">
-        function toggleDeleteOldIndex() {
-          const reindexChecked = document.getElementById('reindex').checked;
-          const deleteOldIndexCheckbox = document.getElementById('deleteOldIndex');
-          
-          deleteOldIndexCheckbox.disabled = !reindexChecked;
-          
-          if (!reindexChecked) {
-            deleteOldIndexCheckbox.checked = false;
-          }
-        }
-        
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', toggleDeleteOldIndex);
-      </script>
       <div class="form-group">
         <button type="submit" class="button" value="Submit">Submit</button>
       </div>
