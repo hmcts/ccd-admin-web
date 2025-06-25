@@ -1743,7 +1743,7 @@ __metadata:
     govuk-elements-sass: ~3.0.2
     govuk-frontend: ^1.0.0
     govuk_frontend_toolkit: ~6.0.1
-    govuk_template_jinja: ^0.23.0
+    govuk_template_jinja: ^0.26.0
     govuk_template_mustache: ^0.19.0
     gulp: ^4.0.2
     gulp-livereload: ^3.8.1
@@ -4505,10 +4505,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk_template_jinja@npm:^0.23.0":
-  version: 0.23.3
-  resolution: "govuk_template_jinja@npm:0.23.3"
-  checksum: 02eb19854ccd4be4c7bd1166df7087ab015d5dd8bd2915d1d43f6463b05e398cefbbc1e47e6a0ccb82f93fde982f3bad8f3c8d2014b763d9993bb50c65805eb8
+"govuk_template_jinja@npm:^0.26.0":
+  version: 0.26.0
+  resolution: "govuk_template_jinja@npm:0.26.0"
+  checksum: e343ab3ad59f2da31caf3b830c82bda89077cc6caff42ff0321aa74a3133a4c7546ec7bc2d27a202fd3774ca58a0514f0fa320c64d07bbf7adc1f34cd620bbc2
   languageName: node
   linkType: hard
 
