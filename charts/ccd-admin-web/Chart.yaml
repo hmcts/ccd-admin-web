@@ -2,7 +2,7 @@ description: Helm chart for the HMCTS CCD Admin Web
 name: ccd-admin-web
 apiVersion: v2
 home: https://github.com/hmcts/ccd-admin-web
-version: 2.2.10
+version: 2.2.11
 maintainers:
   - name: HMCTS CCD Dev Team
     email: ccd-devops@HMCTS.NET
@@ -12,5 +12,5 @@ dependencies:
     repository: 'oci://hmctspublic.azurecr.io/helm'
   - name: idam-pr
     version: 2.3.0
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: idam-pr.enabled
