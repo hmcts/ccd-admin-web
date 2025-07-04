@@ -109,7 +109,7 @@
   "resolutions": {
     "shelljs": "0.8.5",
     "es6-promisify": "5.0.0",
-    "nconf": "0.11.4",
+    "nconf": "0.13.0",
     "async": "3.2.6",
     "express-nunjucks/assign-deep": "^1.0.1",
     "mem": "^4.0.0",
