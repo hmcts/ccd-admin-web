@@ -229,13 +229,13 @@ __metadata:
   linkType: hard
 
 "@hmcts/nodejs-healthcheck@npm:^1.8.0":
-  version: 1.8.5
-  resolution: "@hmcts/nodejs-healthcheck@npm:1.8.5"
+  version: 1.8.6
+  resolution: "@hmcts/nodejs-healthcheck@npm:1.8.6"
   dependencies:
     "@hmcts/nodejs-logging": ^4.0.4
     js-yaml: ^4.0.0
-    superagent: 9
-  checksum: 2e3201c1f95cb69aa7e43f72cfa03cea5246e14b18cd52a759968bca126e05fc214ac1269fd706b4d845f4f00abc645e064750e4b4a13b4616345ec168a1a561
+    superagent: ^10.2.2
+  checksum: 11ae01f6890f562a76250b6d73da1ba4d6f0a8a559451a0562edd27e3923c65dddda11f0f39abd7d69cf49e340eee12c3de17a744622242715463649b96c9be4
   languageName: node
   linkType: hard
 
@@ -333,6 +333,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/hashes@npm:^1.1.5":
+  version: 1.8.0
+  resolution: "@noble/hashes@npm:1.8.0"
+  checksum: c94e98b941963676feaba62475b1ccfa8341e3f572adbb3b684ee38b658df44100187fa0ef4220da580b13f8d27e87d5492623c8a02ecc61f23fb9960c7918f5
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -379,6 +386,15 @@ __metadata:
   dependencies:
     semver: ^7.3.5
   checksum: d960cab4b93adcb31ce223bfb75c5714edbd55747342efb67dcc2f25e023d930a7af6ece3e75f2f459b6f38fc14d031c766f116cd124fdc937fd33112579e820
+  languageName: node
+  linkType: hard
+
+"@paralleldrive/cuid2@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "@paralleldrive/cuid2@npm:2.2.2"
+  dependencies:
+    "@noble/hashes": ^1.1.5
+  checksum: f7f6ac70e0268ec2c72e555719240d5c2c9a859ce541ac1c637eed3f3ee971b42881d299dedafbded53e7365b9e98176c5a31c442c1112f7e9e7306f2fd0ecbb
   languageName: node
   linkType: hard
 
@@ -4106,14 +4122,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formidable@npm:^3.5.1":
-  version: 3.5.2
-  resolution: "formidable@npm:3.5.2"
+"formidable@npm:^3.5.4":
+  version: 3.5.4
+  resolution: "formidable@npm:3.5.4"
   dependencies:
+    "@paralleldrive/cuid2": ^2.2.2
     dezalgo: ^1.0.4
-    hexoid: ^2.0.0
     once: ^1.4.0
-  checksum: 7c7972e8a15d45e6d2315a54d77f0900e5c610aff9b5730de326e2b34630604e1eff6c9d666e5504fba4c8818ccaed682d76a4fdb718b160c6afa2c250bf6a76
+  checksum: bdb8ecd8af16d40e7e4c06a9dbaf0394fe9cabb7a4cef6f68512ce6fe7933f5a9c588dfc5c1d92cbf83a9e4764f5216064d955669530d3d23ca816e93ea62989
   languageName: node
   linkType: hard
 
@@ -4962,13 +4978,6 @@ __metadata:
     referrer-policy: 1.2.0
     x-xss-protection: 1.3.0
   checksum: 7883e0e13e1c8170057b92f73544df1a9ad2152357c87fd829c6ecc25e5bdfffc3f67240d8bdcbacd571defa6d0f4e331f8c23359f5344ff464d0dfe66ff4b6e
-  languageName: node
-  linkType: hard
-
-"hexoid@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "hexoid@npm:2.0.0"
-  checksum: 69a92b2bcd7c81c16557de017c59511643e3cb1f0d6e9e9b705859b798bfd059088e4d3cc85e9fe0a9e431007430f15393303c3e74320b5c4c28cb64fc7d8bb4
   languageName: node
   linkType: hard
 
@@ -9541,20 +9550,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"superagent@npm:9":
-  version: 9.0.2
-  resolution: "superagent@npm:9.0.2"
+"superagent@npm:^10.2.2":
+  version: 10.2.2
+  resolution: "superagent@npm:10.2.2"
   dependencies:
     component-emitter: ^1.3.0
     cookiejar: ^2.1.4
     debug: ^4.3.4
     fast-safe-stringify: ^2.1.1
     form-data: ^4.0.0
-    formidable: ^3.5.1
+    formidable: ^3.5.4
     methods: ^1.1.2
     mime: 2.6.0
     qs: ^6.11.0
-  checksum: f471461b21f034d844fd0aca332128d61e3afb75c2ee5950f3339f2a3b5ca8b23e2861224f19ad9b43f21c9184d28b7d9384af5a4fde64fdef479efdb15036db
+  checksum: 47935395b72fe8186b858f58c593d991cd304f7b30c8d4e9937645e4c1a97c22aad4ff9cfd1a9aa9233c518af637435839d8a11a3d7ba0da5da29a7529d7ebf7
   languageName: node
   linkType: hard
 
