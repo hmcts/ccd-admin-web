@@ -2386,14 +2386,14 @@ __metadata:
   linkType: hard
 
 "cookie-session@npm:^2.0.0-beta.3":
-  version: 2.1.0
-  resolution: "cookie-session@npm:2.1.0"
+  version: 2.1.1
+  resolution: "cookie-session@npm:2.1.1"
   dependencies:
     cookies: 0.9.1
     debug: 3.2.7
-    on-headers: ~1.0.2
+    on-headers: ~1.1.0
     safe-buffer: 5.2.1
-  checksum: af906891bc18c5256b01ad613c71e6cb42e0d4085719e6c4188b36a33b593effd63d8e6a54fd356b91ec78fe9775f53935e0fff0ab33ded0df34e187c3777793
+  checksum: 50a9bc83115617306aed410d971339beba49db88f7f66247d1ebac1c73d48f463b416ff56bc1a546c220724eaac8e0953165a2dbe2e7a24c98a64ce4bd4fee7e
   languageName: node
   linkType: hard
 
@@ -7503,10 +7503,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"on-headers@npm:~1.0.2":
-  version: 1.0.2
-  resolution: "on-headers@npm:1.0.2"
-  checksum: 2bf13467215d1e540a62a75021e8b318a6cfc5d4fc53af8e8f84ad98dbcea02d506c6d24180cd62e1d769c44721ba542f3154effc1f7579a8288c9f7873ed8e5
+"on-headers@npm:~1.1.0":
+  version: 1.1.0
+  resolution: "on-headers@npm:1.1.0"
+  checksum: 98aa64629f986fb8cc4517dd8bede73c980e31208cba97f4442c330959f60ced3dc6214b83420491f5111fc7c4f4343abe2ea62c85f505cf041d67850f238776
   languageName: node
   linkType: hard
 
