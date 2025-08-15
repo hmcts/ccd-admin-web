@@ -43,6 +43,7 @@
     "express-force-ssl": "^0.3.2",
     "express-nunjucks": "^2.2.5",
     "fast-csv": "^4.3.6",
+    "form-data": "^4.0.4",
     "formidable": "^3.5.4",
     "govuk-elements-sass": "~3.1.0",
     "govuk-frontend": "^1.0.0",
@@ -109,6 +110,7 @@
     "tslint": "^5.7.0"
   },
   "resolutions": {
+    "form-data": "^4.0.4",
     "shelljs": "0.10.0",
     "es6-promisify": "5.0.0",
     "nconf": "0.13.0",
