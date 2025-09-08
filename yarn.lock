@@ -1763,7 +1763,6 @@ __metadata:
     cookie-session: ^2.0.0-beta.3
     csurf: ^1.9.0
     debug: ^3.1.0
-    download-csv: ^1.1.1
     eslint: ^4.19.1
     eslint-plugin-mocha: ^5.3.0
     express: ^4.17.3
@@ -2863,13 +2862,6 @@ __metadata:
   version: 1.1.0
   resolution: "dont-sniff-mimetype@npm:1.1.0"
   checksum: 9a4ef261db39167610dd6e59005a6fce066342eeed6440c6bc5cbc0a76f0dc29c0b447ff9c129ffc10a3a977507f0eb17217541c755661ebea6b9ab7d9aaff6a
-  languageName: node
-  linkType: hard
-
-"download-csv@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "download-csv@npm:1.1.1"
-  checksum: bc94c6cbbf7f2caf6cbae0cefeb8431cfd904f20fa9634f3e317257488a59c146675043fb4f9f84eac2b94d4a9d3717993e7b27afb639b7b8ee1489fc2b8b534
   languageName: node
   linkType: hard
 
