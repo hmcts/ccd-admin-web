@@ -1769,12 +1769,7 @@ __metadata:
     express-nunjucks: ^2.2.5
     fast-csv: ^4.3.6
     fetch-mock: ^6.4.2
-    formidable: ^3.5.4
     govuk-elements-sass: ~3.1.0
-    govuk-frontend: ^1.0.0
-    govuk_frontend_toolkit: ~6.0.1
-    govuk_template_jinja: ^0.26.0
-    govuk_template_mustache: ^0.26.0
     gulp: ^4.0.2
     gulp-livereload: ^3.8.1
     gulp-nodemon: ^2.5.0
@@ -4625,38 +4620,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:^1.0.0":
-  version: 1.3.0
-  resolution: "govuk-frontend@npm:1.3.0"
-  checksum: 965b9a387f269d673b541aca75711740008746bde7632f9bc5cdb4ff8005dd53d95b9b229af1896cb41687ccad2983d4eac91971f6f21382f5f4b33bb343a472
-  languageName: node
-  linkType: hard
-
 "govuk_frontend_toolkit@npm:^7.1.0":
   version: 7.6.0
   resolution: "govuk_frontend_toolkit@npm:7.6.0"
   checksum: fcbff8ee78d61e4f68e19d274fd9fe3a7e4d3b4f686ed92419bd322b2bcb90e9ba8c5777c4253555c5d6e53adaf8a56cebd38f53507c5dbe004bed5b5be80af4
-  languageName: node
-  linkType: hard
-
-"govuk_frontend_toolkit@npm:~6.0.1":
-  version: 6.0.4
-  resolution: "govuk_frontend_toolkit@npm:6.0.4"
-  checksum: 6f4cdb4b9b39b9618ac3b042f2692c9fcc292c039191307175cb0344b9c83c530b888e9ea52b41a4cd2241271ffd49b04893ce4db690eee826fa00e3a96ccc71
-  languageName: node
-  linkType: hard
-
-"govuk_template_jinja@npm:^0.26.0":
-  version: 0.26.0
-  resolution: "govuk_template_jinja@npm:0.26.0"
-  checksum: e343ab3ad59f2da31caf3b830c82bda89077cc6caff42ff0321aa74a3133a4c7546ec7bc2d27a202fd3774ca58a0514f0fa320c64d07bbf7adc1f34cd620bbc2
-  languageName: node
-  linkType: hard
-
-"govuk_template_mustache@npm:^0.26.0":
-  version: 0.26.0
-  resolution: "govuk_template_mustache@npm:0.26.0"
-  checksum: 49a7ea07849fbed352383cafc06b219ce6116e8343de8e4a1055be4848c656f8ec4a6ff0c5d89ff869dfc4d4ad58204856ad4af65c91a56fa24d86fe869c7c9e
   languageName: node
   linkType: hard
 
