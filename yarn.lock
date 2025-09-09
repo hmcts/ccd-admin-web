@@ -604,15 +604,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@snyk/protect@npm:^1.1103.0":
-  version: 1.1298.3
-  resolution: "@snyk/protect@npm:1.1298.3"
-  bin:
-    snyk-protect: bin/snyk-protect
-  checksum: 477faa430bb5de2cf252a3bd31520614dd7d259e845b0af4e2193bf77a37af6f2e23b787cde0c4a6fc8b02f3f477f1c6cceffc961691a722775c6d563bb6c857
-  languageName: node
-  linkType: hard
-
 "@socket.io/component-emitter@npm:~3.1.0":
   version: 3.1.2
   resolution: "@socket.io/component-emitter@npm:3.1.2"
@@ -1758,7 +1749,6 @@ __metadata:
     "@hmcts/nodejs-healthcheck": ^1.8.5
     "@hmcts/nodejs-logging": ^4.0.4
     "@hmcts/properties-volume": ^0.0.14
-    "@snyk/protect": ^1.1103.0
     "@types/chai-as-promised": ^7.1.0
     "@types/mocha": ^2.2.43
     "@types/node": ^10.5.4
