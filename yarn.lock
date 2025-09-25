@@ -1763,11 +1763,9 @@ __metadata:
     cookie-session: ^2.0.0-beta.3
     csurf: ^1.9.0
     debug: ^3.1.0
-    download-csv: ^1.1.1
     eslint: ^4.19.1
     eslint-plugin-mocha: ^5.3.0
     express: ^4.17.3
-    express-force-https: ^1.0.0
     express-force-ssl: ^0.3.2
     express-nunjucks: ^2.2.5
     fast-csv: ^4.3.6
@@ -2869,13 +2867,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"download-csv@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "download-csv@npm:1.1.1"
-  checksum: bc94c6cbbf7f2caf6cbae0cefeb8431cfd904f20fa9634f3e317257488a59c146675043fb4f9f84eac2b94d4a9d3717993e7b27afb639b7b8ee1489fc2b8b534
-  languageName: node
-  linkType: hard
-
 "dunder-proto@npm:^1.0.1":
   version: 1.0.1
   resolution: "dunder-proto@npm:1.0.1"
@@ -3560,13 +3551,6 @@ __metadata:
   version: 3.1.2
   resolution: "exponential-backoff@npm:3.1.2"
   checksum: 7e191e3dd6edd8c56c88f2c8037c98fbb8034fe48778be53ed8cb30ccef371a061a4e999a469aab939b92f8f12698f3b426d52f4f76b7a20da5f9f98c3cbc862
-  languageName: node
-  linkType: hard
-
-"express-force-https@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "express-force-https@npm:1.0.0"
-  checksum: 2fa71b0c615a35b6385a236fc4216c388b3f3f8999a0a847cc088c67f1e56b6534f28d028b44ba9af0206ad0427b734979103bacd49ed683e0cc0cee0098d4e5
   languageName: node
   linkType: hard
 
