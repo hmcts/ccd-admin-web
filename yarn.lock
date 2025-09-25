@@ -1766,7 +1766,6 @@ __metadata:
     eslint: ^4.19.1
     eslint-plugin-mocha: ^5.3.0
     express: ^4.17.3
-    express-force-ssl: ^0.3.2
     express-nunjucks: ^2.2.5
     fast-csv: ^4.3.6
     fetch-mock: ^6.4.2
@@ -3551,15 +3550,6 @@ __metadata:
   version: 3.1.2
   resolution: "exponential-backoff@npm:3.1.2"
   checksum: 7e191e3dd6edd8c56c88f2c8037c98fbb8034fe48778be53ed8cb30ccef371a061a4e999a469aab939b92f8f12698f3b426d52f4f76b7a20da5f9f98c3cbc862
-  languageName: node
-  linkType: hard
-
-"express-force-ssl@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "express-force-ssl@npm:0.3.2"
-  dependencies:
-    lodash.assign: ^3.2.0
-  checksum: 3b1543d208f4ed7fcb8a291821edfd369107172c50e8f4525147cc0aa686da04f08866844aa9df4c8103020a7c53e1139425d16e06b7bb43d8f53ad7e9d82fb5
   languageName: node
   linkType: hard
 
@@ -6269,7 +6259,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.assign@npm:^3.0.0, lodash.assign@npm:^3.2.0":
+"lodash.assign@npm:^3.0.0":
   version: 3.2.0
   resolution: "lodash.assign@npm:3.2.0"
   dependencies:
