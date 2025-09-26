@@ -604,15 +604,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@snyk/protect@npm:^1.1103.0":
-  version: 1.1299.0
-  resolution: "@snyk/protect@npm:1.1299.0"
-  bin:
-    snyk-protect: bin/snyk-protect
-  checksum: 414c1216638f1c54356311eab5e798d4af8d7276333e03066fce929ed8359607793e052a9cce973ba2d3d4acec0d05a6b6a3d5f243e39cbfd7f5a9a485100e13
-  languageName: node
-  linkType: hard
-
 "@socket.io/component-emitter@npm:~3.1.0":
   version: 3.1.2
   resolution: "@socket.io/component-emitter@npm:3.1.2"
@@ -1758,14 +1749,12 @@ __metadata:
     "@hmcts/nodejs-healthcheck": ^1.8.5
     "@hmcts/nodejs-logging": ^4.0.4
     "@hmcts/properties-volume": ^0.0.14
-    "@snyk/protect": ^1.1103.0
     "@types/chai-as-promised": ^7.1.0
     "@types/mocha": ^2.2.43
     "@types/node": ^10.5.4
     "@types/sinon-chai": ^3.2.0
     applicationinsights: ^1.0.8
     body-parser: ^1.20.3
-    brace-expansion: ^1.1.12
     chai: ^4.3.6
     chai-as-promised: ^7.1.1
     config: ^2.0.1
@@ -1774,16 +1763,12 @@ __metadata:
     cookie-session: ^2.0.0-beta.3
     csurf: ^1.9.0
     debug: ^3.1.0
-    download-csv: ^1.1.1
     eslint: ^4.19.1
     eslint-plugin-mocha: ^5.3.0
     express: ^4.17.3
-    express-force-https: ^1.0.0
-    express-force-ssl: ^0.3.2
     express-nunjucks: ^2.2.5
     fast-csv: ^4.3.6
     fetch-mock: ^6.4.2
-    formidable: ^3.5.4
     govuk-elements-sass: ~3.1.0
     govuk-frontend: ^1.0.0
     govuk_frontend_toolkit: ~6.0.1
@@ -2880,13 +2865,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"download-csv@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "download-csv@npm:1.1.1"
-  checksum: bc94c6cbbf7f2caf6cbae0cefeb8431cfd904f20fa9634f3e317257488a59c146675043fb4f9f84eac2b94d4a9d3717993e7b27afb639b7b8ee1489fc2b8b534
-  languageName: node
-  linkType: hard
-
 "dunder-proto@npm:^1.0.1":
   version: 1.0.1
   resolution: "dunder-proto@npm:1.0.1"
@@ -3571,22 +3549,6 @@ __metadata:
   version: 3.1.2
   resolution: "exponential-backoff@npm:3.1.2"
   checksum: 7e191e3dd6edd8c56c88f2c8037c98fbb8034fe48778be53ed8cb30ccef371a061a4e999a469aab939b92f8f12698f3b426d52f4f76b7a20da5f9f98c3cbc862
-  languageName: node
-  linkType: hard
-
-"express-force-https@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "express-force-https@npm:1.0.0"
-  checksum: 2fa71b0c615a35b6385a236fc4216c388b3f3f8999a0a847cc088c67f1e56b6534f28d028b44ba9af0206ad0427b734979103bacd49ed683e0cc0cee0098d4e5
-  languageName: node
-  linkType: hard
-
-"express-force-ssl@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "express-force-ssl@npm:0.3.2"
-  dependencies:
-    lodash.assign: ^3.2.0
-  checksum: 3b1543d208f4ed7fcb8a291821edfd369107172c50e8f4525147cc0aa686da04f08866844aa9df4c8103020a7c53e1139425d16e06b7bb43d8f53ad7e9d82fb5
   languageName: node
   linkType: hard
 
@@ -6296,7 +6258,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.assign@npm:^3.0.0, lodash.assign@npm:^3.2.0":
+"lodash.assign@npm:^3.0.0":
   version: 3.2.0
   resolution: "lodash.assign@npm:3.2.0"
   dependencies:
