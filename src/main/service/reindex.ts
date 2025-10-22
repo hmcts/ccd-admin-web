@@ -1,0 +1,26 @@
+import * as config from 'config';
+import * as request from 'superagent';
+import { Logger } from '@hmcts/nodejs-logging';
+
+const logger = Logger.getLogger('reindex.ts');
+
+export async function getReindexTasks(req) {
+  const url = config.get('adminWeb.reindex_tasks_url');
+  const headers = {
+    Authorization: req.accessToken,
+    ServiceAuthorization: req.serviceAuthToken,
+  };
+
+  try {
+    const res = await request.get(url).set(headers);
+    logger.info(`Fetched ${res.body.length} reindex tasks`);
+    return Array.isArray(res.body.tasks) ? res.body.tasks : res.body;
+  } catch (error) {
+    if (error.response) {
+      logger.error(`Error fetching reindex tasks: ${error.response.text}`);
+    } else {
+      logger.error('Error fetching reindex tasks: no error response');
+    }
+    throw error;
+  }
+}
