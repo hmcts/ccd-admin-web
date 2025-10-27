@@ -13,48 +13,61 @@
         </div>
         {% endif %}
 
-        {% if tasks and tasks.length > 0 %}
         <div class="padding ngx-pagination">
-        <table class="govuk-table">
-            <thead>
-            <tr>
-                <th>Jurisdiction</th>
-                <th>Case Type</th>
-                <th>Old Index Deleted</th>
-                <th>Index Name</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Status</th>
-                <th>Exception Message</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for t in tasks %}
-            <tr>
-                <td>{{ t.jurisdiction }}</td>
-                <td>{{ t.caseType }}</td>
-                <td>{{ t.deleteOldIndex }}</td>
-                <td>{{ t.indexName }}</td>
-                <td>{{ t.startTime }}</td>
-                <td>{{ t.endTime or '-' }}</td>
-                <td>{{ t.status }}</td>
-                <td>{{ t.exceptionMessage or '-' }}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <table class="govuk-table">
-            <thead>
-            <tr>
-                <th>
-                    <div class="boldcontents" align="center">No reindex tasks found</div>
-                </th>
-            </tr>
-            </thead>
-        </table>
-        {% endif %}
-
+            <form method="get" action="/reindex">
+                <div class="form-group">
+                    <label for="caseType"></label>
+                    <select id="caseType" name="caseType" class="form-control">
+                        <option value="">--Select a Case Type--</option>
+                        {% for ct in caseTypes %}
+                        <option value="{{ ct }}" {% if selectedCaseType == ct %}selected{% endif %}>{{ ct }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="button">Submit</button>
+                </div>
+            </form>
+            {% if tasks and tasks.length > 0 %}
+            <table class="govuk-table">
+                <thead>
+                <tr>
+                    <th>Jurisdiction</th>
+                    <th>Case Type</th>
+                    <th>Old Index Deleted</th>
+                    <th>Index Name</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Status</th>
+                    <th>Exception Message</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for t in tasks %}
+                <tr>
+                    <td>{{ t.jurisdiction }}</td>
+                    <td>{{ t.caseType }}</td>
+                    <td>{{ t.deleteOldIndex }}</td>
+                    <td>{{ t.indexName }}</td>
+                    <td>{{ t.startTime }}</td>
+                    <td>{{ t.endTime or '-' }}</td>
+                    <td>{{ t.status }}</td>
+                    <td>{{ t.exceptionMessage or '-' }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <table class="govuk-table">
+                <thead>
+                <tr>
+                    <th>
+                        <div class="boldcontents" align="center">No reindex tasks found</div>
+                    </th>
+                </tr>
+                </thead>
+            </table>
+            {% endif %}
         </div>
     </div>
 </div>
