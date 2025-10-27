@@ -85,7 +85,7 @@ if (config.useCSRFProtection === true) {
     },
   };
 
-  app.all(/^\/(?!import|elasticsearch.*|elastic-support.*|dictionary).*$/, csrf(csrfOptions), (req, res, next) => {
+  app.all(/^\/(?!import|reindex.*|elasticsearch.*|elastic-support.*|dictionary).*$/, csrf(csrfOptions), (req, res, next) => {
     res.locals.csrfToken = req.csrfToken();
     next();
   });

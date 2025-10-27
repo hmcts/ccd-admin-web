@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getReindexTasks } from '../service/reindex';
+import { getReindexTasks } from '../service/reindex-task-service';
 import { sanitize } from '../util/sanitize';
 
 const router = Router();

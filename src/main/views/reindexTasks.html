@@ -2,11 +2,49 @@
 {% from "macros/formElements.html" import errorDisplay %}
 {% block content %}
 {% include "menu.html" %}
-<h2 class="heading-large padding">Reindexing Tasks</h2>
+
+<h2 class="heading-large padding">Reindexed Tasks</h2>
 <div class="grid-row">
     <div class="column-two-thirds padding">
-        {% if tasks?.length == 0 %}
-        <table>
+
+        {% if error %}
+        <div class="error-summary govuk-error-message">
+            Error fetching tasks: {{ error }}
+        </div>
+        {% endif %}
+
+        {% if tasks and tasks.length > 0 %}
+        <div class="padding ngx-pagination">
+        <table class="govuk-table">
+            <thead>
+            <tr>
+                <th>Jurisdiction</th>
+                <th>Case Type</th>
+                <th>Old Index Deleted</th>
+                <th>Index Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Status</th>
+                <th>Exception Message</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for t in tasks %}
+            <tr>
+                <td>{{ t.jurisdiction }}</td>
+                <td>{{ t.caseType }}</td>
+                <td>{{ t.deleteOldIndex }}</td>
+                <td>{{ t.indexName }}</td>
+                <td>{{ t.startTime }}</td>
+                <td>{{ t.endTime or '-' }}</td>
+                <td>{{ t.status }}</td>
+                <td>{{ t.exceptionMessage or '-' }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <table class="govuk-table">
             <thead>
             <tr>
                 <th>
@@ -15,37 +53,9 @@
             </tr>
             </thead>
         </table>
-        {%else%}
-        <div class="padding heading-medium">Reindex</div>
-        <div class="padding ngx-pagination">
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Case Type</th>
-                    <th>Jurisdiction</th>
-                    <th>Index Name</th>
-                    <th>Status</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for t in tasks %}
-                <tr>
-                    <td>{{ t.id }}</td>
-                    <td>{{ t.caseType }}</td>
-                    <td>{{ t.jurisdiction }}</td>
-                    <td>{{ t.indexName }}</td>
-                    <td>{{ t.status }}</td>
-                    <td>{{ t.startTime }}</td>
-                    <td>{{ t.endTime or '-' }}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+        {% endif %}
+
         </div>
     </div>
 </div>
-{% endif %}
 {% endblock %}
