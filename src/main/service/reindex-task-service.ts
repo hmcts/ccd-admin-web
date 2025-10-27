@@ -2,9 +2,9 @@ import * as config from 'config';
 import * as request from 'superagent';
 import { Logger } from '@hmcts/nodejs-logging';
 
-const logger = Logger.getLogger('reindex.ts');
+const logger = Logger.getLogger(__filename);
 
-export async function getReindexTasks(req) {
+export function getReindexTasks(req) {
     const url = config.get('adminWeb.reindex_tasks_url');
     const headers = {
     Authorization: req.accessToken,
