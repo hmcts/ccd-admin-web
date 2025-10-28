@@ -1834,7 +1834,7 @@ __metadata:
     tsconfig-paths: "npm:^3.14.1"
     tslint: "npm:^5.7.0"
     typescript: "npm:^3.2.1"
-    validator: "npm:^13.7.0"
+    validator: "npm:^13.15.20"
     xss-filters: "npm:^1.2.7"
   languageName: unknown
   linkType: soft
