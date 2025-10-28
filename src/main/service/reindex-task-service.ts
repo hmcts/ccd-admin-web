@@ -18,15 +18,18 @@ export function getReindexTasks(req, caseType?: string) {
   .get(url)
   .set(headers)
   .then((res) => {
-      logger.info(`Received successful response:${res.text}`);
+      logger.info(`Received successful response: ${res.text}`);
       return res.body;
       })
   .catch((error) => {
     if (error.response) {
-      logger.error(`Error fetching reindex tasks: ${error.response.text}`);
+      const status = error.status || error.response.status;
+      const message = error.response.text || 'No response text';
+      logger.error(`Error fetching reindex tasks (HTTP ${status}): ${message}`);
+      throw new Error(`Reindex fetch failed with HTTP ${status}: ${message}`);
     } else {
       logger.error('Error fetching reindex tasks: no response received');
+      throw new Error('Reindex fetch failed: no HTTP response');
     }
-    throw error;
   });
 }

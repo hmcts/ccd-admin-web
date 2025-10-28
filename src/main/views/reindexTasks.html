@@ -7,12 +7,6 @@
 <div class="grid-row">
     <div class="column-two-thirds padding">
 
-        {% if error %}
-        <div class="error-summary govuk-error-message">
-            Error fetching tasks: {{ error }}
-        </div>
-        {% endif %}
-
         <div class="padding ngx-pagination">
             <form method="get" action="/reindex">
                 <div class="form-group">
@@ -28,6 +22,13 @@
                     <button type="submit" class="button">Submit</button>
                 </div>
             </form>
+
+            {% if error %}
+            <div class="error-summary govuk-error-message">
+                {{ error }}
+            </div>
+            {% endif %}
+            
             {% if tasks and tasks.length > 0 %}
             <table class="govuk-table">
                 <thead>
