@@ -14,7 +14,7 @@ import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter"
 import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { importAll } from "./import-all/index";
-import reindexTasks from './routes/reindexTasks';
+import reindexTasks from "./routes/reindexTasks";
 
 const enableAppInsights = require("./app-insights/app-insights");
 
@@ -85,7 +85,7 @@ if (config.useCSRFProtection === true) {
     },
   };
 
-  app.all(/^\/(?!import|reindex.*|elasticsearch.*|elastic-support.*|dictionary).*$/, csrf(csrfOptions), (req, res, next) => {
+  app.all(/^\/(?!import|elasticsearch.*|elastic-support.*|dictionary).*$/, csrf(csrfOptions), (req, res, next) => {
     res.locals.csrfToken = req.csrfToken();
     next();
   });
@@ -123,4 +123,4 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   res.render("error", responseContent);
 });
 
-app.use('/', reindexTasks);
+app.use("/", reindexTasks);

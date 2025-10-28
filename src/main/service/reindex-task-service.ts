@@ -1,11 +1,11 @@
-import * as config from 'config';
-import * as request from 'superagent';
-import { Logger } from '@hmcts/nodejs-logging';
+import * as config from "config";
+import * as request from "superagent";
+import { Logger } from "@hmcts/nodejs-logging";
 
 const logger = Logger.getLogger(__filename);
 
 export function getReindexTasks(req, caseType?: string) {
-  let url = config.get('adminWeb.reindex_tasks_url');
+  let url = config.get("adminWeb.reindex_tasks_url");
   if (caseType) {
       url += `?caseType=${encodeURIComponent(caseType)}`;
   }
@@ -24,12 +24,12 @@ export function getReindexTasks(req, caseType?: string) {
   .catch((error) => {
     if (error.response) {
       const status = error.status || error.response.status;
-      const message = error.response.text || 'No response text';
+      const message = error.response.text || "No response text";
       logger.error(`Error fetching reindex tasks (HTTP ${status}): ${message}`);
       throw new Error(`Reindex fetch failed with HTTP ${status}: ${message}`);
     } else {
-      logger.error('Error fetching reindex tasks: no response received');
-      throw new Error('Reindex fetch failed: no HTTP response');
+      logger.error("Error fetching reindex tasks: no response received");
+      throw new Error("Reindex fetch failed: no HTTP response");
     }
   });
 }
