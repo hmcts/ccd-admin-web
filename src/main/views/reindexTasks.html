@@ -10,7 +10,7 @@
         <div class="padding ngx-pagination">
             <form method="get" action="/reindex">
                 <div class="form-group">
-                    <label for="caseType"></label>
+                    <label for="caseType" class="visually-hidden">Case Type</label>
                     <select id="caseType" name="caseType" class="form-control">
                         <option value="">--Select a Case Type--</option>
                         {% for ct in caseTypes %}
@@ -63,7 +63,7 @@
                 <thead>
                 <tr>
                     <th>
-                        <div class="boldcontents" align="center">No reindex tasks found</div>
+                        <div class="boldcontents">No reindex tasks found</div>
                     </th>
                 </tr>
                 </thead>
