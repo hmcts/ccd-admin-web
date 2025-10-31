@@ -16,8 +16,8 @@ describe("Reindex task service", () => {
   beforeEach(() => {
     req = {
       accessToken: "userAuthToken",
-      serviceAuthToken: "serviceAuthToken",
       authentication: {},
+      serviceAuthToken: "serviceAuthToken",
     };
   });
 
@@ -29,15 +29,23 @@ describe("Reindex task service", () => {
     it("should return an HTTP 200 status and reindex task list", async () => {
       const expectedResult = [
         {
-          caseType: "FT_CRUD",
-          jurisdiction: "BEFTA_MASTER",
-          indexName: "ft_crud_cases-000001",
+          caseType: "CaseTypeA",
+          deleteOldIndex: "false",
+          endTime: "2025-10-30T14:10:46.277Z",
+          exceptionMessage: "",
+          indexName: "casetypea_cases-000002",
+          jurisdiction: "JUR",
+          startTime: "2025-10-30T14:00:40.448Z",
           status: "SUCCESS",
         },
         {
-          caseType: "FT_Complex",
-          jurisdiction: "BEFTA_MASTER",
-          indexName: "ft_complex_cases-000001",
+          caseType: "CaseTypeB",
+          deleteOldIndex: "true",
+          endTime: "2025-10-30T14:15:12.005Z",
+          exceptionMessage: "Exception: failed shard update",
+          indexName: "casetypeb_cases-000003",
+          jurisdiction: "JUR2",
+          startTime: "2025-10-30T14:05:59.102Z",
           status: "FAILED",
         },
       ];
@@ -48,16 +56,20 @@ describe("Reindex task service", () => {
 
       const result = await getReindexTasks(req);
       expect(result.length).to.equal(2);
-      expect(result[0].caseType).to.equal("FT_CRUD");
+      expect(result[0].caseType).to.equal("CaseTypeA");
     });
 
     it("should return filtered tasks when caseType parameter is provided", async () => {
-      const caseType = "FT_CRUD";
+      const caseType = "CaseTypeA";
       const expectedResult = [
         {
-          caseType: "FT_CRUD",
-          jurisdiction: "BEFTA_MASTER",
-          indexName: "ft_crud_cases-000001",
+          caseType: "CaseTypeA",
+          deleteOldIndex: "false",
+          endTime: "2025-10-30T14:10:46.277Z",
+          exceptionMessage: "",
+          indexName: "casetypea_cases-000002",
+          jurisdiction: "JUR",
+          startTime: "2025-10-30T14:00:40.448Z",
           status: "SUCCESS",
         },
       ];
@@ -72,26 +84,28 @@ describe("Reindex task service", () => {
     });
   });
 
+  describe("failed data retrieval", () => {
     it("should throw an error when the service is unavailable", async () => {
-      nock(definitionStoreHost)
-        .get(reindexEndpoint)
-        .reply(500, "Internal Server Error");
+    nock(definitionStoreHost)
+      .get(reindexEndpoint)
+      .reply(500, "Internal Server Error");
 
-      try {
-        await getReindexTasks(req);
-        throw new Error("Expected error was not thrown");
-      } catch (err: any) {
-        expect(err.message).to.include("HTTP 500");
-      }
-    });
+    try {
+      await getReindexTasks(req);
+      throw new Error("Expected error was not thrown");
+    } catch (err) {
+      expect(err.message).to.include("HTTP 500");
+    }
+  });
 
     it("should handle connection errors gracefully", async () => {
       // no nock() here -> causes ECONNREFUSED
       try {
         await getReindexTasks(req);
         throw new Error("Expected connection error was not thrown");
-      } catch (err: any) {
+      } catch (err) {
         expect(err.message).to.include("no HTTP response");
       }
     });
   });
+});
