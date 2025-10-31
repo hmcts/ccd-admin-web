@@ -10,7 +10,6 @@ describe("Reindex task service", () => {
 
   const definitionStoreHost = "http://localhost:4451";
   const reindexEndpoint = "/elastic-support/reindex/tasks";
-  const reindexUrl = definitionStoreHost + reindexEndpoint;
 
   let req;
 
@@ -96,4 +95,3 @@ describe("Reindex task service", () => {
       }
     });
   });
-});
