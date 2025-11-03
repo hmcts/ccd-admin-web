@@ -10,6 +10,28 @@ describe("Reindex task service", () => {
 
   const definitionStoreHost = "http://localhost:4451";
   const reindexEndpoint = "/elastic-support/reindex/tasks";
+  const expectedResult = [
+    {
+      caseType: "CaseTypeA",
+      deleteOldIndex: "false",
+      endTime: "2025-10-30T14:10:46.277Z",
+      exceptionMessage: "",
+      indexName: "casetypea_cases-000002",
+      jurisdiction: "JUR",
+      startTime: "2025-10-30T14:00:40.448Z",
+      status: "SUCCESS",
+    },
+    {
+      caseType: "CaseTypeB",
+      deleteOldIndex: "true",
+      endTime: "2025-10-30T14:15:12.005Z",
+      exceptionMessage: "Exception: failed shard update",
+      indexName: "casetypeb_cases-000003",
+      jurisdiction: "JUR2",
+      startTime: "2025-10-30T14:05:59.102Z",
+      status: "FAILED",
+    },
+  ];
 
   let req;
 
@@ -27,29 +49,6 @@ describe("Reindex task service", () => {
 
   describe("successful data retrieval", () => {
     it("should return an HTTP 200 status and reindex task list", async () => {
-      const expectedResult = [
-        {
-          caseType: "CaseTypeA",
-          deleteOldIndex: "false",
-          endTime: "2025-10-30T14:10:46.277Z",
-          exceptionMessage: "",
-          indexName: "casetypea_cases-000002",
-          jurisdiction: "JUR",
-          startTime: "2025-10-30T14:00:40.448Z",
-          status: "SUCCESS",
-        },
-        {
-          caseType: "CaseTypeB",
-          deleteOldIndex: "true",
-          endTime: "2025-10-30T14:15:12.005Z",
-          exceptionMessage: "Exception: failed shard update",
-          indexName: "casetypeb_cases-000003",
-          jurisdiction: "JUR2",
-          startTime: "2025-10-30T14:05:59.102Z",
-          status: "FAILED",
-        },
-      ];
-
       nock(definitionStoreHost)
         .get(reindexEndpoint)
         .reply(200, expectedResult);
@@ -61,22 +60,10 @@ describe("Reindex task service", () => {
 
     it("should return filtered tasks when caseType parameter is provided", async () => {
       const caseType = "CaseTypeA";
-      const expectedResult = [
-        {
-          caseType: "CaseTypeA",
-          deleteOldIndex: "false",
-          endTime: "2025-10-30T14:10:46.277Z",
-          exceptionMessage: "",
-          indexName: "casetypea_cases-000002",
-          jurisdiction: "JUR",
-          startTime: "2025-10-30T14:00:40.448Z",
-          status: "SUCCESS",
-        },
-      ];
 
       nock(definitionStoreHost)
         .get(`${reindexEndpoint}?caseType=${caseType}`)
-        .reply(200, expectedResult);
+        .reply(200, [expectedResult[0]]);
 
       const result = await getReindexTasks(req, caseType);
       expect(result.length).to.equal(1);

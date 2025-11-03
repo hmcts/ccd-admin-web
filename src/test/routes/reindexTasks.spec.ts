@@ -14,6 +14,27 @@ chai.use(sinonChai);
 
 describe("test route Reindex Tasks", () => {
     let getReindexTasksStub: sinon.SinonStub;
+    const mockTasks = [
+    {
+      caseType: "CaseTypeA",
+      deleteOldIndex: "false",
+      endTime: "2025-10-30T14:10:46.277Z",
+      exceptionMessage: "",
+      indexName: "casetypea_cases-000002",
+      jurisdiction: "JUR",
+      startTime: "2025-10-30T14:00:40.448Z",
+      status: "SUCCESS",
+    },
+    {
+      caseType: "CaseTypeB",
+      deleteOldIndex: "true",
+      endTime: "2025-10-30T14:15:12.005Z",
+      exceptionMessage: "Exception: failed shard update",
+      indexName: "casetypeb_cases-000003",
+      jurisdiction: "JUR2",
+      startTime: "2025-10-30T14:05:59.102Z",
+      status: "FAILED",
+    }];
 
     beforeEach(() => {
         mock.cleanAll();
@@ -24,6 +45,7 @@ describe("test route Reindex Tasks", () => {
         sinon.restore();
     });
 
+    describe("on GET /reindex", () => {
     it("should redirect to IdAM login page when not authenticated", () => {
         return request(app)
         .get("/reindex")
@@ -34,29 +56,6 @@ describe("test route Reindex Tasks", () => {
     });
 
     it("should return the reindex page with all tasks when no caseType query param is provided", async () => {
-      const mockTasks = [
-        {
-          caseType: "CaseTypeA",
-          deleteOldIndex: "false",
-          endTime: "2025-10-30T14:10:46.277Z",
-          exceptionMessage: "",
-          indexName: "casetypea_cases-000002",
-          jurisdiction: "JUR",
-          startTime: "2025-10-30T14:00:40.448Z",
-          status: "SUCCESS",
-        },
-        {
-          caseType: "CaseTypeB",
-          deleteOldIndex: "true",
-          endTime: "2025-10-30T14:15:12.005Z",
-          exceptionMessage: "Exception: failed shard update",
-          indexName: "casetypeb_cases-000003",
-          jurisdiction: "JUR2",
-          startTime: "2025-10-30T14:05:59.102Z",
-          status: "FAILED",
-        },
-      ];
-
       getReindexTasksStub.onFirstCall().resolves(mockTasks);
       getReindexTasksStub.onSecondCall().resolves(mockTasks);
 
@@ -66,8 +65,12 @@ describe("test route Reindex Tasks", () => {
         .then((res) => {
             expect(res.statusCode).to.equal(200);
             const dom = new JSDOM(res.text);
+
             const pageHeading = dom.window.document.querySelector(".heading-large");
             expect(pageHeading?.textContent).to.include("Reindex");
+
+            const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
+            expect(rows[0].textContent).to.include("CaseTypeB"); // Sorted descending by startTime
 
             const textContent = dom.window.document.body.textContent;
             expect(textContent).to.include("CaseTypeA");
@@ -76,13 +79,9 @@ describe("test route Reindex Tasks", () => {
   });
 
     it("should render filtered tasks when caseType query is selected", async () => {
-      const allTasks = [
-        { caseType: "CaseTypeA", startTime: "2025-10-30T14:00:00Z", endTime: "2025-10-30T14:10:00Z" },
-        { caseType: "CaseTypeB", startTime: "2025-10-30T14:05:00Z", endTime: "2025-10-30T14:15:00Z" },
-      ];
-      const filteredTasks = [allTasks[1]];
+      const filteredTasks = [mockTasks[1]];
 
-      getReindexTasksStub.onFirstCall().resolves(allTasks);
+      getReindexTasksStub.onFirstCall().resolves(mockTasks);
       getReindexTasksStub.onSecondCall().resolves(filteredTasks);
 
       return request(appTestWithAuthorizedAdminWebRoles)
@@ -91,6 +90,7 @@ describe("test route Reindex Tasks", () => {
       .then((res) => {
         expect(res.statusCode).to.equal(200);
         const dom = new JSDOM(res.text);
+
         const select = dom.window.document.querySelector("#caseType");
         expect(select).to.exist;
 
@@ -98,7 +98,7 @@ describe("test route Reindex Tasks", () => {
         expect(selectedOption?.getAttribute("value")).to.equal("CaseTypeA");
 
         const bodyText = dom.window.document.body.textContent;
-        expect(bodyText).to.include("CaseTypeB");
+        expect(bodyText).to.include("CaseTypeA");
 
         expect(getReindexTasksStub).to.have.been.calledTwice;
         expect(getReindexTasksStub.secondCall.args[1]).to.equal("CaseTypeA");
@@ -113,8 +113,10 @@ describe("test route Reindex Tasks", () => {
         .then((res) => {
             expect(res.statusCode).to.equal(500);
             const dom = new JSDOM(res.text);
+
             const errorMessage = dom.window.document.body.textContent;
             expect(errorMessage).to.include("Error fetching reindex tasks (HTTP 500)");
         });
     });
   });
+});
