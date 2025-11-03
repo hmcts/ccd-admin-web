@@ -165,7 +165,7 @@
     "ua-parser-js": "^0.8.0",
     "http-cache-semantics": "^4.1.1",
     "jackspeak": "2.1.1",
-    "semver": "7.7.2",
+    "semver": "7.7.3",
     "ip": "2.0.1",
     "micromatch": "^4.0.8",
     "cross-spawn": "^7.0.6",
@@ -198,5 +198,5 @@
     "all": true
   },
   "snyk": true,
-  "packageManager": "yarn@3.8.7"
+  "packageManager": "yarn@4.10.3"
 }
