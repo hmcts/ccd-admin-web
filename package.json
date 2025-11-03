@@ -9,6 +9,7 @@
     "setup": "gulp sass copy-files",
     "start": "yarn node server.js",
     "lint": "tslint --project tsconfig.json --type-check && sass-lint -v -q",
+    "lint:fix": "tslint --project tsconfig.json --type-check --fix && sass-lint -v -q",
     "sass": "gulp sass copy-files",
     "watch": "gulp develop",
     "test": "NODE_ENV=mocha LOG_LEVEL=OFF mocha --compilers ts:ts-node/register -r tsconfig-paths/register $(find src/test \\( -name '*.ts' -or -name '*.js' \\) ! -path '*a11y*') --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-admin-web-unit",
