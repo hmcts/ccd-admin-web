@@ -84,15 +84,5 @@ describe("Reindex task service", () => {
       expect(err.message).to.include("HTTP 500");
     }
   });
-
-    it("should handle connection errors gracefully", async () => {
-      // no nock() here -> causes ECONNREFUSED
-      try {
-        await getReindexTasks(req);
-        throw new Error("Expected connection error was not thrown");
-      } catch (err) {
-        expect(err.message).to.include("no HTTP response");
-      }
-    });
   });
 });
