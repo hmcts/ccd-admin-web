@@ -14,7 +14,6 @@ import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter"
 import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { importAll } from "./import-all/index";
-import reindexTasks from "./routes/reindexTasks";
 
 const enableAppInsights = require("./app-insights/app-insights");
 
@@ -122,5 +121,3 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   }
   res.render("error", responseContent);
 });
-
-app.use("/", reindexTasks);
