@@ -5,6 +5,10 @@
     <a href="/import">Import Case Definition</a>
   {% endif %}
 
+  {% if adminWebAuthorization.canImportDefinition %}
+  <a href="/reindex">Reindex Tasks</a>
+  {% endif %}
+
   {% if adminWebAuthorization.canManageUserProfile %}
     <a href="/jurisdiction?dest=userprofiles">Manage User Profiles</a>
   {% endif %}
