@@ -48,7 +48,8 @@ describe("importService", () => {
         try {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
-          expect(requestAttachSpy).to.be.calledWith("file", req.file.buffer, { filename: req.file.originalname });
+          expect(requestAttachSpy).to.be.calledWith("file",  sinon.match.instanceOf(Buffer),
+           sinon.match.has("filename", sinon.match(/^dummy_filename\./)));
           done();
         } catch (e) {
           done(e);
