@@ -27,7 +27,7 @@
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.8.5",
     "@hmcts/nodejs-logging": "^4.0.4",
-    "@hmcts/properties-volume": "^0.0.14",
+    "@hmcts/properties-volume": "^1.0.0",
     "@snyk/protect": "^1.1103.0",
     "@types/node": "^10.5.4",
     "applicationinsights": "^1.0.8",
