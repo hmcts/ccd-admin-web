@@ -161,7 +161,7 @@
     "json5": "^2.2.2",
     "decode-uri-component": "^0.4.0",
     "cookiejar": "^2.1.4",
-    "ua-parser-js": "^0.8.0",
+    "ua-parser-js": "^1.0.0",
     "http-cache-semantics": "^4.1.1",
     "jackspeak": "2.1.1",
     "semver": "7.7.3",
