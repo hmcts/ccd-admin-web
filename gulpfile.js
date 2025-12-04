@@ -2,6 +2,7 @@ const fg = require('fast-glob');
 const vfs = require('vinyl-fs'); // already used implicitly by gulp.src previously
 const fs = require('fs');
 const path = require('path');
+const sassCompiler = require('sass'); // yarn add -D sass if not present
 
 let gulp = require('gulp');
 let nodemon = require('gulp-nodemon');
@@ -18,7 +19,6 @@ const stylesheetsDirectory = `${assetsDirectory}/stylesheets`;
 
 // compile scss files
 gulp.task('sass', async function () {
-  // Resolve scss files (returns array of paths)
   const patterns = [`${stylesheetsDirectory}/*.scss`];
   const files = await fg(patterns, { onlyFiles: true, dot: true });
 
@@ -26,17 +26,49 @@ gulp.task('sass', async function () {
     return Promise.resolve();
   }
 
-  // Use vinyl-fs.src(paths, { base }) to create a vinyl stream so gulp-sass works as before
-  return vfs.src(files, { base: stylesheetsDirectory, allowEmpty: true })
-    .pipe(plumber())
-    .pipe(sassPlugin({
-      includePaths: [
-        govUkFrontendToolkitRoot,
-        govUkElementRoot
-      ]
-    }))
-    .pipe(gulp.dest(stylesheetsDirectory))
-    .pipe(livereload());
+  // compile each scss file synchronously (fast and deterministic)
+  for (const scssPath of files) {
+    try {
+      const result = sassCompiler.renderSync({
+        file: scssPath,
+        includePaths: [
+          govUkFrontendToolkitRoot,
+          govUkElementRoot
+        ],
+        outputStyle: 'expanded', // or 'compressed' if you prefer
+        sourceMap: false
+      });
+
+      // determine output filename - same folder, same basename but .css
+      const outFile = path.join(
+        path.dirname(scssPath),
+        path.basename(scssPath, path.extname(scssPath)) + '.css'
+      );
+
+      // ensure target dir exists
+      fs.mkdirSync(path.dirname(outFile), { recursive: true });
+      fs.writeFileSync(outFile, result.css);
+
+      // optional: write sourcemap if result.map exists
+      if (result.map) {
+        fs.writeFileSync(outFile + '.map', result.map.toString());
+      }
+
+      // trigger livereload if desired
+      try {
+        livereload.changed(outFile);
+      } catch (e) {
+        // ignore if livereload not active
+      }
+
+    } catch (err) {
+      console.error('SASS compile error for', scssPath, err && err.formatted ? err.formatted : err);
+      // fail the task
+      throw err;
+    }
+  }
+
+  return Promise.resolve();
 });
 
 
