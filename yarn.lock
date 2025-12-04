@@ -1846,6 +1846,7 @@ __metadata:
     express-force-ssl: "npm:^0.3.2"
     express-nunjucks: "npm:^2.2.5"
     fast-csv: "npm:^4.3.6"
+    fast-glob: "npm:^3.3.3"
     fetch-mock: "npm:^6.4.2"
     formidable: "npm:^3.5.4"
     govuk-elements-sass: "npm:~3.1.0"
@@ -3828,7 +3829,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.3.2":
+"fast-glob@npm:^3.3.2, fast-glob@npm:^3.3.3":
   version: 3.3.3
   resolution: "fast-glob@npm:3.3.3"
   dependencies:
