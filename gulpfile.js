@@ -8,7 +8,6 @@ let nodemon = require('gulp-nodemon');
 let plumber = require('gulp-plumber');
 let livereload = require('gulp-livereload');
 let sass = require('gulp-sass')(require('sass'));
-let path = require('path');
 
 const repoRoot = path.join(__dirname, '/');
 const govUkFrontendToolkitRoot = path.join(repoRoot, './node_modules/govuk_frontend_toolkit/stylesheets');
