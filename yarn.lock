@@ -605,11 +605,11 @@ __metadata:
   linkType: hard
 
 "@snyk/protect@npm:^1.1103.0":
-  version: 1.1300.2
-  resolution: "@snyk/protect@npm:1.1300.2"
+  version: 1.1301.0
+  resolution: "@snyk/protect@npm:1.1301.0"
   bin:
     snyk-protect: bin/snyk-protect
-  checksum: 10/016cf033471aa7eccb77496913354f4cfb99f7b6c6a118f92c59123d82f0393b46e3548a37b44f4d3a565b3834c21c73b14e423a7c117905de078f231c3d8403
+  checksum: 10/fde0f6c0214704bbe1e665a79e00a88597540d8a4cea875872a20987ea9fd774d89ca2d98f7c67b4423086e77347b4ff70c3f9ef58abcab280a1e44ea501da5d
   languageName: node
   linkType: hard
 
@@ -5803,13 +5803,13 @@ __metadata:
   linkType: hard
 
 "js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "js-yaml@npm:4.1.0"
+  version: 4.1.1
+  resolution: "js-yaml@npm:4.1.1"
   dependencies:
     argparse: "npm:^2.0.1"
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: 10/c138a34a3fd0d08ebaf71273ad4465569a483b8a639e0b118ff65698d257c2791d3199e3f303631f2cb98213fa7b5f5d6a4621fd0fff819421b990d30d967140
+  checksum: 10/a52d0519f0f4ef5b4adc1cde466cb54c50d56e2b4a983b9d5c9c0f2f99462047007a6274d7e95617a21d3c91fde3ee6115536ed70991cd645ba8521058b78f77
   languageName: node
   linkType: hard
 
@@ -10439,9 +10439,9 @@ __metadata:
   linkType: hard
 
 "validator@npm:^13.7.0":
-  version: 13.15.20
-  resolution: "validator@npm:13.15.20"
-  checksum: 10/498f9b201dda7b09207bbc13606e6f90595987eab9e3a60fc5b8d8d96141c9351192aea56d392c78640e2462770eedccf545cf13b2ef43e87d73a755ba485c5d
+  version: 13.15.23
+  resolution: "validator@npm:13.15.23"
+  checksum: 10/03e4a37c04c4e8337b0c91e529bdb6376de6b52ef683616e2e909276be73903e6054203d274ed35e88e3498ec68764125b194338dd2ee893818d3008fbad1ba7
   languageName: node
   linkType: hard
 
