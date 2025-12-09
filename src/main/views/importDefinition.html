@@ -16,32 +16,49 @@
         {% endif %}
         <input type="file" id="file" name="file" accept=".xlsx"/>
       </div>
-      <div class="form-group">
+      <div style="display: grid;">
+        <div style="display: inline-flex;">
+          <div class="img" style=""><img src="images/icon-warning.png" width="36" height="32" style="padding-top: 10px;">
+          </div>
+      <div class="form-group" style="padding: 8px 10px 9px 12px;">
+          <p>
+            <span style="font-weight: 800">PROD:</span> Do not tick these checkboxes without Release Management/CCD approval<br>
+          (controlled use; service downtime required). <br>
+        </p>
+        <p><span style="font-weight: 800">PERF/Test:</span> Do not use without PERF team approval. <br></p>
+        <p><span style="font-weight: 800">Other envs:</span> Only use after discussion with relevant teams. <br></p>
+        <p>Refer to <a href="https://hmcts.github.io/ops-runbooks/Elastic-Search-and-Logstash/elasticsearch-reindexing-guidance.html#elasticsearch-reindexing-guidance" target="_blank">Reindexing guidance page.</a></p>
+      </div>
+        </div>
         <div class="multiple-choice">
-          <input id="reindex" name="reindex" type="checkbox" value="true" onchange="toggleDeleteOldIndex()">
-          <label for="reindex">Reindex</label>
+          <input id="reindex" name="reindex" type="checkbox" value="true" onchange="updateState()">
+          <label for="reindex">Perform Reindexing</label>
         </div>
       </div>
       <div class="form-group">
         <div class="multiple-choice">
-          <input id="deleteOldIndex" name="deleteOldIndex" type="checkbox" value="true" title="Delete Old Index option is only available when Reindex is checked" disabled>
-          <label for="deleteOldIndex">Delete Old Index</label>
+          <input id="confirm" name="confirm" type="checkbox" value="true" onchange="updateState()" title="confirm reindexing">
+          <label for="confirm">I confirm that I have consulted with the <span style="font-weight: 800">relevant team</span> to review the automated reindexing process and fully understand the associated impacts</label>
         </div>
       </div>
       <script type="text/javascript">
-        function toggleDeleteOldIndex() {
+        function updateState() {
           const reindexChecked = document.getElementById('reindex').checked;
-          const deleteOldIndexCheckbox = document.getElementById('deleteOldIndex');
+          const confirmCheckbox = document.getElementById('confirm');
+          const submitButton = document.querySelector('button[type="submit"]');
           
-          deleteOldIndexCheckbox.disabled = !reindexChecked;
+          confirmCheckbox.disabled = !reindexChecked;
           
           if (!reindexChecked) {
-            deleteOldIndexCheckbox.checked = false;
+            confirmCheckbox.checked = false;
+            submitButton.disabled = false; // Enable submit if reindex is not checked
+            } else {
+            submitButton.disabled = !confirmCheckbox.checked // Disable submit until confirm is checked
           }
         }
         
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', toggleDeleteOldIndex);
+        document.addEventListener('DOMContentLoaded', updateState);
       </script>
       <div class="form-group">
         <button type="submit" class="button" value="Submit">Submit</button>

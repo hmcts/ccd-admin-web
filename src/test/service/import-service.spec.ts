@@ -67,7 +67,7 @@ describe("importService", () => {
 
       nock("http://localhost:9999")
         .post("/import")
-        .query({ reindex: true, deleteOldIndex: false })
+        .query({ reindex: true })
         .reply(201, expectedResult);
 
       uploadFile(req).then((res) => {
@@ -75,51 +75,7 @@ describe("importService", () => {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
           expect(requestQuerySpy).to.be.calledOnce;
-          expect(requestQuerySpy).to.be.calledWith({ reindex: true, deleteOldIndex: false });
-          done();
-        } catch (e) {
-          done(e);
-        }
-      });
-    });
-
-    it("should set deleteOldIndex to false when explicitly set to false", (done) => {
-      const expectedResult = "Case Definition data successfully imported";
-      req.body = { reindex: "true", deleteOldIndex: "false" };
-
-      nock("http://localhost:9999")
-        .post("/import")
-        .query({ reindex: true, deleteOldIndex: false })
-        .reply(201, expectedResult);
-
-      uploadFile(req).then((res) => {
-        try {
-          expect(res.status).to.equal(201);
-          expect(res.text).to.equal(expectedResult);
-          expect(requestQuerySpy).to.be.calledOnce;
-          expect(requestQuerySpy).to.be.calledWith({ reindex: true, deleteOldIndex: false });
-          done();
-        } catch (e) {
-          done(e);
-        }
-      });
-    });
-
-    it("should set deleteOldIndex to true when explicitly set to ture", (done) => {
-      const expectedResult = "Case Definition data successfully imported";
-      req.body = { reindex: "true", deleteOldIndex: "true" };
-
-      nock("http://localhost:9999")
-        .post("/import")
-        .query({ reindex: true, deleteOldIndex: true })
-        .reply(201, expectedResult);
-
-      uploadFile(req).then((res) => {
-        try {
-          expect(res.status).to.equal(201);
-          expect(res.text).to.equal(expectedResult);
-          expect(requestQuerySpy).to.be.calledOnce;
-          expect(requestQuerySpy).to.be.calledWith({ reindex: true, deleteOldIndex: true });
+          expect(requestQuerySpy).to.be.calledWith({ reindex: true });
           done();
         } catch (e) {
           done(e);
