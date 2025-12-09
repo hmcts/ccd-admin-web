@@ -18,22 +18,21 @@
       </div>
       <div style="display: grid;">
         <div style="display: inline-flex;">
-          <div class="img" style=""><img src="images/icon-warning.png" width="36" height="32" style="padding-top: 10px;">
+          <div class="img" style=""><img src="images/icon-warning.png" width="36" height="32" style="padding-top: 10px;"></div>
+          <div class="form-group" style="padding: 8px 10px 9px 12px;">
+            <p>
+              <span style="font-weight: 800">PROD:</span> Do not tick these checkboxes without Release Management/CCD approval<br>
+              (controlled use; service downtime required). <br>
+            </p>
+            <p><span style="font-weight: 800">PERF/Test:</span> Do not use without PERF team approval. <br></p>
+            <p><span style="font-weight: 800">Other envs:</span> Only use after discussion with relevant teams. <br></p>
+            <p>Refer to <a href="https://hmcts.github.io/ops-runbooks/Elastic-Search-and-Logstash/elasticsearch-reindexing-guidance.html#elasticsearch-reindexing-guidance" target="_blank">Reindexing guidance page.</a></p>
           </div>
-      <div class="form-group" style="padding: 8px 10px 9px 12px;">
-          <p>
-            <span style="font-weight: 800">PROD:</span> Do not tick these checkboxes without Release Management/CCD approval<br>
-          (controlled use; service downtime required). <br>
-        </p>
-        <p><span style="font-weight: 800">PERF/Test:</span> Do not use without PERF team approval. <br></p>
-        <p><span style="font-weight: 800">Other envs:</span> Only use after discussion with relevant teams. <br></p>
-        <p>Refer to <a href="https://hmcts.github.io/ops-runbooks/Elastic-Search-and-Logstash/elasticsearch-reindexing-guidance.html#elasticsearch-reindexing-guidance" target="_blank">Reindexing guidance page.</a></p>
+        </div>
       </div>
-        </div>
-        <div class="multiple-choice">
-          <input id="reindex" name="reindex" type="checkbox" value="true" onchange="updateState()">
-          <label for="reindex">Perform Reindexing</label>
-        </div>
+      <div class="multiple-choice">
+        <input id="reindex" name="reindex" type="checkbox" value="true" onchange="updateState()">
+        <label for="reindex">Perform Reindexing</label>
       </div>
       <div class="form-group">
         <div class="multiple-choice">
