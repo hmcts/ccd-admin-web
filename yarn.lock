@@ -1769,7 +1769,7 @@ __metadata:
     chai: "npm:^4.3.6"
     chai-as-promised: "npm:^7.1.1"
     config: "npm:^2.0.1"
-    cookie: "npm:^0.3.1"
+    cookie: "npm:^1.1.1"
     cookie-parser: "npm:^1.4.3"
     cookie-session: "npm:^2.0.0-beta.3"
     csurf: "npm:^1.9.0"
@@ -2427,10 +2427,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "cookie@npm:0.3.1"
-  checksum: 10/21ef996b032cd6c7c73c5b980c534338f1048b412be82164779b4aa046afc9fe490b162055cfd5162417cd11bdf40e9ad0f09fa384513a99e84247ed73987a1c
+"cookie@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "cookie@npm:1.1.1"
+  checksum: 10/85538153054791155cf4d38d2e807e3b9382d71bf71d92fc46fca348515ea574049d0d9ef8eb84d2d54a681ad1d7a7316b1989b901dace50a6c0f4c3858dbdb2
   languageName: node
   linkType: hard
 
