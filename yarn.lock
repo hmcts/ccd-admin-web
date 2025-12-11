@@ -1772,7 +1772,7 @@ __metadata:
     cookie: "npm:^1.1.1"
     cookie-parser: "npm:^1.4.3"
     cookie-session: "npm:^2.0.0-beta.3"
-    csurf: "npm:^1.9.0"
+    csurf: "npm:^1.11.0"
     debug: "npm:^3.1.0"
     download-csv: "npm:^1.1.1"
     eslint: "npm:^4.19.1"
@@ -2554,7 +2554,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csurf@npm:^1.9.0":
+"csurf@npm:^1.11.0":
   version: 1.11.0
   resolution: "csurf@npm:1.11.0"
   dependencies:
