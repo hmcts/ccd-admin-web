@@ -81,7 +81,7 @@
     "@types/sinon-chai": "^3.2.0",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
-    "cookie": "^0.3.1",
+    "cookie": "^1.1.1",
     "eslint": "^4.19.1",
     "eslint-plugin-mocha": "^5.3.0",
     "fetch-mock": "^6.4.2",
@@ -171,7 +171,8 @@
     "path-to-regexp": "^0.1.12",
     "body-parser": "^1.20.3",
     "on-headers": "^1.1.0",
-    "brace-expansion": "^1.1.12"
+    "brace-expansion": "^1.1.12",
+    "cookie": "^1.1.1"
   },
   "nyc": {
     "extension": [
