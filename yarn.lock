@@ -1840,7 +1840,7 @@ __metadata:
     path-to-regexp: "npm:^0.1.12"
     proxyquire: "npm:^2.0.1"
     require-directory: "npm:^2.1.1"
-    sass: "npm:^1.80.7"
+    sass: "npm:^1.97.2"
     sass-lint: "npm:^1.13.1"
     serve-favicon: "npm:^2.4.4"
     sinon: "npm:^7.3.2"
@@ -8896,7 +8896,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.80.7":
+"sass@npm:^1.97.2":
   version: 1.97.2
   resolution: "sass@npm:1.97.2"
   dependencies:
