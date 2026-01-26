@@ -5,8 +5,8 @@ const enabled = config.get("appInsights.enabled");
 
 function fineGrainedSampling(envelope) {
   if (
-    ['RequestData', 'RemoteDependencyData'].includes(envelope.data.baseType) &&
-    envelope.data.baseData.name.includes('/health')
+    ["RequestData", "RemoteDependencyData"].includes(envelope.data.baseType) &&
+    envelope.data.baseData.name.includes("/health")
   ) {
     envelope.sampleRate = 1;
   }
