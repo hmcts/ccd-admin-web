@@ -1851,6 +1851,7 @@ __metadata:
     superagent: "npm:^10.2.1"
     supertest: "npm:^3.0.0"
     supertest-session: "npm:^3.3.0"
+    tar: "npm:^7.5.4"
     ts-node: "npm:^10.7.0"
     tsconfig-paths: "npm:^3.14.1"
     tslint: "npm:^5.7.0"
