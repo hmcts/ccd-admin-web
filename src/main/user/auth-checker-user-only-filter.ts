@@ -19,7 +19,7 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
       if (error.status === 403) {
         next(error);
       } else {
-        res.redirect(302, `${get("adminWeb.login_url")}/?response_type=code&client_id=` +
+        res.redirect(302, `${get("adminWeb.login_url")}?response_type=code&client_id=` +
           `${get("idam.oauth2.client_id")}&redirect_uri=${REDIRECT_URI}`);
       }
     });
