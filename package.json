@@ -69,6 +69,7 @@
     "sinon-stub-promise": "^4.0.0",
     "superagent": "^10.2.1",
     "supertest-session": "^3.3.0",
+    "tar": "^7.5.4",
     "ts-node": "^10.7.0",
     "tsconfig-paths": "^3.14.1",
     "typescript": "^3.2.1",
