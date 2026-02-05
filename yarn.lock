@@ -1804,6 +1804,7 @@ __metadata:
     cookie-session: "npm:^2.0.0-beta.3"
     csurf: "npm:^1.9.0"
     debug: "npm:^3.1.0"
+    diff: "npm:^8.0.3"
     download-csv: "npm:^1.1.1"
     eslint: "npm:^4.19.1"
     eslint-plugin-mocha: "npm:^5.3.0"
@@ -2846,6 +2847,13 @@ __metadata:
   version: 4.0.2
   resolution: "diff@npm:4.0.2"
   checksum: 10/ec09ec2101934ca5966355a229d77afcad5911c92e2a77413efda5455636c4cf2ce84057e2d7715227a2eeeda04255b849bd3ae3a4dd22eb22e86e76456df069
+  languageName: node
+  linkType: hard
+
+"diff@npm:^8.0.3":
+  version: 8.0.3
+  resolution: "diff@npm:8.0.3"
+  checksum: 10/52f957e1fa53db4616ff5f4811b92b22b97a160c12a2f86f22debd4181227b0f6751aa8fd711d6a8fcf4618acb13b86bc702e6d9d6d6ed82acfd00c9cb26ace2
   languageName: node
   linkType: hard
 
