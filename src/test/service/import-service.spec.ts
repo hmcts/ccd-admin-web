@@ -11,12 +11,13 @@ chai.use(sinonChai);
 describe("importService", () => {
 
   const importUrl = "http://localhost:9999/import";
-  const requestAttachSpy = sinon.spy(request.Request.prototype, "attach");
+  let requestAttachSpy: sinon.SinonSpy;
 
   let req;
   let uploadFile;
 
   beforeEach(() => {
+    requestAttachSpy = sinon.spy(request.Request.prototype, "attach");
     req = {
       accessToken: "userAuthToken",
       file: {
@@ -34,6 +35,10 @@ describe("importService", () => {
     uploadFile = proxyquire("../../main/service/import-service", {
       config,
     }).uploadFile;
+  });
+
+  afterEach(() => {
+    sinon.restore();
   });
 
   describe("successful file upload", () => {
