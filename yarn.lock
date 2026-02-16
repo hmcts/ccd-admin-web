@@ -5776,11 +5776,11 @@ __metadata:
   linkType: hard
 
 "jquery-validation@npm:^1.19.5":
-  version: 1.21.0
-  resolution: "jquery-validation@npm:1.21.0"
+  version: 1.22.0
+  resolution: "jquery-validation@npm:1.22.0"
   peerDependencies:
-    jquery: ^1.7 || ^2.0 || ^3.1
-  checksum: 10/999cc6ca02f0ba4ae647f01d5401b023689a44e10f8b12ef2e990b3762174fcdd818caa7145615a1fc55d4ed3e9959bf7113e11cd9fca2ac58a88bc9dccc13a0
+    jquery: ^1.7 || ^2.0 || ^3.1 || ^4.0
+  checksum: 10/705d0414da80800c6c0557ba44ca8b70cbe22f330431e7400f995ccbea9ee4ff32d45abf93e9ab8dde270a9ee20e2213c620e70442f5c0c0f473ee95fb894d77
   languageName: node
   linkType: hard
 
