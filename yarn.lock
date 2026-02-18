@@ -936,10 +936,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mocha@npm:^2.2.43":
-  version: 2.2.48
-  resolution: "@types/mocha@npm:2.2.48"
-  checksum: 10/7fecb3887882791efe74ad16bbd7592aeeef478a5d66b271dbded367b4c35c3630811b6e4bcb11c23b0a416d2162f4c1eb57c5b7fd864d41d023a1d39cf8654f
+"@types/mocha@npm:^10.0.0":
+  version: 10.0.10
+  resolution: "@types/mocha@npm:10.0.10"
+  checksum: 10/4e3b61ed5112add86891a5dd3ebdd087714f5e1784a63d47a96424c0825058fd07074e85e43573462f751636c92808fc18a5f3862fe45e649ea98fdc5a3ee2ea
   languageName: node
   linkType: hard
 
@@ -2020,7 +2020,7 @@ __metadata:
     "@hmcts/properties-volume": "npm:^1.0.0"
     "@snyk/protect": "npm:^1.1103.0"
     "@types/chai-as-promised": "npm:^7.1.0"
-    "@types/mocha": "npm:^2.2.43"
+    "@types/mocha": "npm:^10.0.0"
     "@types/node": "npm:^10.5.4"
     "@types/sinon-chai": "npm:^3.2.0"
     applicationinsights: "npm:^1.0.8"
@@ -6059,11 +6059,11 @@ __metadata:
   linkType: hard
 
 "jquery-validation@npm:^1.19.5":
-  version: 1.21.0
-  resolution: "jquery-validation@npm:1.21.0"
+  version: 1.22.0
+  resolution: "jquery-validation@npm:1.22.0"
   peerDependencies:
-    jquery: ^1.7 || ^2.0 || ^3.1
-  checksum: 10/999cc6ca02f0ba4ae647f01d5401b023689a44e10f8b12ef2e990b3762174fcdd818caa7145615a1fc55d4ed3e9959bf7113e11cd9fca2ac58a88bc9dccc13a0
+    jquery: ^1.7 || ^2.0 || ^3.1 || ^4.0
+  checksum: 10/705d0414da80800c6c0557ba44ca8b70cbe22f330431e7400f995ccbea9ee4ff32d45abf93e9ab8dde270a9ee20e2213c620e70442f5c0c0f473ee95fb894d77
   languageName: node
   linkType: hard
 
@@ -8578,11 +8578,11 @@ __metadata:
   linkType: hard
 
 "qs@npm:^6.14.1":
-  version: 6.14.2
-  resolution: "qs@npm:6.14.2"
+  version: 6.15.0
+  resolution: "qs@npm:6.15.0"
   dependencies:
     side-channel: "npm:^1.1.0"
-  checksum: 10/682933a85bb4b7bd0d66e13c0a40d9e612b5e4bcc2cb9238f711a9368cd22d91654097a74fff93551e58146db282c56ac094957dfdc60ce64ea72c3c9d7779ac
+  checksum: 10/a3458f2f389285c3512e0ebc55522ee370ac7cb720ba9f0eff3e30fb2bb07631caf556c08e2a3d4481a371ac14faa9ceb7442a0610c5a7e55b23a5bdee7b701c
   languageName: node
   linkType: hard
 
@@ -9210,12 +9210,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.7.3":
-  version: 7.7.3
-  resolution: "semver@npm:7.7.3"
+"semver@npm:7.7.4":
+  version: 7.7.4
+  resolution: "semver@npm:7.7.4"
   bin:
     semver: bin/semver.js
-  checksum: 10/8dbc3168e057a38fc322af909c7f5617483c50caddba135439ff09a754b20bdd6482a5123ff543dad4affa488ecf46ec5fb56d61312ad20bb140199b88dfaea9
+  checksum: 10/26bdc6d58b29528f4142d29afb8526bc335f4fc04c4a10f2b98b217f277a031c66736bf82d3d3bb354a2f6a3ae50f18fd62b053c4ac3f294a3d10a61f5075b75
   languageName: node
   linkType: hard
 
@@ -10086,15 +10086,15 @@ __metadata:
   linkType: hard
 
 "tar@npm:^7.5.4":
-  version: 7.5.7
-  resolution: "tar@npm:7.5.7"
+  version: 7.5.9
+  resolution: "tar@npm:7.5.9"
   dependencies:
     "@isaacs/fs-minipass": "npm:^4.0.0"
     chownr: "npm:^3.0.0"
     minipass: "npm:^7.1.2"
     minizlib: "npm:^3.1.0"
     yallist: "npm:^5.0.0"
-  checksum: 10/0d6938dd32fe5c0f17c8098d92bd9889ee0ed9d11f12381b8146b6e8c87bb5aa49feec7abc42463f0597503d8e89e4c4c0b42bff1a5a38444e918b4878b7fd21
+  checksum: 10/1213cdde9c22d6acf8809ba5d2a025212ce3517bc99c4a4c6981b7dc0489bf3b164db9c826c9517680889194c9ba57448c8ff0da35eca9a60bb7689bf0b3897d
   languageName: node
   linkType: hard
 
