@@ -32,7 +32,7 @@
     "@types/node": "^10.5.4",
     "applicationinsights": "^1.0.8",
     "body-parser": "^1.20.3",
-    "brace-expansion": "^1.1.12",
+    "brace-expansion": "^5.0.0",
     "config": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
@@ -172,7 +172,7 @@
     "path-to-regexp": "^0.1.12",
     "body-parser": "^1.20.3",
     "on-headers": "^1.1.0",
-    "brace-expansion": "^1.1.12",
+    "brace-expansion": "^5.0.0",
     "cookie": "^1.1.1",
     "diff": "^8.0.3"
   },
