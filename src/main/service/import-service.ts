@@ -9,11 +9,21 @@ export function uploadFile(req) {
     ServiceAuthorization: req.serviceAuthToken,
   };
   const logger = Logger.getLogger(__filename);
-  return request
+
+  const requestObj = request
     .post(url)
     .set(headers)
     .set("enctype", "multipart/form-data")
-    .attach("file", req.file.buffer, { filename: req.file.originalname })
+    .attach("file", req.file.buffer, { filename: req.file.originalname });
+
+  const body = req.body || {};
+  const reindex = body.reindex === "true" || false;
+
+  if (reindex) {
+    requestObj.query({ reindex: true });
+  }
+
+  return requestObj
     .then((res) => {
       logger.info(`Uploaded file ${req.file.originalname} to Case Definition Store, response: ${res.text}`);
       return res;
