@@ -77,11 +77,11 @@
     "xss-filters": "^1.2.7"
   },
   "devDependencies": {
-    "@types/chai-as-promised": "^7.1.0",
+    "@types/chai-as-promised": "^8.0.0",
     "@types/mocha": "^10.0.0",
     "@types/sinon-chai": "^3.2.0",
     "chai": "^4.3.6",
-    "chai-as-promised": "^7.1.1",
+    "chai-as-promised": "^8.0.0",
     "cookie": "^1.1.1",
     "eslint": "^4.19.1",
     "eslint-plugin-mocha": "^5.3.0",
