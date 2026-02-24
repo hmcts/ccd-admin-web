@@ -13,7 +13,7 @@ describe("Test Delete Definition service", () => {
 
   let deleteDefinition;
 
-  let req;
+  let req; // test
 
   beforeEach(() => {
     req = {
