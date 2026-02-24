@@ -22,6 +22,7 @@
     "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/** -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info",
     "snyk-protect": "echo 'snyk-protect'",
     "prepare": "echo 'npm run snyk-protect'",
+    "postinstall": "node scripts/patch-minimatch-compat.js",
     "prepublish": "echo 'npm run snyk-protect'"
   },
   "dependencies": {
@@ -156,7 +157,7 @@
     "minimist": "^1.2.6",
     "moment": "^2.29.4",
     "pathval": "^1.1.1",
-    "minimatch": "3.1.2",
+    "minimatch": "10.2.1",
     "engine.io": "^6.2.1",
     "json5": "^2.2.2",
     "decode-uri-component": "^0.4.0",
@@ -171,7 +172,7 @@
     "path-to-regexp": "^0.1.12",
     "body-parser": "^1.20.3",
     "on-headers": "^1.1.0",
-    "brace-expansion": "^1.1.12",
+    "brace-expansion": "^5.0.2",
     "cookie": "^1.1.1",
     "diff": "^8.0.3"
   },
