@@ -5,7 +5,7 @@ export function render(req, res, next, url, query, page) {
   fetch(req, url, query).then((response) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
-    const bodyJurisdiction = req.body && req.body.jurisdictionName ? req.body.jurisdictionName : "";
+    const bodyJurisdiction = req.body?.jurisdictionName || "";
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
     responseContent.currentjurisdiction =
