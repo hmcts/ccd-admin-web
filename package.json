@@ -144,7 +144,7 @@
     "tar": "^7.5.4",
     "jszip": "^3.7.0",
     "path-parse": "^1.0.7",
-    "ansi-regex": "^6.0.0",
+    "ansi-regex": "^5.0.1",
     "set-value": "^4.0.1",
     "ssh2": "^1.4.0",
     "validator": "^13.15.20",
