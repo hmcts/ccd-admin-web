@@ -41,6 +41,7 @@ adminWeb:
   elastic_index_url: http://localhost:4451/elastic-support/index
   elastic_case_types_url: http://localhost:4451/elastic-support/case-types
   global_search_index_url: http://localhost:4451/elastic-support/global-search/index
+  reindex_tasks_url: http://localhost:4451/elastic-support/reindex/tasks
   welsh_translation_get_dictionary_url: http://localhost:4650/dictionary
 appInsights:
   enabled: true
