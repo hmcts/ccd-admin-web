@@ -12,6 +12,7 @@ describe("importService", () => {
 
   const importUrl = "http://localhost:9999/import";
   const requestAttachSpy = sinon.spy(request.Request.prototype, "attach");
+  const requestQuerySpy = sinon.spy(request.Request.prototype, "query");
 
   let req;
   let uploadFile;
@@ -19,12 +20,15 @@ describe("importService", () => {
   beforeEach(() => {
     req = {
       accessToken: "userAuthToken",
+      body: {},
       file: {
-        buffer: new Buffer(8),
+        buffer: Buffer.from(new Uint8Array(8)),
         originalname: "dummy_filename.abc",
       },
       serviceAuthToken: "serviceAuthToken",
     };
+
+    requestQuerySpy.resetHistory();
 
     const config = {
       get: sinon.stub(),
@@ -49,6 +53,49 @@ describe("importService", () => {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
           expect(requestAttachSpy).to.be.calledWith("file", req.file.buffer, { filename: req.file.originalname });
+          expect(requestQuerySpy).to.not.be.called;
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+
+    it("should set reindex query parameter when reindex is true", (done) => {
+      const expectedResult = "Case Definition data successfully imported";
+      req.body = { reindex: "true" };
+
+      nock("http://localhost:9999")
+        .post("/import")
+        .query({ reindex: true })
+        .reply(201, expectedResult);
+
+      uploadFile(req).then((res) => {
+        try {
+          expect(res.status).to.equal(201);
+          expect(res.text).to.equal(expectedResult);
+          expect(requestQuerySpy).to.be.calledOnce;
+          expect(requestQuerySpy).to.be.calledWith({ reindex: true });
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+
+    it("should not set query parameters when reindex is false", (done) => {
+      const expectedResult = "Case Definition data successfully imported";
+      req.body = { reindex: "false" };
+
+      nock("http://localhost:9999")
+        .post("/import")
+        .reply(201, expectedResult);
+
+      uploadFile(req).then((res) => {
+        try {
+          expect(res.status).to.equal(201);
+          expect(res.text).to.equal(expectedResult);
+          expect(requestQuerySpy).to.not.be.called;
           done();
         } catch (e) {
           done(e);
