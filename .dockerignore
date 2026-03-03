@@ -12,6 +12,7 @@
 
 !gulpfile.js
 !tsconfig.json
+!scripts/**
 
 !src/main/**
 !config/**
