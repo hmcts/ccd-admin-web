@@ -9,8 +9,7 @@ export function uploadFile(req) {
     ServiceAuthorization: req.serviceAuthToken,
   };
   const logger = Logger.getLogger(__filename);
-
-  const requestObj = request
+  return request
     .post(url)
     .set(headers)
     .set("enctype", "multipart/form-data")

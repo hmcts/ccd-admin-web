@@ -3,7 +3,7 @@
 {% block content %}
 {% include "menu.html" %}
 <h2 class="heading-large padding">Import Case Definition</h2>
-<div class="grid-row padding">
+<div class="grid-row">
   <div class="column-two-thirds padding">
 
     <form action="/import" method="post" enctype="multipart/form-data">
@@ -45,9 +45,9 @@
           const reindexChecked = document.getElementById('reindex').checked;
           const confirmCheckbox = document.getElementById('confirm');
           const submitButton = document.querySelector('button[type="submit"]');
-          
+
           confirmCheckbox.disabled = !reindexChecked;
-          
+
           if (!reindexChecked) {
             confirmCheckbox.checked = false;
             submitButton.disabled = false; // Enable submit if reindex is not checked
@@ -55,7 +55,7 @@
             submitButton.disabled = !confirmCheckbox.checked // Disable submit until confirm is checked
           }
         }
-        
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', updateState);
       </script>
