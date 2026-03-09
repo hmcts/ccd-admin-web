@@ -25,6 +25,7 @@ export function getReindexTasks(req, caseType?: string) {
       return res.body;
       })
   .catch((error) => {
+    console.log('Error : ' + error)
     if (error.response) {
       const status = error.status || error.response.status;
       const message = error.response.text || "No response text";
