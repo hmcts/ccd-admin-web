@@ -9,6 +9,9 @@ export function getReindexTasks(req, caseType?: string) {
   if (caseType) {
       url += `?caseType=${encodeURIComponent(caseType)}`;
   }
+  console.log('reindex_tasks_url ' + req.url)
+  console.log('accesstoken ' + req.accessToken)
+  console.log('serviceAuthToken ' + req.serviceAuthToken)
   const headers = {
   Authorization: req.accessToken,
   ServiceAuthorization: req.serviceAuthToken,
