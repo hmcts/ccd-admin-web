@@ -9,9 +9,9 @@ export function getReindexTasks(req, caseType?: string) {
   if (caseType) {
       url += `?caseType=${encodeURIComponent(caseType)}`;
   }
-  console.log('reindex_tasks_url ' + req.url)
-  console.log('accesstoken ' + req.accessToken)
-  console.log('serviceAuthToken ' + req.serviceAuthToken)
+  logger.info(`reindex_tasks_url ${url}`);
+  logger.info(`accesstoken ${req.accessToken}`);
+  logger.info(`serviceAuthToken ${req.serviceAuthToken}`);
   const headers = {
   Authorization: req.accessToken,
   ServiceAuthorization: req.serviceAuthToken,
@@ -25,7 +25,7 @@ export function getReindexTasks(req, caseType?: string) {
       return res.body;
       })
   .catch((error) => {
-    console.log('Error : ' + error)
+    logger.error("Error : " + error);
     if (error.response) {
       const status = error.status || error.response.status;
       const message = error.response.text || "No response text";
