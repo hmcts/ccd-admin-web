@@ -158,7 +158,7 @@
     "json-schema": "0.4.0",
     "@snyk/snyk-docker-pull": "^3.7.2",
     "follow-redirects": "^1.15.5",
-    "copy-props": "^2.0.5",
+    "copy-props": "^4.0.0",
     "ajv": "^6.12.3",
     "minimist": "^1.2.6",
     "moment": "^2.29.4",
