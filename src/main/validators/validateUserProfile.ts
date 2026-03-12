@@ -1,4 +1,4 @@
-const validator = require("validator");
+import validator from "validator";
 import { Validator } from "../validators/validate";
 
 export function validate(req, res, next, path) {

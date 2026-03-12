@@ -1,10 +1,10 @@
-import * as request from "superagent";
-import * as config from "config";
+import request from "superagent";
+import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 
 export function deleteRole(req) {
     const logger = Logger.getLogger(__filename);
-    const url = config.get("adminWeb.userrole_url");
+    const url = config.get<string>("adminWeb.userrole_url");
 
     const headers = {
         Accept: "application/json",

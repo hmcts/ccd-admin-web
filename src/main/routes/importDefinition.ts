@@ -1,8 +1,8 @@
-import * as config from "config";
-import * as express from "express";
+import config from "config";
+import express from "express";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { fetch } from "../service/get-service";
-import * as multer from "multer";
+import multer from "multer";
 import { uploadFile } from "../service/import-service";
 import { sanitize } from "../util/sanitize";
 
@@ -21,9 +21,9 @@ const upload = multer({
   },
   storage,
 }).single("file");
-const url = config.get("adminWeb.import_audits_url");
+const url = config.get<string>("adminWeb.import_audits_url");
 
-router.post("/import", (req, res, next) => {
+router.post("/import", (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     upload(req, res, (err) => {
       if (err) {
@@ -74,7 +74,7 @@ router.post("/import", (req, res, next) => {
 });
 
 /* GET Import Definition page. */
-router.get("/import", (req, res, next) => {
+router.get("/import", (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     fetch(req, url).then((response) => {
       res.status(200);

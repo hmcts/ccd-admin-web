@@ -1,7 +1,7 @@
-import * as config from "config";
-import * as request from "superagent";
-const { Readable } = require("stream");
-const csv = require("fast-csv");
+import config from "config";
+import request from "superagent";
+import { Readable } from "stream";
+import csv from "fast-csv";
 
 export function buildTranslationsJson(data) {
   let translations = "";
@@ -27,7 +27,7 @@ export function rowToTranslationJson(element) {
 
 export function getRowDataArrayFromCsv(stream) {
     return new Promise((resolve, reject) => {
-        const data = [];
+        const data: any [] = [];
         csv
             .parseStream(stream, {headers : false})
             .on("error", reject)
@@ -37,7 +37,7 @@ export function getRowDataArrayFromCsv(stream) {
 }
 
 export async function uploadTranslations(req) {
-  const url = config.get("adminWeb.welsh_translation_get_dictionary_url");
+  const url = config.get<string>("adminWeb.welsh_translation_get_dictionary_url");
   const headers = {
       "Accept": "application/json",
       "Authorization": req.accessToken,

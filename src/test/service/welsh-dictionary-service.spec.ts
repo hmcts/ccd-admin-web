@@ -1,9 +1,9 @@
-import * as chai from "chai";
-import * as nock from "nock";
-import * as proxyquire from "proxyquire";
+import chai from "chai";
+import nock from "nock";
+import proxyquire from "proxyquire";
 import { flattenJsonResponse } from "routes/welshDictionary";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 
 const expect = chai.expect;
 chai.use(sinonChai);

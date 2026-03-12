@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import Debug from "debug";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as mock from "nock";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam.ts";
+import mock from "nock";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
 
 describe("admin-web-role-authorizer-filter", () => {
 
@@ -44,8 +44,8 @@ describe("admin-web-role-authorizer-filter", () => {
 
   describe("when filter is called", () => {
     beforeEach(() => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
     });
 
     it("should call next middleware with error", (done) => {
@@ -67,8 +67,8 @@ describe("admin-web-role-authorizer-filter", () => {
 
     it("should call next middleware without error", (done) => {
 
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://adminweb")
         .get("/authorize")
         .reply(200, authorization);

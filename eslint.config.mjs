@@ -13,8 +13,11 @@ export default defineConfig([
       "**/node_modules/*",
       "yarn.lock",
       ".yarn/**",
+      "gulpfile.js",
+      "server.js",
       "yarn-audit-known-issues",
       "**/*.properties",
+      "src/main/public/**"
     ],
   },
   { 
@@ -41,7 +44,7 @@ export default defineConfig([
         "no-unassigned-vars": "off",
         "no-unused-vars": "off",
         "linebreak-style": ["error", "unix"],
-        quotes: ["error", "double"],
+        quotes: ["error", "double", { "avoidEscape": true }],
         semi: ["error", "always"],
         "comma-dangle": ["error", "always-multiline"],
         eqeqeq: "error",
@@ -49,7 +52,6 @@ export default defineConfig([
         "mocha/no-exclusive-tests": "error",
     }
   },
-  // tseslint.configs.recommended,
   { 
     files: ["src/**/*.scss"], 
     plugins: { css }, 

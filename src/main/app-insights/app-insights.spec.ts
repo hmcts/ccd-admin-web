@@ -1,4 +1,5 @@
-import * as chai from "chai";
+import chai from "chai";
+import enableAppInsights from "./app-insights";
 const expect = chai.expect;
 
 describe("Application insights", () => {
