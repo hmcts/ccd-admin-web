@@ -2,10 +2,10 @@ import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
 import { get } from "config";
-import * as idamServiceMock from "../http-mocks/idam";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
-import * as mock from "nock";
-import * as request from "supertest";
+import mock from "nock";
+import request from "supertest";
 
 describe("Import Definition page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
@@ -26,8 +26,8 @@ describe("Import Definition page", () => {
     });
 
     it("should not return Import Case Definition page when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -65,8 +65,8 @@ describe("Import Definition page", () => {
     });
 
     it("should not return Import Case Definition page when authenticated but without required authorized role", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -107,8 +107,8 @@ describe("Import Definition page", () => {
     });
 
     it("should not return a back-end error status as it is not called", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -127,8 +127,8 @@ describe("Import Definition page", () => {
     });
 
     it("should return Import Case Definition page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -167,8 +167,8 @@ describe("Import Definition page", () => {
     });
 
     it("should return a back-end error status", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -199,8 +199,8 @@ describe("Import Definition page", () => {
     });
 
     it("should not upload a valid Definition file when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -211,7 +211,7 @@ describe("Import Definition page", () => {
         .reply(201, "Definition imported");
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -231,8 +231,8 @@ describe("Import Definition page", () => {
     });
 
     it("should not upload a valid Definition file when authenticated but without required authorized role", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -243,7 +243,7 @@ describe("Import Definition page", () => {
         .reply(201, "Definition imported");
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -266,8 +266,8 @@ describe("Import Definition page", () => {
     });
 
     it("should upload a valid Definition file when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -290,7 +290,7 @@ describe("Import Definition page", () => {
           who_imported: "ID_3"}]);
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -323,8 +323,8 @@ describe("Import Definition page", () => {
     });
 
     it("should redirect to Import Definition page without calling back-end if the file is not an Excel file", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -335,7 +335,7 @@ describe("Import Definition page", () => {
         .reply(201, "Definition imported");
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.txt",
       };
 
@@ -353,8 +353,8 @@ describe("Import Definition page", () => {
     });
 
     it("should redirect to Import Definition page without calling back-end if no file is present on request", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -377,8 +377,8 @@ describe("Import Definition page", () => {
     });
 
     it("should redirect to Import Definition page if there is a back-end error", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -389,7 +389,7 @@ describe("Import Definition page", () => {
         .reply(500, "Error on Definition import");
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -406,8 +406,8 @@ describe("Import Definition page", () => {
     });
 
     it("should upload a valid Definition file and display any warnings from the import process", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -432,7 +432,7 @@ describe("Import Definition page", () => {
           who_imported: "ID_3"}]);
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -454,8 +454,8 @@ describe("Import Definition page", () => {
     });
 
     it("should display an error page if there is an error not handled elsewhere", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -466,7 +466,7 @@ describe("Import Definition page", () => {
         .reply(201, "Definition imported");
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 

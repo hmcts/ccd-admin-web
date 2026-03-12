@@ -24,6 +24,7 @@ npm-debug.log.*
 
 package-lock.json
 
+config/local.yaml
 coverage/
 .scannerwork/
 acb.yaml

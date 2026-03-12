@@ -1,15 +1,12 @@
 {
+  "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
     "alwaysStrict": true,
+    "noImplicitAny": false, // This is temporary until we can fix all the implicit any errors in the codebase
+    //"allowJs": true,  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+    "allowSyntheticDefaultImports": true, /* Allow 'import x from y' when a module doesn't have a default export. */
     "noUnusedLocals": true,
     "experimentalDecorators": true,
-    "skipLibCheck": true,
-    "lib": [
-      "es6",
-      "es2017.object",
-      "dom"
-    ],
-    "target": "es5",
     "baseUrl": "src/main",
     "paths": {
       "router/*": [
@@ -18,9 +15,6 @@
       "routes/*": [
         "routes/*"
       ]
-    },
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    }
   }
 }

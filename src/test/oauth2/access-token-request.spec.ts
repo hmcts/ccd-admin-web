@@ -1,10 +1,10 @@
-import * as chai from "chai";
-import * as fetchMock from "fetch-mock";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
-import * as sinonExpressMock from "sinon-express-mock";
-import * as url from "url";
+import chai from "chai";
+import fetchMock from "fetch-mock";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
+import sinonExpressMock from "sinon-express-mock";
+import url from "url";
 
 const expect = chai.expect;
 chai.use(sinonChai);

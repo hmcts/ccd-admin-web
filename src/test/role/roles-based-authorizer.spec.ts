@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
 
 describe("rolesBasedAuthorizer", () => {
 

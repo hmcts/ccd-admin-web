@@ -1,10 +1,10 @@
-import * as chai from "chai";
-import * as nock from "nock";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
+import chai from "chai";
+import nock from "nock";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 import {buildTranslationsJson, rowToTranslationJson, getRowDataArrayFromCsv} from "../../main/service/manage-welsh-dictionary-service";
-const { PassThrough } = require("stream");
+import { PassThrough } from "stream";
 const expect = chai.expect;
 chai.use(sinonChai);
 
@@ -19,7 +19,7 @@ describe("test manage Welsh Dictionary Service", () => {
     req = {
       accessToken: "userAuthToken",
       file: {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.csv",
       },
       serviceAuthToken: "serviceAuthToken",

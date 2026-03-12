@@ -1,10 +1,10 @@
-import * as chai from "chai";
+import chai from "chai";
 import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
-import * as fetchMock from "fetch-mock";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
-import * as sinonExpressMock from "sinon-express-mock";
+import fetchMock from "fetch-mock";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
+import sinonExpressMock from "sinon-express-mock";
 
 const expect = chai.expect;
 chai.use(sinonChai);

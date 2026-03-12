@@ -1,11 +1,11 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as mock from "nock";
-import * as mockSession from "mock-session";
-import * as request from "supertest-session";
-import * as sinon from "sinon";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import mock from "nock";
+import mockSession from "mock-session";
+import request from "supertest-session";
+import sinon from "sinon";
 
 describe("Definitions page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
@@ -20,8 +20,8 @@ describe("Definitions page", () => {
 
   describe("on GET /definitions", () => {
     it("should not return Definitions list for given Jurisdiction when not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
@@ -54,8 +54,8 @@ describe("Definitions page", () => {
     });
 
     it("should return Definitions list for given Jurisdiction when authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
@@ -87,8 +87,8 @@ describe("Definitions page", () => {
     });
 
     it("should not return all Definitions list if Jurisdiction is not present in session when not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({})
@@ -121,8 +121,8 @@ describe("Definitions page", () => {
     });
 
     it("should return all Definitions list if Jurisdiction is not present in session when authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({})
@@ -156,8 +156,8 @@ describe("Definitions page", () => {
 
   describe("on POST /definitions", () => {
     it("should not return Definitions list when not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
@@ -189,8 +189,8 @@ describe("Definitions page", () => {
     });
 
     it("should return Definitions list when authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
@@ -221,8 +221,8 @@ describe("Definitions page", () => {
         });
     });
     it("should not return error from the server when not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
@@ -240,8 +240,8 @@ describe("Definitions page", () => {
     });
 
     it("should return error from the server when authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })

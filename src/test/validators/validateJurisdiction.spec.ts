@@ -1,7 +1,7 @@
-import * as chai from "chai";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
+import chai from "chai";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 
 const expect = chai.expect;
 chai.use(sinonChai);

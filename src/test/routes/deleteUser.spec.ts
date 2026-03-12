@@ -1,17 +1,17 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as mock from "nock";
-import * as request from "supertest";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import mock from "nock";
+import request from "supertest";
 
 describe("Confirm Delete page", () => {
   describe("on POST /deleteuser when unauthorized", () => {
         const CCD_IMPORT_ROLE = "ccd-import";
 
         it("should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
 
             return request(appTest)
                 .post("/deleteuser")
@@ -24,8 +24,8 @@ describe("Confirm Delete page", () => {
                 });
         });
         it("should redirect to the User Profiles list when No is chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
 
             return request(appTest)
                 .post("/deleteuser")
@@ -39,8 +39,8 @@ describe("Confirm Delete page", () => {
         });
 
         it("should redirect to the User Profiles list when Yes is chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
 
             mock("http://localhost:4453")
                 .delete("/users")
@@ -59,8 +59,8 @@ describe("Confirm Delete page", () => {
         });
 
         it("should redirect to the User Profiles list when Yes is chosen but an error occurred", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
 
             mock("http://localhost:4453")
                 .delete("/users")
@@ -83,8 +83,8 @@ describe("Confirm Delete page", () => {
     const CCD_IMPORT_ROLE = "ccd-import";
 
     it("should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/deleteuser")
@@ -96,8 +96,8 @@ describe("Confirm Delete page", () => {
         });
     });
     it("should redirect to the User Profiles list when No is chosen", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/deleteuser")
@@ -110,8 +110,8 @@ describe("Confirm Delete page", () => {
     });
 
     it("should redirect to the User Profiles list when Yes is chosen", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4453")
         .delete("/users")
@@ -129,8 +129,8 @@ describe("Confirm Delete page", () => {
     });
 
     it("should redirect to the User Profiles list when Yes is chosen but an error occurred", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4453")
         .delete("/users")

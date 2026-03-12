@@ -1,10 +1,10 @@
 import { app } from "../../main/app";
 import { expect } from "chai";
 import { get } from "config";
-import * as idamServiceMock from "../http-mocks/idam";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
-import * as mock from "nock";
-import * as request from "supertest";
+import mock from "nock";
+import request from "supertest";
 
 describe("Home page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
@@ -25,8 +25,8 @@ describe("Home page", () => {
     });
 
     it("should return Home page when authenticated", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")

@@ -1,6 +1,6 @@
-import * as chai from "chai";
-import * as nock from "nock";
-import * as sinonChai from "sinon-chai";
+import chai from "chai";
+import nock from "nock";
+import sinonChai from "sinon-chai";
 import { fetch } from "../../main/service/get-service";
 
 const expect = chai.expect;

@@ -1,9 +1,9 @@
 import { app } from "../../main/app";
 import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
-import * as mock from "nock";
-import * as request from "supertest";
+import mock from "nock";
+import request from "supertest";
 import { get } from "config";
 
 describe("Jurisdiction page", () => {
@@ -24,8 +24,8 @@ describe("Jurisdiction page", () => {
     });
 
     it("should return jurisdiction list", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/data/jurisdictions")

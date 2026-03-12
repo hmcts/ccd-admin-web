@@ -1,9 +1,9 @@
-import * as chai from "chai";
-import * as jwt from "jsonwebtoken";
-import * as moment from "moment";
-import * as nock from "nock";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
+import chai from "chai";
+import jwt from "jsonwebtoken";
+import moment from "moment";
+import nock from "nock";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
 
 const expect = chai.expect;
 

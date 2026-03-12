@@ -1,12 +1,12 @@
-import * as chai from "chai";
-import * as nock from "nock";
+import chai from "chai";
+import nock from "nock";
 import { JSDOM } from "jsdom";
-import * as sinonChai from "sinon-chai";
+import sinonChai from "sinon-chai";
 import { get } from "config";
 import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as request from "supertest";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import request from "supertest";
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -32,8 +32,8 @@ describe("test route Welsh Dictionary", () => {
     });
 
     it("should not return Welsh Dictionary page when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       nock(idamBase)
         .get("/api/idam/adminweb/authorization")
         .reply(200, { canImportDefinition: true });
@@ -58,8 +58,8 @@ describe("test route Welsh Dictionary", () => {
     });
 
     it("should return Confirm Delete User Profile page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       nock(idamBase).get("/api/idam/adminweb/authorization").reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
@@ -106,8 +106,8 @@ describe("test route Welsh Dictionary", () => {
     });
 
     it("should not return dictionary as utf-8 csv", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       nock(idamBase)
         .get("/api/idam/adminweb/authorization")
         .reply(200, { canImportDefinition: true });
@@ -121,8 +121,8 @@ describe("test route Welsh Dictionary", () => {
     });
 
     it("should return dictionary as utf-8 csv", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       nock(idamBase).get("/api/idam/adminweb/authorization").reply(200, {});
 
       nock(tsBase).get("/dictionary").reply(200, dictionaryFromTS);
