@@ -9,8 +9,8 @@ maintainers:
 dependencies:
   - name: nodejs
     version: 3.2.0
-    repository: 'oci://hmctspublic.azurecr.io/helm'
+    repository: 'oci://hmctssbox.azurecr.io/helm'
   - name: idam-pr
     version: 2.3.1
-    repository: 'oci://hmctspublic.azurecr.io/helm'
+    repository: 'oci://hmctssbox.azurecr.io/helm'
     condition: idam-pr.enabled
