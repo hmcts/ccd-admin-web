@@ -9,7 +9,7 @@ export const getSessionKeys = (): string[] => {
   try {
     sessionKeys = config.get<string[]>(SESSION_KEYS_CONFIG_PATH);
   } catch (error) {
-    throw new Error(SESSION_KEYS_ERROR);
+    throw new Error(`${SESSION_KEYS_ERROR} (${error instanceof Error ? error.message : error})`);
   }
 
   if (!Array.isArray(sessionKeys)
