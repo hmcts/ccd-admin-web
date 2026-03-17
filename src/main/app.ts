@@ -9,7 +9,7 @@ import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import { sanitize } from "./util/sanitize";
-import { getSessionKeys } from "./util/session-keys";
+import { getSessionKeys } from "./session-keys";
 
 import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
 import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
