@@ -1,0 +1,14 @@
+useCSRFProtection: false
+security:
+  referrerPolicy: origin
+  roles_whitelist: "ccd-import,ccd-import-validate"
+  secure_auth_cookie_enabled: false
+
+secrets:
+  ccd:
+    microservicekey-ccd-admin: AAAAAAAAAAAAAAAD
+    ccd-admin-web-oauth2-client-secret: ccd_admin_secret
+    AppInsightsInstrumentationKey: key
+
+appInsights:
+  enabled: false
