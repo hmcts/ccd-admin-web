@@ -9,19 +9,6 @@ export function getReindexTasks(req, caseType?: string) {
   if (caseType) {
       url += `?caseType=${encodeURIComponent(caseType)}`;
   }
-  logger.info(`reindex_tasks_url ${url}`);
-  logger.info(`accesstoken ${req.accessToken}`);
-  logger.info(`serviceAuthToken ${req.serviceAuthToken}`);
-
-  // tslint:disable-next-line:no-console
-  // eslint-disable-next-line no-console
-  console.log("reindex_tasks_url", url);
-  // tslint:disable-next-line:no-console
-  // eslint-disable-next-line no-console
-  console.log("accessToken", req.accessToken);
-  // tslint:disable-next-line:no-console
-  // eslint-disable-next-line no-console
-  console.log("serviceAuthToken", req.serviceAuthToken);
 
   const headers = {
     Accept: "application/json",
