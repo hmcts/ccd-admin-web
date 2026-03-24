@@ -1,10 +1,10 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import nock from "nock";
 import sinonChai from "sinon-chai";
 import { fetch } from "../../main/service/get-service";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("Get service", () => {
 

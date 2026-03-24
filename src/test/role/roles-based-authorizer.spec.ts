@@ -18,13 +18,15 @@ describe("rolesBasedAuthorizer", () => {
     };
 
     const config = {
+      has: sinon.stub(),
       get: sinon.stub(),
     };
+    config.has.withArgs("security.roles_whitelist").returns(true);
     config.get.withArgs("security.roles_whitelist").returns(whitelist);
 
     rolesBasedAuthorizer = proxyquire("../../main/role/roles-based-authorizer", {
       "./whitelist-roles-authorizer": whitelistRolesAuthorizer,
-      config,
+      "config": config,
     }).isUserAuthorized;
   });
 

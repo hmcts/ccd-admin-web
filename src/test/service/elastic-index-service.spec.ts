@@ -1,11 +1,11 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import nock from "nock";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("elasticIndexService::createElasticIndex", () => {
 
@@ -29,7 +29,7 @@ describe("elasticIndexService::createElasticIndex", () => {
     config.get.withArgs("adminWeb.elastic_index_url").returns(indexingUrl);
 
     createElasticIndex = proxyquire("../../main/service/elastic-index-service", {
-      config,
+      "config": config,
     }).createElasticIndex;
   });
 
@@ -102,7 +102,7 @@ describe("elasticIndexService::getCaseTypes", () => {
     config.get.withArgs("adminWeb.elastic_case_types_url").returns(caseTypesUrl);
 
     getCaseTypes = proxyquire("../../main/service/elastic-index-service", {
-      config,
+      "config": config,
     }).getCaseTypes;
   });
 

@@ -1,7 +1,7 @@
 import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import { get } from "config";
+import config from "config";
 import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
 import mock from "nock";
@@ -22,7 +22,7 @@ describe("Index Elasticsearch page", () => {
         .get("/elasticsearch")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 
@@ -93,7 +93,7 @@ describe("Index Elasticsearch page", () => {
         .get("/elasticsearch/case-types")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 
@@ -177,7 +177,7 @@ describe("Index Elasticsearch page", () => {
         .get("/elasticsearch/index")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 

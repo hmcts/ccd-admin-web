@@ -1,4 +1,4 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import nock from "nock";
 import sinonChai from "sinon-chai";
 import {appTestWithAuthorizedAdminWebRoles} from "../../main/app.test-admin-web-roles-authorized";
@@ -11,8 +11,8 @@ import {
 import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import request from "supertest";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("test route manage Welsh Dictionary", () => {
 

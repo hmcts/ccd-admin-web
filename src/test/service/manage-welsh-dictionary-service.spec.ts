@@ -1,12 +1,12 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import nock from "nock";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import {buildTranslationsJson, rowToTranslationJson, getRowDataArrayFromCsv} from "../../main/service/manage-welsh-dictionary-service";
-import { PassThrough } from "stream";
-const expect = chai.expect;
-chai.use(sinonChai);
+import { Readable } from "stream";
+
+use(sinonChai);
 
 describe("test manage Welsh Dictionary Service", () => {
 
@@ -31,7 +31,7 @@ describe("test manage Welsh Dictionary Service", () => {
     config.get.withArgs("adminWeb.welsh_translation_get_dictionary_url").returns(manageDictionaryUrl);
 
     manageDictionary = proxyquire("../../main/service/manage-welsh-dictionary-service", {
-      config,
+      "config": config,
     }).uploadTranslations;
   });
 
@@ -84,27 +84,40 @@ describe("test manage Welsh Dictionary Service", () => {
 
   describe("test stream", () => {
     it("should get empty JSON message from stream", (done) => {
-      const mockedStream = new PassThrough();
+      const mockedStream = Readable.from([]);
       const data = getRowDataArrayFromCsv(mockedStream);
-      const translations = buildTranslationsJson(data);
-      expect(translations.length).eq(0);
-      done();
+      data.then((result) => {
+        const translations = buildTranslationsJson(result);
+        expect(translations.length).eq(0);
+        done();
+      }).catch((e) => {
+        done(e);
+      });
     });
   });
 
   describe("test empty data", () => {
     it("should get empty JSON message from data", (done) => {
-      const jsonString = buildTranslationsJson(Promise.resolve([]));
-      expect(jsonString.length).eq(0);
-      done();
+      Promise.resolve([]).then((result) => {
+        const jsonString = buildTranslationsJson(result);
+        expect(jsonString.length).eq(0);
+        done();
+      }).catch((e) => {
+        done(e);
+      });
     });
   });
 
   describe("test unexpected data", () => {
     it("should get empty JSON message from unexpected data", (done) => {
-      const jsonString = buildTranslationsJson(Promise.resolve([{2: "phrase 1", 3: "trans phase 1"}]));
-      expect(jsonString.length).eq(0);
-      done();
+      Promise.resolve([{2: "phrase 1", 3: "trans phase 1"}]).then((result) => {
+        const jsonString = buildTranslationsJson(result);
+        expect(jsonString).eq("");
+        expect(jsonString.length).eq(0);
+        done();
+      }).catch((e) => {
+        done(e);
+      });
     });
   });
 
@@ -119,8 +132,8 @@ describe("test manage Welsh Dictionary Service", () => {
             expect(jsonString.length).eq(128);
             done();
           })
-          .catch(() => {
-            throw new Error("Promise should have been resolved");
+          .catch((e) => {
+            done(e);
           });
     });
   });
@@ -137,8 +150,8 @@ describe("test manage Welsh Dictionary Service", () => {
             expect(jsonString.includes("invalid")).eq(false);
             done();
           })
-          .catch(() => {
-            throw new Error("Promise should have been resolved");
+          .catch((e) => {
+            done(e);
           });
     });
   });
@@ -152,8 +165,8 @@ describe("test manage Welsh Dictionary Service", () => {
             expect(jsonString).eq("\"phrase 1\":{\"translation\":\"\",\"yesOrNo\":true,\"yes\":\"\",\"no\":\"\"}");
             done();
           })
-          .catch(() => {
-            throw new Error("Promise should have been resolved");
+          .catch((e) => {
+            done(e);
           });
     });
   });

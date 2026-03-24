@@ -1,12 +1,12 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import nock from "nock";
 import proxyquire from "proxyquire";
 import request from "superagent";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("importService", () => {
 
@@ -32,7 +32,7 @@ describe("importService", () => {
     config.get.withArgs("adminWeb.import_url").returns(importUrl);
 
     uploadFile = proxyquire("../../main/service/import-service", {
-      config,
+      "config": config,
     }).uploadFile;
   });
 

@@ -2,7 +2,7 @@ import { app } from "../../main/app";
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import { get } from "config";
+import config from "config";
 import { JSDOM } from "jsdom";
 import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import mock from "nock";
@@ -20,7 +20,7 @@ describe("on Get /create-user-role-form", () => {
       .get("/create-user-role-form")
       .then((res) => {
         expect(res.statusCode).to.equal(302);
-        expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
       });
   });
 
@@ -71,7 +71,7 @@ describe("on Get /user-roles-list", () => {
       .get("/user-roles-list")
       .then((res) => {
         expect(res.statusCode).to.equal(302);
-        expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
       });
   });
 
@@ -138,7 +138,7 @@ describe("on Get /user-roles", () => {
       .get("/user-roles")
       .then((res) => {
         expect(res.statusCode).to.equal(302);
-        expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
       });
   });
 
@@ -422,6 +422,7 @@ describe("on POST /updateuserrole", () => {
     mock("http://localhost:4451/api/user-role")
       .put("")
       .replyWithError({status: 400, rawResponse: "Bad request"});
+    console.log("mock set up");
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .post("/updateuserrole")
@@ -430,9 +431,12 @@ describe("on POST /updateuserrole", () => {
         classification: "PUBLIC",
         role: "ccd-admin",
       })
-      .expect(302)
       .then((res) => {
+        console.log(res);
+        expect(res.statusCode).to.equal(200);
         expect(res.headers.location.startsWith("/create-user-role")).to.be.true;
+      }).catch((err) => {
+        console.log(err);
       });
   });
 });

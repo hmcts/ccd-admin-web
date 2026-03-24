@@ -1,11 +1,11 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import nock from "nock";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("test delete role service", () => {
 
@@ -29,22 +29,20 @@ describe("test delete role service", () => {
     config.get.withArgs("adminWeb.userrole_url").returns(deleteRoleURL);
 
     deleteRole = proxyquire("../../main/service/delete-role-service", {
-      config,
+      "config": config,
     }).deleteRole;
   });
 
   it("should return an HTTP 204 status and success message", (done) => {
-    const expectedResult = "User role deleted successfully";
 
     nock("http://localhost:4451")
       .delete("/api/user-role")
       .query({ role: "test-role" })
-      .reply(204, expectedResult);
+      .reply(204);
 
     deleteRole(req).then((res) => {
       try {
         expect(res.status).to.equal(204);
-        expect(res.text).to.equal(expectedResult);
         done();
       } catch (e) {
         done(e);

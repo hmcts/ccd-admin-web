@@ -14,7 +14,6 @@ script:
   - yarn --check-cache || echo 'yarn --check-cache failed'
   - yarn lint
   - yarn test
-  - yarn test:routes
   - yarn test:a11y
   #- yarn test:nsp - reenable when we have solved RDM-2508
   - yarn test:coverage

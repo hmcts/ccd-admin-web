@@ -6,7 +6,7 @@ let sass = require('gulp-sass')(require('sass'));
 let path = require('path');
 
 const repoRoot = path.join(__dirname, '/');
-const govUkElementRoot = path.join(repoRoot, './node_modules/govuk-frontend/sass');
+const govUkElementRoot = path.join(repoRoot, './node_modules/govuk-frontend/index');
 
 const assetsDirectory = './src/main/public';
 const stylesheetsDirectory = `${assetsDirectory}/stylesheets`;
@@ -38,7 +38,7 @@ gulp.task('copy-files', (done) => {
   gulp.src(['src/main/public/js/lib/**/*.js']).pipe(gulp.dest(`${assetsDirectory}/javascripts`));
 
   gulp.src([
-    './node_modules/govuk-frontend/sass'
+    './node_modules/govuk-frontend/**/*'
   ])
     .pipe(gulp.dest(`${stylesheetsDirectory}/`));
   done();

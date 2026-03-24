@@ -1,11 +1,11 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import nock from "nock";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("Test Delete Definition service", () => {
 
@@ -32,11 +32,11 @@ describe("Test Delete Definition service", () => {
     config.get.withArgs("adminWeb.deletedefinition_url").returns(deleteDefinitionUrl);
 
     deleteDefinition = proxyquire("../../main/service/delete-definition-service", {
-      config,
+      "config": config,
     }).deleteDefinition;
   });
 
-  xit("should return an HTTP 204 status and success message", (done) => {
+  it.skip("should return an HTTP 204 status and success message", (done) => {
     const expectedResult = "Definition deleted successfully";
 
     nock("http://localhost:4451")
@@ -56,7 +56,7 @@ describe("Test Delete Definition service", () => {
     });
   });
 
-  xit("should return an HTTP 403 status and error message", (done) => {
+  it.skip("should return an HTTP 403 status and error message", (done) => {
     req.serviceAuthToken = "invalid_token";
 
     const expectedResult = {

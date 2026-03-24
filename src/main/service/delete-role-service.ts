@@ -17,7 +17,7 @@ export function deleteRole(req) {
         .set("Content-Type", "application/json")
         .set(headers)
         .then((res) => {
-            logger.info(`Delete role: ${res.text}`);
+            logger.info(`Deleted role: ${req.body.role}`);
             return res;
         })
         .catch((error) => {

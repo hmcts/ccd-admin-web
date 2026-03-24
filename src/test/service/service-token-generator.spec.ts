@@ -1,11 +1,9 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import jwt from "jsonwebtoken";
 import moment from "moment";
 import nock from "nock";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
-
-const expect = chai.expect;
 
 describe("service token generator", () => {
 
@@ -20,7 +18,7 @@ describe("service token generator", () => {
     config.get.withArgs("appInsights.enabled").returns(false);
 
     serviceTokenGenerator = proxyquire("../../main/service/service-token-generator", {
-      config,
+      "config": config,
     }).serviceTokenGenerator;
   });
   describe("generate()", () => {

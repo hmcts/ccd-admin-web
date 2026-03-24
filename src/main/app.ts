@@ -52,11 +52,11 @@ app.use(function(req, res, next) {
 
 // view engine setup
 app.set("view engine", "html");
-app.set("views", ["src/main/views", "node_modules/govuk-frontend/dist", "lib/"]);
+app.set("views", [path.join(__dirname, "views"), "node_modules/govuk-frontend/dist", "lib"]);
 
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/assets", express.static(path.join(__dirname, "/node_modules/govuk-frontend/govuk/assets")));
-app.use("/js", express.static(path.join(__dirname, "/node_modules/govuk-frontend/govuk/govuk-frontend.min.js")));
+app.use("/assets", express.static("node_modules/govuk-frontend/dist/govuk/assets"));
+app.use("/js/govuk-frontend.min.js", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js"));
 app.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

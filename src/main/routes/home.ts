@@ -1,7 +1,7 @@
-import Router from "express";
+import express from "express";
 import { sanitize } from "../util/sanitize";
 
-const router = Router();
+const router = express.Router(); // uses existing instance
 /* GET home page. */
 router.get("/", (req: any, res: any, next: any) => {
   const responseContent: { [k: string]: any } = {};

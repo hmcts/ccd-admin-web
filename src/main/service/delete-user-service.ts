@@ -17,7 +17,7 @@ export function deleteUserProfile(req) {
         .set("Content-Type", "application/json")
         .set(headers)
         .then((res) => {
-            logger.info(`Delete user profile : ${res.text}`);
+            logger.info(`Deleted user profile: ${req.body.idamId}`);
             return res;
         })
         .catch((error) => {

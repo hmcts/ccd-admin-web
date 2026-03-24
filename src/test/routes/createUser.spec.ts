@@ -2,7 +2,7 @@ import { app } from "../../main/app";
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import { get } from "config";
+import config from "config";
 import { JSDOM } from "jsdom";
 import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import mock from "nock";
@@ -19,7 +19,7 @@ describe("on Get /createuser", () => {
       .get("/createuser")
       .then((res) => {
         expect(res.statusCode).to.equal(302);
-        expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
       });
   });
 

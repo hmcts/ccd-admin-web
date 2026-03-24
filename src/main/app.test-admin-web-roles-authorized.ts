@@ -28,8 +28,7 @@ const logger = Logger.getLogger("appTestWithAuthorizedAdminWebRoles");
 
 // view engine setup
 appTestWithAuthorizedAdminWebRoles.set("view engine", "html");
-appTestWithAuthorizedAdminWebRoles.set("views", [path.join(__dirname, "views"),
-path.join(__dirname, "/../../node_modules/govuk-frontend/")]);
+appTestWithAuthorizedAdminWebRoles.set("views", [path.join(__dirname, "views"), "node_modules/govuk-frontend/dist", "lib"]);
 
 appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 appTestWithAuthorizedAdminWebRoles.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
@@ -56,8 +55,8 @@ appTestWithAuthorizedAdminWebRoles.enable("trust proxy");
 
 // Set dummy accessToken, serviceAuthToken, and authentication on all requests
 appTestWithAuthorizedAdminWebRoles.use((req: any, res: any, next: any) => {
-  req["accessToken"] = "userAuthToken";
-  req["authentication"] = {
+  req.accessToken = "userAuthToken";
+  req.authentication = {
     user: {
       email: "ccd@hmcts.net",
       forename: "Test",
@@ -65,7 +64,7 @@ appTestWithAuthorizedAdminWebRoles.use((req: any, res: any, next: any) => {
       surname: "User",
     },
   };
-  req["adminWebAuthorization"] = {
+  req.adminWebAuthorization = {
     canImportDefinition: true,
     canLoadWelshTranslation: true,
     canManageDefinition: true,
@@ -73,7 +72,7 @@ appTestWithAuthorizedAdminWebRoles.use((req: any, res: any, next: any) => {
     canManageUserRole: true,
     canManageWelshTranslation: true,
   };
-  req["serviceAuthToken"] = "serviceAuthToken";
+  req.serviceAuthToken = "serviceAuthToken";
   next();
 });
 

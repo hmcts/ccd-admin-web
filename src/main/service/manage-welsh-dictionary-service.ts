@@ -1,7 +1,7 @@
 import config from "config";
 import request from "superagent";
 import { Readable } from "stream";
-import csv from "fast-csv";
+import { parseStream } from "fast-csv";
 
 export function buildTranslationsJson(data) {
   let translations = "";
@@ -14,6 +14,9 @@ export function buildTranslationsJson(data) {
 
 export function rowToTranslationJson(element) {
   let translation = "";
+  if (!element || !element[0] || !JSON.stringify(element[0])) {
+    return "";
+  }
   translation += JSON.stringify(element[0]) + ":{";
   translation += "\"translation\":" + JSON.stringify(element[1] ? element[1] : "");
   if (element[2]) {
@@ -28,8 +31,7 @@ export function rowToTranslationJson(element) {
 export function getRowDataArrayFromCsv(stream) {
     return new Promise((resolve, reject) => {
         const data: any [] = [];
-        csv
-            .parseStream(stream, {headers : false})
+        parseStream(stream, {headers : false})
             .on("error", reject)
             .on("data", (row) => data.push(row))
             .on("end", () => resolve(data));

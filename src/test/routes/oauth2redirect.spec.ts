@@ -1,16 +1,15 @@
 import { app } from "../../main/app";
-import cookie from "cookie";
-import chai from "chai";
+import { parse } from "cookie";
+import { expect, use } from "chai";
 import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
-import { expect } from "chai";
 import { resolveExchangeCode } from "../http-mocks/idam";
 import request from "supertest";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
-import sinonExpressMock from "sinon-express-mock";
+import { mockReq, mockRes } from "sinon-express-mock";
 
-chai.use(sinonChai);
+use(sinonChai);
 
 describe("oauth2redirect", () => {
 
@@ -23,7 +22,7 @@ describe("oauth2redirect", () => {
       return request(app)
         .get("/oauth2redirect?code=abc123")
         .then((res: any) => {
-          const cookies = res.get("Set-Cookie").map((_) => cookie.parse(_));
+          const cookies = res.get("Set-Cookie").map((_) => parse(_));
           expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.true;
           expect(res.headers.location).to.equal("/");
         });
@@ -37,8 +36,8 @@ describe("oauth2redirect", () => {
       return request(app)
         .get("/oauth2redirect")
         .then((res: any) => {
-          const cookies = res.get("Set-Cookie").map((_) => cookie.parse(_));
-          expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.false;
+          const cookies = res.get("Set-Cookie");
+          expect(cookies).to.be.undefined;
           expect(res.status).to.equal(500);
           expect(res.text).includes("Error: Unable to obtain access token - no OAuth2 code provided");
         });
@@ -64,9 +63,9 @@ describe("oauth2redirect", () => {
         get: sinon.stub(),
       };
 
-      req = sinonExpressMock.mockReq();
+      req = mockReq();
       req.query = {code: "code", redirect_uri: "https://localhost:5000"};
-      res = sinonExpressMock.mockRes();
+      res = mockRes();
       next = sinon.stub();
       accessTokenRequest = sinon.stub();
       accessTokenRequest.withArgs(req).returns(Promise.resolve(TOKEN));
@@ -77,7 +76,7 @@ describe("oauth2redirect", () => {
       }).oauth2redirect;
     });
 
-    xit("should set an accessToken cookie with the 'secure' flag enabled", (done) => {
+    it.skip("should set an accessToken cookie with the 'secure' flag enabled", (done) => {
       config.get.withArgs("security.secure_auth_cookie_enabled").returns(true);
 
       res.redirect.callsFake(() => {

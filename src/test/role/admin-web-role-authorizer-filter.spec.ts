@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import Debug from "debug";
-import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam.ts";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import mock from "nock";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
@@ -38,7 +38,7 @@ describe("admin-web-role-authorizer-filter", () => {
     config.get.withArgs("idam.oauth2.client_id").returns(clientId);
 
     filter = proxyquire("../../main/role/admin-web-role-authorizer-filter", {
-      config,
+      "config": config,
     }).adminWebRoleAuthorizerFilter;
   });
 

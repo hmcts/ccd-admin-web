@@ -1,13 +1,13 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
 import fetchMock from "fetch-mock";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
-import sinonExpressMock from "sinon-express-mock";
+import { mockReq, mockRes } from "sinon-express-mock";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("logout", () => {
   const CLIENT_ID = "ccd_admin";
@@ -30,16 +30,16 @@ describe("logout", () => {
     config.get.withArgs("secrets.ccd.ccd-admin-web-oauth2-client-secret").returns(CLIENT_SECRET);
     config.get.withArgs("idam.oauth2.logout_endpoint").returns(LOGOUT_ENDPOINT);
 
-    request = sinonExpressMock.mockReq({
+    request = mockReq({
       cookies: {
         [COOKIE_ACCESS_TOKEN]: ACCESS_TOKEN,
       },
       session: {},
     });
-    response = sinonExpressMock.mockRes();
+    response = mockRes();
     next = sinon.stub();
 
-    fetch = fetchMock.sandbox().delete(LOGOUT_ENDPOINT.replace(":token", ACCESS_TOKEN), {});
+    fetch = fetchMock.delete(LOGOUT_ENDPOINT.replace(":token", ACCESS_TOKEN), {});
 
     logout = proxyquire("../../main/routes/logout", {
       "config": config,
@@ -71,7 +71,7 @@ describe("logout", () => {
   });
 
   it("should return 400 error when cookies missing", () => {
-    request = sinonExpressMock.mockReq({});
+    request = mockReq({});
 
     logout(request, response, next);
 
@@ -84,7 +84,7 @@ describe("logout", () => {
   });
 
   it("should return 400 error when cookie `accessToken` is missing", () => {
-    request = sinonExpressMock.mockReq({
+    request = mockReq({
       cookies: {},
     });
 

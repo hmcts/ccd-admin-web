@@ -1,10 +1,10 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("Validate Jurisdiction", () => {
 

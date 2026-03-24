@@ -28,7 +28,7 @@ const logger = Logger.getLogger("appTest");
 
 // view engine setup
 appTest.set("view engine", "html");
-appTest.set("views", ["src/main/views", "node_modules/govuk-frontend/"]);
+appTest.set("views", [path.join(__dirname, "views"), "node_modules/govuk-frontend/dist", "lib"]);
 
 appTest.use(express.static(path.join(__dirname, "public")));
 appTest.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
