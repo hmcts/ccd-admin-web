@@ -53,9 +53,9 @@ describe("authCheckerUserOnlyFilter", () => {
     config.get.withArgs("idam.oauth2.client_id").returns(clientId);
 
     filter = proxyquire("../../main/user/auth-checker-user-only-filter", {
+      "../oauth2/oauth-state": oauthState,
       "./user-request-authorizer": userRequestAuthorizer,
       config,
-      "../oauth2/oauth-state": oauthState,
     }).authCheckerUserOnlyFilter;
   });
 

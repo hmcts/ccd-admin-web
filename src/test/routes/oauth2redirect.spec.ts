@@ -103,8 +103,8 @@ describe("oauth2redirect", () => {
 
       oauth2redirect = proxyquire("../../main/routes/oauth2redirect", {
         "../oauth2/access-token-request": accessTokenRequest,
-        "config": config,
         "../oauth2/oauth-state": oauthState,
+        "config": config,
       }).oauth2redirect;
     });
 
