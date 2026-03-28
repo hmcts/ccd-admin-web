@@ -3681,13 +3681,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copy-props@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "copy-props@npm:2.0.5"
+"copy-props@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "copy-props@npm:4.0.0"
   dependencies:
-    each-props: "npm:^1.3.2"
+    each-props: "npm:^3.0.0"
     is-plain-object: "npm:^5.0.0"
-  checksum: 10/eba7486dc0ba0b5bbb0e98805849a60e0a0c14c362b1baece69d86c8460aabe03d4f271d34ac41d8f5f9b3302703ca75bab34227ff6fbfedc47646f47288aaa0
+  checksum: 10/86ea7f2c60e5502ba215b81f5094199a4d6f7e285a4c45800b0c292a7fda04e8c6852fbcb99745f4eaa0e33b04c34fc3cfa2cb4c15a01ccbcb39b6fc0f72e878
   languageName: node
   linkType: hard
 
@@ -4157,13 +4157,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"each-props@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "each-props@npm:1.3.2"
+"each-props@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "each-props@npm:3.0.0"
   dependencies:
-    is-plain-object: "npm:^2.0.1"
+    is-plain-object: "npm:^5.0.0"
     object.defaults: "npm:^1.1.0"
-  checksum: 10/81ac0ede3d9264b0e43c371a410fca850ad3931e21cc83b817b9715901fb60d4b86e1602eae3d24ca91558508aa16e9e5dfbf2bbe41e159eb0450c829111f721
+  checksum: 10/69d493f84692161898956a1251ceadc52fef35b6c4734af55a2de9d344fbf1b4e5643e160095c4a3a8808d893f5ebc5a2178d51039c8716864c6aa0ddf007029
   languageName: node
   linkType: hard
 
@@ -6664,7 +6664,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-plain-object@npm:^2.0.1, is-plain-object@npm:^2.0.3, is-plain-object@npm:^2.0.4":
+"is-plain-object@npm:^2.0.3, is-plain-object@npm:^2.0.4":
   version: 2.0.4
   resolution: "is-plain-object@npm:2.0.4"
   dependencies:
