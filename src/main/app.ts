@@ -9,6 +9,7 @@ import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import { sanitize } from "./util/sanitize";
+import { getSessionKeys } from "./session-keys";
 
 import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
 import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
@@ -32,7 +33,7 @@ app.locals.ENV = env;
 app.set("trust proxy", 1); // trust first proxy
 
 app.use(cookieSession({
-  keys: ["key1", "key2"],
+  keys: getSessionKeys(),
   name: "session",
 }));
 
