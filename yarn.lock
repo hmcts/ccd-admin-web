@@ -1702,11 +1702,11 @@ __metadata:
   linkType: hard
 
 "@snyk/protect@npm:^1.1103.0":
-  version: 1.1303.1
-  resolution: "@snyk/protect@npm:1.1303.1"
+  version: 1.1303.2
+  resolution: "@snyk/protect@npm:1.1303.2"
   bin:
     snyk-protect: bin/snyk-protect
-  checksum: 10/6aa39762c72294aaf6965864febdb46096393e6ddff1ab116dcfb48e1067d094fdc65387b4dfb0abe8593ddc3bdacffceed90ac99aa3011c6fed5ee146248db7
+  checksum: 10/663c006872b355488af414281917218750e4738703f8b6f6c4a829a4d4670565e0b28abc96e13b70500eddf48c57c6a7d525ab21d50ffd48ed7a7ee0587dade2
   languageName: node
   linkType: hard
 
@@ -2790,12 +2790,12 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^1.1.12":
-  version: 1.1.12
-  resolution: "brace-expansion@npm:1.1.12"
+  version: 1.1.13
+  resolution: "brace-expansion@npm:1.1.13"
   dependencies:
     balanced-match: "npm:^1.0.0"
     concat-map: "npm:0.0.1"
-  checksum: 10/12cb6d6310629e3048cadb003e1aca4d8c9bb5c67c3c321bafdd7e7a50155de081f78ea3e0ed92ecc75a9015e784f301efc8132383132f4f7904ad1ac529c562
+  checksum: 10/b5f4329fdbe9d2e25fa250c8f866ebd054ba946179426e99b86dcccddabdb1d481f0e40ee5430032e62a7d0a6c2837605ace6783d015aa1d65d85ca72154d936
   languageName: node
   linkType: hard
 
