@@ -8,7 +8,7 @@ export function fetch(req, url: any, query?: object) {
         ServiceAuthorization: req.serviceAuthToken,
     };
     query = query || {};
-
+    logger.debug(`Fetch data from ${url} with headers: ${JSON.stringify(headers)}`);
     logger.info(`Fetch query parameter: ${ JSON.stringify(query) }`);
     return request
         .get(url)

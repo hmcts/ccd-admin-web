@@ -123,7 +123,7 @@ describe("on Get /createuser", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .replyWithError({status: 400, rawResponse: "Duplicate values"});
+      .reply(400, {status: 400, rawResponse: "Duplicate values"});
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -248,9 +248,9 @@ describe("on POST /createuser", () => {
   it("should respond with Create User form due to server error", () => {
     resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     resolveRetrieveServiceToken();
-    mock("http://localhost:4453/users/save")
-      .put("")
-      .replyWithError({status: 400, rawResponse: "Duplicate values"});
+    mock("http://localhost:4453")
+      .put("/users/save")
+      .reply(400, {status: 400, rawResponse: "Duplicate values"});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .post("/createuser")

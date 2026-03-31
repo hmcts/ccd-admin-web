@@ -245,7 +245,7 @@ describe("Definitions page", () => {
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
-        .replyWithError({ code: 500, text: "Server Error" });
+        .reply(500, { code: 500, text: "Server Error" });
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/definitions")

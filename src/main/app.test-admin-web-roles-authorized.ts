@@ -31,11 +31,12 @@ appTestWithAuthorizedAdminWebRoles.set("view engine", "html");
 appTestWithAuthorizedAdminWebRoles.set("views", [path.join(__dirname, "views"), "node_modules/govuk-frontend/dist", "lib"]);
 
 appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
+appTestWithAuthorizedAdminWebRoles.use("/assets", express.static("node_modules/govuk-frontend/dist/govuk/assets"));
+appTestWithAuthorizedAdminWebRoles.use("/js/govuk-frontend.min.js", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js"));
 appTestWithAuthorizedAdminWebRoles.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 appTestWithAuthorizedAdminWebRoles.use(json());
 appTestWithAuthorizedAdminWebRoles.use(urlencoded({ extended: false }));
 appTestWithAuthorizedAdminWebRoles.use(cookieParser());
-appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 
 expressNunjucks(appTestWithAuthorizedAdminWebRoles, {
   filters: {

@@ -198,7 +198,7 @@ describe("User profiles page", () => {
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
-        .replyWithError({ code: 500, text: "Server Error" });
+        .reply(500, { code: 500, text: "Server Error" });
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/userprofiles")

@@ -122,7 +122,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .replyWithError({ status: 400, rawResponse: "Duplicate values" });
+      .reply(400, { status: 400, rawResponse: "Duplicate values" });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -249,9 +249,9 @@ describe("on POST /createdefinition when unauthorized", () => {
     it("should respond with Create Definition form due to server error", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       resolveRetrieveServiceToken();
-      mock("http://localhost:4451/api/draft")
-        .post("")
-        .replyWithError({status: 400, rawResponse: "Duplicate definition"});
+      mock("http://localhost:4451")
+        .post("/api/draft")
+        .reply(400, {status: 400, rawResponse: "Duplicate definition"});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/createdefinition")

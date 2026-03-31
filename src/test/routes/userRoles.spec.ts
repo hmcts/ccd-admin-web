@@ -419,10 +419,9 @@ describe("on POST /updateuserrole", () => {
   it("should respond with create user form due to server error when authorized", () => {
     resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     resolveRetrieveServiceToken();
-    mock("http://localhost:4451/api/user-role")
-      .put("")
-      .replyWithError({status: 400, rawResponse: "Bad request"});
-    console.log("mock set up");
+    mock("http://localhost:4451")
+      .put("/api/user-role")
+      .reply(400, {status: 400, rawResponse: "Bad request"});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .post("/updateuserrole")
@@ -432,11 +431,8 @@ describe("on POST /updateuserrole", () => {
         role: "ccd-admin",
       })
       .then((res) => {
-        console.log(res);
-        expect(res.statusCode).to.equal(200);
+        expect(res.statusCode).to.equal(302);
         expect(res.headers.location.startsWith("/create-user-role")).to.be.true;
-      }).catch((err) => {
-        console.log(err);
       });
   });
 });

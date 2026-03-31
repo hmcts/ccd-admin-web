@@ -68,6 +68,7 @@ describe("logout", () => {
     expect(config.get).to.be.calledWith("idam.oauth2.client_id");
     expect(config.get).to.be.calledWith("secrets.ccd.ccd-admin-web-oauth2-client-secret");
     expect(config.get).to.be.calledWith("idam.oauth2.logout_endpoint");
+    done();
   });
 
   it("should return 400 error when cookies missing", () => {
