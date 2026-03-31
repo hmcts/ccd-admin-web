@@ -1,4 +1,4 @@
-import * as config from "config";
+import config from "config";
 import { createDefinition } from "../service/create-definition-service";
 import { Definition } from "../domain/definition";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
@@ -7,10 +7,10 @@ import router from "./home";
 import { sanitize } from "../util/sanitize";
 
 const errorPage = "error";
-const url = config.get("adminWeb.jurisdiction_url");
+const url = config.get<string>("adminWeb.jurisdiction_url");
 
 /* GET create definition form. */
-router.get("/createdefinition", (req, res, next) => {
+router.get("/createdefinition", (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
   fetch(req, url).then((response) => {
     res.status(200);
@@ -37,7 +37,7 @@ router.get("/createdefinition", (req, res, next) => {
 });
 
 /* POST create user result. */
-router.post("/createdefinition", (req, res) => {
+router.post("/createdefinition", (req: any, res: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
     createDefinition(req, new Definition(sanitize(req.session.jurisdiction),
                                          sanitize(req.body.description),

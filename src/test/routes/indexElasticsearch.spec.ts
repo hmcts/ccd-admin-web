@@ -1,11 +1,11 @@
 import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import { get } from "config";
-import * as idamServiceMock from "../http-mocks/idam";
+import config from "config";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
-import * as mock from "nock";
-import * as request from "supertest";
+import mock from "nock";
+import request from "supertest";
 import { ERROR_UNAUTHORIZED_ROLE } from "user/user-request-authorizer";
 
 describe("Index Elasticsearch page", () => {
@@ -22,13 +22,13 @@ describe("Index Elasticsearch page", () => {
         .get("/elasticsearch")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 
     it("should not return Index Elasticsearch page when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -46,8 +46,8 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should not return Index Elasticsearch page when authenticated but without required authorized role", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -68,8 +68,8 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should return Index Elasticsearch page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -93,13 +93,13 @@ describe("Index Elasticsearch page", () => {
         .get("/elasticsearch/case-types")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 
     it("should not get case types when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -123,8 +123,8 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should not get case types when authenticated but without required authorized role", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -148,8 +148,8 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should get case types when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -165,7 +165,7 @@ describe("Index Elasticsearch page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           expect(apiCall.isDone()).to.be.true;
-          expect(res.text).to.equal('["CT1","CT2","CT3"]');
+          expect(res.text).to.equal("[\"CT1\",\"CT2\",\"CT3\"]");
         });
     });
   });
@@ -177,13 +177,13 @@ describe("Index Elasticsearch page", () => {
         .get("/elasticsearch/index")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 
     it("should not create index when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -207,8 +207,8 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should not create index when authenticated but without required authorized role", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -232,8 +232,8 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should create index when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")

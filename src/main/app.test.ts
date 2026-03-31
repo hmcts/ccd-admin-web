@@ -1,13 +1,13 @@
 import { Express, Logger } from "@hmcts/nodejs-logging";
-import * as bodyParser from "body-parser";
-import * as cookieParser from "cookie-parser";
-import * as express from "express";
-import * as expressNunjucks from "express-nunjucks";
-import * as path from "path";
-import * as favicon from "serve-favicon";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import express from "express";
+import expressNunjucks from "express-nunjucks";
+import path from "path";
+import favicon from "serve-favicon";
 import { importAll } from "./import-all/index";
+import cookieSession from "cookie-session";
 
-const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTest: express.Express = express();
 appTest.locals.ENV = env;
@@ -28,8 +28,7 @@ const logger = Logger.getLogger("appTest");
 
 // view engine setup
 appTest.set("view engine", "html");
-appTest.set("views", [path.join(__dirname, "views"),
-path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
+appTest.set("views", [path.join(__dirname, "views"), "node_modules/govuk-frontend/dist", "lib"]);
 
 appTest.use(express.static(path.join(__dirname, "public")));
 appTest.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
@@ -43,34 +42,39 @@ expressNunjucks(appTest, {
       return str.split(separator);
     },
   },
+  autoescape: undefined,
+  throwOnUndefined: undefined,
+  trimBlocks: undefined,
+  lstripBlocks: undefined,
+  tags: undefined,
 });
 
 // Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
 appTest.enable("trust proxy");
 
 // Set dummy accessToken, serviceAuthToken, and authentication on all requests
-appTest.use((req, res, next) => {
-  req.accessToken = "userAuthToken";
-  req.authentication = {
+appTest.use((req: any, res: any, next: any) => {
+  req["accessToken"] = "userAuthToken";
+  req["authentication"] = {
     user: {
       email: "ccd@hmcts.net",
       id: 123,
     },
   };
-  req.serviceAuthToken = "serviceAuthToken";
+  req["serviceAuthToken"] = "serviceAuthToken";
   next();
 });
 
 appTest.use("/", importAll(path.join(__dirname, "routes")));
 
 // returning "not found" page for requests with paths not resolved by the router
-appTest.use((req, res) => {
+appTest.use((req: any, res: any) => {
   res.status(404);
   res.render("not-found");
 });
 
 // error handler
-appTest.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+appTest.use((err, req, res, next) => {
   logger.error(`${err.stack || err.error}`);
 
   // set locals

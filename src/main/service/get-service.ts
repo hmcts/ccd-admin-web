@@ -1,4 +1,4 @@
-import * as request from "superagent";
+import request from "superagent";
 import { Logger } from "@hmcts/nodejs-logging";
 
 export function fetch(req, url: any, query?: object) {
@@ -7,7 +7,8 @@ export function fetch(req, url: any, query?: object) {
         Authorization: req.accessToken,
         ServiceAuthorization: req.serviceAuthToken,
     };
-
+    query = query || {};
+    logger.debug(`Fetch data from ${url} with headers: ${JSON.stringify(headers)}`);
     logger.info(`Fetch query parameter: ${ JSON.stringify(query) }`);
     return request
         .get(url)

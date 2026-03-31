@@ -1,10 +1,11 @@
 import { fetch } from "../util/fetch";
-import { get } from "config";
+import config from "config";
 
-export const getTokenDetails = (jwt) => {
+export const getTokenDetails = (jwt: string) => {
   const BEARER_JWT = jwt.startsWith("Bearer ") ? jwt : "Bearer " + jwt;
+  const idamBaseUrl: string = config.get<string>("idam.base_url");
 
-  return fetch(`${get("idam.base_url")}/o/userinfo`, {
+  return fetch(`${idamBaseUrl}/o/userinfo`, {
     headers: {
       Authorization: BEARER_JWT,
     },

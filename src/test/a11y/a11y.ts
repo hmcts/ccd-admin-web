@@ -1,7 +1,7 @@
 import {fail} from "assert";
-import * as promisify from "es6-promisify";
-import * as pa11y from "pa11y";
-import * as supertest from "supertest";
+import promisify from "es6-promisify";
+import pa11y from "pa11y";
+import supertest from "supertest";
 import {app} from "../../main/app";
 
 const agent = supertest.agent(app);

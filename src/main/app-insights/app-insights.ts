@@ -1,7 +1,7 @@
-const config = require("config");
-const appInsights = require("applicationinsights");
+import config from "config";
+import appInsights from "applicationinsights";
 
-const enabled = config.get("appInsights.enabled");
+const enabled = config.get<boolean>("appInsights.enabled");
 
 function fineGrainedSampling(envelope) {
   if (
@@ -16,12 +16,12 @@ function fineGrainedSampling(envelope) {
 
 const enableAppInsights = () => {
   if (enabled) {
-    const appInsightsKey = config.get("secrets.ccd.AppInsightsInstrumentationKey");
-    const appInsightsRoleName = config.get("appInsights.roleName");
+    const appInsightsKey = config.get<string>("secrets.ccd.AppInsightsInstrumentationKey");
+    const appInsightsRoleName = config.get<string>("appInsights.roleName");
     appInsights.setup(appInsightsKey)
       .setAutoDependencyCorrelation(true)
       .setAutoCollectRequests(true)
-      .setAutoCollectPerformance(true)
+      .setAutoCollectPerformance(true, null)
       .setAutoCollectExceptions(true)
       .setAutoCollectDependencies(true)
       .setAutoCollectConsole(true)
@@ -33,4 +33,4 @@ const enableAppInsights = () => {
   }
 };
 
-module.exports = enableAppInsights;
+export default enableAppInsights;

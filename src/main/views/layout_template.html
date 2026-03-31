@@ -1,4 +1,4 @@
-{% extends "govuk_template.html" %}
+{% extends "govuk/template.njk" %}
 {% block page_title %}
   CCD Admin Web
 {% endblock %}
@@ -28,5 +28,17 @@
         }
       }
     });
+  </script>
+  <script>
+    if (document.body.className) {
+      document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+    }
+  </script>
+{% endblock %}
+{% block bodyEnd %}
+  <script type="module" src="/js/govuk-frontend.min.js"></script>
+  <script type="module">
+    import { initAll } from '/js/govuk-frontend.min.js'
+    initAll()
   </script>
 {% endblock %}

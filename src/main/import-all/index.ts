@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 export const importAll = (importPath) => {
   return fs.readdirSync(importPath)
@@ -7,7 +7,7 @@ export const importAll = (importPath) => {
       return fileName.match(/\.(js|ts)$/);
     })
     .map((fileName) => {
-      return require(path.join(importPath, fileName));
+      return require(path.join(importPath, fileName)); // eslint-disable-line @typescript-eslint/no-require-imports
     })
     .filter((module) => {
       return module.__esModule;
