@@ -56,9 +56,9 @@ describe("Access Token Request", () => {
       fetch: fetchStub.callsFake(function() {
         return Promise.resolve({
           status: 200,
-          json: () => Promise.resolve(RESPONSE.body)
+          json: () => Promise.resolve(RESPONSE.body),
         });
-      })
+      }),
     };
 
     accessTokenRequest = proxyquire("../../main/oauth2/access-token-request", {
