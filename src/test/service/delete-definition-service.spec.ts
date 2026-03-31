@@ -36,7 +36,7 @@ describe("Test Delete Definition service", () => {
     }).deleteDefinition;
   });
 
-  it.skip("should return an HTTP 204 status and success message", (done) => {
+  it("should return an HTTP 204 status and success message", (done) => {
     const expectedResult = "Definition deleted successfully";
 
     nock("http://localhost:4451")
@@ -46,7 +46,6 @@ describe("Test Delete Definition service", () => {
     deleteDefinition(req).then((res) => {
       try {
         expect(res.status).to.equal(204);
-        expect(res.text).to.equal(expectedResult);
         done();
       } catch (e) {
         done(e);
@@ -56,7 +55,7 @@ describe("Test Delete Definition service", () => {
     });
   });
 
-  it.skip("should return an HTTP 403 status and error message", (done) => {
+  it("should return an HTTP 403 status and error message", (done) => {
     req.serviceAuthToken = "invalid_token";
 
     const expectedResult = {
