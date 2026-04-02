@@ -6,16 +6,13 @@ $govuk-compatibility-govukfrontendtoolkit: true;
 
 @use "node_modules/govuk-frontend/dist/govuk/index.scss";
 $fa-font-path: './node_modules/font-awesome/fonts';
-$govuk-frontend-toolkit-image-path: '/assets';
-$govuk-template-image-path: '/assets';
-$pdk-image-path: '/assets';
-$nta-font-path: '/node_modules/@govuk/platform-template/assets/fonts';
+$nta-font-path: './node_modules/govuk-frontend/dist/govuk/assets/fonts';
 
 
 // PDK's footer fix
 #footer .footer-meta {
   .footer-meta-inner .open-government-licence .logo a {
-    background: url('#{$govuk-template-image-path}/open-government-licence.png') no-repeat;
+    background: url('#/assets/open-government-licence.png') no-repeat;
   }
 }
 

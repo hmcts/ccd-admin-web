@@ -10,8 +10,7 @@ node_modules/
 *log
 .DS_Store
 
-src/main/public/javascripts/
-src/main/public/js/lib/**/*.js
+src/main/public/js/**/*.js
 src/main/public/stylesheets/images/
 src/test/public
 

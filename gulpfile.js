@@ -31,11 +31,9 @@ gulp.task('copy-files', (done) => {
   gulp.src([
     './node_modules/jquery/dist/jquery.min.js',
     './node_modules/jquery-validation/dist/jquery.validate.min.js',
-    './node_modules/govuk-frontend/**/*.js'
+    './node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js'
   ])
-    .pipe(gulp.dest(`${assetsDirectory}/js/lib/`));
-
-  gulp.src(['src/main/public/js/lib/**/*.js']).pipe(gulp.dest(`${assetsDirectory}/javascripts`));
+    .pipe(gulp.dest(`${assetsDirectory}/js/`));
 
   gulp.src([
     './node_modules/govuk-frontend/**/*'
