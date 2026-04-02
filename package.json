@@ -114,7 +114,7 @@
   },
   "resolutions": {
     "shelljs": "0.10.0",
-    "es6-promisify": "5.0.0",
+    "es6-promisify": "7.0.0",
     "nconf": "0.13.0",
     "async": "3.2.6",
     "express-nunjucks/assign-deep": "^1.0.1",
