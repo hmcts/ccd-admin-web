@@ -180,7 +180,8 @@
     "on-headers": "^1.1.0",
     "brace-expansion": "^1.1.12",
     "cookie": "^1.1.1",
-    "diff": "^8.0.3"
+    "diff": "^8.0.3",
+    "@tootallnate/once": "3.0.1"
   },
   "nyc": {
     "extension": [
