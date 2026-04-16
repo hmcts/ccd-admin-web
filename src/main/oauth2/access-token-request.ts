@@ -1,13 +1,30 @@
 import * as fetch from "node-fetch";
-import { format } from "url";
+import { format, URL } from "url";
 import { get } from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 
+const ERROR_INVALID_REDIRECT_URI = {
+  code: "INVALID_REDIRECT_URI",
+  error: "Bad Request",
+  message: "Redirect URI is not permitted",
+  status: 400,
+};
+
 const completeRedirectURI = (uri) => {
-  if (!uri.startsWith("http")) {
-    return `https://${uri}`;
+  let parsedUrl;
+  try {
+    const fullUri = uri.startsWith("http") ? uri : `https://${uri}`;
+    parsedUrl = new URL(fullUri);
+  } catch (e) {
+    throw ERROR_INVALID_REDIRECT_URI;
   }
-  return uri;
+  const allowedHosts = (get("idam.oauth2.redirect_uri_allowlist") as string)
+    .split(",")
+    .map((h) => h.trim());
+  if (allowedHosts.indexOf(parsedUrl.hostname) === -1) {
+    throw ERROR_INVALID_REDIRECT_URI;
+  }
+  return parsedUrl.href;
 };
 
 export function accessTokenRequest(request) {
