@@ -26,6 +26,7 @@ describe("authCheckerUserOnlyFilter", () => {
     req = {
       get: sinon.stub(),
       protocol: "http",
+      session: {},
     };
     req.get.withArgs("host").returns("localhost");
     res = {};
@@ -88,16 +89,21 @@ describe("authCheckerUserOnlyFilter", () => {
     it("should redirect to the IdAM login URL", (done) => {
       res = {
         redirect: (code, url) => {
-          assert.equal(code, 302);
-          assert.equal(url, completeUrl);
-          done();
+          try {
+            assert.equal(code, 302);
+            expect(url.startsWith(`${completeUrl}&state=`)).to.equal(true);
+            expect(req.session.oauthState).to.match(/^[a-f0-9]{64}$/);
+            expect(url).to.contain(`state=${encodeURIComponent(req.session.oauthState)}`);
+            done();
+          } catch (e) {
+            done(e);
+          }
         },
       };
 
       filter(req, res, (err) => {
         try {
-          expect(err).to.equal(error);
-          expect(res.redirect).to.be.calledWith(302, completeUrl);
+          expect(err).to.be.undefined;
           done();
         } catch (e) {
           done(e);
