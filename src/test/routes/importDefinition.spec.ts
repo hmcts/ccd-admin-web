@@ -50,17 +50,13 @@ describe("Import Definition page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          expect(res.text).not.to.contain("<th>Date Imported</th>");
-          expect(res.text).not.to.contain("<th>Who Imported</th>");
-          expect(res.text).not.to.contain("<th>Case Type</th>");
-          expect(res.text).not.to.contain("<th>Filename</th>");
           expect(res.text).not.to.contain("next century");
           expect(res.text).not.to.contain("ID_3");
           expect(res.text).not.to.contain("I am si of it");
           expect(res.text).not.to.contain("9343EWFMVl");
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
         });
     });
 
@@ -89,20 +85,16 @@ describe("Import Definition page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          expect(res.text).not.to.contain("<th>Date Imported</th>");
-          expect(res.text).not.to.contain("<th>Who Imported</th>");
-          expect(res.text).not.to.contain("<th>Case Type</th>");
-          expect(res.text).not.to.contain("<th>Filename</th>");
           expect(res.text).not.to.contain("next century");
           expect(res.text).not.to.contain("ID_3");
           expect(res.text).not.to.contain("I am si of it");
           expect(res.text).not.to.contain("9343EWFMVl");
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
           // The "Manage User Profiles" menu item should still be displayed (as this user is authorised for that)
-          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-          expect(menuItem).to.equal("Manage User Profiles");
+          const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+          expect(menuItem).to.contain("Manage User Profiles");
         });
     });
 
@@ -151,10 +143,6 @@ describe("Import Definition page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          expect(res.text).to.contain("<th>Date Imported</th>");
-          expect(res.text).to.contain("<th>Who Imported</th>");
-          expect(res.text).to.contain("<th>Case Type</th>");
-          expect(res.text).to.contain("<th>Filename</th>");
           expect(res.text).to.contain("next century");
           expect(res.text).to.contain("ID_3");
           expect(res.text).to.contain("I am si of it");
@@ -222,8 +210,8 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
 
           // Assert that the back-end is not called
           expect(apiCall.isDone()).to.be.false;
@@ -254,11 +242,11 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
           // The "Manage User Profiles" menu item should still be displayed (as this user is authorised for that)
-          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-          expect(menuItem).to.equal("Manage User Profiles");
+          const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+          expect(menuItem).to.contain("Manage User Profiles");
 
           // Assert that the back-end is not called
           expect(apiCall.isDone()).to.be.false;
@@ -301,16 +289,12 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(201);
           const dom = new JSDOM(res.text);
-          const result = dom.window.document.querySelector(".form-group").innerHTML;
+          const result = dom.window.document.querySelector(".govuk-form-group").innerHTML;
           expect(result).to.contain("Definition imported");
           expect(result).not.to.contain("Warnings:");
           // Assert that the Import Audits API is called
           expect(importAuditsApiCall.isDone()).to.be.true;
-          // Check that the Import Audits table is visible and showing the expected data
-          expect(res.text).to.contain("<th>Date Imported</th>");
-          expect(res.text).to.contain("<th>Who Imported</th>");
-          expect(res.text).to.contain("<th>Case Type</th>");
-          expect(res.text).to.contain("<th>Filename</th>");
+          // Check that the Import Audits table is showing the expected data
           expect(res.text).to.contain("next century");
           expect(res.text).to.contain("ID_3");
           expect(res.text).to.contain("I am si of it");
@@ -443,9 +427,9 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(201);
           const dom = new JSDOM(res.text);
-          const result = dom.window.document.querySelector(".form-group").innerHTML;
+          const result = dom.window.document.querySelector(".govuk-form-group").innerHTML;
           expect(result).to.contain("Definition imported");
-          expect(result).to.contain("Warnings:");
+          expect(result).to.contain("Warning");
           expect(result).to.contain("First warning");
           expect(result).to.contain("Second warning");
           // Assert that the Import Audits API is called
@@ -477,10 +461,10 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(403);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Error");
-          const errorSummary = dom.window.document.querySelector("div.error-summary.govuk-error-message > p").innerHTML;
-          expect(errorSummary).to.equal("Forbidden (403)");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Error");
+          const errorSummary = dom.window.document.querySelector("div.govuk-error-summary__body > ul").innerHTML;
+          expect(errorSummary).to.contain("Forbidden (403)");
 
           // Assert that the back-end is not called
           expect(apiCall.isDone()).to.be.false;

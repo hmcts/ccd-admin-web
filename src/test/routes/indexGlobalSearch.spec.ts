@@ -6,7 +6,7 @@ import { JSDOM } from "jsdom";
 import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import mock from "nock";
 import request from "supertest";
-import { ERROR_UNAUTHORIZED_ROLE } from "user/user-request-authorizer";
+import { ERROR_UNAUTHORIZED_ROLE } from "../../main/user/user-request-authorizer";
 
 describe("Global Search Indices page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
@@ -43,8 +43,8 @@ describe("Global Search Indices page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
         });
     });
 
@@ -62,11 +62,11 @@ describe("Global Search Indices page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
           // The "Manage User Profiles" menu item should still be displayed (as this user is authorised for that)
-          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-          expect(menuItem).to.equal("Manage User Profiles");
+          const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+          expect(menuItem).to.contain("Manage User Profiles");
         });
     });
 

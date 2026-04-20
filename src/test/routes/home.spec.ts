@@ -38,7 +38,7 @@ describe("Home page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const result = dom.window.document.querySelector("h2").innerHTML;
+          const result = dom.window.document.querySelector("h1.govuk-heading-xl").innerHTML;
           expect(result).to.equal("Welcome to CCD Admin Web");
         });
     });

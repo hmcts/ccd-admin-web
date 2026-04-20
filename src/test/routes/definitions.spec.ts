@@ -49,7 +49,8 @@ describe("Definitions page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Type1,Type2");
           expect(res.text).not.to.contain("Draft definition");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          expect(res.text).to.contain("Unauthorised role");
+          expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
         });
     });
 
@@ -116,7 +117,8 @@ describe("Definitions page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Type1,Type2");
           expect(res.text).not.to.contain("Draft definition");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          expect(res.text).to.contain("Unauthorised role");
+          expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
         });
     });
 

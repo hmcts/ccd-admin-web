@@ -31,7 +31,12 @@ appTest.set("view engine", "html");
 appTest.set("views", [path.join(__dirname, "views"), "node_modules/govuk-frontend/dist", "lib"]);
 
 appTest.use(express.static(path.join(__dirname, "public")));
-appTest.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
+appTest.use("/assets", express.static("node_modules/govuk-frontend/dist/govuk/assets"));
+appTest.use("/js/jquery.min.js", express.static("node_modules/jquery/dist/jquery.min.js"));
+appTest.use("/js/jquery.validate.min.js", express.static("node_modules/jquery-validation/dist/jquery.validate.min.js"));
+appTest.use("/js/govuk-frontend.min.js", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js"));
+appTest.use("/stylesheets/govuk-frontend.min.css", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css"));
+appTest.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
 appTest.use(bodyParser.json());
 appTest.use(bodyParser.urlencoded({ extended: false }));
 appTest.use(cookieParser());

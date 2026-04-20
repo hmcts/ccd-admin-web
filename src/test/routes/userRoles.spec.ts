@@ -96,11 +96,11 @@ describe("on Get /user-roles-list", () => {
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Create User Role");
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
         // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
-        const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-        expect(menuItem).to.equal("Import Case Definition");
+        const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+        expect(menuItem).to.contain("Import Case Definition");
       });
   });
 
@@ -211,7 +211,8 @@ describe("on POST /createuserrole", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 
@@ -271,7 +272,8 @@ describe("on POST /createuserrole", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 
@@ -338,7 +340,8 @@ describe("on POST /updateuserrole", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 
@@ -412,7 +415,8 @@ describe("on POST /updateuserrole", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 
@@ -454,7 +458,8 @@ describe("on POST /updateuserroleform", () => {
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("ccd-admin");
         expect(res.text).not.to.contain("PUBLIC");
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 

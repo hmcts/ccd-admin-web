@@ -29,7 +29,8 @@ describe("on POST /updatedefinition", () => {
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
         expect(res.text).not.to.contain("Test draft Definition");
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 

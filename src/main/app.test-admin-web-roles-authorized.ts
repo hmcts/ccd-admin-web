@@ -32,8 +32,11 @@ appTestWithAuthorizedAdminWebRoles.set("views", [path.join(__dirname, "views"), 
 
 appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 appTestWithAuthorizedAdminWebRoles.use("/assets", express.static("node_modules/govuk-frontend/dist/govuk/assets"));
+appTestWithAuthorizedAdminWebRoles.use("/js/jquery.min.js", express.static("node_modules/jquery/dist/jquery.min.js"));
+appTestWithAuthorizedAdminWebRoles.use("/js/jquery.validate.min.js", express.static("node_modules/jquery-validation/dist/jquery.validate.min.js"));
 appTestWithAuthorizedAdminWebRoles.use("/js/govuk-frontend.min.js", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js"));
-appTestWithAuthorizedAdminWebRoles.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
+appTestWithAuthorizedAdminWebRoles.use("/stylesheets/govuk-frontend.min.css", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css"));
+appTestWithAuthorizedAdminWebRoles.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
 appTestWithAuthorizedAdminWebRoles.use(json());
 appTestWithAuthorizedAdminWebRoles.use(urlencoded({ extended: false }));
 appTestWithAuthorizedAdminWebRoles.use(cookieParser());

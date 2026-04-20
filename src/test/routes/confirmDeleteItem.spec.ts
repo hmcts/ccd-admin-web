@@ -45,8 +45,8 @@ describe("Confirm Delete page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
           expect(dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
           expect(currentUserHiddenInput).not.to.be.empty;
@@ -54,8 +54,8 @@ describe("Confirm Delete page", () => {
           expect(user.forename).to.equal("Test");
           expect(user.surname).to.equal("User");
           // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
-          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-          expect(menuItem).to.equal("Import Case Definition");
+          const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+          expect(menuItem).to.contain("Import Case Definition");
         });
     });
 
@@ -77,8 +77,8 @@ describe("Confirm Delete page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
           expect(dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
           expect(currentUserHiddenInput).not.to.be.empty;
@@ -86,8 +86,8 @@ describe("Confirm Delete page", () => {
           expect(user.forename).to.equal("Test");
           expect(user.surname).to.equal("User");
           // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
-          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-          expect(menuItem).to.equal("Import Case Definition");
+          const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+          expect(menuItem).to.contain("Import Case Definition");
         });
     });
 

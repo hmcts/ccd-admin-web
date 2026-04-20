@@ -43,8 +43,8 @@ describe("on GET /createdefinition", () => {
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
       });
   });
 
@@ -68,11 +68,11 @@ describe("on GET /createdefinition", () => {
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
         // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
-        const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-        expect(menuItem).to.equal("Import Case Definition");
+        const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+        expect(menuItem).to.contain("Import Case Definition");
       });
   });
 
@@ -157,8 +157,8 @@ describe("on POST /createdefinition when unauthorized", () => {
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
       });
   });
 
@@ -179,8 +179,8 @@ describe("on POST /createdefinition when unauthorized", () => {
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
       });
   });
 
@@ -201,8 +201,8 @@ describe("on POST /createdefinition when unauthorized", () => {
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
       });
   });
 
