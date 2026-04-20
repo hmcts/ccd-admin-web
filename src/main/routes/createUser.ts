@@ -28,7 +28,7 @@ router.get("/createuser", (req: any, res: any, next: any) => {
         responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
         delete req.session.error;
       }
-      res.render("user-profiles/create-user-form", responseContent);
+      res.render("user-profiles/manage-user-profile-form", responseContent);
     })
       .catch((error) => {
         // Call the next middleware, which is the error handler

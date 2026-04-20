@@ -46,7 +46,7 @@ router.post("/import", (req: any, res: any, next: any) => {
             fetch(req, url).then((data) => {
               responseContent.importAudits = JSON.parse(sanitize(data));
               responseContent.response = response;
-              res.render("importDefinition", responseContent);
+              res.render("definition/importDefinition", responseContent);
             })
               .catch((error) => {
                 // Call the next middleware, which is the error handler
@@ -64,7 +64,7 @@ router.post("/import", (req: any, res: any, next: any) => {
             responseContent.user = sanitize(JSON.stringify(req.authentication.user));
             responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
             delete req.session.error;
-            res.render("importDefinition", responseContent);
+            res.render("definition/importDefinition", responseContent);
           });
       }
     });
@@ -82,6 +82,9 @@ router.get("/import", (req: any, res: any, next: any) => {
       responseContent.adminWebAuthorization = req.adminWebAuthorization;
       responseContent.user = sanitize(JSON.stringify(req.authentication.user));
       responseContent.importAudits = JSON.parse(sanitize(response));
+      console.log("RESPONSE");
+      console.log(response);
+      console.log(JSON.parse(sanitize(response)));
       if (req.query.page) {
         delete req.session.error;
       }
@@ -89,7 +92,7 @@ router.get("/import", (req: any, res: any, next: any) => {
         responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
         delete req.session.error;
       }
-      res.render("importDefinition", responseContent);
+      res.render("definition/importDefinition", responseContent);
     })
       .catch((error) => {
         // Call the next middleware, which is the error handler

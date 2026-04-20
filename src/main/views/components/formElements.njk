@@ -1,0 +1,116 @@
+{% macro errorsFor(name, error) -%}
+    {% if error %}
+        <p id="{{ name }}-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span>
+            {% if error.text %}
+                {{ error.text | safe }}
+            {% elif error.error %}
+                {{ error.error | safe }}
+            {% endif %}
+        </p>
+    {% endif %}
+{%- endmacro %}
+
+
+{% macro successBanner(success) -%}
+    {% if success %}
+        <div
+            class="govuk-notification-banner govuk-notification-banner--success"
+            aria-labelledby="govuk-notification-banner-title"
+            data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner__header">
+                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                    Success
+                </h2>
+            </div>
+            <div class="govuk-notification-banner__content">
+                <h3 class="govuk-notification-banner__heading">
+                    {{ success | safe }}
+                </h3>
+            </div>
+        </div>
+    {% endif %}
+{%- endmacro %}
+
+
+{% macro serverList (list , name , selectValue, error) -%}
+    <div class="govuk-form-group">
+        <label class="govuk-label" for="{{ name }}" ">
+            Select jurisdiction
+        </label>
+        {{ errorsFor(name, error) }}
+        <select class="govuk-select required" id="{{ name }}" name="{{ name }}">
+            {% if selectValue %}
+                <option value="" selected>-- Select a value --</option>
+            {% endif %}
+            {% for element in list %}
+                <option value="{{ element.id }}" {% if selectValue == "false" %} {{ "selected" if loop.index == 0 }} {% endif %}>{{ element.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{%- endmacro %}
+
+
+{% macro serverListChosenValue (list , name , chosenValue) -%}
+    <div class="govuk-form-group">
+        <select id="{{ name }}" name="{{ name }}" class="govuk-select">
+            {% for element in list %}
+                <option value="{{ element.id }}" {% if chosenValue %} {{ "selected" if element.name == chosenValue }} {% else %} {{ "selected" if loop.index == 0 }} {% endif %}>{{ element.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{%- endmacro %}
+
+
+{% macro dropdown(name, label) -%}
+    <div class="govuk-form-group">
+        {% if label %}
+            <label class="govuk-label" for="{{ name }}">
+                {{ label }}
+            </label>
+        {% endif %}
+        <select class="govuk-select" id="{{ name }}" name="{{ name }}">
+            <option value="" selected>--Select a value--</option>
+        </select>
+    </div>
+{%- endmacro %}
+
+{% macro radioButton(value, label, name, field, dataTarget = '', screenReader = '') -%}
+    <div class="multiple-choice" data-target="{{ dataTarget }}">
+        <input id="{{ name }}_{{ value }}" type="radio" name="{{ name }}" value="{{ value }}" {{ 'checked=checked ' if field.value === value }}/>
+        <label for="{{ name }}_{{ value }}">
+            {%- if screenReader -%}
+                <span class="visually-hidden">{{ screenReader | safe }}</span>
+            {%- endif -%}
+            {{ label | safe }}
+        </label>
+    </div>
+{%- endmacro %}
+
+
+{% macro yesNoRadio(label = '', hint, name, field, yes, no) -%}
+    <div id="{{ name }}" class="govuk-form-group {{ 'govuk-form-group-error' if field.error }}">
+        <fieldset class="inline">
+            <legend class="govuk-label text">{{ label | safe }}</legend>
+            <p class="form-hint text">{{ hint | safe }}</p>
+            {{ errorsFor(name, field) }}
+            {{ radioButton('Yes', yes, name, field) }}
+            {{ radioButton('No', no, name, field) }}
+        </fieldset>
+    </div>
+{%- endmacro %}
+
+
+{% macro yesNoRadioHeading(legend, name, field, yes, no, hint = '', targetYes = '', targetNo = '', screenReader = '') %}
+    <div id="{{ name }}" class="govuk-form-group {{ 'govuk-form-group-error' if field.error }}">
+        <fieldset class="inline">
+            <legend class="govuk-fieldset__legend--xl">{{ legend | safe }}</legend>
+            {% if hint %}
+                <p class="text form-hint">{{ hint | safe }}</p>
+            {% endif %}
+            {{ errorsFor(name, field) }}
+            {{ radioButton('Yes', yes, name, field, targetYes, screenReader) }}
+            {{ radioButton('No', no, name, field, targetNo, screenReader) }}
+        </fieldset>
+    </div>
+{% endmacro %}

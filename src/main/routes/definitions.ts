@@ -4,7 +4,7 @@ import { render } from "../util/render";
 import router from "./home";
 import { validate } from "../validators/validateJurisdiction";
 
-const definitionsPage = "definitions";
+const definitionsPage = "definition/view-definitions";
 const errorPage = "error";
 const url = config.get<string>("adminWeb.definitions_url");
 

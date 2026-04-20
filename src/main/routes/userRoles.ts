@@ -47,7 +47,7 @@ function fetchUserRolesIfAuthorizedOrError(req, res, next, responseContent) {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     fetch(req, url).then((response) => {
         responseContent.userroles = JSON.parse(sanitize(response));
-        res.render("user-roles", responseContent);
+        res.render("user-roles/view-user-roles", responseContent);
     })
     .catch((error) => {
       // Call the next middleware, which is the error handler
@@ -70,13 +70,13 @@ router.get("/create-user-role-form", (req: any, res: any, next: any) => {
     responseContent.submitUserRoleEndPoint = "/createuserrole";
     responseContent.securityClassifications = classifications;
     responseContent.heading = sanitize(createUserRoleHeading);
-    responseContent.submitButtonText = sanitize(createUserRoleText);
+    responseContent.submitButtonText = createUserRoleText;
 
     if (req.session.error) {
       responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
       responseContent.update = req.session.error.errorBy === "update";
     }
-    res.render("user-roles/create-user-roles", responseContent);
+    res.render("user-roles/manage-user-role-form", responseContent);
   } else {
     res.render(errorPage, error_unauthorized_role(req));
   }
@@ -174,11 +174,11 @@ function processResponse(req, res) {
   responseContent.securityClassifications = classifications;
   responseContent.chosenClassification = sanitize(req.body.classification);
   responseContent.heading = sanitize(updateUserRoleHeading);
-  responseContent.submitButtonText = sanitize(updateUserRoleText);
+  responseContent.submitButtonText = updateUserRoleText;
   if (req.session.error) {
     responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
   }
-  res.render("user-roles/create-user-roles", responseContent);
+  res.render("user-roles/manage-user-role-form", responseContent);
 }
 
 export default router;

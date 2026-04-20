@@ -6,7 +6,7 @@ import { validate } from "../validators/validateJurisdiction";
 
 const errorPage = "error";
 const url = config.get<string>("adminWeb.userprofiles_url");
-const userProfilesPage = "user-profiles";
+const userProfilesPage = "user-profiles/view-user-profiles";
 
 /* POST */
 router.post("/userprofiles", validate, (req: any, res: any, next: any) => {

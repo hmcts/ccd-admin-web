@@ -1,0 +1,44 @@
+{% extends "govuk/template.njk" %}
+
+{% block pageTitle %}
+  CCD Admin Web
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" media="all" href="/stylesheets/app.css"/>
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+  <input id="currentUser" type="hidden" value="{{ user }}"/>
+  <script>
+    if (document.body.className) {
+      document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+    }
+  </script>
+{% endblock %}
+
+{% block govukSkipLink %}
+<a class="govuk-service-navigation__link" href="/logout">
+  <button class="govuk-button govuk-button--warning logout" data-module="govuk-button">
+    Logout
+  </button>
+</a>
+{% endblock %}
+
+{% block header %}
+  <header class="govuk-template__header {%- if headerClasses %} {{ headerClasses }}{% endif %}" {{- govukAttributes(headerAttributes)}}>
+    {% block headerStart %}{% endblock %}
+    {% block govukHeader %}
+      {{ govukHeader() }}
+    {% endblock %}
+    {% include "components/menu.njk" %}
+    {% block headerEnd %}{% endblock %}
+  </header>
+{% endblock %}
+
+{% block bodyEnd %}
+  <script type="module" src="/js/govuk-frontend.min.js"></script>
+  <script type="module">
+    import { initAll } from '/js/govuk-frontend.min.js'
+    initAll()
+  </script>
+{% endblock %}

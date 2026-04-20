@@ -37,6 +37,7 @@ export class Helmet {
       {
         directives: {
           connectSrc: [self],
+          manifestSrc: [self],
           defaultSrc: ["'none'"],
           fontSrc: [self, "data:"],
           imgSrc: [self, googleAnalyticsDomain, hmctsPiwikDomain],

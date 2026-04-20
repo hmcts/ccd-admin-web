@@ -42,22 +42,19 @@ const healthConfig = {
 addTo(appHealth, healthConfig);
 app.use(appHealth);
 
-const logger = Logger.getLogger("app");
-
-// secure the application by adding various HTTP headers to its responses
-app.use(function(req, res, next) {
-    res.setHeader("Content-Security-Policy", "manifest-src 'self'");
-    return next();
-});
-
 // view engine setup
 app.set("view engine", "html");
 app.set("views", [path.join(__dirname, "views"), "node_modules/govuk-frontend/dist", "lib"]);
 
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/assets", express.static("node_modules/govuk-frontend/dist/govuk/assets"));
-app.use("/js/govuk-frontend.min.js", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js"));
-app.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
+const caching = {cacheControl: true, setHeaders: (res) => res.setHeader("Cache-Control", "max-age=604800")};
+
+app.use(express.static(path.join(__dirname, "public"), caching));
+app.use("/assets", express.static("node_modules/govuk-frontend/dist/govuk/assets", caching));
+app.use("/js/jquery.min.js", express.static("node_modules/jquery/dist/jquery.min.js", caching));
+app.use("/js/jquery.validate.min.js", express.static("node_modules/jquery-validation/dist/jquery.validate.min.js", caching));
+app.use("/js/govuk-frontend.min.js", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js", caching));
+app.use("/stylesheets/govuk-frontend.min.css", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css", caching));
+app.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -108,6 +105,7 @@ app.use((req: any, res: any) => {
 });
 
 // error handler
+const logger = Logger.getLogger("app");
 app.use((err, req, res, next) => {
   logger.error(`${err.stack || err.error}`);
   // set locals

@@ -28,7 +28,7 @@ router.post("/updatedefinition", (req: any, res: any, next: any) => {
       responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
       delete req.session.error;
     }
-    res.render("definition/create-definition-form", responseContent);
+    res.render("definition/manage-definition-form", responseContent);
   })
   .catch((error) => {
     // Call the next middleware, which is the error handler
