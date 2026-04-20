@@ -29,6 +29,6 @@ RUN sleep 1 && yarn install && yarn cache clean
 
 
 # ---- Runtime Image ----
-FROM hmctsprod.azurecr.io/base/node${PLATFORM}:24s-alpine as runtime
+FROM hmctsprod.azurecr.io/base/node${PLATFORM}:24-alpine as runtime
 COPY --from=build $WORKDIR .
 EXPOSE 3100
