@@ -82,9 +82,6 @@ router.get("/import", (req: any, res: any, next: any) => {
       responseContent.adminWebAuthorization = req.adminWebAuthorization;
       responseContent.user = sanitize(JSON.stringify(req.authentication.user));
       responseContent.importAudits = JSON.parse(sanitize(response));
-      console.log("RESPONSE");
-      console.log(response);
-      console.log(JSON.parse(sanitize(response)));
       if (req.query.page) {
         delete req.session.error;
       }
