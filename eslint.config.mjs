@@ -13,7 +13,6 @@ export default defineConfig([
       "**/node_modules/*",
       "yarn.lock",
       ".yarn/**",
-      "gulpfile.js",
       "server.js",
       "yarn-audit-known-issues",
       "**/*.properties",
