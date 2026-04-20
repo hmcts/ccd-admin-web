@@ -23,7 +23,7 @@ RUN yarn install && yarn cache clean
 # ---- Build Image ----
 FROM base as build
 
-RUN yarn sass
+RUN yarn setup
 
 RUN sleep 1 && yarn install && yarn cache clean
 
