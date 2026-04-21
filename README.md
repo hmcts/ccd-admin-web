@@ -53,8 +53,16 @@ To be able to log on and use the application you have to have a IDAM user with `
 
 **Note:** You can also start the application by executing:
 ```bash
-node server.js
+yarn tsx server.js
 ```
+
+### Developing
+
+To run both the setup and application in watch mode (where it will pick up changes and restart in realtime) then run:
+```bash
+yarn develop
+```
+
 
 ### Accessing the service
 
