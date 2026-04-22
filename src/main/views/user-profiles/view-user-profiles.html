@@ -6,6 +6,13 @@
   User Profiles
 {% endblock %}
 
+{% block head %}
+  {{super()}}
+  <script type="text/javascript">
+  // var dataItemsPresent = {{dataItems is defined and dataItems.length > 0}};
+  </script>
+{% endblock %}
+
 {% block container %}
 <div class="padding">
   {{ successBanner(success) }}
@@ -28,7 +35,7 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      {% if dataItems.length == 0 %}
+      {% if dataItems is not defined or dataItems.length == 0 %}
         <tr class="govuk-table__row">
           <td class="govuk-table__cell"></td>
           <td class="govuk-table__cell"></td>

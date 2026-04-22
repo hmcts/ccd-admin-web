@@ -22,6 +22,11 @@
             <li>{{ error }}</li>
           {% endif %}
           <li>{{ error.response.text if error.response else error.text }}</li>
+          <li>
+            <a href="/#" class="govuk-button" data-module="govuk-button">
+              Return to home page
+            </a>
+          </li>
         </ul>
       </div>
     </div>
