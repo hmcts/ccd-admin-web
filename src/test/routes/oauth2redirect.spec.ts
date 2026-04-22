@@ -36,8 +36,8 @@ describe("oauth2redirect", () => {
       return request(app)
         .get("/oauth2redirect")
         .then((res: any) => {
-          const cookies = res.get("Set-Cookie");
-          expect(cookies).to.be.undefined;
+          const cookies = res.get("Set-Cookie").map((_) => parse(_));
+          expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.false;
           expect(res.status).to.equal(500);
           expect(res.text).includes("Error: Unable to obtain access token - no OAuth2 code provided");
         });

@@ -6,7 +6,7 @@ export const COOKIE_ACCESS_TOKEN = "accessToken";
 const router = express.Router();
 
 export const oauth2redirect = (req: any, res: any, next: any) => {
-  if (req.query.code) {
+  if (req.query.code && req.query.code !== "") {
     // On successfully obtaining a token, the redirect should go back to ourselves.
     // Note: This *must not* include any query string.
     req.query.redirect_uri = `${req.protocol}://${req.get("host")}${req.originalUrl}`

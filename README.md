@@ -63,6 +63,17 @@ To run both the setup and application in watch mode (where it will pick up chang
 yarn develop
 ```
 
+### Managing dependencies:
+To update the versions in package.json use:
+```bash
+$ yarn upgrade-interactive
+```
+and choose the appropriate version for each dependency.
+
+The jenkins pipeline will check dependency versions for vulnerabilities. If you wish to suppress the issues that the pipeline is looking for you can populate the "yarn-audit-known-issues" file by running:
+```bash
+$ yarn suppress-cve
+```
 
 ### Accessing the service
 
