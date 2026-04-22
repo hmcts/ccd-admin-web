@@ -1,3 +1,4 @@
+import { Logger } from "@hmcts/nodejs-logging";
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
@@ -6,6 +7,8 @@ import mock from "nock";
 import mockSession from "mock-session";
 import request from "supertest-session";
 import sinon from "sinon";
+
+const logger = Logger.getLogger("appTest");
 
 describe("Definitions page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
@@ -81,6 +84,7 @@ describe("Definitions page", () => {
         .get("/definitions")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
+          logger.info(res.text);
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Type1,Type2");
           expect(res.text).to.contain("Draft definition");
