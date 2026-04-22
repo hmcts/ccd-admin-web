@@ -1,3 +1,4 @@
+import { Logger } from "@hmcts/nodejs-logging";
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
@@ -6,6 +7,8 @@ import mock from "nock";
 import mockSession from "mock-session";
 import request from "supertest-session";
 import sinon from "sinon";
+
+const logger = Logger.getLogger("userProfiles.spec");
 
 describe("User profiles page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
@@ -67,6 +70,7 @@ describe("User profiles page", () => {
         .get("/userprofiles")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
+          logger.error(res.text);
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");
           expect(res.text).to.contain("Jurisdiction 3");
@@ -129,6 +133,7 @@ describe("User profiles page", () => {
         .get("/userprofiles")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
+          logger.error(res.text);
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");
           expect(res.text).to.contain("Jurisdiction 3");
@@ -185,6 +190,7 @@ describe("User profiles page", () => {
           jurisdictionName: "Mike",
         })
         .then((res) => {
+          logger.error(res.text);
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");
           expect(res.text).to.contain("Jurisdiction 3");

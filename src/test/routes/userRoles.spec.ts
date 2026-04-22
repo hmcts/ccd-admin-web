@@ -1,3 +1,4 @@
+import { Logger } from "@hmcts/nodejs-logging";
 import { app } from "../../main/app";
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
@@ -7,6 +8,8 @@ import { JSDOM } from "jsdom";
 import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import mock from "nock";
 import request from "supertest";
+
+const logger = Logger.getLogger("userRoles.spec");
 
 const CCD_IMPORT_ROLE = "ccd-import";
 
@@ -122,6 +125,7 @@ describe("on Get /user-roles-list", () => {
       .get("/user-roles-list")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
+        logger.error(res.text);
         expect(res.statusCode).to.equal(200);
         expect(res.text).to.contain("Create User Role");
       });
@@ -183,6 +187,7 @@ describe("on Get /user-roles", () => {
       .get("/user-roles")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
+        logger.error(res.text);
         expect(res.statusCode).to.equal(200);
         expect(res.text).to.contain("Create User Role");
       });
