@@ -1,5 +1,5 @@
 import config from "config";
-import appInsights from "applicationinsights";
+import { setup, defaultClient, start } from "applicationinsights";
 
 const enabled = config.get<boolean>("appInsights.enabled");
 
@@ -18,7 +18,7 @@ const enableAppInsights = () => {
   if (enabled) {
     const appInsightsKey = config.get<string>("secrets.ccd.AppInsightsInstrumentationKey");
     const appInsightsRoleName = config.get<string>("appInsights.roleName");
-    appInsights.setup(appInsightsKey)
+    setup(appInsightsKey)
       .setAutoDependencyCorrelation(true)
       .setAutoCollectRequests(true)
       .setAutoCollectPerformance(true, null)
@@ -27,9 +27,9 @@ const enableAppInsights = () => {
       .setAutoCollectConsole(true)
       .setUseDiskRetryCaching(true)
       .setSendLiveMetrics(true);
-    appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = appInsightsRoleName;
-    appInsights.defaultClient.addTelemetryProcessor(fineGrainedSampling);
-    appInsights.start();
+    defaultClient.context.tags[defaultClient.context.keys.cloudRole] = appInsightsRoleName;
+    defaultClient.addTelemetryProcessor(fineGrainedSampling);
+    start();
   }
 };
 
