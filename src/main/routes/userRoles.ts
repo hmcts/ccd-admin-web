@@ -6,6 +6,7 @@ import { sanitize } from "../util/sanitize";
 import { saveUserRole } from "../service/update-user-role";
 import { UserRole } from "../domain/userrole";
 import { Validator } from "../validators/validate";
+import path from "path";
 
 const router = express.Router();
 const errorPage = "error";
@@ -47,7 +48,7 @@ function fetchUserRolesIfAuthorizedOrError(req, res, next, responseContent) {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     fetch(req, url).then((response) => {
         responseContent.userroles = JSON.parse(sanitize(response));
-        res.render("user-roles/view-user-roles", responseContent);
+        res.render(path.join("user-roles", "view-user-roles"), responseContent);
     })
     .catch((error) => {
       // Call the next middleware, which is the error handler
@@ -76,7 +77,7 @@ router.get("/create-user-role-form", (req: any, res: any, next: any) => {
       responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
       responseContent.update = req.session.error.errorBy === "update";
     }
-    res.render("user-roles/manage-user-role-form", responseContent);
+    res.render(path.join("user-roles", "manage-user-role-form"), responseContent);
   } else {
     res.render(errorPage, error_unauthorized_role(req));
   }
@@ -178,7 +179,7 @@ function processResponse(req, res) {
   if (req.session.error) {
     responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
   }
-  res.render("user-roles/manage-user-role-form", responseContent);
+  res.render(path.join("user-roles", "manage-user-role-form"), responseContent);
 }
 
 export default router;

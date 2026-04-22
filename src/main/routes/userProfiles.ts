@@ -2,11 +2,12 @@ import config from "config";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { render } from "../util/render";
 import router from "./home";
+import path from "path";
 import { validate } from "../validators/validateJurisdiction";
 
 const errorPage = "error";
 const url = config.get<string>("adminWeb.userprofiles_url");
-const userProfilesPage = "user-profiles/view-user-profiles";
+const userProfilesPage = path.join("user-profiles", "view-user-profiles");
 
 /* POST */
 router.post("/userprofiles", validate, (req: any, res: any, next: any) => {

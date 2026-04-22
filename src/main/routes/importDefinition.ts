@@ -5,7 +5,9 @@ import { fetch } from "../service/get-service";
 import multer from "multer";
 import { uploadFile } from "../service/import-service";
 import { sanitize } from "../util/sanitize";
+import path from "path";
 
+const importDefinitionPage = path.join("definition", "importDefinition");
 const errorPage = "error";
 const router = express.Router();
 const storage = multer.memoryStorage();
@@ -46,7 +48,7 @@ router.post("/import", (req: any, res: any, next: any) => {
             fetch(req, url).then((data) => {
               responseContent.importAudits = JSON.parse(sanitize(data));
               responseContent.response = response;
-              res.render("definition/importDefinition", responseContent);
+              res.render(importDefinitionPage, responseContent);
             })
               .catch((error) => {
                 // Call the next middleware, which is the error handler
@@ -64,7 +66,7 @@ router.post("/import", (req: any, res: any, next: any) => {
             responseContent.user = sanitize(JSON.stringify(req.authentication.user));
             responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
             delete req.session.error;
-            res.render("definition/importDefinition", responseContent);
+            res.render(importDefinitionPage, responseContent);
           });
       }
     });
@@ -89,7 +91,7 @@ router.get("/import", (req: any, res: any, next: any) => {
         responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
         delete req.session.error;
       }
-      res.render("definition/importDefinition", responseContent);
+      res.render(importDefinitionPage, responseContent);
     })
       .catch((error) => {
         // Call the next middleware, which is the error handler

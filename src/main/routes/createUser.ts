@@ -6,6 +6,7 @@ import router from "./home";
 import { sanitize } from "../util/sanitize";
 import { UserProfile } from "../domain/userprofile";
 import { validate } from "../validators/validateUserProfile";
+import path from "path";
 
 const errorPage = "error";
 const url = config.get<string>("adminWeb.jurisdiction_url");
@@ -28,7 +29,7 @@ router.get("/createuser", (req: any, res: any, next: any) => {
         responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
         delete req.session.error;
       }
-      res.render("user-profiles/manage-user-profile-form", responseContent);
+      res.render(path.join("user-profiles", "manage-user-profile-form"), responseContent);
     })
       .catch((error) => {
         // Call the next middleware, which is the error handler
