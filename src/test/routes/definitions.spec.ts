@@ -1,4 +1,3 @@
-import { Logger } from "@hmcts/nodejs-logging";
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
@@ -7,8 +6,6 @@ import mock from "nock";
 import mockSession from "mock-session";
 import request from "supertest-session";
 import sinon from "sinon";
-
-const logger = Logger.getLogger("definitions.spec");
 
 describe("Definitions page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
@@ -83,8 +80,8 @@ describe("Definitions page", () => {
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/definitions")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
-        .then((res) => {
-          logger.error(res.text);
+          .then((res) => {
+          console.log(res.text); // eslint-disable-line no-console
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Type1,Type2");
           expect(res.text).to.contain("Draft definition");
@@ -153,7 +150,7 @@ describe("Definitions page", () => {
         .get("/definitions")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
-          logger.error(res.text);
+          console.log(res.text); // eslint-disable-line no-console
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Type1,Type2");
           expect(res.text).to.contain("Draft definition");
@@ -222,7 +219,7 @@ describe("Definitions page", () => {
           jurisdictionName: "TEST",
         })
         .then((res) => {
-          logger.error(res.text);
+          console.log(res.text); // eslint-disable-line no-console
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Type1,Type2");
           expect(res.text).to.contain("Draft definition");
