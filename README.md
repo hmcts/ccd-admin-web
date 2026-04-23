@@ -12,7 +12,7 @@ Web application for administration of Case Definition data (initially for import
 ## Getting started
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/en) >= 22.18.0
+- [Node.js](https://nodejs.org/en) >= 24.15.0
 
 ### Environment variables
 
