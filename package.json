@@ -82,7 +82,7 @@
     "@types/mocha": "^10.0.0",
     "@types/sinon-chai": "^3.2.0",
     "ansi-regex": "^6.0.0",
-    "chai": "^6.0.0",
+    "chai": "^4.3.6",
     "chai-as-promised": "^8.0.0",
     "cookie": "^1.1.1",
     "eslint": "^4.19.1",
