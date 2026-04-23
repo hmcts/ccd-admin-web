@@ -1,13 +1,13 @@
 import _fetch from "node-fetch";
 
-export const fetch = (...args) => {
-  return _fetch(...args)
+export const fetch = (url: string, options?: any): Promise<any> => {
+  return _fetch(url, options)
     .then((res) => {
 
       if (res.status >= 200 && res.status < 300) {
           return res;
       }
 
-      return Promise.reject(res);
+      throw res.text();
     });
 };

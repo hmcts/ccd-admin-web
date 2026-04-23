@@ -2,11 +2,11 @@ import { app } from "../../main/app";
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import { get } from "config";
+import config from "config";
 import { JSDOM } from "jsdom";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as mock from "nock";
-import * as request from "supertest";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import mock from "nock";
+import request from "supertest";
 
 const CCD_IMPORT_ROLE = "ccd-import";
 
@@ -20,13 +20,13 @@ describe("on Get /create-user-role-form", () => {
       .get("/create-user-role-form")
       .then((res) => {
         expect(res.statusCode).to.equal(302);
-        expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
       });
   });
 
   it("should respond without populated response when authenticated but not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -43,8 +43,8 @@ describe("on Get /create-user-role-form", () => {
   });
 
   it("should respond with create user roles form and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -71,13 +71,13 @@ describe("on Get /user-roles-list", () => {
       .get("/user-roles-list")
       .then((res) => {
         expect(res.statusCode).to.equal(302);
-        expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
       });
   });
 
   it("should respond without user roles list when authenticated but not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/user-roles")
       .reply(200, [{
@@ -96,17 +96,17 @@ describe("on Get /user-roles-list", () => {
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Create User Role");
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
         // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
-        const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-        expect(menuItem).to.equal("Import Case Definition");
+        const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+        expect(menuItem).to.contain("Import Case Definition");
       });
   });
 
   it("should respond with user roles list page and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/user-roles")
       .reply(200, [{
@@ -138,13 +138,13 @@ describe("on Get /user-roles", () => {
       .get("/user-roles")
       .then((res) => {
         expect(res.statusCode).to.equal(302);
-        expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
       });
   });
 
   it("should not show user roles when authenticated but not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/user-roles")
       .reply(200, [{
@@ -166,8 +166,8 @@ describe("on Get /user-roles", () => {
   });
 
   it("should respond with user roles page and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/user-roles")
       .reply(200, [{
@@ -195,8 +195,8 @@ describe("on POST /createuserrole", () => {
   });
 
   it("should not respond with user roles page or populated response when authenticated but not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .post("")
       .reply(200);
@@ -211,13 +211,14 @@ describe("on POST /createuserrole", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 
   it("should respond with error when role is empty", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .post("")
       .reply(200);
@@ -235,8 +236,8 @@ describe("on POST /createuserrole", () => {
   });
 
   it("should respond with error when classification is empty", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .post("")
       .reply(200);
@@ -255,8 +256,8 @@ describe("on POST /createuserrole", () => {
   });
 
   it("should not respond with create user form due to server error when unauthorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
       .replyWithError({status: 400, rawResponse: "Bad request"});
@@ -271,13 +272,14 @@ describe("on POST /createuserrole", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 
   it("should respond with user roles page and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .post("")
       .reply(200);
@@ -296,8 +298,8 @@ describe("on POST /createuserrole", () => {
   });
 
   it("should respond with create user form due to server error", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
       .replyWithError({status: 400, rawResponse: "Bad request"});
@@ -322,8 +324,8 @@ describe("on POST /updateuserrole", () => {
   });
 
   it("should not respond with user roles page or populated response when authenticated but not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
       .reply(200);
@@ -338,13 +340,14 @@ describe("on POST /updateuserrole", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 
   it("should respond with user roles page and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
       .reply(200);
@@ -363,8 +366,8 @@ describe("on POST /updateuserrole", () => {
   });
 
   it("should respond with error when role is empty", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
       .reply(200);
@@ -379,8 +382,8 @@ describe("on POST /updateuserrole", () => {
   });
 
   it("should respond with error when classification is empty", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
       .reply(200);
@@ -396,8 +399,8 @@ describe("on POST /updateuserrole", () => {
   });
 
   it("should respond with create user form due to server error", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
       .replyWithError({status: 400, rawResponse: "Bad request"});
@@ -412,16 +415,17 @@ describe("on POST /updateuserrole", () => {
       .expect(200)
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 
   it("should respond with create user form due to server error when authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
-    mock("http://localhost:4451/api/user-role")
-      .put("")
-      .replyWithError({status: 400, rawResponse: "Bad request"});
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
+    mock("http://localhost:4451")
+      .put("/api/user-role")
+      .reply(400, {status: 400, rawResponse: "Bad request"});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .post("/updateuserrole")
@@ -430,8 +434,8 @@ describe("on POST /updateuserrole", () => {
         classification: "PUBLIC",
         role: "ccd-admin",
       })
-      .expect(302)
       .then((res) => {
+        expect(res.statusCode).to.equal(302);
         expect(res.headers.location.startsWith("/create-user-role")).to.be.true;
       });
   });
@@ -443,8 +447,8 @@ describe("on POST /updateuserroleform", () => {
   });
 
   it("should not respond with update user form or populated response when authenticated but not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     return request(appTest)
       .post("/updateuserroleform")
@@ -454,13 +458,14 @@ describe("on POST /updateuserroleform", () => {
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("ccd-admin");
         expect(res.text).not.to.contain("PUBLIC");
-        expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+        expect(res.text).to.contain("Unauthorised role");
+        expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
   });
 
   it("should respond with update user form and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .post("/updateuserroleform")
@@ -474,8 +479,8 @@ describe("on POST /updateuserroleform", () => {
   });
 
   it("should redirect with error message when invalid role is passed", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     return request(appTest)
       .post("/updateuserroleform")
@@ -485,8 +490,8 @@ describe("on POST /updateuserroleform", () => {
   });
 
   it("should redirect with error message when current jurisdiction is empty", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     return request(appTest)
       .post("/updateuserroleform")

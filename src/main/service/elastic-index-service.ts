@@ -1,9 +1,9 @@
-import * as config from "config";
+import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
-import * as request from "superagent";
+import request from "superagent";
 
 export function getCaseTypes(req) {
-  const url = config.get("adminWeb.elastic_case_types_url");
+  const url = config.get<string>("adminWeb.elastic_case_types_url");
 
   const headers = {
     Authorization: req.accessToken,
@@ -24,7 +24,7 @@ export function getCaseTypes(req) {
 }
 
 export function createElasticIndex(req) {
-  const url = config.get("adminWeb.elastic_index_url");
+  const url = config.get<string>("adminWeb.elastic_index_url");
   const caseType = req.query.ctid;
 
   const headers = {

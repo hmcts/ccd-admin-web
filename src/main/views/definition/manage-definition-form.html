@@ -1,5 +1,5 @@
-{% extends "layout_template.html" %}
-{% from "../macros/csrf.html" import csrfProtection %}
+{% extends "layout_template.njk" %}
+{% from "../components/csrf.njk" import csrfProtection %}
 {% block page_title %}
   {{ heading }}
 {% endblock %}
@@ -19,7 +19,7 @@
         },
         errorElement : 'div',
         errorElementClass: 'error',
-        errorClass: 'govuk-error-message form-group-error',
+        errorClass: 'govuk-error-message govuk-form-group-error',
         rules: {
           description: {
             required: true
@@ -49,52 +49,32 @@
 {% endblock %}
 
 {% block content %}
-  {% include "menu.html" %}
-  <h2 class="heading-large padding">{{ heading }}</h2>
+  <h1 class="govuk-heading-l">{{ heading }}</h1>
 
   <div class="padding">
-    {% if error %}
-      <div class="error-summary govuk-error-message">
-        {{ error.text }}
-      </div>
+    {% if (error)%}
+        <div class="error-summary govuk-error-message">
+            {{error.text}}
+        </div>
     {% endif %}
 
     <form id="createdefinitionform" name="createdefinitionform" method="POST" action="/createdefinition">
 
       {{ csrfProtection(csrfToken) }}
-        <div class="form-group">
-          <table>
-            <tbody>
-              <tr>
-                <td>
-                  <label class="form-label">Jurisdiction ID:</label>
-                </td>
-                <td id="jurisdictionId">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label class="form-label">Name:</label>
-                </td>
-                <td id="jurisdictionName">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label class="form-label">Description:</label>
-                </td>
-                <td id="jurisdictionDescription">
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <label class="form-label">Definition description</label>
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="jurisdictionId">Jurisdiction ID:</label>
+          <label id="jurisdictionId" class="govuk-label" for="jurisdictionId">---</label>
+          <label class="govuk-label" for="jurisdictionName">Jurisdiction Name:</label>
+          <label id="jurisdictionName" class="govuk-label" for="jurisdictionName">---</label>
+          <label class="govuk-label" for="jurisdictionDescription">Jurisdiction Description:</label>
+          <label id="jurisdictionDescription" class="govuk-label" for="jurisdictionDescription">---</label>
+          <label class="govuk-label" for="description">Definition description</label>
           <input type="hidden" id="casetypes" name="casetypes" value="{{ casetypes }}"/>
           {% if update %}
-            <input type="text" class="form-control" id="description" name="description" value="{{ description }}"
-                   maxlength="100"/><br><br>
+            <input type="text" class="govuk-input" id="description" name="description" value="{{ description }}"
+                   maxlength="100"/><br/><br/>
           {% else %}
-            <input type="text" class="form-control" id="description" name="description" maxlength="100"/><br><br>
+            <input type="text" class="govuk-input" id="description" name="description" maxlength="100"/><br/><br/>
           {% endif %}
           <!-- Empty data element for now -->
           <input type="hidden" id="data" name="data" value="{&quot;Field 1&quot;: &quot;Value 1&quot;}"/>
@@ -102,9 +82,10 @@
           <input type="hidden" id="version" name="version" value="{{ version }}"/>
           <input type="hidden" id="update" name="update" value="{{ update }}"/>
         </div>
-        <button type="submit" class="button" value="Submit">{{ submitButtonText }}</button>
-        <a href="/definitions" class="button">Cancel</a>
+        <div class="govuk-button-group">
+          <button type="submit" class="govuk-button" data-module="govuk-button">{{submitButtonText}}</button>
+          <a href="/definitions" class="govuk-button govuk-button--warning">Cancel</a>
+        </div>
     </form>
   </div>
-
 {% endblock %}

@@ -1,7 +1,6 @@
-{% extends "layout_template.html" %}
-{% from "../macros/formElements.html" import dropdown %}
-{% from "../macros/formElements.html" import dateMacro %}
-{% from "../macros/csrf.html" import csrfProtection %}
+{% extends "layout_template.njk" %}
+{% from "../components/formElements.njk" import dropdown %}
+{% from "../components/csrf.njk" import csrfProtection %}
 {% block page_title %}
   {{ heading }}
 {% endblock %}
@@ -9,9 +8,9 @@
   {{super()}}
 
   <script type="text/javascript">
-  var jurisdictionString = {{jurisdictions |safe }}
+  var jurisdictionString = {{jurisdictions | safe }}
   var jurisdictionLookups = $.parseJSON(jurisdictionString);
-  var idamId = "{{idamId |safe }}"
+  var idamId = "{{idamId | safe }}"
 
   var updateCaseTypeBasedOn = function(index) {
 
@@ -51,7 +50,7 @@
             },
             errorElement : 'div',
             errorElementClass: 'error',
-            errorClass: 'govuk-error-message form-group-error',
+            errorClass: 'govuk-error-message govuk-form-group-error',
             rules: {
                 idamId: {
                     required: true,
@@ -113,11 +112,9 @@
 
 </script>
 {%endblock%}
- {% block content %}
- {% include "menu.html" %}
-<h2 class="heading-large padding">{{ heading }}</h2>
-
-<div class="padding">
+{% block content %}
+  <h1 class="govuk-heading-l">{{ heading }}</h1>
+  <div class="padding">
     {% if (error)%}
         <div class="error-summary govuk-error-message">
             {{error.text}}
@@ -127,28 +124,25 @@
     <form id="createuserform" name="createuserform" method="POST" action="/createuser">
 
       {{ csrfProtection(csrfToken) }}
-        <div class="form-group">
-          <input class="form-control" id="currentjurisdiction" name="currentjurisdiction" type="hidden" value="{{currentjurisdiction}}">
-            <label class="form-label" for="first-name-2">User IdAM ID</label>
-            {% if idamId%}
-                <label class="form-label-bold" >{{idamId}}</label><br><br>
-                 <input class="form-control" id="idamId" name="idamId" type="hidden" value="{{idamId}}"/>
-                 <input class="form-control" id="update" name="update" type="hidden" value="{{update}}"/>
-
-            {% else %}
-                <input class="form-control" id="idamId" name="idamId" type="text"/><br><br>
-            {% endif%}
-            <input type="hidden" id="jurisdiction" name="jurisdiction" value="{{jurisdiction | safe}}"/>
-            <label class="form-label" >Work basket default jurisdiction</label>
-            {{  dropdown("jurisdictionDropdown") }}
-            <label class="form-label">Work basket default case type</label>
-            {{   dropdown("caseTypeDropdown") }}
-            <label class="form-label">Work basket default state</label>
-            {{  dropdown("stateDropdown")}}
+        <div class="govuk-form-group">
+          <input class="govuk-input" id="currentjurisdiction" name="currentjurisdiction" type="hidden" value="{{currentjurisdiction}}">
+          <label class="govuk-label" for="first-name-2">User IdAM ID</label>
+          <div class="govuk-form-group">
+          {% if idamId%}
+              <label class="govuk-label" for="idamId">{{idamId}}</label>
+              <input class="govuk-input" id="idamId" name="idamId" type="hidden" value="{{idamId}}"/>
+              <input class="govuk-input" id="update" name="update" type="hidden" value="{{update}}"/>
+          {% else %}
+              <input class="govuk-input govuk-input--width-20" id="idamId" name="idamId" type="text"/>
+          {% endif%}
+          </div>
+          <input type="hidden" id="jurisdiction" name="jurisdiction" value="{{jurisdiction | safe}}"/>
+          {{  dropdown("jurisdictionDropdown", "Work basket default jurisdiction") }}
+          {{  dropdown("caseTypeDropdown", "Work basket default case type") }}
+          {{  dropdown("stateDropdown", "Work basket default state")}}
         </div>
-        <button type="submit" class="button" value="Submit">{{submitButtonText}}</button>
-         <a href="/userprofiles" class="button">Cancel</a>
+        <button type="submit" class="govuk-button" data-module="govuk-button" value="Submit">{{submitButtonText}}</button>
+        <a href="/userprofiles" class="govuk-button govuk-button--warning" data-module="govuk-button">Cancel</a>
     </form>
-    </div>
-
-  {% endblock %}
+  </div>
+{% endblock %}

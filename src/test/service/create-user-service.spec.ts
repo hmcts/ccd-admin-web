@@ -1,12 +1,12 @@
-import * as chai from "chai";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
-import * as nock from "nock";
+import { expect, use } from "chai";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
+import nock from "nock";
 import { UserProfile } from "../../main/domain/userprofile";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("test create user profile service", () => {
 
@@ -29,7 +29,7 @@ describe("test create user profile service", () => {
     config.get.withArgs("adminWeb.saveuserprofiles_url").returns(createUserProfileURL);
 
     createUserProfile = proxyquire("../../main/service/create-user-service", {
-      config,
+      "config": config,
     }).createUserProfile;
   });
 
@@ -101,7 +101,7 @@ describe("test update user profile service", () => {
     config.get.withArgs("adminWeb.userprofiles_url").returns(updateUserProfileURL);
 
     createUserProfile = proxyquire("../../main/service/create-user-service", {
-      config,
+      "config": config,
     }).createUserProfile;
   });
 

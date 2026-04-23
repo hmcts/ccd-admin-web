@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { getDictionary } from "../service/welsh-dictionary-service";
 import { sanitize } from "../util/sanitize";
@@ -8,7 +8,7 @@ const welshDictionary = "welshDictionary";
 const router = express.Router();
 const dictionaryUrl = "/dictionary";
 
-router.get(`/${welshDictionary}`, (req, res, next) => {
+router.get(`/${welshDictionary}`, (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageWelshTranslation) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
@@ -22,7 +22,7 @@ router.get(`/${welshDictionary}`, (req, res, next) => {
 });
 
 // retrieve latest welsh dictionary and convert to csv
-router.get(dictionaryUrl, (req, res, next) => {
+router.get(dictionaryUrl, (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageWelshTranslation) {
     getDictionary(req).then((response) => {
       const data = JSON.parse(response.text).translations;
@@ -40,7 +40,7 @@ router.get(dictionaryUrl, (req, res, next) => {
 });
 
 export function flattenJsonResponse(res: object) {
-  const flat = [];
+  const flat: string [] = [];
   Object.keys(res).forEach((k) => {
     let str = wrapSpecialCharacters(k);
     const v = res[k];
@@ -48,18 +48,19 @@ export function flattenJsonResponse(res: object) {
     str = str + "," + (v.yesOrNo ? v.yesOrNo : "");
     str = str + "," + (v.yes ? wrapSpecialCharacters(v.yes) : "");
     str = str + "," + (v.no ? wrapSpecialCharacters(v.no) : "");
-    flat.push(str.replace(/[,]{1,4}$/g, "")); // remove trailing commas
+    const commaRegex = /,{1,4}$/g;
+    flat.push(str.replaceAll(commaRegex, "")); // remove trailing commas
   });
   return flat.join("\r\n");
 }
 
 function wrapSpecialCharacters(text: string): string {
   // Return if no special characters
-  if (typeof text !== "string" || !text.match(/[,\n\"]/g)) {
+  const specialCharsRegex = /[,\n"]/g;
+  if (typeof text !== "string" || !specialCharsRegex.test(text)) {
     return text;
   }
-
-  return "\"" + text.replace(/[\"]/g, "\"\"") + "\"";
+  return "\"" + text.replaceAll("\"", "\"\"") + "\"";
 }
 
 export default router;

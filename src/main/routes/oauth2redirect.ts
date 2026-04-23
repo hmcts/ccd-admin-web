@@ -1,12 +1,12 @@
-import * as express from "express";
-import * as config from "config";
+import express from "express";
+import config from "config";
 import { accessTokenRequest } from "../oauth2/access-token-request";
 
 export const COOKIE_ACCESS_TOKEN = "accessToken";
 const router = express.Router();
 
-export const oauth2redirect = (req, res, next) => {
-  if (req.query.code) {
+export const oauth2redirect = (req: any, res: any, next: any) => {
+  if (req.query.code && req.query.code !== "") {
     // On successfully obtaining a token, the redirect should go back to ourselves.
     // Note: This *must not* include any query string.
     req.query.redirect_uri = `${req.protocol}://${req.get("host")}${req.originalUrl}`
@@ -17,7 +17,7 @@ export const oauth2redirect = (req, res, next) => {
           {
             httpOnly: true,
             maxAge: result.expires_in * 1000,
-            secure : config.get("security.secure_auth_cookie_enabled"),
+            secure : config.get<boolean>("security.secure_auth_cookie_enabled"),
           });
         // Redirect to / (index)
         res.redirect(302, "/");

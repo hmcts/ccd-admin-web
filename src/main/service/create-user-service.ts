@@ -1,14 +1,14 @@
-import * as request from "superagent";
-import * as config from "config";
+import request from "superagent";
+import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 import { UserProfile } from "domain/userprofile";
 
 export function createUserProfile(req, userprofile: UserProfile) {
     const logger = Logger.getLogger(__filename);
-    let url = config.get("adminWeb.saveuserprofiles_url");
+    let url = config.get<string>("adminWeb.saveuserprofiles_url");
 
     if (req.body.update) {
-        url = config.get("adminWeb.userprofiles_url");
+        url = config.get<string>("adminWeb.userprofiles_url");
     }
 
     const headers = {

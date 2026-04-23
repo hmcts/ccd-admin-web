@@ -1,10 +1,10 @@
 import { app } from "../../main/app";
 import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
-import * as mock from "nock";
-import * as request from "supertest";
-import { get } from "config";
+import mock from "nock";
+import request from "supertest";
+import config from "config";
 
 describe("Jurisdiction page", () => {
   beforeEach(() => {
@@ -19,13 +19,13 @@ describe("Jurisdiction page", () => {
         .get("/jurisdiction")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 
     it("should return jurisdiction list", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/data/jurisdictions")
