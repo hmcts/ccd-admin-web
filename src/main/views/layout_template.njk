@@ -8,6 +8,7 @@
   <link rel="stylesheet" media="all" href="/stylesheets/app.css"/>
   <script type="text/javascript" src="/js/jquery.min.js"></script>
   <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+  <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
 {% endblock %}
 
 {% block skipLink %}
