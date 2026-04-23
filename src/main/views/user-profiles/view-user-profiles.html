@@ -14,7 +14,6 @@
 {% endblock %}
 
 {% block content %}
-  <p>Placeholder</p>
   {{ successBanner(success) }}
   {% if error %}
     <div class="error-summary govuk-error-message">
@@ -70,64 +69,4 @@
     </tbody>
   </table>
   {% endif %}
-{% endblock %}
-
-{% block container %}
-<div class="padding">
-  {{ successBanner(success) }}
-  {% if error %}
-    <div class="error-summary govuk-error-message">
-      {{error.text}}
-    </div>
-  {% endif %}
-  {% if adminWebAuthorization and adminWebAuthorization.canManageUserProfile %}
-    <a href="/createuser" class="govuk-button rightAlign" data-module="govuk-button">Create User</a>
-
-  <table class="govuk-table">
-    <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header">User IdAM ID</th>
-        <th scope="col" class="govuk-table__header">Work basket default jurisdiction</th>
-        <th scope="col" class="govuk-table__header">Work basket default case type</th>
-        <th scope="col" class="govuk-table__header">Work basket default state</th>
-        <th scope="col" class="govuk-table__header">Action</th>
-      </tr>
-    </thead>
-    <tbody class="govuk-table__body">
-      {% if dataItems is not defined or dataItems.length == 0 %}
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell"></td>
-          <td class="govuk-table__cell"></td>
-          <th scope="row" class="govuk-table__header">No User Profiles found</th>
-          <td class="govuk-table__cell"></td>
-          <td class="govuk-table__cell"></td>
-        </tr>
-      {% else %}
-        {% for userprofile in dataItems %}
-          <tr class="govuk-table__row">
-            <th scope="row" class="govuk-table__header">{{userprofile.id}}</th>
-            <td class="govuk-table__cell">{{userprofile.work_basket_default_jurisdiction}}</td>
-            <td class="govuk-table__cell">{{userprofile.work_basket_default_case_type}}</td>
-            <td class="govuk-table__cell">{{userprofile.work_basket_default_state}}</td>
-            <td class="govuk-table__cell">
-              <form id="userprofile_{{loop.index}}" method="post" action="/updateuser" >
-                {{ csrfProtection(csrfToken) }}
-                <input type="hidden" name="idamId" value="{{userprofile.id}}" />
-                <input type="hidden" name="currentjurisdiction" value="{{currentjurisdiction}}" />
-                <input type="hidden" name="jurisdiction" value="{{userprofile.work_basket_default_jurisdiction}}" />
-                <input type="hidden" name="casetype" value="{{userprofile.work_basket_default_case_type}}" />
-                <input type="hidden" name="state" value="{{userprofile.work_basket_default_state}}" />
-                <div class="govuk-button-group">
-                  <button type="submit" class="govuk-button" data-module="govuk-button">Update</button>
-                  <a href="/deleteitem?item=user&idamId={{userprofile.id | urlencode}}" class="govuk-button govuk-button--warning">Delete</a>
-                </div>
-              </form>
-            </td>
-          </tr>
-        {% endfor %}
-      {% endif %}
-    </tbody>
-  </table>
-  {% endif %}
-</div>
 {% endblock %}

@@ -13,11 +13,6 @@
 {% endblock %}
 
 {% block content %}
-  <p>Placeholder</p>
-{% endblock %}
-
-{% block container %}
-<div class="padding">
   {{ successBanner(success) }}
   {% if error %}
     <div class="error-summary govuk-error-message">
@@ -71,5 +66,4 @@
       {% endif %}
     </tbody>
   </table>
-</div>
 {% endblock %}
