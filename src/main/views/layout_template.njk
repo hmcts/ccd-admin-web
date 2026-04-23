@@ -8,15 +8,10 @@
   <link rel="stylesheet" media="all" href="/stylesheets/app.css"/>
   <script type="text/javascript" src="/js/jquery.min.js"></script>
   <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
-  <input id="currentUser" type="hidden" value="{{ user }}"/>
-  <script>
-    if (document.body.className) {
-      document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
-    }
-  </script>
 {% endblock %}
 
 {% block skipLink %}
+<input id="currentUser" type="hidden" value="{{ user }}"/>
 <a class="govuk-service-navigation__link" href="/logout">
   <button class="govuk-button govuk-button--warning logout" data-module="govuk-button">
     Logout
