@@ -76,6 +76,7 @@ describe("oauth2redirect", () => {
       }).oauth2redirect;
     });
 
+    // TODO : disabling as it isn't working as expected in the test environment
     it.skip("should set an accessToken cookie with the 'secure' flag enabled", (done) => {
       config.get.withArgs("security.secure_auth_cookie_enabled").returns(true);
 

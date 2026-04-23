@@ -48,17 +48,19 @@ export function flattenJsonResponse(res: object) {
     str = str + "," + (v.yesOrNo ? v.yesOrNo : "");
     str = str + "," + (v.yes ? wrapSpecialCharacters(v.yes) : "");
     str = str + "," + (v.no ? wrapSpecialCharacters(v.no) : "");
-    flat.push(str.replace(/[,]{1,4}$/g, "")); // remove trailing commas
+    const commaRegex = /,{1,4}$/g;
+    flat.push(str.replaceAll(commaRegex, "")); // remove trailing commas
   });
   return flat.join("\r\n");
 }
 
 function wrapSpecialCharacters(text: string): string {
   // Return if no special characters
-  if (typeof text !== "string" || !text.match(/[,\n\"]/g)) { // eslint-disable-line no-useless-escape
+  const specialCharsRegex = /[,\n"]/g;
+  if (typeof text !== "string" || !specialCharsRegex.test(text)) {
     return text;
   }
-  return "\"" + text.replace(/[\"]/g, "\"\"") + "\""; // eslint-disable-line no-useless-escape
+  return "\"" + text.replaceAll("\"", "\"\"") + "\"";
 }
 
 export default router;

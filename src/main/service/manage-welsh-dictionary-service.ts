@@ -14,7 +14,7 @@ export function buildTranslationsJson(data) {
 
 export function rowToTranslationJson(element) {
   let translation = "";
-  if (!element || !element[0] || !JSON.stringify(element[0])) {
+  if (!element?.[0] || !JSON.stringify(element[0])) {
     return "";
   }
   translation += JSON.stringify(element[0]) + ":{";

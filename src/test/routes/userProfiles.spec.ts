@@ -67,7 +67,6 @@ describe("User profiles page", () => {
         .get("/userprofiles")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
-          console.log(res.text); // eslint-disable-line no-console
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");
           expect(res.text).to.contain("Jurisdiction 3");
@@ -130,7 +129,6 @@ describe("User profiles page", () => {
         .get("/userprofiles")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
-          console.log(res.text); // eslint-disable-line no-console
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");
           expect(res.text).to.contain("Jurisdiction 3");
@@ -187,7 +185,6 @@ describe("User profiles page", () => {
           jurisdictionName: "Mike",
         })
         .then((res) => {
-          console.log(res.text); // eslint-disable-line no-console
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Case Type 3");
           expect(res.text).to.contain("Jurisdiction 3");

@@ -81,7 +81,6 @@ describe("Definitions page", () => {
         .get("/definitions")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
           .then((res) => {
-          console.log(res.text); // eslint-disable-line no-console
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Type1,Type2");
           expect(res.text).to.contain("Draft definition");
@@ -150,7 +149,6 @@ describe("Definitions page", () => {
         .get("/definitions")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
-          console.log(res.text); // eslint-disable-line no-console
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Type1,Type2");
           expect(res.text).to.contain("Draft definition");
@@ -219,7 +217,6 @@ describe("Definitions page", () => {
           jurisdictionName: "TEST",
         })
         .then((res) => {
-          console.log(res.text); // eslint-disable-line no-console
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Type1,Type2");
           expect(res.text).to.contain("Draft definition");

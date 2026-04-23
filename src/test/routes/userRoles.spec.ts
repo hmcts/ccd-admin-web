@@ -122,7 +122,6 @@ describe("on Get /user-roles-list", () => {
       .get("/user-roles-list")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
-        console.log(res.text); // eslint-disable-line no-console
         expect(res.statusCode).to.equal(200);
         expect(res.text).to.contain("Create User Role");
       });
@@ -184,7 +183,6 @@ describe("on Get /user-roles", () => {
       .get("/user-roles")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
-        console.log(res.text); // eslint-disable-line no-console
         expect(res.statusCode).to.equal(200);
         expect(res.text).to.contain("Create User Role");
       });
