@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import express from "express";
 import expressNunjucks from "express-nunjucks";
-import path from "path";
+import path from "node:path";
 import favicon from "serve-favicon";
 import { importAll } from "./import-all/index";
 import cookieSession from "cookie-session";
@@ -14,10 +14,6 @@ appTest.locals.ENV = env;
 
 // Session
 appTest.set("trust proxy", 1); // trust first proxy
-appTest.use(cookieSession({
-  keys: ["key1", "key2"],
-  name: "session",
-}));
 
 // setup logging of HTTP requests
 appTest.use(Express.accessLogger());
@@ -37,6 +33,12 @@ appTest.use("/js/jquery.validate.min.js", express.static("node_modules/jquery-va
 appTest.use("/js/govuk-frontend.min.js", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js"));
 appTest.use("/stylesheets/govuk-frontend.min.css", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css"));
 appTest.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
+
+appTest.use(cookieSession({
+  keys: ["key1", "key2"],
+  name: "session",
+}));
+
 appTest.use(bodyParser.json());
 appTest.use(bodyParser.urlencoded({ extended: false }));
 appTest.use(cookieParser());

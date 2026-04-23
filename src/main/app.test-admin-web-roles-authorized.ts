@@ -3,7 +3,7 @@ import { json, urlencoded } from "body-parser";
 import cookieParser from "cookie-parser";
 import express from "express";
 import expressNunjucks from "express-nunjucks";
-import path from "path";
+import path from "node:path";
 import favicon from "serve-favicon";
 import { importAll } from "./import-all/index";
 import cookieSession from "cookie-session";
@@ -15,10 +15,7 @@ appTestWithAuthorizedAdminWebRoles.locals.ENV = env;
 
 // Session
 appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy
-appTestWithAuthorizedAdminWebRoles.use(cookieSession({
-  keys: ["key1", "key2"],
-  name: "session",
-}));
+
 // setup logging of HTTP requests
 appTestWithAuthorizedAdminWebRoles.use(Express.accessLogger());
 
@@ -37,6 +34,12 @@ appTestWithAuthorizedAdminWebRoles.use("/js/jquery.validate.min.js", express.sta
 appTestWithAuthorizedAdminWebRoles.use("/js/govuk-frontend.min.js", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js"));
 appTestWithAuthorizedAdminWebRoles.use("/stylesheets/govuk-frontend.min.css", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css"));
 appTestWithAuthorizedAdminWebRoles.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
+
+appTestWithAuthorizedAdminWebRoles.use(cookieSession({
+  keys: ["key1", "key2"],
+  name: "session",
+}));
+
 appTestWithAuthorizedAdminWebRoles.use(json());
 appTestWithAuthorizedAdminWebRoles.use(urlencoded({ extended: false }));
 appTestWithAuthorizedAdminWebRoles.use(cookieParser());

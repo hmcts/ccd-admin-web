@@ -6,7 +6,7 @@ import router from "./home";
 import { sanitize } from "../util/sanitize";
 import { UserProfile } from "../domain/userprofile";
 import { validate } from "../validators/validateUserProfile";
-import path from "path";
+import path from "node:path";
 
 const errorPage = "error";
 const url = config.get<string>("adminWeb.jurisdiction_url");

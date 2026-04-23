@@ -53,14 +53,13 @@
             <div class="govuk-form-group">
               {%if update == true%}
                   <input type="hidden" id="role" name="role" value="{{role}}" />
-                  <label class="govuk-label" >{{role}}</label>
+                  <label class="govuk-label" for="role" >{{role}}</label>
                   <input class="govuk-input" id="update" name="update" type="hidden" value="{{update}}"/>
               {% else %}
                   <input type="text" class="govuk-input govuk-input--width-20" id="role" name="role" maxlength="100"/>
               {% endif %}
             </div>
-            <label class="govuk-label">Security Classification</label>
-            {{serverListChosenValue(securityClassifications, "classification", chosenClassification)}}
+            {{serverListChosenValue(securityClassifications, "classification", chosenClassification, "Security Classification")}}
         </div>
         <div class="govuk-button-group">
           <button type="submit" class="govuk-button" data-module="govuk-button">{{submitButtonText}}</button>

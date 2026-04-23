@@ -1,5 +1,5 @@
 import fs from "fs";
-import path from "path";
+import path from "node:path";
 
 export const importAll = (importPath) => {
   return fs.readdirSync(importPath)

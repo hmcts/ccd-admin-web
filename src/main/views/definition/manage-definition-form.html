@@ -62,13 +62,13 @@
 
       {{ csrfProtection(csrfToken) }}
         <div class="govuk-form-group">
-          <label class="govuk-label">Jurisdiction ID:</label>
-          <label id="jurisdictionId" class="govuk-label">---</label>
-          <label class="govuk-label">Jurisdiction Name:</label>
-          <label id="jurisdictionName" class="govuk-label">---</label>
-          <label class="govuk-label">Jurisdiction Description:</label>
-          <label id="jurisdictionDescription" class="govuk-label">---</label>
-          <label class="govuk-label">Definition description</label>
+          <label class="govuk-label" for="jurisdictionId">Jurisdiction ID:</label>
+          <label id="jurisdictionId" class="govuk-label" for="jurisdictionId">---</label>
+          <label class="govuk-label" for="jurisdictionName">Jurisdiction Name:</label>
+          <label id="jurisdictionName" class="govuk-label" for="jurisdictionName">---</label>
+          <label class="govuk-label" for="jurisdictionDescription">Jurisdiction Description:</label>
+          <label id="jurisdictionDescription" class="govuk-label" for="jurisdictionDescription">---</label>
+          <label class="govuk-label" for="description">Definition description</label>
           <input type="hidden" id="casetypes" name="casetypes" value="{{ casetypes }}"/>
           {% if update %}
             <input type="text" class="govuk-input" id="description" name="description" value="{{ description }}"

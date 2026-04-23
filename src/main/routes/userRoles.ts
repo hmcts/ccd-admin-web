@@ -6,7 +6,7 @@ import { sanitize } from "../util/sanitize";
 import { saveUserRole } from "../service/update-user-role";
 import { UserRole } from "../domain/userrole";
 import { Validator } from "../validators/validate";
-import path from "path";
+import path from "node:path";
 
 const router = express.Router();
 const errorPage = "error";

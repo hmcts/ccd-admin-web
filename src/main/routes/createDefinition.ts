@@ -5,7 +5,7 @@ import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { fetch } from "../service/get-service";
 import router from "./home";
 import { sanitize } from "../util/sanitize";
-import path from "path";
+import path from "node:path";
 
 const errorPage = "error";
 const url = config.get<string>("adminWeb.jurisdiction_url");

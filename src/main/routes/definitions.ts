@@ -1,5 +1,5 @@
 import config from "config";
-import path from "path";
+import path from "node:path";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { render } from "../util/render";
 import router from "./home";

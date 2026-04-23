@@ -5,7 +5,7 @@ import { fetch } from "../service/get-service";
 import multer from "multer";
 import { uploadFile } from "../service/import-service";
 import { sanitize } from "../util/sanitize";
-import path from "path";
+import path from "node:path";
 
 const importDefinitionPage = path.join("definition", "importDefinition");
 const errorPage = "error";

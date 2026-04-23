@@ -51,8 +51,9 @@
 {%- endmacro %}
 
 
-{% macro serverListChosenValue (list , name , chosenValue) -%}
+{% macro serverListChosenValue (list , name , chosenValue, label) -%}
     <div class="govuk-form-group">
+        <label class="govuk-label" for="{{ name }}">{{ label }}</label>
         <select id="{{ name }}" name="{{ name }}" class="govuk-select">
             {% for element in list %}
                 <option value="{{ element.id }}" {% if chosenValue %} {{ "selected" if element.name == chosenValue }} {% else %} {{ "selected" if loop.index == 0 }} {% endif %}>{{ element.name }}</option>

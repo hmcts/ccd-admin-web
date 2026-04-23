@@ -2,7 +2,7 @@ import config from "config";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { render } from "../util/render";
 import router from "./home";
-import path from "path";
+import path from "node:path";
 import { validate } from "../validators/validateJurisdiction";
 
 const errorPage = "error";

@@ -2,7 +2,7 @@
 import { Logger } from "@hmcts/nodejs-logging";
 import fs from "fs";
 import https from "https";
-import path from "path";
+import path from "node:path";
 import { app } from "./app";
 
 const logger = Logger.getLogger("server");
