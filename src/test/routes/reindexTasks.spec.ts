@@ -35,6 +35,17 @@ describe("test route Reindex Tasks", () => {
       startTime: "2025-10-30T14:05:59.102Z",
       status: "FAILED",
     }];
+    const paginatedMockTasks = Array.from({ length: 30 }, (_, index) => ({
+      caseType: `CaseType${index + 1}`,
+      deleteOldIndex: "false",
+      endTime: "2025-10-30T14:10:46.277Z",
+      exceptionMessage: "",
+      indexName: `casetype_cases-${index + 1}`,
+      jurisdiction: "JUR",
+      startTime: `2025-10-30T14:${(index + 1).toString().padStart(2, "0")}:40.448Z`,
+      status: "SUCCESS",
+      whoImported: "user@mail.com",
+    }));
 
     beforeEach(() => {
         mock.cleanAll();
@@ -103,6 +114,76 @@ describe("test route Reindex Tasks", () => {
         expect(getReindexTasksStub).to.have.been.calledTwice;
         expect(getReindexTasksStub.secondCall.args[1]).to.equal("CaseTypeA");
       });
+    });
+
+    it("should render auto refresh toggle and client-side refresh script", async () => {
+      getReindexTasksStub.onFirstCall().resolves(mockTasks);
+      getReindexTasksStub.onSecondCall().resolves(mockTasks);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+
+          const autoRefreshToggle = dom.window.document.querySelector("#autoRefreshToggle");
+          expect(autoRefreshToggle).to.exist;
+
+          const autoRefreshLabel = dom.window.document.querySelector("label[for='autoRefreshToggle']");
+          expect(autoRefreshLabel?.textContent).to.include("Auto Refresh");
+
+          const html = dom.window.document.documentElement.innerHTML;
+          expect(html).to.include("REFRESH_INTERVAL_MS = 30000");
+          expect(html).to.include("reindexAutoRefreshEnabled");
+        });
+    });
+
+    it("should render only first page of tasks and show pagination when tasks exceed page size", async () => {
+      getReindexTasksStub.onFirstCall().resolves(paginatedMockTasks);
+      getReindexTasksStub.onSecondCall().resolves(paginatedMockTasks);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+          const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
+          const tableText = rows.map((row) => row.textContent || "").join(" ");
+
+          expect(rows.length).to.equal(25);
+          expect(tableText).to.include("CaseType30");
+          expect(tableText).to.not.include("CaseType5");
+
+          const pagination = dom.window.document.querySelector(".govuk-pagination");
+          expect(pagination).to.exist;
+
+          const nextLink = dom.window.document.querySelector(".govuk-pagination__next a");
+          expect(nextLink?.getAttribute("href")).to.include("page=2");
+        });
+    });
+
+    it("should render page 2 tasks and keep selected case type in pagination links", async () => {
+      getReindexTasksStub.onFirstCall().resolves(paginatedMockTasks);
+      getReindexTasksStub.onSecondCall().resolves(paginatedMockTasks);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex?caseType=CaseTypeA&page=2")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+          const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
+          const tableText = rows.map((row) => row.textContent || "").join(" ");
+
+          expect(rows.length).to.equal(5);
+          expect(tableText).to.include("CaseType5");
+          expect(tableText).to.not.include("CaseType30");
+
+          const previousLink = dom.window.document.querySelector(".govuk-pagination__prev a");
+          expect(previousLink?.getAttribute("href")).to.equal("/reindex?caseType=CaseTypeA&page=1");
+        });
     });
 
     it("should render an error page when the service throws", async () => {

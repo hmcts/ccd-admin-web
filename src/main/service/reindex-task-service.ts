@@ -4,10 +4,16 @@ import { Logger } from "@hmcts/nodejs-logging";
 
 const logger = Logger.getLogger(__filename);
 
-export function getReindexTasks(req, caseType?: string) {
-  let url = config.get("adminWeb.reindex_tasks_url");
+export function getReindexTasks(req, caseType?: string, page?: number, size?: number) {
+  const url = new URL(config.get("adminWeb.reindex_tasks_url"));
   if (caseType) {
-      url += `?caseType=${encodeURIComponent(caseType)}`;
+    url.searchParams.set("caseType", caseType);
+  }
+  if (typeof page === "number") {
+    url.searchParams.set("page", String(page));
+  }
+  if (typeof size === "number") {
+    url.searchParams.set("size", String(size));
   }
 
   const headers = {
@@ -17,7 +23,7 @@ export function getReindexTasks(req, caseType?: string) {
   };
 
   return request
-  .get(url)
+  .get(url.toString())
   .set(headers)
   .then((res) => {
       logger.info(`Received successful response: ${res.text}`);

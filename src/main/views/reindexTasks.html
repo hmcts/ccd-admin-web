@@ -22,13 +22,19 @@
                     <button type="submit" class="button">Submit</button>
                 </div>
             </form>
+            <div class="form-group">
+                <div class="multiple-choice">
+                    <input id="autoRefreshToggle" name="autoRefreshToggle" type="checkbox">
+                    <label for="autoRefreshToggle">Auto Refresh (every 30 seconds)</label>
+                </div>
+            </div>
 
             {% if error %}
             <div class="error-summary govuk-error-message">
                 {{ error }}
             </div>
             {% endif %}
-            
+
             {% if tasks and tasks.length > 0 %}
             <table class="govuk-table">
                 <thead>
@@ -39,8 +45,10 @@
                     <th>Index Name</th>
                     <th>Start Time</th>
                     <th>End Time</th>
+                    <th>Duration</th>
                     <th>Status</th>
                     <th>Exception Message</th>
+                    <th>Who Imported</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,12 +60,43 @@
                     <td>{{ t.indexName }}</td>
                     <td>{{ t.startTime }}</td>
                     <td>{{ t.endTime or '-' }}</td>
+                    <td>{{ t.duration or '-' }}</td>
                     <td>{{ t.status }}</td>
                     <td>{{ t.exceptionMessage or '-' }}</td>
+                    <td>{{ t.whoImported }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
             </table>
+            {% if pagination and pagination.showPagination %}
+            <nav class="govuk-pagination" role="navigation" aria-label="Pagination">
+                {% if pagination.hasPrevious %}
+                <div class="govuk-pagination__prev">
+                    <a class="govuk-link govuk-pagination__link" href="/reindex?caseType={{ selectedCaseType | urlencode }}&page={{ pagination.previousPage }}" rel="prev">
+                        Previous
+                    </a>
+                </div>
+                {% endif %}
+
+                <ul class="govuk-pagination__list">
+                    {% for pageNumber in pagination.pages %}
+                    <li class="govuk-pagination__item {% if pageNumber == pagination.currentPage %}govuk-pagination__item--current{% endif %}">
+                        <a class="govuk-link govuk-pagination__link" href="/reindex?caseType={{ selectedCaseType | urlencode }}&page={{ pageNumber }}" aria-label="Page {{ pageNumber }}">
+                            {{ pageNumber }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                {% if pagination.hasNext %}
+                <div class="govuk-pagination__next">
+                    <a class="govuk-link govuk-pagination__link" href="/reindex?caseType={{ selectedCaseType | urlencode }}&page={{ pagination.nextPage }}" rel="next">
+                        Next
+                    </a>
+                </div>
+                {% endif %}
+            </nav>
+            {% endif %}
             {% else %}
             <table class="govuk-table">
                 <thead>
@@ -72,4 +111,53 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    (function() {
+        var REFRESH_KEY = "reindexAutoRefreshEnabled";
+        var REFRESH_INTERVAL_MS = 30000;
+        var intervalId = null;
+        var toggle = document.getElementById("autoRefreshToggle");
+
+        if (!toggle) {
+            return;
+        }
+
+        function refreshReindexPage() {
+            var currentQuery = window.location.search || "";
+            window.location.assign("/reindex" + currentQuery);
+        }
+
+        function startAutoRefresh() {
+            if (intervalId) {
+                return;
+            }
+            intervalId = window.setInterval(refreshReindexPage, REFRESH_INTERVAL_MS);
+        }
+
+        function stopAutoRefresh() {
+            if (!intervalId) {
+                return;
+            }
+            window.clearInterval(intervalId);
+            intervalId = null;
+        }
+
+        var isEnabled = window.localStorage.getItem(REFRESH_KEY) === "true";
+        toggle.checked = isEnabled;
+
+        if (isEnabled) {
+            startAutoRefresh();
+        }
+
+        toggle.addEventListener("change", function(event) {
+            var enabled = event.target.checked;
+            window.localStorage.setItem(REFRESH_KEY, enabled ? "true" : "false");
+            if (enabled) {
+                startAutoRefresh();
+            } else {
+                stopAutoRefresh();
+            }
+        });
+    })();
+</script>
 {% endblock %}

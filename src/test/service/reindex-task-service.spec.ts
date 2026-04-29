@@ -62,12 +62,26 @@ describe("Reindex task service", () => {
       const caseType = "CaseTypeA";
 
       nock(definitionStoreHost)
-        .get(`${reindexEndpoint}?caseType=${caseType}`)
+        .get(reindexEndpoint)
+        .query({ caseType })
         .reply(200, [expectedResult[0]]);
 
       const result = await getReindexTasks(req, caseType);
       expect(result.length).to.equal(1);
       expect(result[0].caseType).to.equal(caseType);
+    });
+
+    it("should pass pagination parameters when provided", async () => {
+      const caseType = "CaseTypeA";
+
+      nock(definitionStoreHost)
+        .get(reindexEndpoint)
+        .query({ caseType, page: 1, size: 25 })
+        .reply(200, { content: [expectedResult[0]], totalElements: 1, totalPages: 1, number: 1 });
+
+      const result = await getReindexTasks(req, caseType, 1, 25);
+      expect(result.content.length).to.equal(1);
+      expect(result.content[0].caseType).to.equal(caseType);
     });
   });
 
