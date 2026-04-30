@@ -227,8 +227,10 @@ hr {
 .govuk-pagination {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   margin-top: 15px;
+  width: 100%;
 }
 
 .govuk-pagination__list {
