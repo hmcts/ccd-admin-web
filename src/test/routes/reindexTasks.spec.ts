@@ -46,6 +46,17 @@ describe("test route Reindex Tasks", () => {
       status: "SUCCESS",
       whoImported: "user@mail.com",
     }));
+    const manyPaginatedMockTasks = Array.from({ length: 350 }, (_, index) => ({
+      caseType: `CaseType${index + 1}`,
+      deleteOldIndex: "false",
+      endTime: "2025-10-30T14:10:46.277Z",
+      exceptionMessage: "",
+      indexName: `casetype_cases-${index + 1}`,
+      jurisdiction: "JUR",
+      startTime: `2025-10-29T${Math.floor(index / 60).toString().padStart(2, "0")}:${(index % 60).toString().padStart(2, "0")}:40.448Z`,
+      status: "SUCCESS",
+      whoImported: "user@mail.com",
+    }));
 
     beforeEach(() => {
         mock.cleanAll();
@@ -183,6 +194,26 @@ describe("test route Reindex Tasks", () => {
 
           const previousLink = dom.window.document.querySelector(".govuk-pagination__prev a");
           expect(previousLink?.getAttribute("href")).to.equal("/reindex?caseType=CaseTypeA&page=1");
+        });
+    });
+
+    it("should render ellipsis in pagination when there are many pages", async () => {
+      getReindexTasksStub.onFirstCall().resolves(manyPaginatedMockTasks);
+      getReindexTasksStub.onSecondCall().resolves(manyPaginatedMockTasks);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+          const paginationText = dom.window.document.querySelector(".govuk-pagination__list")?.textContent || "";
+
+          expect(paginationText).to.include("...");
+
+          const lastPageLink = [...dom.window.document.querySelectorAll(".govuk-pagination__list a")]
+            .find((link) => link.textContent?.trim() === "14");
+          expect(lastPageLink?.getAttribute("href")).to.include("page=14");
         });
     });
 

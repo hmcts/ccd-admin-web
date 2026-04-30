@@ -18,16 +18,20 @@ function getValidPage(pageParam: unknown): number {
   return Math.floor(parsedPage);
 }
 
-function getPaginationPages(currentPage: number, totalPages: number): number[] {
-  const pages = new Set<number>();
-  pages.add(1);
-  pages.add(totalPages);
-  for (let page = currentPage - 2; page <= currentPage + 2; page++) {
-    if (page >= 1 && page <= totalPages) {
-      pages.add(page);
-    }
+function getPaginationPages(currentPage: number, totalPages: number): Array<number | string> {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
   }
-  return Array.from(pages).sort((a, b) => a - b);
+
+  if (currentPage <= 4) {
+    return [1, 2, 3, 4, 5, "...", totalPages];
+  }
+
+  if (currentPage >= totalPages - 3) {
+    return [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+  }
+
+  return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
 }
 
 router.get("/reindex", async (req, res) => {

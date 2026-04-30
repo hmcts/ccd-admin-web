@@ -80,11 +80,15 @@
 
                 <ul class="govuk-pagination__list">
                     {% for pageNumber in pagination.pages %}
+                    {% if pageNumber == "..." %}
+                    <li class="govuk-pagination__item">...</li>
+                    {% else %}
                     <li class="govuk-pagination__item {% if pageNumber == pagination.currentPage %}govuk-pagination__item--current{% endif %}">
                         <a class="govuk-link govuk-pagination__link" href="/reindex?caseType={{ selectedCaseType | urlencode }}&page={{ pageNumber }}" aria-label="Page {{ pageNumber }}">
                             {{ pageNumber }}
                         </a>
                     </li>
+                    {% endif %}
                     {% endfor %}
                 </ul>
 
