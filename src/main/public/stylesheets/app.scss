@@ -223,3 +223,27 @@ hr {
     }
   }
 }
+
+.govuk-pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.govuk-pagination__list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 8px;
+}
+
+.govuk-pagination__item {
+  margin: 0;
+}
+
+.govuk-pagination__item--current .govuk-pagination__link {
+  font-weight: 700;
+  text-decoration: none;
+}
