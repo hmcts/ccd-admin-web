@@ -2792,12 +2792,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"brace-expansion@npm:^3.0.1":
-  version: 3.0.2
-  resolution: "brace-expansion@npm:3.0.2"
+"brace-expansion@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "brace-expansion@npm:4.0.1"
   dependencies:
     balanced-match: "npm:^3.0.0"
-  checksum: 10/7d7b4a95f70ad5ca30fc184f9fae3d3a6b21f77700e3e36edb80dc6da71262641167793ac4e98d9564ab4d170b59ad085bda19dc36f81b205218745f8af70a6d
+  checksum: 10/774daa3c686cc237e64dc1de52053f2355130bab7c1e246d243798f6698389d39d3ff878405546b4ab4fa4718613ea4748dc951059d6d21543d5f38ed30ac15b
   languageName: node
   linkType: hard
 
@@ -3024,7 +3024,7 @@ __metadata:
     ansi-regex: "npm:^6.0.0"
     applicationinsights: "npm:^3.0.0"
     body-parser: "npm:^2.0.0"
-    brace-expansion: "npm:^3.0.1"
+    brace-expansion: "npm:^4.0.1"
     chai: "npm:^4.3.6"
     chai-as-promised: "npm:^8.0.0"
     config: "npm:^2.0.1"
