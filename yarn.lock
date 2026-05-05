@@ -2605,10 +2605,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"balanced-match@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "balanced-match@npm:3.0.1"
-  checksum: 10/0abdcc7862a8295f10e1d8b743b41481996b9064e695da039787666a81d6940f70c0e9a21bca8c163fced6ebcc263d60a773075ffb03fb30343663f21e60fb79
+"balanced-match@npm:^4.0.2":
+  version: 4.0.4
+  resolution: "balanced-match@npm:4.0.4"
+  checksum: 10/fb07bb66a0959c2843fc055838047e2a95ccebb837c519614afb067ebfdf2fa967ca8d712c35ced07f2cd26fc6f07964230b094891315ad74f11eba3d53178a0
   languageName: node
   linkType: hard
 
@@ -2792,12 +2792,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"brace-expansion@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "brace-expansion@npm:4.0.1"
+"brace-expansion@npm:^5.0.0":
+  version: 5.0.5
+  resolution: "brace-expansion@npm:5.0.5"
   dependencies:
-    balanced-match: "npm:^3.0.0"
-  checksum: 10/774daa3c686cc237e64dc1de52053f2355130bab7c1e246d243798f6698389d39d3ff878405546b4ab4fa4718613ea4748dc951059d6d21543d5f38ed30ac15b
+    balanced-match: "npm:^4.0.2"
+  checksum: 10/f259b2ddf04489da9512ad637ba6b4ef2d77abd4445d20f7f1714585f153435200a53fa6a2e4a5ee974df14ddad4cd16421f6f803e96e8b452bd48598878d0ee
   languageName: node
   linkType: hard
 
@@ -3024,7 +3024,7 @@ __metadata:
     ansi-regex: "npm:^6.0.0"
     applicationinsights: "npm:^3.0.0"
     body-parser: "npm:^2.0.0"
-    brace-expansion: "npm:^4.0.1"
+    brace-expansion: "npm:^5.0.0"
     chai: "npm:^4.3.6"
     chai-as-promised: "npm:^8.0.0"
     config: "npm:^2.0.1"
