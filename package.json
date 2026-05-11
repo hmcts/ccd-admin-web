@@ -37,7 +37,7 @@
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
     "csurf": "^1.9.0",
-    "debug": "^3.1.0",
+    "debug": "^4.0.0",
     "diff": "^8.0.3",
     "download-csv": "^1.1.1",
     "express": "^4.17.3",
@@ -117,7 +117,7 @@
   "resolutions": {
     "form-data": "^4.0.4",
     "shelljs": "0.10.0",
-    "es6-promisify": "5.0.0",
+    "es6-promisify": "7.0.0",
     "nconf": "0.13.0",
     "async": "3.2.6",
     "express-nunjucks/assign-deep": "^1.0.1",
@@ -126,7 +126,7 @@
     "qs": "^6.14.1",
     "http-proxy": "^1.18.1",
     "acorn": "^8.0.0",
-    "debug": "^3.1.0",
+    "debug": "^4.0.0",
     "yargs-parser": "^18.1.2",
     "braces": "^3.0.3",
     "lodash.template": "^4.5.0",
@@ -214,5 +214,5 @@
     "all": true
   },
   "snyk": true,
-  "packageManager": "yarn@4.13.0"
+  "packageManager": "yarn@4.14.1"
 }
