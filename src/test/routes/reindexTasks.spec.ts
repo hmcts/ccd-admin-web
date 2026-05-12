@@ -1,0 +1,234 @@
+import * as chai from "chai";
+import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
+import { JSDOM } from "jsdom";
+import * as sinonChai from "sinon-chai";
+import { app } from "../../main/app";
+import * as mock from "nock";
+import * as request from "supertest";
+import * as sinon from "sinon";
+import * as reindexTaskService from "../../main/service/reindex-task-service";
+import { get } from "config";
+
+const expect = chai.expect;
+chai.use(sinonChai);
+
+describe("test route Reindex Tasks", () => {
+    let getReindexTasksStub: sinon.SinonStub;
+    const mockTasks = [
+    {
+      caseType: "CaseTypeA",
+      deleteOldIndex: "false",
+      endTime: "2025-10-30T14:10:46.277Z",
+      exceptionMessage: "",
+      indexName: "casetypea_cases-000002",
+      jurisdiction: "JUR",
+      startTime: "2025-10-30T14:00:40.448Z",
+      status: "SUCCESS",
+    },
+    {
+      caseType: "CaseTypeB",
+      deleteOldIndex: "true",
+      endTime: "2025-10-30T14:15:12.005Z",
+      exceptionMessage: "Exception: failed shard update",
+      indexName: "casetypeb_cases-000003",
+      jurisdiction: "JUR2",
+      startTime: "2025-10-30T14:05:59.102Z",
+      status: "FAILED",
+    }];
+    const paginatedMockTasks = Array.from({ length: 30 }, (_, index) => ({
+      caseType: `CaseType${index + 1}`,
+      deleteOldIndex: "false",
+      endTime: "2025-10-30T14:10:46.277Z",
+      exceptionMessage: "",
+      indexName: `casetype_cases-${index + 1}`,
+      jurisdiction: "JUR",
+      startTime: `2025-10-30T14:${(index + 1).toString().padStart(2, "0")}:40.448Z`,
+      status: "SUCCESS",
+      whoImported: "user@mail.com",
+    }));
+    const manyPaginatedMockTasks = Array.from({ length: 350 }, (_, index) => ({
+      caseType: `CaseType${index + 1}`,
+      deleteOldIndex: "false",
+      endTime: "2025-10-30T14:10:46.277Z",
+      exceptionMessage: "",
+      indexName: `casetype_cases-${index + 1}`,
+      jurisdiction: "JUR",
+      startTime: `2025-10-29T${Math.floor(index / 60).toString().padStart(2, "0")}:${(index % 60).toString().padStart(2, "0")}:40.448Z`,
+      status: "SUCCESS",
+      whoImported: "user@mail.com",
+    }));
+
+    beforeEach(() => {
+        mock.cleanAll();
+        getReindexTasksStub = sinon.stub(reindexTaskService, "getReindexTasks");
+    });
+
+    afterEach(() => {
+        sinon.restore();
+    });
+
+    describe("on GET /reindex", () => {
+    it("should redirect to IdAM login page when not authenticated", () => {
+        return request(app)
+        .get("/reindex")
+        .then((res) => {
+            expect(res.statusCode).to.equal(302);
+            expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        });
+    });
+
+    it("should return the reindex page with all tasks when no caseType query param is provided", async () => {
+      getReindexTasksStub.onFirstCall().resolves(mockTasks);
+      getReindexTasksStub.onSecondCall().resolves(mockTasks);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+            expect(res.statusCode).to.equal(200);
+            const dom = new JSDOM(res.text);
+
+            const pageHeading = dom.window.document.querySelector(".heading-large");
+            expect(pageHeading?.textContent).to.include("Reindex");
+
+            const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
+            expect(rows[0].textContent).to.include("CaseTypeB"); // Sorted descending by startTime
+
+            const textContent = dom.window.document.body.textContent;
+            expect(textContent).to.include("CaseTypeA");
+            expect(textContent).to.include("CaseTypeB");
+        });
+  });
+
+    it("should render filtered tasks when caseType query is selected", async () => {
+      const filteredTasks = [mockTasks[1]];
+
+      getReindexTasksStub.onFirstCall().resolves(mockTasks);
+      getReindexTasksStub.onSecondCall().resolves(filteredTasks);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+      .get("/reindex?caseType=CaseTypeA")
+      .set("Cookie", "accessToken=ey123.ey456")
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+        const dom = new JSDOM(res.text);
+
+        const select = dom.window.document.querySelector("#caseType");
+        expect(select).to.exist;
+
+        const selectedOption = dom.window.document.querySelector("option[selected]");
+        expect(selectedOption?.getAttribute("value")).to.equal("CaseTypeA");
+
+        const bodyText = dom.window.document.body.textContent;
+        expect(bodyText).to.include("CaseTypeA");
+
+        expect(getReindexTasksStub).to.have.been.calledTwice;
+        expect(getReindexTasksStub.secondCall.args[1]).to.equal("CaseTypeA");
+      });
+    });
+
+    it("should render auto refresh toggle and client-side refresh script", async () => {
+      getReindexTasksStub.onFirstCall().resolves(mockTasks);
+      getReindexTasksStub.onSecondCall().resolves(mockTasks);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+
+          const autoRefreshToggle = dom.window.document.querySelector("#autoRefreshToggle");
+          expect(autoRefreshToggle).to.exist;
+
+          const autoRefreshLabel = dom.window.document.querySelector("label[for='autoRefreshToggle']");
+          expect(autoRefreshLabel?.textContent).to.include("Auto Refresh");
+
+          const html = dom.window.document.documentElement.innerHTML;
+          expect(html).to.include("REFRESH_INTERVAL_MS = 30000");
+          expect(html).to.include("reindexAutoRefreshEnabled");
+        });
+    });
+
+    it("should render only first page of tasks and show pagination when tasks exceed page size", async () => {
+      getReindexTasksStub.onFirstCall().resolves(paginatedMockTasks);
+      getReindexTasksStub.onSecondCall().resolves(paginatedMockTasks);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+          const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
+          const tableText = rows.map((row) => row.textContent || "").join(" ");
+
+          expect(rows.length).to.equal(25);
+          expect(tableText).to.include("CaseType30");
+          expect(tableText).to.not.include("CaseType5");
+
+          const pagination = dom.window.document.querySelector(".govuk-pagination");
+          expect(pagination).to.exist;
+
+          const nextLink = dom.window.document.querySelector(".govuk-pagination__next a");
+          expect(nextLink?.getAttribute("href")).to.include("page=2");
+        });
+    });
+
+    it("should render page 2 tasks and keep selected case type in pagination links", async () => {
+      getReindexTasksStub.onFirstCall().resolves(paginatedMockTasks);
+      getReindexTasksStub.onSecondCall().resolves(paginatedMockTasks);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex?caseType=CaseTypeA&page=2")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+          const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
+          const tableText = rows.map((row) => row.textContent || "").join(" ");
+
+          expect(rows.length).to.equal(5);
+          expect(tableText).to.include("CaseType5");
+          expect(tableText).to.not.include("CaseType30");
+
+          const previousLink = dom.window.document.querySelector(".govuk-pagination__prev a");
+          expect(previousLink?.getAttribute("href")).to.equal("/reindex?caseType=CaseTypeA&page=1");
+        });
+    });
+
+    it("should render ellipsis in pagination when there are many pages", async () => {
+      getReindexTasksStub.onFirstCall().resolves(manyPaginatedMockTasks);
+      getReindexTasksStub.onSecondCall().resolves(manyPaginatedMockTasks);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+          const paginationText = dom.window.document.querySelector(".govuk-pagination__list")?.textContent || "";
+
+          expect(paginationText).to.include("...");
+
+          const lastPageLink = [...dom.window.document.querySelectorAll(".govuk-pagination__list a")]
+            .find((link) => link.textContent?.trim() === "14");
+          expect(lastPageLink?.getAttribute("href")).to.include("page=14");
+        });
+    });
+
+    it("should render an error page when the service throws", async () => {
+        getReindexTasksStub.rejects(new Error("Error fetching reindex tasks (HTTP 500)"));
+
+        return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex")
+        .then((res) => {
+            expect(res.statusCode).to.equal(500);
+            const dom = new JSDOM(res.text);
+
+            const errorMessage = dom.window.document.body.textContent;
+            expect(errorMessage).to.include("Error fetching reindex tasks (HTTP 500)");
+        });
+    });
+  });
+});

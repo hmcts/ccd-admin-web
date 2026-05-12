@@ -45,9 +45,9 @@
           const reindexChecked = document.getElementById('reindex').checked;
           const confirmCheckbox = document.getElementById('confirm');
           const submitButton = document.querySelector('button[type="submit"]');
-          
+
           confirmCheckbox.disabled = !reindexChecked;
-          
+
           if (!reindexChecked) {
             confirmCheckbox.checked = false;
             submitButton.disabled = false; // Enable submit if reindex is not checked
@@ -55,7 +55,7 @@
             submitButton.disabled = !confirmCheckbox.checked // Disable submit until confirm is checked
           }
         }
-        
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', updateState);
       </script>
