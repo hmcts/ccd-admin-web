@@ -20,7 +20,7 @@ export const ERROR_UNAUTHORIZED_USER_ID = {
 export const COOKIE_ACCESS_TOKEN = "accessToken";
 export const AUTHORIZATION = "Authorization";
 
-const authorizeRoles = (user) => new Promise((resolve, reject) => {
+const authorizeRoles = (user) => new Promise<void>((resolve, reject) => {
   if (!isUserAuthorized(user)) {
     reject(ERROR_UNAUTHORIZED_ROLE);
   } else {
