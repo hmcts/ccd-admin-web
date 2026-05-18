@@ -56,8 +56,8 @@ router.get("/reindex", async (req, res) => {
     } else {
       taskSource = allTasks;
     }
-    const tasks = taskSource
-      .sort((a: any, b: any) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
+    const tasks = taskSource.slice();
+    tasks.sort((a: any, b: any) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
 
     const totalItems = hasServerPagination
       ? pagedTasksResponse.totalElements || 0
