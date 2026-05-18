@@ -50,7 +50,13 @@ router.get("/reindex", async (req, res) => {
     ).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
 
     const hasServerPagination = isPagedResponse(pagedTasksResponse);
-    const tasks = (hasServerPagination ? filteredTasks : (caseType ? filteredTasks : allTasks))
+    let taskSource: any[];
+    if (hasServerPagination || caseType) {
+      taskSource = filteredTasks;
+    } else {
+      taskSource = allTasks;
+    }
+    const tasks = taskSource
       .sort((a: any, b: any) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
 
     const totalItems = hasServerPagination

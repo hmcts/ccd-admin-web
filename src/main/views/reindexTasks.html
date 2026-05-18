@@ -127,26 +127,26 @@
         }
 
         function refreshReindexPage() {
-            var currentQuery = window.location.search || "";
-            window.location.assign("/reindex" + currentQuery);
+            var currentQuery = globalThis.location.search || "";
+            globalThis.location.assign("/reindex" + currentQuery);
         }
 
         function startAutoRefresh() {
             if (intervalId) {
                 return;
             }
-            intervalId = window.setInterval(refreshReindexPage, REFRESH_INTERVAL_MS);
+            intervalId = globalThis.setInterval(refreshReindexPage, REFRESH_INTERVAL_MS);
         }
 
         function stopAutoRefresh() {
             if (!intervalId) {
                 return;
             }
-            window.clearInterval(intervalId);
+            globalThis.clearInterval(intervalId);
             intervalId = null;
         }
 
-        var isEnabled = window.localStorage.getItem(REFRESH_KEY) === "true";
+        var isEnabled = globalThis.localStorage.getItem(REFRESH_KEY) === "true";
         toggle.checked = isEnabled;
 
         if (isEnabled) {
@@ -155,7 +155,7 @@
 
         toggle.addEventListener("change", function(event) {
             var enabled = event.target.checked;
-            window.localStorage.setItem(REFRESH_KEY, enabled ? "true" : "false");
+            globalThis.localStorage.setItem(REFRESH_KEY, enabled ? "true" : "false");
             if (enabled) {
                 startAutoRefresh();
             } else {
