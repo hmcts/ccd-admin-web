@@ -174,7 +174,7 @@
     "ua-parser-js": "^1.0.0",
     "http-cache-semantics": "^4.1.1",
     "jackspeak": "2.3.6",
-    "semver": "7.7.4",
+    "semver": "7.8.0",
     "ip": "2.0.1",
     "micromatch": "^4.0.8",
     "picomatch@npm:^2.0.4": "npm:2.3.2",
