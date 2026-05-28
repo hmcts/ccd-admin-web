@@ -60,7 +60,7 @@ withPipeline("nodejs", product, component) {
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
     disableLegacyDeployment()
-    enableCveDashboardIngestion(['master', 'codex/enable-cve-dashboard-ingestion'])
+    enableCveDashboardIngestion(['master', 'PR-883', 'codex/enable-cve-dashboard-ingestion'])
 
     afterAlways('checkout') {
         sh "yarn cache clean"
