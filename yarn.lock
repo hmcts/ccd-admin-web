@@ -2193,15 +2193,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv-keywords@npm:^2.1.0":
-  version: 2.1.1
-  resolution: "ajv-keywords@npm:2.1.1"
-  peerDependencies:
-    ajv: ^5.0.0
-  checksum: 10/24f13aa91119f3aee9eb360f8f168455958b978eee84f563d9a8ba2967dd024a42ab05fc242f0d6f3051a2c534c84aee993916ea729ddb6187dd23cfa4d28461
-  languageName: node
-  linkType: hard
-
 "ajv@npm:^8.0.0":
   version: 8.20.0
   resolution: "ajv@npm:8.20.0"
@@ -5062,7 +5053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-deep-equal@npm:^3.1.1, fast-deep-equal@npm:^3.1.3":
+"fast-deep-equal@npm:^3.1.3":
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
   checksum: 10/e21a9d8d84f53493b6aa15efc9cfd53dd5b714a1f23f67fb5dc8f574af80df889b3bce25dc081887c6d25457cce704e636395333abad896ccdec03abaf1f3f9d
