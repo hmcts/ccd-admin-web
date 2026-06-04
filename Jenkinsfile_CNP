@@ -5,7 +5,7 @@ properties(
          pipelineTriggers([[$class: 'GitHubPushTrigger']])]
 )
 
-@Library("Infrastructure")
+@Library("Infrastructure@cve-dashboard")
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def product = "ccd"
@@ -60,6 +60,7 @@ withPipeline("nodejs", product, component) {
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
     disableLegacyDeployment()
+    enableCveDashboardIngestion()
 
     afterAlways('checkout') {
         sh "yarn cache clean"
