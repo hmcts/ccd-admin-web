@@ -30,7 +30,7 @@
     "@hmcts/properties-volume": "^1.0.0",
     "@snyk/protect": "^1.1103.0",
     "@types/node": "^10.5.4",
-    "applicationinsights": "^3.0.0",
+    "applicationinsights": "3.14.0",
     "body-parser": "^2.0.0",
     "brace-expansion": "^1.1.13",
     "config": "^2.0.1",
