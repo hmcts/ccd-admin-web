@@ -14,7 +14,7 @@ const oauthEndpoint: string = config.get<string>("idam.oauth2.token_endpoint");
 const idamOAuth2ClientId: string = config.get<string>("idam.oauth2.client_id");
 const idamOAuth2ClientSecret: string = config.get<string>("secrets.ccd.ccd-admin-web-oauth2-client-secret");
 
-export function accessTokenRequest(request): Promise<any> {
+export function accessTokenRequest(request, redirect_uri): Promise<any> {
 
   const options = {
     headers: {
@@ -28,7 +28,7 @@ export function accessTokenRequest(request): Promise<any> {
   const params = {
     code: request.query.code,
     grant_type: "authorization_code",
-    redirect_uri: completeRedirectURI(request.query.redirect_uri),
+    redirect_uri: completeRedirectURI(redirect_uri),
   };
   const logger = Logger.getLogger(__filename);
   return fetch(oauthEndpoint + format({ query: params }), options)

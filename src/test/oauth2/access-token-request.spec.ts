@@ -69,7 +69,7 @@ describe("Access Token Request", () => {
 
   it("should call the IdAM OAuth 2 token endpoint with the correct headers and query string parameters", (done) => {
 
-    accessTokenRequest(REQUEST_WITH_HTTPS)
+    accessTokenRequest(REQUEST_WITH_HTTPS, REDIRECT_URL)
       .then(() => {
         expect(fetchStub.called).to.be.true;
         expect(fetchStub.lastCall.args[1].headers.Authorization).to.equal(
@@ -84,7 +84,7 @@ describe("Access Token Request", () => {
 
   it("should add `https://` prefix", (done) => {
 
-    accessTokenRequest(REQUEST)
+    accessTokenRequest(REQUEST, REDIRECT_URL)
       .then(() => {
         expect(fetchStub.called).to.be.true;
         expect(fetchStub.lastCall.args[1].headers.Authorization).to.equal(
