@@ -42,7 +42,7 @@
     "cookie-parser": "^1.4.7",
     "cookie-session": "^2.1.1",
     "debug": "^4.4.3",
-    "diff": "^8.0.4",
+    "diff": "^9.0.0",
     "download-csv": "^1.1.1",
     "es6-promisify": "^7.0.0",
     "express": "^4.22.1",
@@ -137,5 +137,5 @@
     "all": true
   },
   "snyk": true,
-  "packageManager": "yarn@4.14.1"
+  "packageManager": "yarn@4.16.0"
 }
