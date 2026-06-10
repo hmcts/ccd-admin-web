@@ -17,7 +17,7 @@
     "test": "NODE_PATH=. NODE_ENV=test mocha 'src/**/*.ts' --ignore 'src/**/a11y/**'",
     "test:specific": "NODE_PATH=. NODE_ENV=test LOG_LEVEL=DEBUG mocha ",
     "test:a11y": "PUPPETEER_SKIP_DOWNLOAD=false PUPPETEER_SKIP_CHROME_DOWNLOAD=false PUPPETEER_SKIP_CHROME_HEADLESS_SHELL_DOWNLOAD=true node node_modules/puppeteer/install.mjs && NODE_PATH=. NODE_ENV=test mocha 'src/test/a11y/**' --reporter-options reportFilename=a11y,inlineAssets=true,reportTitle=ccd-admin-web-a11y",
-    "test:coverage": "NODE_PATH=. NODE_ENV=test nyc mocha",
+    "test:coverage": "NODE_PATH=. NODE_ENV=test nyc mocha 'src/**/*.ts' --ignore 'src/**/a11y/**'",
     "test:smoke": "echo 'TODO - SMOKE TESTS'",
     "test:functional": "echo 'TODO - FUNCTIONAL TESTS'",
     "fortifyScan": "./src/test/java/gradlew -p src/test/java fortifyScan",
