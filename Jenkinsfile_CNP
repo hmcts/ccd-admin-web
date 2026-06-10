@@ -83,6 +83,18 @@ withPipeline("nodejs", product, component) {
       ]
     }
 
+    afterAlways('test:a11y') {
+    
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "mochawesome-report",
+        reportFiles          : "a11y.html",
+        reportName           : "Accessibility Test Report"
+      ]
+    }
+
     afterAlways('test:coverage') {
 
       publishHTML target: [
