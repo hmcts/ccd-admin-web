@@ -17,7 +17,8 @@ export function uploadFile(req) {
     .attach("file", req.file.buffer, { filename: req.file.originalname });
 
   const body = req.body || {};
-  const reindex = config.get("adminWeb.elastic_search_reindex_enabled") && body.reindex === "true";
+  const reindex = String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true"
+    && body.reindex === "true";
 
   if (reindex) {
     requestObj.query({ reindex: true });

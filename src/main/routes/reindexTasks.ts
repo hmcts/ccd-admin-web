@@ -39,7 +39,7 @@ function getPaginationPages(currentPage: number, totalPages: number): Array<numb
 }
 
 router.get("/reindex", async (req, res) => {
-  if (!config.get("adminWeb.elastic_search_reindex_enabled")
+  if (String(config.get("adminWeb.elastic_search_reindex_enabled")) !== "true"
     || !req.adminWebAuthorization
     || !req.adminWebAuthorization.canImportDefinition) {
     return res.render(errorPage, error_unauthorized_role(req));

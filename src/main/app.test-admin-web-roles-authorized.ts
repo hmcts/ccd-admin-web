@@ -11,7 +11,8 @@ const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTestWithAuthorizedAdminWebRoles: express.Express = express();
 appTestWithAuthorizedAdminWebRoles.locals.ENV = env;
-appTestWithAuthorizedAdminWebRoles.locals.elasticSearchReindexEnabled = config.get("adminWeb.elastic_search_reindex_enabled");
+appTestWithAuthorizedAdminWebRoles.locals.elasticSearchReindexEnabled =
+  String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true";
 
 // Session
 appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy
