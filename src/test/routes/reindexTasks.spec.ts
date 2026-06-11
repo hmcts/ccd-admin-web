@@ -7,8 +7,8 @@ import * as mock from "nock";
 import * as request from "supertest";
 import * as sinon from "sinon";
 import * as reindexTaskService from "../../main/service/reindex-task-service";
-import * as elasticSearchReindexEnabled from "../../main/util/elastic-search-reindex-enabled";
 import { get } from "config";
+import * as config from "config";
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -79,7 +79,9 @@ describe("test route Reindex Tasks", () => {
     });
 
     it("should return unauthorised when reindex feature is disabled", () => {
-      sinon.stub(elasticSearchReindexEnabled, "isElasticSearchReindexEnabled").returns(false);
+      const configGetStub = sinon.stub(config, "get");
+      configGetStub.callThrough();
+      configGetStub.withArgs("adminWeb.elastic_search_reindex_enabled").returns(false);
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/reindex")

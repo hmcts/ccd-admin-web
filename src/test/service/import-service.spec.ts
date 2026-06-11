@@ -17,7 +17,7 @@ describe("importService", () => {
   let requestQuerySpy: sinon.SinonSpy;
   let req;
   let uploadFile;
-  let isElasticSearchReindexEnabledStub;
+  let configGetStub;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -34,17 +34,12 @@ describe("importService", () => {
       serviceAuthToken: "serviceAuthToken",
     };
 
-    const config = {
-      get: sinon.stub(),
-    };
-    config.get.withArgs("adminWeb.import_url").returns(importUrl);
-    isElasticSearchReindexEnabledStub = sinon.stub().returns(true);
+    configGetStub = sinon.stub();
+    configGetStub.withArgs("adminWeb.import_url").returns(importUrl);
+    configGetStub.withArgs("adminWeb.elastic_search_reindex_enabled").returns(true);
 
     uploadFile = proxyquire("../../main/service/import-service", {
-      "../util/elastic-search-reindex-enabled": {
-        isElasticSearchReindexEnabled: isElasticSearchReindexEnabledStub,
-      },
-      config,
+      config: { get: configGetStub },
     }).uploadFile;
   });
 
@@ -104,7 +99,7 @@ describe("importService", () => {
     it("should not set query parameters when reindex feature is disabled", (done) => {
       const expectedResult = "Case Definition data successfully imported";
       req.body = { reindex: "true" };
-      isElasticSearchReindexEnabledStub.returns(false);
+      configGetStub.withArgs("adminWeb.elastic_search_reindex_enabled").returns(false);
 
       nock("http://localhost:9999")
         .post("/import")
