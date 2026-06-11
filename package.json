@@ -188,7 +188,9 @@
     "on-headers": "^1.1.0",
     "brace-expansion": "^1.1.13",
     "cookie": "^1.1.1",
-    "diff": "^8.0.3"
+    "diff": "^8.0.3",
+    "protobufjs@npm:8.0.1": "npm:8.5.0",
+    "protobufjs@npm:^7.5.3": "npm:7.6.2"
   },
   "nyc": {
     "extension": [
