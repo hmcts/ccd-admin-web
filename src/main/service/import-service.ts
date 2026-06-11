@@ -1,6 +1,7 @@
 import * as config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 import * as request from "superagent";
+import { isElasticSearchReindexEnabled } from "../util/elastic-search-reindex-enabled";
 
 export function uploadFile(req) {
   const url = config.get("adminWeb.import_url");
@@ -17,7 +18,7 @@ export function uploadFile(req) {
     .attach("file", req.file.buffer, { filename: req.file.originalname });
 
   const body = req.body || {};
-  const reindex = body.reindex === "true" || false;
+  const reindex = isElasticSearchReindexEnabled() && body.reindex === "true";
 
   if (reindex) {
     requestObj.query({ reindex: true });

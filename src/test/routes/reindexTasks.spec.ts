@@ -7,6 +7,7 @@ import * as mock from "nock";
 import * as request from "supertest";
 import * as sinon from "sinon";
 import * as reindexTaskService from "../../main/service/reindex-task-service";
+import * as elasticSearchReindexEnabled from "../../main/util/elastic-search-reindex-enabled";
 import { get } from "config";
 
 const expect = chai.expect;
@@ -74,6 +75,20 @@ describe("test route Reindex Tasks", () => {
         .then((res) => {
             expect(res.statusCode).to.equal(302);
             expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        });
+    });
+
+    it("should return unauthorised when reindex feature is disabled", () => {
+      sinon.stub(elasticSearchReindexEnabled, "isElasticSearchReindexEnabled").returns(false);
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .get("/reindex")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
+          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding")?.innerHTML;
+          expect(errorHeading).to.equal("Unauthorised role");
         });
     });
 

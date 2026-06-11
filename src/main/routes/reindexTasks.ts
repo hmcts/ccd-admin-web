@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { getReindexTasks } from "../service/reindex-task-service";
+import { error_unauthorized_role } from "../util/error_unauthorized_role";
+import { isElasticSearchReindexEnabled } from "../util/elastic-search-reindex-enabled";
 import { sanitize } from "../util/sanitize";
+
+const errorPage = "error";
 
 const router = Router();
 const DEFAULT_PAGE_SIZE = 25;
@@ -35,6 +39,12 @@ function getPaginationPages(currentPage: number, totalPages: number): Array<numb
 }
 
 router.get("/reindex", async (req, res) => {
+  if (!isElasticSearchReindexEnabled()
+    || !req.adminWebAuthorization
+    || !req.adminWebAuthorization.canImportDefinition) {
+    return res.render(errorPage, error_unauthorized_role(req));
+  }
+
   try {
     const caseType = req.query.caseType as string | undefined;
     const requestedPage = getValidPage(req.query.page);

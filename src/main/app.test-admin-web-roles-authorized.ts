@@ -6,10 +6,12 @@ import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import { importAll } from "./import-all/index";
+import { isElasticSearchReindexEnabled } from "./util/elastic-search-reindex-enabled";
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTestWithAuthorizedAdminWebRoles: express.Express = express();
 appTestWithAuthorizedAdminWebRoles.locals.ENV = env;
+appTestWithAuthorizedAdminWebRoles.locals.elasticSearchReindexEnabled = isElasticSearchReindexEnabled();
 
 // Session
 appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy

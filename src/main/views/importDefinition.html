@@ -16,6 +16,7 @@
         {% endif %}
         <input type="file" id="file" name="file" accept=".xlsx"/>
       </div>
+      {% if elasticSearchReindexEnabled %}
       <div style="display: grid;">
         <div style="display: inline-flex;">
           <div class="img"><img src="images/icon-important.png" alt="Important" width="36" height="32" style="padding-top: 10px;"></div>
@@ -59,6 +60,7 @@
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', updateState);
       </script>
+      {% endif %}
       <div class="form-group">
         <button type="submit" class="button" value="Submit">Submit</button>
       </div>

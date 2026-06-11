@@ -5,7 +5,7 @@
     <a href="/import">Import Case Definition</a>
   {% endif %}
 
-  {% if adminWebAuthorization.canImportDefinition %}
+  {% if adminWebAuthorization.canImportDefinition and elasticSearchReindexEnabled %}
     <a href="/reindex">Reindex Tasks</a>
   {% endif %}
 

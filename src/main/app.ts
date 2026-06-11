@@ -9,6 +9,7 @@ import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import { sanitize } from "./util/sanitize";
+import { isElasticSearchReindexEnabled } from "./util/elastic-search-reindex-enabled";
 
 import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
 import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
@@ -27,6 +28,7 @@ export const app: express.Express = express();
 const appHealth: express.Express = express();
 
 app.locals.ENV = env;
+app.locals.elasticSearchReindexEnabled = isElasticSearchReindexEnabled();
 
 // Session
 app.set("trust proxy", 1); // trust first proxy

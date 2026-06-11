@@ -16,6 +16,7 @@ describe("importService", () => {
 
   let req;
   let uploadFile;
+  let isElasticSearchReindexEnabledStub;
 
   beforeEach(() => {
     req = {
@@ -34,8 +35,12 @@ describe("importService", () => {
       get: sinon.stub(),
     };
     config.get.withArgs("adminWeb.import_url").returns(importUrl);
+    isElasticSearchReindexEnabledStub = sinon.stub().returns(true);
 
     uploadFile = proxyquire("../../main/service/import-service", {
+      "../util/elastic-search-reindex-enabled": {
+        isElasticSearchReindexEnabled: isElasticSearchReindexEnabledStub,
+      },
       config,
     }).uploadFile;
   });
@@ -76,6 +81,27 @@ describe("importService", () => {
           expect(res.text).to.equal(expectedResult);
           expect(requestQuerySpy).to.be.calledOnce;
           expect(requestQuerySpy).to.be.calledWith({ reindex: true });
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+
+    it("should not set query parameters when reindex feature is disabled", (done) => {
+      const expectedResult = "Case Definition data successfully imported";
+      req.body = { reindex: "true" };
+      isElasticSearchReindexEnabledStub.returns(false);
+
+      nock("http://localhost:9999")
+        .post("/import")
+        .reply(201, expectedResult);
+
+      uploadFile(req).then((res) => {
+        try {
+          expect(res.status).to.equal(201);
+          expect(res.text).to.equal(expectedResult);
+          expect(requestQuerySpy).to.not.be.called;
           done();
         } catch (e) {
           done(e);
