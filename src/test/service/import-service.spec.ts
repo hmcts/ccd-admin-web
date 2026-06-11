@@ -11,14 +11,19 @@ chai.use(sinonChai);
 describe("importService", () => {
 
   const importUrl = "http://localhost:9999/import";
-  const requestAttachSpy = sinon.spy(request.Request.prototype, "attach");
-  const requestQuerySpy = sinon.spy(request.Request.prototype, "query");
 
+  let sandbox: sinon.SinonSandbox;
+  let requestAttachSpy: sinon.SinonSpy;
+  let requestQuerySpy: sinon.SinonSpy;
   let req;
   let uploadFile;
   let isElasticSearchReindexEnabledStub;
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox();
+    requestAttachSpy = sandbox.spy(request.Request.prototype, "attach");
+    requestQuerySpy = sandbox.spy(request.Request.prototype, "query");
+
     req = {
       accessToken: "userAuthToken",
       body: {},
@@ -28,8 +33,6 @@ describe("importService", () => {
       },
       serviceAuthToken: "serviceAuthToken",
     };
-
-    requestQuerySpy.resetHistory();
 
     const config = {
       get: sinon.stub(),
@@ -45,6 +48,11 @@ describe("importService", () => {
     }).uploadFile;
   });
 
+  afterEach(() => {
+    sandbox.restore();
+    nock.cleanAll();
+  });
+
   describe("successful file upload", () => {
     it("should return an HTTP 201 status and success message", (done) => {
       const expectedResult = "Case Definition data successfully imported";
@@ -57,8 +65,13 @@ describe("importService", () => {
         try {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
-          expect(requestAttachSpy).to.be.calledWith("file", req.file.buffer, { filename: req.file.originalname });
-          expect(requestQuerySpy).to.not.be.called;
+          expect(requestAttachSpy).to.have.been.calledOnce;
+          expect(requestAttachSpy).to.have.been.calledWith(
+            "file",
+            req.file.buffer,
+            { filename: req.file.originalname },
+          );
+          expect(requestQuerySpy).to.not.have.been.called;
           done();
         } catch (e) {
           done(e);
@@ -79,8 +92,8 @@ describe("importService", () => {
         try {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
-          expect(requestQuerySpy).to.be.calledOnce;
-          expect(requestQuerySpy).to.be.calledWith({ reindex: true });
+          expect(requestQuerySpy).to.have.been.calledOnce;
+          expect(requestQuerySpy).to.have.been.calledWith({ reindex: true });
           done();
         } catch (e) {
           done(e);
@@ -101,7 +114,7 @@ describe("importService", () => {
         try {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
-          expect(requestQuerySpy).to.not.be.called;
+          expect(requestQuerySpy).to.not.have.been.called;
           done();
         } catch (e) {
           done(e);
@@ -121,7 +134,7 @@ describe("importService", () => {
         try {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
-          expect(requestQuerySpy).to.not.be.called;
+          expect(requestQuerySpy).to.not.have.been.called;
           done();
         } catch (e) {
           done(e);
