@@ -31,7 +31,7 @@ nodejs:
     IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/token
     IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/session/:token
 
-    ADMINWEB_LOGIN_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login"
+    ADMINWEB_LOGIN_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o/authorize"
     ADMINWEB_IMPORT_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/import"
     ADMINWEB_JURISDICTIONS_URL: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/api/data/jurisdictions"
     ADMINWEB_USER_PROFILE_URL: "http://ccd-user-profile-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/users"
