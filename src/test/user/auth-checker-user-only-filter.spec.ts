@@ -15,10 +15,13 @@ describe("authCheckerUserOnlyFilter", () => {
   const loginUrl = "http://idam.login";
   const clientId = "ccd_admin";
   const redirectUri = encodeURIComponent("http://localhost/oauth2redirect");
-  const completeUrl = `${loginUrl}?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+  const state = "generated-state";
+  const completeUrl = `${loginUrl}?response_type=code&client_id=${clientId}`
+    + `&redirect_uri=${redirectUri}&state=${encodeURIComponent(state)}`;
 
   let req;
   let res;
+  let oauthState;
   let userRequestAuthorizer;
   let filter;
 
@@ -26,12 +29,21 @@ describe("authCheckerUserOnlyFilter", () => {
     req = {
       get: sinon.stub(),
       protocol: "http",
+      session: {},
     };
     req.get.withArgs("host").returns("localhost");
     res = {};
 
     userRequestAuthorizer = {
       authorize: sinon.stub(),
+    };
+
+    oauthState = {
+      setOAuthState: sinon.stub().callsFake((request) => {
+        request.session.oauthState = state;
+
+        return state;
+      }),
     };
 
     const config = {
@@ -41,6 +53,7 @@ describe("authCheckerUserOnlyFilter", () => {
     config.get.withArgs("idam.oauth2.client_id").returns(clientId);
 
     filter = proxyquire("../../main/user/auth-checker-user-only-filter", {
+      "../oauth2/oauth-state": oauthState,
       "./user-request-authorizer": userRequestAuthorizer,
       config,
     }).authCheckerUserOnlyFilter;
@@ -88,20 +101,20 @@ describe("authCheckerUserOnlyFilter", () => {
     it("should redirect to the IdAM login URL", (done) => {
       res = {
         redirect: (code, url) => {
-          assert.equal(code, 302);
-          assert.equal(url, completeUrl);
-          done();
+          try {
+            assert.equal(code, 302);
+            assert.equal(url, completeUrl);
+            expect(req.session.oauthState).to.equal(state);
+            expect(oauthState.setOAuthState).to.have.been.calledWith(req);
+            done();
+          } catch (e) {
+            done(e);
+          }
         },
       };
 
       filter(req, res, (err) => {
-        try {
-          expect(err).to.equal(error);
-          expect(res.redirect).to.be.calledWith(302, completeUrl);
-          done();
-        } catch (e) {
-          done(e);
-        }
+        expect(err).to.equal(error);
       });
     });
   });
