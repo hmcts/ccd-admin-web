@@ -6,11 +6,13 @@ import * as mock from "nock";
 
 const idamApiBaseUrl = config.get("idam.base_url");
 const s2sAuthServiceBaseUrl = config.get("idam.s2s_url");
+const idamWebPublicUrl = config.get("idam.web_public_url");
 
 describe("health check", () => {
   beforeEach(() => {
     mock(idamApiBaseUrl).get("/health").reply(200, { status: "UP" });
     mock(s2sAuthServiceBaseUrl).get("/health").reply(200, { status: "UP" });
+    mock(idamWebPublicUrl).get("/health").reply(200, { status: "UP" });
   });
 
   afterEach(() => {

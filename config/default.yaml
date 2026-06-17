@@ -18,13 +18,13 @@ security:
 idam:
   base_url: http://localhost:5000
   s2s_url: http://localhost:4502
+  web_public_url: http://localhost:9002
   service_name: ccd_admin
   oauth2:
     token_endpoint: http://localhost:5000/oauth2/token
     logout_endpoint: http://localhost:5000/session/:token
     client_id: ccd_admin
 adminWeb:
-  login_url: http://localhost:9002/o/authorize
   import_url: http://localhost:4451/import
   whoami_url: http://localhost:4451/api/idam/profile
   authorization_url: http://localhost:4451/api/idam/adminweb/authorization

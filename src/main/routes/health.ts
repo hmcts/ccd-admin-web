@@ -13,6 +13,7 @@ const healthCheckRouter = express.Router();
 const healthCheckConfig = {
   checks: {
     "idam-api": basicHealthCheck("idam.base_url"),
+    "idam-web-public": basicHealthCheck("idam.web_public_url"),
     "s2s": basicHealthCheck("idam.s2s_url"),
   },
 };

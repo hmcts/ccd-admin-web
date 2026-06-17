@@ -15,7 +15,7 @@ describe("authCheckerUserOnlyFilter", () => {
   const loginUrl = "http://idam.login";
   const clientId = "ccd_admin";
   const redirectUri = encodeURIComponent("http://localhost/oauth2redirect");
-  const completeUrl = `${loginUrl}?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+  const completeUrl = `${loginUrl}/o/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
 
   let req;
   let res;
@@ -37,7 +37,7 @@ describe("authCheckerUserOnlyFilter", () => {
     const config = {
       get: sinon.stub(),
     };
-    config.get.withArgs("adminWeb.login_url").returns(loginUrl);
+    config.get.withArgs("idam.web_public_url").returns(loginUrl);
     config.get.withArgs("idam.oauth2.client_id").returns(clientId);
 
     filter = proxyquire("../../main/user/auth-checker-user-only-filter", {
