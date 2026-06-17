@@ -57,7 +57,3 @@ nodejs:
         - microservicekey-ccd-admin
         - ccd-admin-web-oauth2-client-secret
         - AppInsightsInstrumentationKey
-
-
-idam-pr:
-  enabled: false
