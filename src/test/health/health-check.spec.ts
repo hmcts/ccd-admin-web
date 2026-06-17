@@ -1,8 +1,22 @@
 import { expect } from "chai";
 import * as request from "supertest";
 import { app } from "../../main/app";
+import * as config from "config";
+import * as mock from "nock";
+
+const idamApiBaseUrl = config.get("idam.base_url");
+const s2sAuthServiceBaseUrl = config.get("idam.s2s_url");
 
 describe("health check", () => {
+  beforeEach(() => {
+    mock(idamApiBaseUrl).get("/health").reply(200, { status: "UP" });
+    mock(s2sAuthServiceBaseUrl).get("/health").reply(200, { status: "UP" });
+  });
+
+  afterEach(() => {
+    mock.cleanAll();
+  });
+
   it("should return 200 OK for health check", async () => {
     await request(app)
       .get("/health")
