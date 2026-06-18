@@ -1,6 +1,6 @@
 {
   "name": "ccd-admin-web",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "private": true,
   "engines": {
     "node": "^18.17.0"
