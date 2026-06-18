@@ -15,6 +15,7 @@ idam:
     token_endpoint: IDAM_OAUTH2_TOKEN_ENDPOINT
     logout_endpoint: IDAM_OAUTH2_LOGOUT_ENDPOINT
     client_id: IDAM_OAUTH2_CLIENT_ID
+    scope: IDAM_OAUTH2_SCOPE
 adminWeb:
   import_url: ADMINWEB_IMPORT_URL
   jurisdiction_url: ADMINWEB_JURISDICTIONS_URL
