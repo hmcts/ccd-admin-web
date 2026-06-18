@@ -14,7 +14,7 @@ describe("authCheckerUserOnlyFilter", () => {
   };
   const loginUrl = "http://idam.login";
   const clientId = "ccd_admin";
-  const scope = "testscope"
+  const scope = "testscope";
   const redirectUri = encodeURIComponent("http://localhost/oauth2redirect");
   const completeUrl = `${loginUrl}/o/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
 
