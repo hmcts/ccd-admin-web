@@ -1,7 +1,7 @@
 import request from "superagent";
 import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
-import { UserRole } from "domain/userrole";
+import { UserRole } from "../domain/userrole";
 
 export function saveUserRole(req, userrole: UserRole, isCreateUserRole: boolean) {
     const logger = Logger.getLogger(__filename);

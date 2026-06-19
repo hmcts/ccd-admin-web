@@ -1,7 +1,7 @@
 import request from "superagent";
 import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
-import { UserProfile } from "domain/userprofile";
+import { UserProfile } from "../domain/userprofile";
 
 export function createUserProfile(req, userprofile: UserProfile) {
     const logger = Logger.getLogger(__filename);
