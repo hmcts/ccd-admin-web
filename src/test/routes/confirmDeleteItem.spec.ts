@@ -1,12 +1,14 @@
 import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import { get } from "config";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as mock from "nock";
+import config from "config";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import mock from "nock";
 import { JSDOM } from "jsdom";
-import * as request from "supertest";
-import * as sinon from "sinon";
+import request from "supertest";
+import sinon from "sinon";
+
+const loginUrl = config.get<string>("adminWeb.login_url");
 
 describe("Confirm Delete page", () => {
   beforeEach(() => {
@@ -25,13 +27,13 @@ describe("Confirm Delete page", () => {
         .get("/deleteitem")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(loginUrl)).to.be.true;
         });
     });
 
     it("should not return Confirm Delete User Profile page when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {canImportDefinition: true});
@@ -43,8 +45,8 @@ describe("Confirm Delete page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
           expect(dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
           expect(currentUserHiddenInput).not.to.be.empty;
@@ -52,14 +54,14 @@ describe("Confirm Delete page", () => {
           expect(user.forename).to.equal("Test");
           expect(user.surname).to.equal("User");
           // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
-          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-          expect(menuItem).to.equal("Import Case Definition");
+          const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+          expect(menuItem).to.contain("Import Case Definition");
         });
     });
 
     it("should not return Confirm Delete Definition page when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -75,8 +77,8 @@ describe("Confirm Delete page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
           expect(dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
           expect(currentUserHiddenInput).not.to.be.empty;
@@ -84,14 +86,14 @@ describe("Confirm Delete page", () => {
           expect(user.forename).to.equal("Test");
           expect(user.surname).to.equal("User");
           // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
-          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-          expect(menuItem).to.equal("Import Case Definition");
+          const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+          expect(menuItem).to.contain("Import Case Definition");
         });
     });
 
     it("should return Confirm Delete User Profile page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});
@@ -114,8 +116,8 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete Definition page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -142,8 +144,8 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete User Role page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});

@@ -1,10 +1,10 @@
-import * as request from "superagent";
-import * as config from "config";
+import request from "superagent";
+import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 
 export function deleteUserProfile(req) {
     const logger = Logger.getLogger(__filename);
-    const url = config.get("adminWeb.userprofiles_url");
+    const url = config.get<string>("adminWeb.userprofiles_url");
 
     const headers = {
         Accept: "application/json",
@@ -17,7 +17,7 @@ export function deleteUserProfile(req) {
         .set("Content-Type", "application/json")
         .set(headers)
         .then((res) => {
-            logger.info(`Delete user profile : ${res.text}`);
+            logger.info(`Deleted user profile: ${req.body.idamId}`);
             return res;
         })
         .catch((error) => {

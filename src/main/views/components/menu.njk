@@ -1,0 +1,76 @@
+<div class="govuk-service-navigation" data-module="govuk-service-navigation">
+  <div class="padding">
+    <div class="govuk-service-navigation__container">
+      <span class="govuk-service-navigation__service-name">
+        <a href="/#" class="govuk-service-navigation__link">
+          CCD Admin Web
+        </a>
+      </span>
+      {% if adminWebAuthorization %}
+      <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+        <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden aria-hidden="true">
+          Menu
+        </button>
+        <ul class="govuk-service-navigation__list" id="navigation">
+          {% if adminWebAuthorization.canImportDefinition %}
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="/import">
+              Import Case Definition
+            </a>
+          </li>
+          {% endif %}
+          {% if adminWebAuthorization.canManageUserProfile %}
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="/jurisdiction?dest=userprofiles">
+              Manage User Profiles
+            </a>
+          </li>
+          {% endif %}
+          {% if adminWebAuthorization.canManageUserRole %}
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="/user-roles">
+              Manage User Roles
+            </a>
+          </li>
+          {% endif %}
+          {% if adminWebAuthorization.canManageDefinition %}
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="/jurisdiction?dest=definitions">
+              Manage Definitions
+            </a>
+          </li>
+          {% endif %}
+          {% if adminWebAuthorization.canImportDefinition %}
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="/elasticsearch">
+              Create Elasticsearch Indices
+            </a>
+          </li>
+          {% endif %}
+          {% if adminWebAuthorization.canImportDefinition %}
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="/globalsearch">
+              Create Global Search Indices
+            </a>
+          </li>
+          {% endif %}
+          {% if adminWebAuthorization.canManageWelshTranslation %}
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="/welshDictionary">
+              Welsh Translations
+            </a>
+          </li>
+          {% endif %}
+          {% if adminWebAuthorization.canLoadWelshTranslation or adminWebAuthorization.canManageWelshTranslation %}
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="/manageWelshDictionary">
+              Manage Welsh Translations
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+  </div>
+</div>

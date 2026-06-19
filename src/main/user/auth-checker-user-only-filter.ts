@@ -1,8 +1,8 @@
 import { authorize } from "./user-request-authorizer";
-import { get } from "config";
+import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 
-export const authCheckerUserOnlyFilter = (req, res, next) => {
+export const authCheckerUserOnlyFilter = (req: any, res: any, next: any) => {
 
   const PATH_OAUTH2_REDIRECT = "/oauth2redirect";
   // let originalUrl = req.originalUrl;
@@ -10,6 +10,9 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
   const REDIRECT_URI = encodeURIComponent(`${req.protocol}://${req.get("host")}${PATH_OAUTH2_REDIRECT}`);
   req.authentication = {};
   const logger = Logger.getLogger(__filename);
+
+  const adminWebLoginUrl: string = config.get<string>("adminWeb.login_url");
+  const idamClientId: string = config.get<string>("idam.oauth2.client_id");
 
   authorize(req)
     .then((user) => req.authentication.user = user)
@@ -19,8 +22,8 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
       if (error.status === 403) {
         next(error);
       } else {
-        res.redirect(302, `${get("adminWeb.login_url")}?response_type=code&client_id=` +
-          `${get("idam.oauth2.client_id")}&redirect_uri=${REDIRECT_URI}`);
+        res.redirect(302, `${adminWebLoginUrl}?response_type=code&client_id=` +
+          `${idamClientId}&redirect_uri=${REDIRECT_URI}`);
       }
     });
 };

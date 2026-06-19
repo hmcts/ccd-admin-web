@@ -1,14 +1,14 @@
-import * as config from "config";
-import * as request from "superagent";
+import config from "config";
+import request from "superagent";
 import { Logger } from "@hmcts/nodejs-logging";
 import { Definition } from "../domain/definition";
 
 export function createDefinition(req, definition: Definition) {
     const logger = Logger.getLogger(__filename);
-    let url = config.get("adminWeb.createdefinition_url");
+    let url = config.get<string>("adminWeb.createdefinition_url");
 
     if (req.body.update) {
-        url = config.get("adminWeb.updatedefinition_url");
+        url = config.get<string>("adminWeb.updatedefinition_url");
     }
 
     const headers = {

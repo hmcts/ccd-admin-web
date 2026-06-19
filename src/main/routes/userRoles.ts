@@ -1,11 +1,12 @@
-import * as config from "config";
-import * as express from "express";
+import config from "config";
+import express from "express";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { fetch } from "../service/get-service";
 import { sanitize } from "../util/sanitize";
 import { saveUserRole } from "../service/update-user-role";
 import { UserRole } from "../domain/userrole";
 import { Validator } from "../validators/validate";
+import path from "node:path";
 
 const router = express.Router();
 const errorPage = "error";
@@ -15,10 +16,10 @@ const createUserRoleText = "Create";
 const updateUserRoleText = "Update";
 const createUserRoleHeading = "Create User Role";
 const updateUserRoleHeading = "Update User Role";
-const url = config.get("adminWeb.alluserroles_url");
+const url = config.get<string>("adminWeb.alluserroles_url");
 
 /* GET User roles landing page. */
-router.get("/user-roles", (req, res, next) => {
+router.get("/user-roles", (req: any, res: any, next: any) => {
   const responseContent: { [k: string]: any } = {};
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
   responseContent.user = sanitize(JSON.stringify(req.authentication.user));
@@ -28,7 +29,7 @@ router.get("/user-roles", (req, res, next) => {
 });
 
 /* GET User roles landing page. */
-router.get("/user-roles-list", (req, res, next) => {
+router.get("/user-roles-list", (req: any, res: any, next: any) => {
   const responseContent: { [k: string]: any } = {};
   responseContent.adminWebAuthorization = req.adminWebAuthorization;
   responseContent.user = sanitize(JSON.stringify(req.authentication.user));
@@ -47,7 +48,7 @@ function fetchUserRolesIfAuthorizedOrError(req, res, next, responseContent) {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     fetch(req, url).then((response) => {
         responseContent.userroles = JSON.parse(sanitize(response));
-        res.render("user-roles", responseContent);
+        res.render(path.join("user-roles", "view-user-roles"), responseContent);
     })
     .catch((error) => {
       // Call the next middleware, which is the error handler
@@ -59,7 +60,7 @@ function fetchUserRolesIfAuthorizedOrError(req, res, next, responseContent) {
 }
 
 /* GET create user roles form. */
-router.get("/create-user-role-form", (req, res, next) => {
+router.get("/create-user-role-form", (req: any, res: any, next: any) => {
   if (req.query.save) {
     delete req.session.error;
   }
@@ -70,13 +71,13 @@ router.get("/create-user-role-form", (req, res, next) => {
     responseContent.submitUserRoleEndPoint = "/createuserrole";
     responseContent.securityClassifications = classifications;
     responseContent.heading = sanitize(createUserRoleHeading);
-    responseContent.submitButtonText = sanitize(createUserRoleText);
+    responseContent.submitButtonText = createUserRoleText;
 
     if (req.session.error) {
       responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
       responseContent.update = req.session.error.errorBy === "update";
     }
-    res.render("user-roles/create-user-roles", responseContent);
+    res.render(path.join("user-roles", "manage-user-role-form"), responseContent);
   } else {
     res.render(errorPage, error_unauthorized_role(req));
   }
@@ -118,11 +119,11 @@ function validateUpdateForm(req, res, next) {
   validateAndRedirect(req, res, next, "/user-roles-list");
 }
 
-router.post("/createuserrole", validateCreate, (req, res, next) => {
+router.post("/createuserrole", validateCreate, (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
   saveUserRole(req, new UserRole(sanitize(req.body.role), sanitize(req.body.classification)), true)
     .then((response) => {
-      req.session.success = `User role created.`;
+      req.session.success = "User role created.";
       res.redirect(302, "/user-roles-list");
     })
     .catch((error) => {
@@ -137,7 +138,7 @@ router.post("/createuserrole", validateCreate, (req, res, next) => {
   }
 });
 
-router.post("/updateuserroleform", validateUpdateForm, (req, res, next) => {
+router.post("/updateuserroleform", validateUpdateForm, (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     processResponse(req, res);
   } else {
@@ -145,11 +146,11 @@ router.post("/updateuserroleform", validateUpdateForm, (req, res, next) => {
   }
 });
 
-router.post("/updateuserrole", validateUpdate, (req, res, next) => {
+router.post("/updateuserrole", validateUpdate, (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     saveUserRole(req, new UserRole(sanitize(req.body.role), sanitize(req.body.classification)), false)
       .then((response) => {
-        req.session.success = `User role updated.`;
+        req.session.success = "User role updated.";
         res.redirect(302, "/user-roles-list");
       })
       .catch((error) => {
@@ -174,11 +175,11 @@ function processResponse(req, res) {
   responseContent.securityClassifications = classifications;
   responseContent.chosenClassification = sanitize(req.body.classification);
   responseContent.heading = sanitize(updateUserRoleHeading);
-  responseContent.submitButtonText = sanitize(updateUserRoleText);
+  responseContent.submitButtonText = updateUserRoleText;
   if (req.session.error) {
     responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
   }
-  res.render("user-roles/create-user-roles", responseContent);
+  res.render(path.join("user-roles", "manage-user-role-form"), responseContent);
 }
 
 export default router;

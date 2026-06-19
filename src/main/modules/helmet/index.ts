@@ -1,5 +1,5 @@
-import * as express from "express";
-import * as helmet from "helmet";
+import express from "express";
+import helmet from "helmet";
 
 export interface IConfig {
   referrerPolicy: string;
@@ -37,6 +37,7 @@ export class Helmet {
       {
         directives: {
           connectSrc: [self],
+          manifestSrc: [self],
           defaultSrc: ["'none'"],
           fontSrc: [self, "data:"],
           imgSrc: [self, googleAnalyticsDomain, hmctsPiwikDomain],

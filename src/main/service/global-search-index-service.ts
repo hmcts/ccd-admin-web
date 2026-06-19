@@ -1,10 +1,10 @@
-import * as config from "config";
+import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
-import * as request from "superagent";
+import request from "superagent";
 
 export function createGlobalSearchIndex(req) {
   const logger = Logger.getLogger(__filename);
-  const url = config.get("adminWeb.global_search_index_url");
+  const url = config.get<string>("adminWeb.global_search_index_url");
 
   const headers = {
     Authorization: req.accessToken,

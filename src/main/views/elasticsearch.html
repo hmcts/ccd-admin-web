@@ -1,5 +1,4 @@
-{% extends "layout_template.html" %}
-{% from "macros/formElements.html" import errorDisplay %}
+{% extends "layout_template.njk" %}
 
 {% block head %}
   {{ super() }}
@@ -13,6 +12,8 @@
       $(indexButtonId).click(function() {
         $.get(`{{caseTypesUrl}}`, function(caseTypes) { 
           initIndicesCreation(caseTypes);
+        }).fail(function(error) {
+          $(indexResultId).append($(`<div style="color: red;">Error occurred getting case types : ${error.responseText}</div>`));
         });
       });
     });
@@ -50,19 +51,20 @@
 {% endblock %}
 
 {% block content %}
-{% include "menu.html" %}
-<h2 class="heading-large padding">Create Elasticsearch Indices</h2>
-<div class="grid-row padding">
-  <div class="column-two-thirds">
-    <div>
-      <p>Create Elasticsearch indices for all known case types.</p>
-      <p>This functionality removes the need to upload all spreadsheet definitions whenever all 
-        Elasticsearch indices are required to be recreated - for example during a reindex of Elasticsearch. 
-        It should only be used for its intended purpose to avoid potential performance issues.</p>
-      <p>Any errors encountered during processing are highlighted in red.</p>
-      <button id="index-btn" type="submit" class="button" value="Submit">Submit</button>
+  <h1 class="govuk-heading-l">Create Elasticsearch Indices</h1>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-body">
+        <p>Create Elasticsearch indices for all known case types.</p>
+        <p>
+          This functionality removes the need to upload all spreadsheet definitions whenever all 
+          Elasticsearch indices are required to be recreated - for example during a reindex of Elasticsearch. 
+          It should only be used for its intended purpose to avoid potential performance issues.
+        </p>
+        <p>Any errors encountered during processing are highlighted in red.</p>
+        <button id="index-btn" type="submit" class="govuk-button" data-module="govuk-button" value="Submit">Submit</button>
+      </div>
+      <div id="index-result" style="font-family: monospace;"></div>
     </div>
-    <div id="index-result" style="font-family: monospace;"></div>
   </div>
-</div>
 {% endblock %}
