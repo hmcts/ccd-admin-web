@@ -8,6 +8,7 @@
         <div class="govuk-form-group">
           {% include "components/response.njk" %}
           {{ errorsFor("file", error) }}
+          <label class="govuk-label" for="file">Choose a file to upload</label>
           <input class="govuk-input" type="file" id="file" name="file" accept=".xlsx"/>
         </div>
         <div class="govuk-form-group">
