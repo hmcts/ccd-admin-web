@@ -1,12 +1,12 @@
 import {fail} from "assert";
-import * as promisify from "es6-promisify";
 import * as pa11y from "pa11y";
 import * as supertest from "supertest";
+import {promisify} from "util";
 import {app} from "../../main/app";
 
 const agent = supertest.agent(app);
 const pa11yTest = pa11y();
-const test = promisify(pa11yTest.run, pa11yTest);
+const test = promisify(pa11yTest.run.bind(pa11yTest));
 
 describe("Accessibility", () => {
 

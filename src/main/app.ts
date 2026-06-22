@@ -5,7 +5,7 @@ import * as config from "config";
 import * as cookieParser from "cookie-parser";
 import * as csrf from "csurf";
 import * as express from "express";
-import * as expressNunjucks from "express-nunjucks";
+import { expressNunjucks } from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import { sanitize } from "./util/sanitize";
