@@ -191,7 +191,7 @@
     "brace-expansion": "^1.1.13",
     "cookie": "^1.1.1",
     "diff": "^9.0.0"
-  },
+    },
   "nyc": {
     "extension": [
       ".ts"
