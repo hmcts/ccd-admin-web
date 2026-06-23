@@ -138,6 +138,7 @@
     "y18n": "^5.0.5",
     "hosted-git-info": "^3.0.8",
     "xmlhttprequest-ssl": "^1.6.2",
+    "@tootallnate/once@npm:2": "npm:2.0.1",
     "handlebars": "^4.7.7",
     "merge": "^2.1.1",
     "trim-newlines": "^3.0.1",
@@ -173,6 +174,7 @@
     "cookiejar": "^2.1.4",
     "ua-parser-js": "^1.0.0",
     "http-cache-semantics": "^4.1.1",
+    "protobufjs": "npm:8.5.0",
     "jackspeak": "2.3.6",
     "semver": "7.8.4",
     "ip": "2.0.1",
@@ -189,7 +191,7 @@
     "brace-expansion": "^1.1.13",
     "cookie": "^1.1.1",
     "diff": "^9.0.0"
-  },
+    },
   "nyc": {
     "extension": [
       ".ts"
