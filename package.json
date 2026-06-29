@@ -87,7 +87,7 @@
     "chai-as-promised": "^8.0.0",
     "cookie": "^1.1.1",
     "eslint": "^9.39.4",
-    "eslint-plugin-mocha": "^5.3.0",
+    "eslint-plugin-mocha": "^11.0.0",
     "fetch-mock": "^6.4.2",
     "gulp": "^4.0.2",
     "gulp-livereload": "^3.8.1",
@@ -138,6 +138,7 @@
     "y18n": "^5.0.5",
     "hosted-git-info": "^3.0.8",
     "xmlhttprequest-ssl": "^1.6.2",
+    "@tootallnate/once@npm:2": "npm:2.0.1",
     "handlebars": "^4.7.7",
     "merge": "^2.1.1",
     "trim-newlines": "^3.0.1",
@@ -173,8 +174,9 @@
     "cookiejar": "^2.1.4",
     "ua-parser-js": "^1.0.0",
     "http-cache-semantics": "^4.1.1",
+    "protobufjs": "npm:protobufjs@8.6.5",
     "jackspeak": "2.3.6",
-    "semver": "7.8.3",
+    "semver": "7.8.5",
     "ip": "2.0.1",
     "micromatch": "^4.0.8",
     "picomatch@npm:^2.0.4": "npm:2.3.2",
@@ -189,7 +191,7 @@
     "brace-expansion": "^1.1.13",
     "cookie": "^1.1.1",
     "diff": "^9.0.0"
-  },
+    },
   "nyc": {
     "extension": [
       ".ts"
@@ -214,5 +216,5 @@
     "all": true
   },
   "snyk": true,
-  "packageManager": "yarn@4.16.0"
+  "packageManager": "yarn@4.17.0"
 }
