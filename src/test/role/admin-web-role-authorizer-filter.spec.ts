@@ -34,7 +34,7 @@ describe("admin-web-role-authorizer-filter", () => {
     };
 
     config.get.withArgs("adminWeb.authorization_url").returns(adminWebAuthorizationUrl);
-    config.get.withArgs("idam.web_public_url").returns(loginUrl);
+    config.get.withArgs("idam.hmcts_access_url").returns(loginUrl);
     config.get.withArgs("idam.oauth2.client_id").returns(clientId);
 
     filter = proxyquire("../../main/role/admin-web-role-authorizer-filter", {

@@ -2,11 +2,8 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
+    IDAM_HMCTS_ACCESS_URL: https://idam-web-public.aat.platform.hmcts.net
     IDAM_S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-    IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
-    IDAM_WEB_PUBLIC_URL: https://idam-web-public.aat.platform.hmcts.net
-    IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
-    IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
     ADMINWEB_IMPORT_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/import
     ADMINWEB_JURISDICTIONS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/data/jurisdictions
     ADMINWEB_USER_PROFILE_URL: http://ccd-user-profile-api-aat.service.core-compute-aat.internal/users

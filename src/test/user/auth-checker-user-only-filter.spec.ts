@@ -38,7 +38,7 @@ describe("authCheckerUserOnlyFilter", () => {
     const config = {
       get: sinon.stub(),
     };
-    config.get.withArgs("idam.web_public_url").returns(loginUrl);
+    config.get.withArgs("idam.hmcts_access_url").returns(loginUrl);
     config.get.withArgs("idam.oauth2.client_id").returns(clientId);
     config.get.withArgs("idam.oauth2.scope").returns(scope);
 

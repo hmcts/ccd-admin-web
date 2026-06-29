@@ -23,11 +23,8 @@ The following environment variables are required:
 | ADMINWEB_IMPORT_URL                  | http://localhost:4451/import | URL of the Case Definition Store API `import` endpoint. default for the dockerised local instance.                                              |
 | APPINSIGHTS_INSTRUMENTATIONKEY       | - | Secret for Microsoft Insights logging, can be a dummy string in local.                                                                                                 |
 | IDAM_ADMIN_WEB_SERVICE_KEY           | - | Case Admin Web's IdAM S2S micro-service secret key. This must match the IdAM instance it's being run against.                                                          |
-| IDAM_BASE_URL                        | http://localhost:5000 | Base URL for IdAM's User API service (idam-app). default for the dockerised local instance or tunnelled `dev` instance.                            |
+| IDAM_HMCTS_ACCESS_URL                | http://localhost:9002 | Base URL for IdAM's HMCTS Acccess service (idam-hmcts-access). default for the dockerised local instance or tunnelled `dev` instance.                            |
 | IDAM_S2S_URL                         | http://localhost:4502 | Base URL for IdAM's S2S API service (service-auth-provider). default for the dockerised local instance or tunnelled `dev` instance.                |
-| IDAM_WEB_PUBLIC_URL                   | https://localhost:9002 | Base URL of the IdAM Authentication Web. default for the dockerised local instance.                                                     |
-| IDAM_OAUTH2_LOGOUT_ENDPOINT          | http://localhost:5000/session/:token | URL of the IdAM Authentication Web `logout` page. default for the dockerised local instance.                                             |
-| IDAM_OAUTH2_TOKEN_ENDPOINT           | http://localhost:5000/oauth2/token | URL of the IdAM OAuth2 API endpoint for obtaining an OAuth2 token. default for the dockerised local instance or tunnelled `dev` instance. |
 | IDAM_OAUTH2_AW_CLIENT_SECRET         | - | Secret to be passed to IdAM when obtaining an OAuth2 token. This must match the IdAM instance it's being run against.                                                  |
 
 ### Building

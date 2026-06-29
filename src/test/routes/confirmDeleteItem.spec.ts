@@ -25,7 +25,7 @@ describe("Confirm Delete page", () => {
         .get("/deleteitem")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("idam.web_public_url"))).to.be.true;
+          expect(res.headers.location.startsWith(get("idam.hmcts_access_url"))).to.be.true;
         });
     });
 

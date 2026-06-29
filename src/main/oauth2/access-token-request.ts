@@ -27,7 +27,7 @@ export function accessTokenRequest(request) {
     redirect_uri: completeRedirectURI(request.query.redirect_uri),
   };
   const logger = Logger.getLogger(__filename);
-  return fetch(get("idam.oauth2.token_endpoint") + format({ query: params }), options)
+  return fetch(get("idam.hmcts_access_url") + "/o/token" + format({ query: params }), options)
     .then((response) =>
       response.status === 200 ? response : response.text().then((text) => Promise.reject(new Error(text))))
     .then((response) => response.json())
