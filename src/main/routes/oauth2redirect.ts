@@ -6,7 +6,28 @@ export const COOKIE_ACCESS_TOKEN = "accessToken";
 const router = express.Router();
 
 export const oauth2redirect = (req, res, next) => {
-  if (req.query.code) {
+  const expectedState = req.session && req.session.oauthState;
+  const rawState = req.query && req.query.state;
+  const receivedState = Array.isArray(rawState) ? rawState[0] : rawState;
+
+  if (!expectedState || !receivedState || expectedState !== receivedState) {
+    if (req.session) {
+      delete req.session.oauthState;
+    }
+    return next({
+      message: "Invalid state parameter - possible CSRF attack",
+      status: 400,
+    });
+  }
+  // Single-use nonce: consume immediately after successful validation.
+  delete req.session.oauthState;
+
+  if (!req.query.code) {
+    return next({
+      message: "Unable to obtain access token - no OAuth2 code provided",
+      status: 400,
+    });
+  } else {
     // On successfully obtaining a token, the redirect should go back to ourselves.
     // Note: This *must not* include any query string.
     req.query.redirect_uri = `${req.protocol}://${req.get("host")}${req.originalUrl}`
@@ -23,8 +44,6 @@ export const oauth2redirect = (req, res, next) => {
         res.redirect(302, "/");
       })
       .catch((err) => next(err));
-  } else {
-    throw new Error("Unable to obtain access token - no OAuth2 code provided");
   }
 };
 
