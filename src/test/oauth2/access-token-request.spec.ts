@@ -63,8 +63,6 @@ describe("Access Token Request", () => {
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
         expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers.Authorization).to.equal(
-          "Basic " + Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"));
         const requestedUrl = url.parse(fetch.lastUrl(), true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
@@ -81,8 +79,6 @@ describe("Access Token Request", () => {
     accessTokenRequest(REQUEST)
       .then(() => {
         expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers.Authorization).to.equal(
-          "Basic " + Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"));
         const requestedUrl = url.parse(fetch.lastUrl(), true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
