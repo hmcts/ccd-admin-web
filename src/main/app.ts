@@ -25,6 +25,8 @@ const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
 
 app.locals.ENV = env;
+app.locals.elasticSearchReindexEnabled =
+  String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true";
 
 // setup logging of HTTP requests
 app.use(Express.accessLogger());
