@@ -2,7 +2,7 @@ import { Express, Logger } from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as express from "express";
-import * as expressNunjucks from "express-nunjucks";
+import { expressNunjucks } from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import * as config from "config";
