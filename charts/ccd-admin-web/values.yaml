@@ -56,6 +56,7 @@ nodejs:
   keyVaults:
     ccd:
       secrets:
+        - session-keys
         - microservicekey-ccd-admin
         - ccd-admin-web-oauth2-client-secret
         - AppInsightsInstrumentationKey
