@@ -4,7 +4,7 @@ import * as fetch from "node-fetch";
 import { get } from "config";
 
 const router = express.Router();
-const TOKEN_PLACEHOLDER = ":token";
+const IDAM_SESSION_COOKIE = "Idam.Session";
 
 export const logout = (req, res, next) => {
   const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];
@@ -17,11 +17,12 @@ export const logout = (req, res, next) => {
             .toString("base64"),
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      method: "DELETE",
+      method: "GET",
     };
-    fetch(get("idam.oauth2.logout_endpoint").replace(TOKEN_PLACEHOLDER, accessToken), options)
+    fetch(get("idam.hmcts_access_url") + "/o/endSession?token=" + accessToken, options)
       .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
+        res.clearCookie(IDAM_SESSION_COOKIE);
         // Delete the session
         req.session = null;
         // Redirect to / (index), which will itself redirect to IdAM login page, as the user is not authenticated

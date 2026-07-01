@@ -8,6 +8,7 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
   // let originalUrl = req.originalUrl;
   // originalUrl += req.originalUrl.endsWith("/") ? "" : "/";
   const REDIRECT_URI = encodeURIComponent(`${req.protocol}://${req.get("host")}${PATH_OAUTH2_REDIRECT}`);
+  const SCOPE = encodeURIComponent(get("idam.oauth2.scope"));
   req.authentication = {};
   const logger = Logger.getLogger(__filename);
 
@@ -19,8 +20,8 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
       if (error.status === 403) {
         next(error);
       } else {
-        res.redirect(302, `${get("adminWeb.login_url")}?response_type=code&client_id=` +
-          `${get("idam.oauth2.client_id")}&redirect_uri=${REDIRECT_URI}`);
+        res.redirect(302, `${get("idam.hmcts_access_url")}/o/authorize?response_type=code&client_id=` +
+          `${get("idam.oauth2.client_id")}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}`);
       }
     });
 };
