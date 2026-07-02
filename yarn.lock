@@ -3120,7 +3120,7 @@ __metadata:
     formidable: "npm:^3.5.4"
     govuk-elements-sass: "npm:~3.1.0"
     govuk-frontend: "npm:^1.0.0"
-    govuk_frontend_toolkit: "npm:~6.0.1"
+    govuk_frontend_toolkit: "npm:~9.0.0"
     govuk_template_jinja: "npm:^0.26.0"
     govuk_template_mustache: "npm:^0.26.0"
     gulp: "npm:^4.0.2"
@@ -5953,10 +5953,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk_frontend_toolkit@npm:~6.0.1":
-  version: 6.0.4
-  resolution: "govuk_frontend_toolkit@npm:6.0.4"
-  checksum: 10/b1e66826aae8188f5e68d19dec2a27a4118bdb26c6c1d1b79d3d4c1ecbeb1ce81dca674285c6e65cc3b25367c49ebc28a07e0e783a88ca69e2f5fb917dca11d3
+"govuk_frontend_toolkit@npm:~9.0.0":
+  version: 9.0.1
+  resolution: "govuk_frontend_toolkit@npm:9.0.1"
+  checksum: 10/78e8c79b8a1cc2f9b06b224cc5f79fa17ff24eb03ab1477fb7b64c1270b0e317fbef4b5d8ff541d324f1d88fb386711a6645d0431479626f5f1a43a55f54d026
   languageName: node
   linkType: hard
 
