@@ -44,7 +44,7 @@
     "express-force-https": "^1.0.0",
     "express-force-ssl": "^0.3.2",
     "express-nunjucks": "^2.2.5",
-    "fast-csv": "^4.3.6",
+    "fast-csv": "^5.0.0",
     "form-data": "^4.0.4",
     "formidable": "^3.5.4",
     "govuk-elements-sass": "~3.1.0",
