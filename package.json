@@ -170,11 +170,11 @@
     "minimatch": "3.1.5",
     "engine.io": "^6.2.1",
     "json5": "^2.2.2",
-    "decode-uri-component": "^0.4.0",
+    "decode-uri-component": "^0.5.0",
     "cookiejar": "^2.1.4",
     "ua-parser-js": "^1.0.0",
     "http-cache-semantics": "^4.1.1",
-    "protobufjs": "npm:8.5.0",
+    "protobufjs": "npm:protobufjs@8.6.5",
     "jackspeak": "2.3.6",
     "semver": "7.8.5",
     "ip": "2.0.1",
@@ -216,5 +216,5 @@
     "all": true
   },
   "snyk": true,
-  "packageManager": "yarn@4.16.0"
+  "packageManager": "yarn@4.17.0"
 }

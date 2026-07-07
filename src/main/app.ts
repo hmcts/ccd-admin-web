@@ -28,6 +28,8 @@ export const app: express.Express = express();
 const appHealth: express.Express = express();
 
 app.locals.ENV = env;
+app.locals.elasticSearchReindexEnabled =
+  String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true";
 
 // Session
 app.set("trust proxy", 1); // trust first proxy
