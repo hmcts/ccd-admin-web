@@ -2284,7 +2284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"anymatch@npm:~3.1.1, anymatch@npm:~3.1.2":
+"anymatch@npm:~3.1.2":
   version: 3.1.3
   resolution: "anymatch@npm:3.1.3"
   dependencies:
@@ -2535,26 +2535,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"assign-deep@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "assign-deep@npm:1.0.1"
-  dependencies:
-    assign-symbols: "npm:^2.0.2"
-  checksum: 10/26b4fe871c109dbcd28a3f317388e59e49793e2129b6c5e0dd413c47af80242f092d47627b1f6f4f98c1c3960d93cfe990df02684c3469044fe33ba3019fda62
-  languageName: node
-  linkType: hard
-
 "assign-symbols@npm:^1.0.0":
   version: 1.0.0
   resolution: "assign-symbols@npm:1.0.0"
   checksum: 10/c0eb895911d05b6b2d245154f70461c5e42c107457972e5ebba38d48967870dee53bcdf6c7047990586daa80fab8dab3cc6300800fbd47b454247fdedd859a2c
-  languageName: node
-  linkType: hard
-
-"assign-symbols@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "assign-symbols@npm:2.0.2"
-  checksum: 10/98429fd55c435cf3762a0d8276659a09305e7ca0eb97f4f723f9e3b94f1fca1eb61bdca48d16db0eef8c31e743c9ec55d545646a52604896ce2154439c2fd47d
   languageName: node
   linkType: hard
 
@@ -3113,7 +3097,7 @@ __metadata:
     express: "npm:^4.17.3"
     express-force-https: "npm:^1.0.0"
     express-force-ssl: "npm:^0.3.2"
-    express-nunjucks: "npm:^2.2.5"
+    express-nunjucks: "npm:^3.0.0"
     fast-csv: "npm:^4.3.6"
     fetch-mock: "npm:^6.4.2"
     form-data: "npm:^4.0.4"
@@ -3270,25 +3254,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:3.3.1":
-  version: 3.3.1
-  resolution: "chokidar@npm:3.3.1"
-  dependencies:
-    anymatch: "npm:~3.1.1"
-    braces: "npm:~3.0.2"
-    fsevents: "npm:~2.1.2"
-    glob-parent: "npm:~5.1.0"
-    is-binary-path: "npm:~2.1.0"
-    is-glob: "npm:~4.0.1"
-    normalize-path: "npm:~3.0.0"
-    readdirp: "npm:~3.3.0"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  checksum: 10/871c6af03abe2f91f91069a27f68b5e26ed06a9e09b6f350c5dafc37f558cdb5e51383346ca1f5941746ea59d0406e15a7c9de675b84a1f310df609ce8083a78
-  languageName: node
-  linkType: hard
-
 "chokidar@npm:^2.0.0":
   version: 2.1.8
   resolution: "chokidar@npm:2.1.8"
@@ -3312,7 +3277,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:^3.5.1, chokidar@npm:^3.5.2":
+"chokidar@npm:^3.5.1, chokidar@npm:^3.5.2, chokidar@npm:^3.6.0":
   version: 3.6.0
   resolution: "chokidar@npm:3.6.0"
   dependencies:
@@ -3495,13 +3460,6 @@ __metadata:
     process-nextick-args: "npm:^2.0.0"
     readable-stream: "npm:^2.3.5"
   checksum: 10/81e17fe4b2901e2d9899717e1d4ed88bd1ede700b819b77c61f7402b9ca97c4769692d85bd74710be806f31caf33c62acdea49d5bbe8794a66ade01c9c2d5a6d
-  languageName: node
-  linkType: hard
-
-"co@npm:4.6.0":
-  version: 4.6.0
-  resolution: "co@npm:4.6.0"
-  checksum: 10/a5d9f37091c70398a269e625cedff5622f200ed0aa0cff22ee7b55ed74a123834b58711776eb0f1dc58eb6ebbc1185aa7567b57bd5979a948c6e4f85073e2c05
   languageName: node
   linkType: hard
 
@@ -4463,13 +4421,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es6-promisify@npm:7.0.0":
-  version: 7.0.0
-  resolution: "es6-promisify@npm:7.0.0"
-  checksum: 10/461305147b62bb00624cbfa986227eb2d7a12c21a696bb30e7f3f3182d899ea3436a9500900cd63e35ddbc68119ad305e243f25b4e0d1b207347361ab4f4579e
-  languageName: node
-  linkType: hard
-
 "es6-set@npm:~0.1.5":
   version: 0.1.6
   resolution: "es6-set@npm:0.1.6"
@@ -4903,13 +4854,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-nunjucks@npm:^2.2.5":
-  version: 2.2.5
-  resolution: "express-nunjucks@npm:2.2.5"
+"express-nunjucks@npm:^3.0.0":
+  version: 3.1.2
+  resolution: "express-nunjucks@npm:3.1.2"
   dependencies:
-    assign-deep: "npm:1.0.1"
-    nunjucks-async-loader: "npm:1.1.5"
-  checksum: 10/14710a6956d37527b7931b0b4c2bae2a41621629054600cebc3f10bc919c0fd2f0f69e91eb898d329325788080a743273594f49d50e18298af14e169cb993f63
+    nunjucks-async-loader: "npm:^2.1.3"
+  peerDependencies:
+    express: ^4.19.2
+    nunjucks: ^3.2.4
+  checksum: 10/d5c259a26b2a81c60ac1406a9ce3245c142ebc5bf6903120aeb9fcc54215031824713913e032621f4ff101bbf4447a158de7a14b389fe81365629b859dbe32a8
   languageName: node
   linkType: hard
 
@@ -5551,16 +5504,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@npm:~2.1.2":
-  version: 2.1.3
-  resolution: "fsevents@npm:2.1.3"
-  dependencies:
-    node-gyp: "npm:latest"
-  checksum: 10/b604991f31d9ec772e278831bbe069eed8b6824b09b707eeb5c792ceb79fafa9db377981acf7555deab8f5818a75e5487d37b366f55e31d6ea62ea0e06fc777b
-  conditions: os=darwin
-  languageName: node
-  linkType: hard
-
 "fsevents@npm:~2.3.2":
   version: 2.3.3
   resolution: "fsevents@npm:2.3.3"
@@ -5577,15 +5520,6 @@ __metadata:
   dependencies:
     bindings: "npm:^1.5.0"
     nan: "npm:^2.12.1"
-  conditions: os=darwin
-  languageName: node
-  linkType: hard
-
-"fsevents@patch:fsevents@npm%3A~2.1.2#optional!builtin<compat/fsevents>":
-  version: 2.1.3
-  resolution: "fsevents@patch:fsevents@npm%3A2.1.3#optional!builtin<compat/fsevents>::version=2.1.3&hash=31d12a"
-  dependencies:
-    node-gyp: "npm:latest"
   conditions: os=darwin
   languageName: node
   linkType: hard
@@ -8606,14 +8540,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nunjucks-async-loader@npm:1.1.5":
-  version: 1.1.5
-  resolution: "nunjucks-async-loader@npm:1.1.5"
+"nunjucks-async-loader@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "nunjucks-async-loader@npm:2.1.3"
   dependencies:
-    chokidar: "npm:3.3.1"
-    co: "npm:4.6.0"
-    es6-promisify: "npm:6.1.0"
-  checksum: 10/84818c33b1692f17be3f41f2521d1931c5eab495b20998b9c41fa1c531ba3e8570ef42397a116e6e689113d8bad03504e8a6a8e16879ed4b19d1c818a35d6109
+    chokidar: "npm:^3.6.0"
+  peerDependencies:
+    nunjucks: ^3.2.4
+  checksum: 10/87520b30000037ca6ae643517aa81342c427e8958c2bb8bb9af080b1d9ed764c75b90d2ace2bb8c50837d20a6f018131fc6754cc17f9f31d025d37175b8d6a68
   languageName: node
   linkType: hard
 
@@ -9804,15 +9738,6 @@ __metadata:
   version: 5.0.0
   resolution: "readdirp@npm:5.0.0"
   checksum: 10/a17a591b51d8b912083660df159e8bd17305dc1a9ef27c869c818bd95ff59e3a6496f97e91e724ef433e789d559d24e39496ea1698822eb5719606dc9c1a923d
-  languageName: node
-  linkType: hard
-
-"readdirp@npm:~3.3.0":
-  version: 3.3.0
-  resolution: "readdirp@npm:3.3.0"
-  dependencies:
-    picomatch: "npm:^2.0.7"
-  checksum: 10/ac33180233ed33a84b770a91f405679721fd9d753ce4a63f6dd2fe0e2c3a86605aeba12496439958e6e5ed79eca254f90bdec888bd3a31691b8097b4cfebd865
   languageName: node
   linkType: hard
 
