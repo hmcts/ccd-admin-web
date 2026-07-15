@@ -12,6 +12,9 @@
     "target": "es5",
     "baseUrl": "src/main",
     "paths": {
+      "express-nunjucks": [
+        "types/express-nunjucks"
+      ],
       "router/*": [
         "router/*"
       ],
