@@ -85,7 +85,6 @@
     "ansi-regex": "^6.0.0",
     "chai": "^4.3.6",
     "chai-as-promised": "^8.0.0",
-    "cookie": "^1.1.1",
     "eslint": "^9.39.4",
     "eslint-plugin-mocha": "^11.0.0",
     "fetch-mock": "^6.4.2",
@@ -191,7 +190,7 @@
     "brace-expansion": "^1.1.13",
     "cookie": "^1.1.1",
     "diff": "^9.0.0"
-    },
+  },
   "nyc": {
     "extension": [
       ".ts"
