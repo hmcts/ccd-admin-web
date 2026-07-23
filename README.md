@@ -20,16 +20,12 @@ The following environment variables are required:
 
 | Name                                 | Default | Description                                                                                                                                                            |
 |--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| IDAM_BASE_URL                        | - | Base URL for IdAM's User API service (idam-app). `http://localhost:5000` for the dockerised local instance or tunnelled `dev` instance.                                |
-| IDAM_S2S_URL                         | - | Base URL for IdAM's S2S API service (service-auth-provider). `http://localhost:4502` for the dockerised local instance or tunnelled `dev` instance.                    |
-| IDAM_ADMIN_WEB_SERVICE_KEY           | - | Case Admin Web's IdAM S2S micro-service secret key. This must match the IdAM instance it's being run against.                                                          |
-| IDAM_LOGOUT_URL                      | - | URL of the IdAM Authentication Web `logout` page. `https://localhost:3501/login/logout` for the dockerised local instance.                                             |
-| IDAM_OAUTH2_TOKEN_ENDPOINT           | - | URL of the IdAM OAuth2 API endpoint for obtaining an OAuth2 token. `http://localhost:5000/oauth2/token` for the dockerised local instance or tunnelled `dev` instance. |
-| IDAM_OAUTH2_AW_CLIENT_SECRET         | - | Secret to be passed to IdAM when obtaining an OAuth2 token. This must match the IdAM instance it's being run against.                                                  |
-| ADMINWEB_LOGIN_URL                   | - | URL of the IdAM Authentication Web `login` page. `https://localhost:3501/login` for the dockerised local instance.                                                     |
-| ADMINWEB_IMPORT_URL                  | - | URL of the Case Definition Store API `import` endpoint. `http://localhost:4451/import` for the dockerised local instance.                                              |
-| ADMINWEB_UPLOAD_DICTIONARY_FILE_PATH | - | Path to local dir for upload.                                                                                                                                          |
+| ADMINWEB_IMPORT_URL                  | http://localhost:4451/import | URL of the Case Definition Store API `import` endpoint. default for the dockerised local instance.                                              |
 | APPINSIGHTS_INSTRUMENTATIONKEY       | - | Secret for Microsoft Insights logging, can be a dummy string in local.                                                                                                 |
+| IDAM_ADMIN_WEB_SERVICE_KEY           | - | Case Admin Web's IdAM S2S micro-service secret key. This must match the IdAM instance it's being run against.                                                          |
+| IDAM_HMCTS_ACCESS_URL                | http://localhost:9002 | Base URL for IdAM's HMCTS Acccess service (idam-hmcts-access). default for the dockerised local instance or tunnelled `dev` instance.                            |
+| IDAM_S2S_URL                         | http://localhost:4502 | Base URL for IdAM's S2S API service (service-auth-provider). default for the dockerised local instance or tunnelled `dev` instance.                |
+| IDAM_OAUTH2_AW_CLIENT_SECRET         | - | Secret to be passed to IdAM when obtaining an OAuth2 token. This must match the IdAM instance it's being run against.                                                  |
 
 ### Building
 

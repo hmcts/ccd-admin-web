@@ -16,15 +16,13 @@ security:
   roles_whitelist: "ccd-import"
   secure_auth_cookie_enabled: false
 idam:
-  base_url: http://localhost:5000
+  hmcts_access_url: http://localhost:9002
   s2s_url: http://localhost:4502
   service_name: ccd_admin
   oauth2:
-    token_endpoint: http://localhost:5000/oauth2/token
-    logout_endpoint: http://localhost:5000/session/:token
     client_id: ccd_admin
+    scope: 'openid profile roles'
 adminWeb:
-  login_url: https://localhost:3501/login
   import_url: http://localhost:4451/import
   whoami_url: http://localhost:4451/api/idam/profile
   authorization_url: http://localhost:4451/api/idam/adminweb/authorization

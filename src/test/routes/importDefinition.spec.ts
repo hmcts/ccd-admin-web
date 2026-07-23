@@ -21,7 +21,7 @@ describe("Import Definition page", () => {
         .get("/import")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(get("idam.hmcts_access_url"))).to.be.true;
         });
     });
 
@@ -194,7 +194,7 @@ describe("Import Definition page", () => {
         .post("/import")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(get("idam.hmcts_access_url"))).to.be.true;
         });
     });
 

@@ -22,7 +22,7 @@ describe("Index Elasticsearch page", () => {
         .get("/elasticsearch")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(get("idam.hmcts_access_url"))).to.be.true;
         });
     });
 
@@ -93,7 +93,7 @@ describe("Index Elasticsearch page", () => {
         .get("/elasticsearch/case-types")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(get("idam.hmcts_access_url"))).to.be.true;
         });
     });
 
@@ -177,7 +177,7 @@ describe("Index Elasticsearch page", () => {
         .get("/elasticsearch/index")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(get("idam.hmcts_access_url"))).to.be.true;
         });
     });
 
