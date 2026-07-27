@@ -12,6 +12,7 @@ const healthCheckRouter = express.Router();
 
 const healthCheckConfig = {
   checks: {
+    "idam-web-public": basicHealthCheck("idam.web_public_url"),
     "hmcts-access": basicHealthCheck("idam.hmcts_access_url"),
     "s2s": basicHealthCheck("idam.s2s_url"),
   },

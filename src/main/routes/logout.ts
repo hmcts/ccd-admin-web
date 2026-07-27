@@ -19,7 +19,7 @@ export const logout = (req, res, next) => {
       },
       method: "GET",
     };
-    fetch(get("idam.hmcts_access_url") + "/o/endSession?token=" + accessToken, options)
+    fetch(get("idam.web_public_url") + "/o/endSession?token=" + accessToken, options)
       .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
         res.clearCookie(IDAM_SESSION_COOKIE);

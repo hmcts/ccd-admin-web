@@ -53,13 +53,14 @@ describe("Access Token Request", () => {
       config,
       "node-fetch": fetch,
     }).accessTokenRequest;
+
+    config.get.withArgs("idam.oauth2.client_id").returns(CLIENT_ID);
+    config.get.withArgs("secrets.ccd.ccd-admin-web-oauth2-client-secret").returns(CLIENT_SECRET);
+    config.get.withArgs("idam.web_public_url").returns(HMCTS_ACCESS_URL);
+    config.get.withArgs("idam.hmcts_access_url").returns(HMCTS_ACCESS_URL);
   });
 
   it("should call the IdAM OAuth 2 token endpoint with the correct headers and query string parameters", (done) => {
-    config.get.withArgs("idam.oauth2.client_id").returns(CLIENT_ID);
-    config.get.withArgs("secrets.ccd.ccd-admin-web-oauth2-client-secret").returns(CLIENT_SECRET);
-    config.get.withArgs("idam.hmcts_access_url").returns(HMCTS_ACCESS_URL);
-
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
         expect(fetch.called()).to.be.true;
@@ -72,9 +73,6 @@ describe("Access Token Request", () => {
   });
 
   it("should add `https://` prefix", (done) => {
-    config.get.withArgs("idam.oauth2.client_id").returns(CLIENT_ID);
-    config.get.withArgs("secrets.ccd.ccd-admin-web-oauth2-client-secret").returns(CLIENT_SECRET);
-    config.get.withArgs("idam.hmcts_access_url").returns(HMCTS_ACCESS_URL);
 
     accessTokenRequest(REQUEST)
       .then(() => {

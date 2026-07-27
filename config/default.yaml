@@ -16,6 +16,7 @@ security:
   roles_whitelist: "ccd-import"
   secure_auth_cookie_enabled: false
 idam:
+  web_public_url: http://localhost:9002
   hmcts_access_url: http://localhost:9002
   s2s_url: http://localhost:4502
   service_name: ccd_admin

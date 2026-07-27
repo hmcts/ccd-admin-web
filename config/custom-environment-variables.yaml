@@ -7,6 +7,7 @@ security:
   roles_whitelist: ADMINWEB_ROLES_WHITELIST
   secure_auth_cookie_enabled: SECURE_AUTH_COOKIE_ENABLED
 idam:
+  web_public_url: IDAM_WEB_PUBLIC_URL
   hmcts_access_url: IDAM_HMCTS_ACCESS_URL
   s2s_url: IDAM_S2S_URL
   service_name: IDAM_SERVICE_NAME
