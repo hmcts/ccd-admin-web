@@ -30,6 +30,7 @@ describe("logout", () => {
     config.get.withArgs("idam.oauth2.client_id").returns(CLIENT_ID);
     config.get.withArgs("secrets.ccd.ccd-admin-web-oauth2-client-secret").returns(CLIENT_SECRET);
     config.get.withArgs("idam.hmcts_access_url").returns(HMCTS_ACCESS_URL);
+    config.get.withArgs("idam.web_public_url").returns(HMCTS_ACCESS_URL);
 
     request = sinonExpressMock.mockReq({
       cookies: {
@@ -68,7 +69,7 @@ describe("logout", () => {
 
     expect(config.get).to.be.calledWith("idam.oauth2.client_id");
     expect(config.get).to.be.calledWith("secrets.ccd.ccd-admin-web-oauth2-client-secret");
-    expect(config.get).to.be.calledWith("idam.hmcts_access_url");
+    expect(config.get).to.be.calledWith("idam.web_public_url");
   });
 
   it("should return 400 error when cookies missing", () => {
