@@ -291,28 +291,28 @@ __metadata:
   linkType: hard
 
 "@azure/msal-browser@npm:^5.5.0":
-  version: 5.17.1
-  resolution: "@azure/msal-browser@npm:5.17.1"
+  version: 5.17.3
+  resolution: "@azure/msal-browser@npm:5.17.3"
   dependencies:
-    "@azure/msal-common": "npm:16.11.2"
-  checksum: 10/12e0a4ce377718493cf16baa4ffde4840e30ca74a6919fe9b111d3c02b9eb7060a4b8dae896eb3c8dc63e069ec63be94451f8f94011f1238cd788c6bc4e419fa
+    "@azure/msal-common": "npm:16.11.3"
+  checksum: 10/270729efc66b4ebd38cf28cab31bf798144ab79a31bbf03f807ad82c2813581a81103ead784f081659dab9e28fb33b0d572357b444f44c8b6099245ce30afd09
   languageName: node
   linkType: hard
 
-"@azure/msal-common@npm:16.11.2":
-  version: 16.11.2
-  resolution: "@azure/msal-common@npm:16.11.2"
-  checksum: 10/72e09ba1bf2b4a601acfa2e08c993d9bea868d5bf268c207e421d133557b3ed422415dc744dc0a0beb5b0e5c0f398ea0e6ea6a81422d53b7ee955b251d2442a7
+"@azure/msal-common@npm:16.11.3":
+  version: 16.11.3
+  resolution: "@azure/msal-common@npm:16.11.3"
+  checksum: 10/ff1b02b08c5141d6f5ba768ef00a6fc92a8e714b97cbea5ec741108e59f2b08c4746c664cd77fe1925f4a39f861f502ad38155d8dbbff219966ee333714f5ec5
   languageName: node
   linkType: hard
 
 "@azure/msal-node@npm:^5.1.0":
-  version: 5.4.2
-  resolution: "@azure/msal-node@npm:5.4.2"
+  version: 5.4.3
+  resolution: "@azure/msal-node@npm:5.4.3"
   dependencies:
-    "@azure/msal-common": "npm:16.11.2"
+    "@azure/msal-common": "npm:16.11.3"
     jsonwebtoken: "npm:^9.0.0"
-  checksum: 10/b0d8a69a01d02b03c6176875c8719a4477d2e5ecce42aac76181c5d7f7fd670f9cfda4da56a0e5a4a4e6f993824ca5b1f3239fb2d0d7a6534515658a8702f546
+  checksum: 10/7e42a86c60c3a39640653d1a2b8e7cf993f85c91bb8286fb170af1c9269614e5355407734f06cfab74c32a63d54479341e395c7423a7a48a4b024db46fe7a9bf
   languageName: node
   linkType: hard
 
@@ -3169,11 +3169,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.10.44":
-  version: 2.11.5
-  resolution: "baseline-browser-mapping@npm:2.11.5"
+  version: 2.11.6
+  resolution: "baseline-browser-mapping@npm:2.11.6"
   bin:
     baseline-browser-mapping: dist/cli.cjs
-  checksum: 10/f0e5cf7bd696049d32c06d4a6c003c03c19e177b3ca2d421fbeb860accfca8ec0bc3a50d574633799eec970c61333c71aeb92e4092ec08b2533e9ca0aab728e5
+  checksum: 10/faaeb75034375b99c11619f10043b52ec9915a9f95d05edafd9cd8b28ee4af9c9e0b822d90579e2d01c08a1718d6d21cf7409f0b9841797f738ce8c53c229454
   languageName: node
   linkType: hard
 
@@ -3249,21 +3249,21 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^1.1.7":
-  version: 1.1.16
-  resolution: "brace-expansion@npm:1.1.16"
+  version: 1.1.17
+  resolution: "brace-expansion@npm:1.1.17"
   dependencies:
     balanced-match: "npm:^1.0.0"
     concat-map: "npm:0.0.1"
-  checksum: 10/94498bead66c51536df5b7bf1b0a0e581a5b7f86888be10481d06920c4bd9d976e003b13a3d19fddc733f21a09d162ff72f90e18b2c9d062b15121e973d0e13b
+  checksum: 10/1e2f59433dee0a52dddb9632b15757131dcc17c7a361089ee367f92b4fd72e9417f5c383d23c000840b41fe87646923519d3ed9f1ccac92930afa1b75d88096f
   languageName: node
   linkType: hard
 
 "brace-expansion@npm:^2.0.2":
-  version: 2.1.2
-  resolution: "brace-expansion@npm:2.1.2"
+  version: 2.1.3
+  resolution: "brace-expansion@npm:2.1.3"
   dependencies:
     balanced-match: "npm:^1.0.0"
-  checksum: 10/0e0f9b0df1f0809e9c326470e022eeb24334ddb54c43b1ac39f1d38f3cbaeb940794de1db826f5491843ac00d7932c43f10350a65ccd51fe7d05da627152f204
+  checksum: 10/72a6d8c6be638a883dc3adfb88a41f2c34130512e0255bb845f6804f0f577b83d2f84247eec33c32b3adedd4849ccc53b84c54a8267594fabc1f8293ebc7ae02
   languageName: node
   linkType: hard
 
@@ -4204,9 +4204,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.393":
-  version: 1.5.397
-  resolution: "electron-to-chromium@npm:1.5.397"
-  checksum: 10/4e2356571b74a02bde353c0f4f5a15648818e0db80328b83e446379c273ebcdcb58d267c53314527254bdbb56abb9518562fa6d6c76c0d547514aaacb152bcb8
+  version: 1.5.398
+  resolution: "electron-to-chromium@npm:1.5.398"
+  checksum: 10/8da3b69b154b3e4ea50c1e641696f9f0beb865d21c594303dde31a896b11d5fe237c25b34c684436368a9895b2367d0a99e597aa511b2847cc4b99c207f8032b
   languageName: node
   linkType: hard
 
