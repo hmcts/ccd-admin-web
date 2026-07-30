@@ -11,6 +11,55 @@
           <label class="govuk-label" for="file">Choose a file to upload</label>
           <input class="govuk-input" type="file" id="file" name="file" accept=".xlsx"/>
         </div>
+        {% if elasticSearchReindexEnabled %}
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <span class="govuk-warning-text__text">
+            <span class="govuk-visually-hidden">Warning</span>
+            <strong style="font-weight: 1000;">PROD:</strong><i>Do not tick these checkboxes without Release Management approval (controlled use; service downtime required).</i><br>
+            <strong style="font-weight: 1000;">Perftest:</strong><i> Do not use without Performance team approval.</i><br>
+            <strong style="font-weight: 1000;">Other envs:</strong><i> Only use after discussion with relevant teams.</i><br>
+            Refer to <a href="https://hmcts.github.io/ops-runbooks/Elastic-Search-and-Logstash/elasticsearch-reindexing-guidance.html#elasticsearch-reindexing-guidance" target="_blank"><i>Reindexing guidance page.</i></a>
+          </span>
+        </div>
+        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" id="reindex" name="reindex" type="checkbox" value="true" onchange="updateState()">
+            <label class="govuk-label govuk-checkboxes__label" for="reindex">
+              Perform Reindexing
+            </label>
+          </div>
+        </div>
+        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" id="confirm" name="confirm" type="checkbox" value="true" onchange="updateState()">
+            <label class="govuk-label govuk-checkboxes__label" for="confirm">
+              I confirm that I have consulted with the 
+              <span style="font-weight: 800">relevant team</span> 
+              to review the automated reindexing process and fully understand the associated impacts.
+            </label>
+          </div>
+        </div>
+        <script type="text/javascript">
+          function updateState() {
+            const reindexChecked = document.getElementById('reindex').checked;
+            const confirmCheckbox = document.getElementById('confirm');
+            const submitButton = document.querySelector('button[type="submit"]');
+
+            confirmCheckbox.disabled = !reindexChecked;
+
+            if (reindexChecked) {
+              submitButton.disabled = !confirmCheckbox.checked; // Disable submit until confirm is checked
+            } else {
+              confirmCheckbox.checked = false;
+              submitButton.disabled = false; // Enable submit if reindex is not checked
+            }
+          }
+
+          // Initialize on page load
+          document.addEventListener('DOMContentLoaded', updateState);
+        </script>
+        {% endif %}
         <div class="govuk-form-group">
           <button type="submit" class="govuk-button" data-module="govuk-button" value="Submit">Submit</button>
         </div>

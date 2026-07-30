@@ -19,6 +19,13 @@
             </a>
           </li>
           {% endif %}
+          {% if adminWebAuthorization.canImportDefinition and elasticSearchReindexEnabled %}
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="/reindex">
+              Reindex Tasks
+            </a>
+          </li>
+          {% endif %}
           {% if adminWebAuthorization.canManageUserProfile %}
           <li class="govuk-service-navigation__item">
             <a class="govuk-service-navigation__link" href="/jurisdiction?dest=userprofiles">

@@ -5,6 +5,7 @@ import express from "express";
 import expressNunjucks from "express-nunjucks";
 import path from "node:path";
 import favicon from "serve-favicon";
+import config from "config";
 import { importAll } from "./import-all/index";
 import cookieSession from "cookie-session";
 
@@ -12,6 +13,8 @@ import cookieSession from "cookie-session";
 const env = process.env.NODE_ENV || "development";
 export const appTestWithAuthorizedAdminWebRoles = express();
 appTestWithAuthorizedAdminWebRoles.locals.ENV = env;
+appTestWithAuthorizedAdminWebRoles.locals.elasticSearchReindexEnabled =
+  String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true";
 
 // Session
 appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy

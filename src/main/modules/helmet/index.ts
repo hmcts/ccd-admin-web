@@ -38,10 +38,11 @@ export class Helmet {
         directives: {
           connectSrc: [self],
           manifestSrc: [self],
-          defaultSrc: ["'none'"],
+          defaultSrc: [self],
           fontSrc: [self, "data:"],
           imgSrc: [self, googleAnalyticsDomain, hmctsPiwikDomain],
           objectSrc: [self],
+          scriptSrcAttr: [self, unsafeinline],
           scriptSrc: [self, googleAnalyticsDomain, hmctsPiwikDomain, unsafeinline],
           styleSrc: [self, unsafeinline],
         },

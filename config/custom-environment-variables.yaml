@@ -32,6 +32,8 @@ adminWeb:
   elastic_index_url: ADMINWEB_ELASTIC_INDEX_URL
   elastic_case_types_url: ADMINWEB_ELASTIC_CASE_TYPES_URL
   global_search_index_url: ADMINWEB_GLOBAL_SEARCH_INDEX_URL
+  reindex_tasks_url: ADMINWEB_REINDEX_TASKS_URL
+  elastic_search_reindex_enabled: ELASTIC_SEARCH_REINDEX_ENABLED
   welsh_translation_get_dictionary_url: ADMINWEB_GET_DICTIONARY_URL
 
 secrets:

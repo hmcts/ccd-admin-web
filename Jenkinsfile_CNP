@@ -5,7 +5,7 @@ properties(
          pipelineTriggers([[$class: 'GitHubPushTrigger']])]
 )
 
-@Library("Infrastructure@cve-dashboard")
+@Library("Infrastructure@cve-dashboard-v2")
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def product = "ccd"
