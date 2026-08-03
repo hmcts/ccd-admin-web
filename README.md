@@ -12,7 +12,7 @@ Web application for administration of Case Definition data (initially for import
 ## Getting started
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/en) >= 18.17.0
+- [Node.js](https://nodejs.org/en) 18.x (>= 18.17.0)
 
 ### Environment variables
 
@@ -41,6 +41,18 @@ Setup styles:
 ```bash
 yarn setup
 ```
+
+### Testing
+
+Run the tests with the test configuration:
+```bash
+NODE_ENV=mocha yarn test
+```
+
+### Local startup
+
+When running outside the CCD Docker stack, provide `IDAM_ADMIN_WEB_SERVICE_KEY` and
+`IDAM_OAUTH2_AW_CLIENT_SECRET` before starting the application.
 
 ### Running
 
