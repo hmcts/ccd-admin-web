@@ -49,14 +49,10 @@ Run the tests with the test configuration:
 NODE_ENV=mocha yarn test
 ```
 
-### Local startup
+### Running locally
 
 When running outside the CCD Docker stack, provide `IDAM_ADMIN_WEB_SERVICE_KEY` and
-`IDAM_OAUTH2_AW_CLIENT_SECRET` before starting the application.
-
-### Running
-
-Start the application by executing the following command:
+`IDAM_OAUTH2_AW_CLIENT_SECRET`, then start the application:
 ```bash
 yarn start
 ```
