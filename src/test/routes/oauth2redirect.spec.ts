@@ -1,5 +1,4 @@
 import { app } from "../../main/app";
-import * as cookie from "cookie";
 import * as chai from "chai";
 import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
 import { expect } from "chai";
@@ -15,6 +14,18 @@ chai.use(sinonChai);
 describe("oauth2redirect", () => {
 
   const token = "ey123.ey456";
+  const parseSetCookie = (setCookieHeader: string): {[key: string]: string} => {
+    return setCookieHeader.split(";").reduce((cookies, cookiePart) => {
+      const separatorIndex = cookiePart.indexOf("=");
+      if (separatorIndex === -1) {
+        return cookies;
+      }
+
+      const name = cookiePart.substr(0, separatorIndex).trim();
+      cookies[name] = decodeURIComponent(cookiePart.substr(separatorIndex + 1).trim());
+      return cookies;
+    }, {} as {[key: string]: string});
+  };
 
   const createOauthSession = () => {
     return request(app)
@@ -40,7 +51,7 @@ describe("oauth2redirect", () => {
             .get(`/oauth2redirect?code=abc123&state=${encodeURIComponent(state)}`)
             .set("Cookie", sessionCookies)
             .then((res) => {
-              const cookies = res.get("Set-Cookie").map((_) => cookie.parse(_));
+              const cookies = res.get("Set-Cookie").map(parseSetCookie);
               expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.true;
               expect(res.headers.location).to.equal("/");
             });
@@ -55,8 +66,7 @@ describe("oauth2redirect", () => {
       return request(app)
         .get("/oauth2redirect")
         .then((res) => {
-          const setCookie = res.get("Set-Cookie") || [];
-          const cookies = setCookie.map((_) => cookie.parse(_));
+          const cookies = res.get("Set-Cookie").map(parseSetCookie);
           expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.false;
           expect(res.status).to.equal(400);
           expect(res.text).includes("Invalid state parameter - possible CSRF attack");
@@ -74,8 +84,7 @@ describe("oauth2redirect", () => {
             .get(`/oauth2redirect?state=${encodeURIComponent(state)}`)
             .set("Cookie", sessionCookies)
             .then((res) => {
-              const setCookie = res.get("Set-Cookie") || [];
-              const cookies = setCookie.map((_) => cookie.parse(_));
+              const cookies = res.get("Set-Cookie").map(parseSetCookie);
               expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.false;
               expect(res.status).to.equal(400);
               expect(res.text).includes("Unable to obtain access token - no OAuth2 code provided");
