@@ -3085,6 +3085,7 @@ __metadata:
     chai: "npm:^4.3.6"
     chai-as-promised: "npm:^8.0.0"
     config: "npm:^2.0.1"
+    cookie: "npm:^1.1.1"
     cookie-parser: "npm:^1.4.3"
     cookie-session: "npm:^2.0.0-beta.3"
     csurf: "npm:^1.9.0"
@@ -7022,7 +7023,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0, js-yaml@npm:^4.1.1, js-yaml@npm:^4.3.0":
+"js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0, js-yaml@npm:^4.1.1":
   version: 4.3.1
   resolution: "js-yaml@npm:4.3.1"
   dependencies:
