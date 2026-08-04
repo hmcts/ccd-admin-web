@@ -10,7 +10,7 @@ const completeRedirectURI = (uri) => {
   return uri;
 };
 
-export function accessTokenRequest(request) {
+export function accessTokenRequest(request, redirectUri = request.query.redirect_uri) {
 
   const options = {
     headers: {
@@ -23,7 +23,7 @@ export function accessTokenRequest(request) {
     client_secret: get("secrets.ccd.ccd-admin-web-oauth2-client-secret"),
     code: request.query.code,
     grant_type: "authorization_code",
-    redirect_uri: completeRedirectURI(request.query.redirect_uri),
+    redirect_uri: completeRedirectURI(redirectUri),
   };
   const logger = Logger.getLogger(__filename);
   return fetch(get("idam.web_public_url") + "/o/token" + format({ query: params }), options)
