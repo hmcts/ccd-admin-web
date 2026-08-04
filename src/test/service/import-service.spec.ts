@@ -11,29 +11,41 @@ chai.use(sinonChai);
 describe("importService", () => {
 
   const importUrl = "http://localhost:9999/import";
-  const requestAttachSpy = sinon.spy(request.Request.prototype, "attach");
 
+  let sandbox: sinon.SinonSandbox;
+  let requestAttachSpy: sinon.SinonSpy;
+  let requestQuerySpy: sinon.SinonSpy;
   let req;
   let uploadFile;
+  let configGetStub;
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox();
+    requestAttachSpy = sandbox.spy(request.Request.prototype, "attach");
+    requestQuerySpy = sandbox.spy(request.Request.prototype, "query");
+
     req = {
       accessToken: "userAuthToken",
+      body: {},
       file: {
-        buffer: new Buffer(8),
+        buffer: Buffer.from(new Uint8Array(8)),
         originalname: "dummy_filename.abc",
       },
       serviceAuthToken: "serviceAuthToken",
     };
 
-    const config = {
-      get: sinon.stub(),
-    };
-    config.get.withArgs("adminWeb.import_url").returns(importUrl);
+    configGetStub = sinon.stub();
+    configGetStub.withArgs("adminWeb.import_url").returns(importUrl);
+    configGetStub.withArgs("adminWeb.elastic_search_reindex_enabled").returns(true);
 
     uploadFile = proxyquire("../../main/service/import-service", {
-      config,
+      config: { get: configGetStub },
     }).uploadFile;
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+    nock.cleanAll();
   });
 
   describe("successful file upload", () => {
@@ -48,7 +60,76 @@ describe("importService", () => {
         try {
           expect(res.status).to.equal(201);
           expect(res.text).to.equal(expectedResult);
-          expect(requestAttachSpy).to.be.calledWith("file", req.file.buffer, { filename: req.file.originalname });
+          expect(requestAttachSpy).to.have.been.calledOnce;
+          expect(requestAttachSpy).to.have.been.calledWith(
+            "file",
+            req.file.buffer,
+            { filename: req.file.originalname },
+          );
+          expect(requestQuerySpy).to.not.have.been.called;
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+
+    it("should set reindex query parameter when reindex is true", (done) => {
+      const expectedResult = "Case Definition data successfully imported";
+      req.body = { reindex: "true" };
+
+      nock("http://localhost:9999")
+        .post("/import")
+        .query({ reindex: true })
+        .reply(201, expectedResult);
+
+      uploadFile(req).then((res) => {
+        try {
+          expect(res.status).to.equal(201);
+          expect(res.text).to.equal(expectedResult);
+          expect(requestQuerySpy).to.have.been.calledOnce;
+          expect(requestQuerySpy).to.have.been.calledWith({ reindex: true });
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+
+    it("should not set query parameters when reindex feature is disabled", (done) => {
+      const expectedResult = "Case Definition data successfully imported";
+      req.body = { reindex: "true" };
+      configGetStub.withArgs("adminWeb.elastic_search_reindex_enabled").returns(false);
+
+      nock("http://localhost:9999")
+        .post("/import")
+        .reply(201, expectedResult);
+
+      uploadFile(req).then((res) => {
+        try {
+          expect(res.status).to.equal(201);
+          expect(res.text).to.equal(expectedResult);
+          expect(requestQuerySpy).to.not.have.been.called;
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+
+    it("should not set query parameters when reindex is false", (done) => {
+      const expectedResult = "Case Definition data successfully imported";
+      req.body = { reindex: "false" };
+
+      nock("http://localhost:9999")
+        .post("/import")
+        .reply(201, expectedResult);
+
+      uploadFile(req).then((res) => {
+        try {
+          expect(res.status).to.equal(201);
+          expect(res.text).to.equal(expectedResult);
+          expect(requestQuerySpy).to.not.have.been.called;
           done();
         } catch (e) {
           done(e);
