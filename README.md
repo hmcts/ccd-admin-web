@@ -59,3 +59,13 @@ node server.js
 ### Accessing the service
 
 The application uses HTTP, port 3100 by default. Point your browser at http://localhost:3100 to login.
+
+### Deployed smoke tests
+
+The non-destructive Supertest smoke suite targets a running deployment through `TEST_URL`:
+
+```bash
+TEST_URL=http://localhost:3100 yarn test:smoke
+```
+
+The shared Jenkins pipeline supplies `TEST_URL` after deployment. Set `ADMINWEB_LOGIN_URL` as well when the test must assert a specific IdAM login endpoint.
