@@ -1,18 +1,19 @@
 #!groovy
 import uk.gov.hmcts.contino.GithubAPI
+
 properties(
         [[$class: 'GithubProjectProperty', projectUrlStr: 'https://github.com/hmcts/ccd-admin-web'],
          pipelineTriggers([[$class: 'GitHubPushTrigger']])]
 )
 
-@Library("Infrastructure@cve-dashboard-v2")
+@Library('Infrastructure@cve-dashboard-v2')
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
-def product = "ccd"
-def component = "admin-web"
+def product = 'ccd'
+def component = 'admin-web'
 
 // Variables to switch pipeline logic and wiring per type of build
-def adminWebDevelopPr = "PR-325" // This doesn't change frequently, but when it does, only change this value.
+def adminWebDevelopPr = 'PR-325' // This doesn't change frequently, but when it does, only change this value.
 
 def secrets = [
     'ccd-${env}': [
@@ -39,9 +40,9 @@ def vaultOverrides = [
     'spreview': 'saat'
 ]
 
-env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
 
-withPipeline("nodejs", product, component) {
+withPipeline('nodejs', product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')
     }
@@ -63,11 +64,11 @@ withPipeline("nodejs", product, component) {
     enableCveDashboardIngestion()
 
     afterAlways('checkout') {
-        sh "yarn cache clean"
+        sh 'yarn cache clean'
     }
 
     afterAlways('build') {
-         yarnBuilder.yarn('setup')
+        yarnBuilder.yarn('setup')
     }
 
     afterAlways('test') {
@@ -114,5 +115,4 @@ withPipeline("nodejs", product, component) {
             ]
         }
     }
-
 }

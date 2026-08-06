@@ -6,19 +6,19 @@ properties([
     pipelineTriggers([cron('H 8 * * 1-5')])
 ])
 
-@Library("Infrastructure@2.4.8")
+@Library('Infrastructure@2.4.8')
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
-def type = "nodejs"
-def product = "ccd"
-def component = "admin-web"
+def type = 'nodejs'
+def product = 'ccd'
+def component = 'admin-web'
 
 withNightlyPipeline(type, product, component) {
     enableSlackNotifications('#ccd-nightly-builds')
     enableFortifyScan()
 
     afterAlways('checkout') {
-        sh "yarn cache clean"
+        sh 'yarn cache clean'
     }
 
     afterAlways('build') {
@@ -36,5 +36,4 @@ withNightlyPipeline(type, product, component) {
             reportName: 'Fortify Scan Report'
         ]
     }
-
 }
