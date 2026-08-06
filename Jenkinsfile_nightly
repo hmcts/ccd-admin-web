@@ -27,6 +27,14 @@ withNightlyPipeline(type, product, component) {
 
     afterAlways('fortify-scan') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+        steps.publishHTML target: [
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'Fortify Scan',
+            reportFiles: 'FortifyScanReport.html',
+            reportName: 'Fortify Scan Report'
+        ]
     }
 
 }
