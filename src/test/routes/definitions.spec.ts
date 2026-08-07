@@ -4,7 +4,7 @@ import { expect } from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as mockSession from "mock-session";
-import * as request from "supertest-session";
+import * as request from "supertest";
 import * as sinon from "sinon";
 
 describe("Definitions page", () => {

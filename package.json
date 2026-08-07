@@ -70,7 +70,6 @@
     "serve-favicon": "^2.4.4",
     "sinon-stub-promise": "^4.0.0",
     "superagent": "^10.2.1",
-    "supertest-session": "^3.3.0",
     "tar": "^7.5.13",
     "ts-node": "^10.7.0",
     "tsconfig-paths": "^3.14.1",
@@ -111,8 +110,7 @@
     "sinon-chai": "^2.13.0",
     "sinon-express-mock": "^2.0.4",
     "sonar-scanner": "^3.1.0",
-    "supertest": "^3.0.0",
-    "supertest-session": "^3.3.0",
+    "supertest": "^7.1.4",
     "tslint": "^5.7.0"
   },
   "resolutions": {
