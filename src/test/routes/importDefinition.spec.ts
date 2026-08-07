@@ -453,7 +453,7 @@ describe("Import Definition page", () => {
         });
     });
 
-    it("should display an error page if there is an error not handled elsewhere", () => {
+    it("should display an authorisation error without calling the back-end", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 

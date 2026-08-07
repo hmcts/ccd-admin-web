@@ -184,7 +184,7 @@ describe("on POST /createuser", () => {
       });
   });
 
-  it("should respond with error when invalid email is passed", () => {
+  it("should reject an invalid email without calling the back-end", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users")

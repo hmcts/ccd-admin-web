@@ -12,6 +12,7 @@ export const defaultAuthToken =
 export function resolveRetrieveUserFor(id: string, ...roles: string[]) {
   return mock(idamApiBaseUrl)
     .get("/o/userinfo")
+    .optionally()
     .reply(HttpStatus.OK, { id, roles, email: "user@example.com", forename: "Test", surname: "User" });
 }
 
@@ -46,6 +47,7 @@ export function rejectRetrieveUserFor(reason: string) {
 export function resolveRetrieveServiceToken(token: string = defaultAuthToken) {
   return mock(s2sAuthServiceBaseUrl)
     .post("/lease")
+    .optionally()
     .reply(HttpStatus.OK, token);
 }
 

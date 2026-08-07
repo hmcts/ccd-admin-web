@@ -43,8 +43,6 @@ describe("oauth2redirect", () => {
 
   describe("when OAuth2 code is not present", () => {
     it("should not set an accessToken cookie", () => {
-      idamServiceMock.resolveExchangeCode(token);
-
       return request(app)
         .get("/oauth2redirect")
         .then((res) => {

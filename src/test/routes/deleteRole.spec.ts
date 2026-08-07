@@ -42,7 +42,7 @@ describe("Confirm Delete page", () => {
             idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
             idamServiceMock.resolveRetrieveServiceToken();
 
-            mock("http://localhost:4453")
+            mock("http://localhost:4451")
                 .delete("/api/user-role")
                 .query({ role: "test-role" })
                 .reply(204);
@@ -62,7 +62,7 @@ describe("Confirm Delete page", () => {
             idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
             idamServiceMock.resolveRetrieveServiceToken();
 
-            mock("http://localhost:4453")
+            mock("http://localhost:4451")
                 .delete("/api/user-role")
                 .query({ role: "test-role" })
                 .reply(500);
@@ -113,7 +113,7 @@ describe("Confirm Delete page", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
-      mock("http://localhost:4453")
+      mock("http://localhost:4451")
         .delete("/api/user-role")
         .query({ role: "test-role" })
         .reply(204);
@@ -124,6 +124,7 @@ describe("Confirm Delete page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
+          expect(res.headers.location).to.equal("/user-roles");
         });
     });
 
@@ -131,7 +132,7 @@ describe("Confirm Delete page", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
 
-      mock("http://localhost:4453")
+      mock("http://localhost:4451")
         .delete("/api/user-role")
         .query({ role: "test-role" })
         .reply(500);

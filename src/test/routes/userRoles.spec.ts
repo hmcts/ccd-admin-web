@@ -215,7 +215,7 @@ describe("on POST /createuserrole", () => {
       });
   });
 
-  it("should respond with error when role is empty", () => {
+  it("should reject an empty role without calling the back-end", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
@@ -234,7 +234,7 @@ describe("on POST /createuserrole", () => {
       });
   });
 
-  it("should respond with error when classification is empty", () => {
+  it("should reject an empty classification without calling the back-end", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
@@ -258,7 +258,7 @@ describe("on POST /createuserrole", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
-      .put("")
+      .post("")
       .replyWithError({status: 400, rawResponse: "Bad request"});
 
     return request(appTest)
@@ -295,11 +295,11 @@ describe("on POST /createuserrole", () => {
       });
   });
 
-  it("should respond with create user form due to server error", () => {
+  it("should respond with create user form due to back-end error", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
-      .put("")
+      .post("")
       .replyWithError({status: 400, rawResponse: "Bad request"});
 
     return request(appTestWithAuthorizedAdminWebRoles)
@@ -362,7 +362,7 @@ describe("on POST /updateuserrole", () => {
       });
   });
 
-  it("should respond with error when role is empty", () => {
+  it("should reject an empty role without calling the back-end", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
@@ -378,7 +378,7 @@ describe("on POST /updateuserrole", () => {
       .expect(200);
   });
 
-  it("should respond with error when classification is empty", () => {
+  it("should reject an empty classification without calling the back-end", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
@@ -395,7 +395,7 @@ describe("on POST /updateuserrole", () => {
       .expect(200);
   });
 
-  it("should respond with create user form due to server error", () => {
+  it("should not call the back-end when updating without authorisation", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
