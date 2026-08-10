@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
+import { COOKIE_ACCESS_TOKEN, COOKIE_ID_TOKEN } from "../../main/routes/oauth2redirect";
 import fetchMock from "fetch-mock";
 import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
@@ -13,6 +13,7 @@ describe("logout", () => {
   const CLIENT_ID = "ccd_admin";
   const CLIENT_SECRET = "abc123def456";
   const ACCESS_TOKEN = "eycdjc7hf3478g4f37";
+  const ID_TOKEN = "id-token-value";
   const HMCTS_ACCESS_URL = "http://localhost:1234";
   const LOGOUT_ENDPOINT = `${HMCTS_ACCESS_URL}/o/endSession?token=:token`;
 
@@ -36,6 +37,7 @@ describe("logout", () => {
     request = sinonExpressMock.mockReq({
       cookies: {
         [COOKIE_ACCESS_TOKEN]: ACCESS_TOKEN,
+        [COOKIE_ID_TOKEN]: ID_TOKEN,
       },
       session: {},
     });
@@ -43,7 +45,7 @@ describe("logout", () => {
     next = sinon.stub();
 
     fetchMockInstance = fetchMock.createInstance()
-      .get(LOGOUT_ENDPOINT.replace(":token", ACCESS_TOKEN), {});
+      .get(LOGOUT_ENDPOINT.replace(":token", ID_TOKEN), {});
     fetch = fetchMockInstance.fetchHandler;
 
     logout = proxyquire("../../main/routes/logout", {
@@ -57,11 +59,12 @@ describe("logout", () => {
       try {
         const lastCall = fetchMockInstance.callHistory.lastCall();
         expect(fetchMockInstance.callHistory.called(
-          LOGOUT_ENDPOINT.replace(":token", ACCESS_TOKEN))).to.be.true;
+          LOGOUT_ENDPOINT.replace(":token", ID_TOKEN))).to.be.true;
         expect(lastCall.options.headers.authorization).to.equal("Basic "
           + Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"));
         expect(next).not.to.be.called;
         expect(response.clearCookie).to.be.calledWith(COOKIE_ACCESS_TOKEN);
+        expect(response.clearCookie).to.be.calledWith(COOKIE_ID_TOKEN);
         expect(request.session).to.be.null;
         expect(response.redirect).to.be.calledWith(302, "/");
         done();
