@@ -1,4 +1,3 @@
-import * as healthcheck from "@hmcts/nodejs-healthcheck";
 import { Express, Logger } from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
 import * as config from "config";
@@ -24,28 +23,13 @@ import { COOKIE_ACCESS_TOKEN } from "./user/user-request-authorizer";
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
-const appHealth: express.Express = express();
 
 app.locals.ENV = env;
 app.locals.elasticSearchReindexEnabled =
   String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true";
 
-// Session
-app.set("trust proxy", 1); // trust first proxy
-
-app.use(cookieSession({
-  keys: ["key1", "key2"],
-  name: "session",
-}));
-
 // setup logging of HTTP requests
 app.use(Express.accessLogger());
-
-const healthConfig = {
-  checks: {},
-};
-healthcheck.addTo(appHealth, healthConfig);
-app.use(appHealth);
 
 const logger = Logger.getLogger("app");
 
@@ -61,6 +45,15 @@ path.join(__dirname, "/../../lib/")]);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
+
+// Session
+app.set("trust proxy", 1); // trust first proxy
+
+app.use(cookieSession({
+  keys: ["key1", "key2"],
+  name: "session",
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
