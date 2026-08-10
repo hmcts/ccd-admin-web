@@ -82,7 +82,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .replyWithError({ status: 400, rawResponse: "Duplicate values" });
+      .reply(400, {message: "Duplicate values"});
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -122,7 +122,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .replyWithError({ status: 400, rawResponse: "Duplicate values" });
+      .reply(400, {message: "Duplicate values"});
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -167,7 +167,7 @@ describe("on POST /createdefinition when unauthorized", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")
       .post("")
-      .replyWithError({ status: 400, rawResponse: "Duplicate definition" });
+      .reply(400, {message: "Duplicate definition"});
 
     return request(appTest)
       .post("/createdefinition")
@@ -246,12 +246,12 @@ describe("on POST /createdefinition when unauthorized", () => {
         });
     });
 
-    it("should respond with Create Definition form due to server error", () => {
+    it("should redirect to the Create Definition form after an HTTP 400 response", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4451/api/draft")
         .post("")
-        .replyWithError({status: 400, rawResponse: "Duplicate definition"});
+        .reply(400, {message: "Duplicate definition"});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/createdefinition")

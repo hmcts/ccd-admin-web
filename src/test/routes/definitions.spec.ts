@@ -226,7 +226,7 @@ describe("Definitions page", () => {
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
-        .replyWithError({ code: 500, text: "Server Error" });
+        .reply(500, "Server Error");
 
       return request(appTest)
         .post("/definitions")
@@ -239,13 +239,13 @@ describe("Definitions page", () => {
         });
     });
 
-    it("should return error from the server when authorized", () => {
+    it("should return an error page for an HTTP 500 response when authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
-        .replyWithError({ code: 500, text: "Server Error" });
+        .reply(500, "Server Error");
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/definitions")

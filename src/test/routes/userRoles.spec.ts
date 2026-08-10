@@ -254,12 +254,12 @@ describe("on POST /createuserrole", () => {
       });
   });
 
-  it("should not respond with create user form due to server error when unauthorized", () => {
+  it("should not call the back-end when creating without authorisation", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .post("")
-      .replyWithError({status: 400, rawResponse: "Bad request"});
+      .reply(400, {message: "Bad request"});
 
     return request(appTest)
       .post("/createuserrole")
@@ -295,12 +295,12 @@ describe("on POST /createuserrole", () => {
       });
   });
 
-  it("should respond with create user form due to back-end error", () => {
+  it("should redirect to the create-role form after an HTTP 400 response", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .post("")
-      .replyWithError({status: 400, rawResponse: "Bad request"});
+      .reply(400, {message: "Bad request"});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .post("/createuserrole")
@@ -400,7 +400,7 @@ describe("on POST /updateuserrole", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
-      .replyWithError({status: 400, rawResponse: "Bad request"});
+      .reply(400, {message: "Bad request"});
 
     return request(appTest)
       .post("/updateuserrole")
@@ -416,12 +416,12 @@ describe("on POST /updateuserrole", () => {
       });
   });
 
-  it("should respond with create user form due to server error when authorized", () => {
+  it("should redirect to the create-role form after an HTTP 400 response when authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
-      .replyWithError({status: 400, rawResponse: "Bad request"});
+      .reply(400, {message: "Bad request"});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .post("/updateuserrole")

@@ -150,13 +150,13 @@ describe("User profiles page", () => {
         });
     });
 
-    it("should return error from the server", () => {
+    it("should return an error page for an HTTP 500 response", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
-        .replyWithError({ code: 500, text: "Server Error" });
+        .reply(500, "Server Error");
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/userprofiles")
