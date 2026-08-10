@@ -25,6 +25,27 @@ withNightlyPipeline(type, product, component) {
         yarnBuilder.yarn('setup')
     }
 
+    afterAlways('test') {
+        steps.junit allowEmptyResults: true, testResults: 'test-output/**/*result.xml'
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-output/**,coverage/**'
+        steps.publishHTML target: [
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'test-output',
+            reportFiles: 'unit.html',
+            reportName: 'Unit Test Report'
+        ]
+        steps.publishHTML target: [
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'coverage/lcov-report',
+            reportFiles: 'index.html',
+            reportName: 'Unit Test Coverage'
+        ]
+    }
+
     afterAlways('fortify-scan') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
         steps.publishHTML target: [

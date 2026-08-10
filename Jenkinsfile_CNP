@@ -105,6 +105,8 @@ withPipeline('nodejs', product, component) {
 
     ['preview', 'aat', 'prod', 'demo', 'perftest', 'ithc'].each { testEnvironment ->
         afterAlways("smoketest:${testEnvironment}") {
+            steps.junit allowEmptyResults: true, testResults: 'smoke-output/**/*result.xml'
+            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**'
             steps.publishHTML target: [
                 allowMissing: true,
                 alwaysLinkToLastBuild: true,
