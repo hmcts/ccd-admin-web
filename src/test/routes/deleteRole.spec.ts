@@ -45,6 +45,7 @@ describe("Confirm Delete page", () => {
             mock("http://localhost:4451")
                 .delete("/api/user-role")
                 .query({ role: "test-role" })
+                .optionally()
                 .reply(204);
 
             return request(appTest)
@@ -65,6 +66,7 @@ describe("Confirm Delete page", () => {
             mock("http://localhost:4451")
                 .delete("/api/user-role")
                 .query({ role: "test-role" })
+                .optionally()
                 .reply(500);
 
             return request(appTest)

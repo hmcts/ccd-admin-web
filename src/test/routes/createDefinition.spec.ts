@@ -29,6 +29,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
+      .optionally()
       .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
 
     mock("http://localhost:4451")
@@ -54,6 +55,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
+      .optionally()
       .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
 
     mock("http://localhost:4451")
@@ -82,6 +84,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
+      .optionally()
       .reply(400, {message: "Duplicate values"});
 
     mock("http://localhost:4451")
@@ -145,6 +148,7 @@ describe("on POST /createdefinition when unauthorized", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")
       .post("")
+      .optionally()
       .reply(201);
 
     return request(appTest)
@@ -167,6 +171,7 @@ describe("on POST /createdefinition when unauthorized", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")
       .post("")
+      .optionally()
       .reply(400, {message: "Duplicate definition"});
 
     return request(appTest)
@@ -189,6 +194,7 @@ describe("on POST /createdefinition when unauthorized", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft/save")
       .put("")
+      .optionally()
       .reply(200);
 
     return request(appTest)

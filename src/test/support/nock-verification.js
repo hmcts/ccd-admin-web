@@ -1,4 +1,5 @@
 const nock = require("nock");
+const unusedMocks = [];
 
 afterEach(function() {
   const optionalAuthenticationMocks = [
@@ -6,12 +7,15 @@ afterEach(function() {
   ];
   const pendingMocks = nock.pendingMocks()
     .filter((pendingMock) => !optionalAuthenticationMocks.includes(pendingMock));
-  const negativeCallExpectation =
-    /(?:not authorized|unauthorized|without (?:required )?authorized|without call|should not (?:be )?call|not called)/i;
-  const expectsMocksToRemainUnused = negativeCallExpectation.test(this.currentTest.fullTitle());
   nock.cleanAll();
 
-  if (pendingMocks.length > 0 && !expectsMocksToRemainUnused) {
-    throw new Error(`Not all expected HTTP calls were made:\n${pendingMocks.join("\n")}`);
+  if (pendingMocks.length > 0) {
+    unusedMocks.push(`${this.currentTest.fullTitle()}:\n${pendingMocks.join("\n")}`);
+  }
+});
+
+after(() => {
+  if (unusedMocks.length > 0) {
+    throw new Error(`Not all expected HTTP calls were made:\n${unusedMocks.join("\n\n")}`);
   }
 });

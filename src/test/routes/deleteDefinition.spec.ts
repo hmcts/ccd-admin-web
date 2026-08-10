@@ -48,6 +48,7 @@ describe("Confirm Delete page", () => {
 
         mock("http://localhost:4451")
           .delete("/api/draft/TEST/1")
+          .optionally()
           .reply(204);
 
         return request(appTest)
@@ -67,6 +68,7 @@ describe("Confirm Delete page", () => {
 
         mock("http://localhost:4451")
           .delete("/api/draft/TEST/1")
+          .optionally()
           .reply(200);
 
         return request(appTest)

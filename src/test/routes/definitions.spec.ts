@@ -25,6 +25,7 @@ describe("Definitions page", () => {
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
+        .optionally()
         .reply(200, [{
           case_types: "Type1,Type2",
           data: {
@@ -92,6 +93,7 @@ describe("Definitions page", () => {
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({})
+        .optionally()
         .reply(200, [{
           case_types: "Type1,Type2",
           data: {
@@ -161,6 +163,7 @@ describe("Definitions page", () => {
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
+        .optionally()
         .reply(200, [{
           case_types: "Type1,Type2",
           data: {
@@ -226,6 +229,7 @@ describe("Definitions page", () => {
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
+        .optionally()
         .reply(500, "Server Error");
 
       return request(appTest)

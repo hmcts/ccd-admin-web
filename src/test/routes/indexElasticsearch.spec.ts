@@ -105,15 +105,20 @@ describe("Index Elasticsearch page", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, [{}]);
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .get("/elasticsearch/case-types")
-        .reply(200, ["A"]);
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [200, ["A"]];
+        });
 
       return request(app)
         .get("/elasticsearch/case-types")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
           expect(res.status).to.equal(403);
           const error = JSON.parse(res.text);
           expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
@@ -130,15 +135,20 @@ describe("Index Elasticsearch page", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, {canManageUserProfile: true});
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .get("/elasticsearch/case-types")
-        .reply(200, ["A"]);
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [200, ["A"]];
+        });
 
       return request(app)
         .get("/elasticsearch/case-types")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
           expect(res.status).to.equal(403);
           const error = JSON.parse(res.text);
           expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
@@ -189,15 +199,20 @@ describe("Index Elasticsearch page", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, [{}]);
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/elasticsearch/index")
-        .reply(201, "Created");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Created"];
+        });
 
       return request(app)
         .post("/elasticsearch/index")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
           expect(res.status).to.equal(403);
           const error = JSON.parse(res.text);
           expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
@@ -214,15 +229,20 @@ describe("Index Elasticsearch page", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, {canManageUserProfile: true});
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/elasticsearch/index")
-        .reply(201, ["A"]);
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, ["A"]];
+        });
 
       return request(app)
         .post("/elasticsearch/index")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
           expect(res.status).to.equal(403);
           const error = JSON.parse(res.text);
           expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);

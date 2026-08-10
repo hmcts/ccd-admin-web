@@ -29,6 +29,7 @@ describe("on Get /createuser", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
+      .optionally()
       .reply(200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]);
 
     mock("http://localhost:4451")
@@ -54,6 +55,7 @@ describe("on Get /createuser", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
+      .optionally()
       .reply(200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]);
 
     mock("http://localhost:4451")
@@ -104,6 +106,7 @@ describe("on Get /createuser", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
+      .optionally()
       .reply(400, {message: "Duplicate values"});
 
     mock("http://localhost:4451")
@@ -146,6 +149,7 @@ describe("on POST /createuser", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
       .put("")
+      .optionally()
       .reply(200);
 
     return request(appTest)
@@ -189,6 +193,7 @@ describe("on POST /createuser", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users")
       .put("")
+      .optionally()
       .reply(200);
 
     return request(appTest)
@@ -226,6 +231,7 @@ describe("on POST /createuser", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
       .put("")
+      .optionally()
       .reply(400, {message: "Duplicate values"});
 
     return request(appTest)

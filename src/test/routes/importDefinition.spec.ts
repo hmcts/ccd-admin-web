@@ -31,6 +31,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
+        .optionally()
         .reply(200, [{
           caseType: "I am 100% happy with this piece of work",
           case_type: "I am si of it",
@@ -70,6 +71,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
+        .optionally()
         .reply(200, [{
           caseType: "I am 100% happy with this piece of work",
           case_type: "I am si of it",
@@ -116,6 +118,7 @@ describe("Import Definition page", () => {
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
+        .optionally()
         .reply(500);
 
       return request(app)
@@ -206,9 +209,14 @@ describe("Import Definition page", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, [{}]);
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/import")
-        .reply(201, "Definition imported");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
 
       const file = {
         buffer: new Buffer(8),
@@ -226,7 +234,7 @@ describe("Import Definition page", () => {
           expect(errorHeading).to.equal("Unauthorised role");
 
           // Assert that the back-end is not called
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
         });
     });
 
@@ -238,9 +246,14 @@ describe("Import Definition page", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, {canManageUserProfile: true});
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/import")
-        .reply(201, "Definition imported");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
 
       const file = {
         buffer: new Buffer(8),
@@ -261,7 +274,7 @@ describe("Import Definition page", () => {
           expect(menuItem).to.equal("Manage User Profiles");
 
           // Assert that the back-end is not called
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
         });
     });
 
@@ -330,9 +343,14 @@ describe("Import Definition page", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/import")
-        .reply(201, "Definition imported");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
 
       const file = {
         buffer: new Buffer(8),
@@ -348,7 +366,7 @@ describe("Import Definition page", () => {
           expect(res.headers.location).to.equal("/import");
 
           // Assert that the back-end is not called
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
         });
     });
 
@@ -360,9 +378,14 @@ describe("Import Definition page", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/import")
-        .reply(201, "Definition imported");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/import")
@@ -372,7 +395,7 @@ describe("Import Definition page", () => {
           expect(res.headers.location).to.equal("/import");
 
           // Assert that the back-end is not called
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
         });
     });
 
@@ -461,9 +484,14 @@ describe("Import Definition page", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(403, "Forbidden");
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/import")
-        .reply(201, "Definition imported");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
 
       const file = {
         buffer: new Buffer(8),
@@ -483,7 +511,7 @@ describe("Import Definition page", () => {
           expect(errorSummary).to.equal("Forbidden (403)");
 
           // Assert that the back-end is not called
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
         });
     });
   });

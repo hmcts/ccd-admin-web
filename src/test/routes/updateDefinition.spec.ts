@@ -17,6 +17,7 @@ describe("on POST /updatedefinition", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
+      .optionally()
       .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
 
     return request(appTest)

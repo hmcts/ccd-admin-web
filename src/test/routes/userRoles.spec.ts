@@ -80,6 +80,7 @@ describe("on Get /user-roles-list", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/user-roles")
+      .optionally()
       .reply(200, [{
         role: "admin",
         security_classification: "PUBLIC",
@@ -147,6 +148,7 @@ describe("on Get /user-roles", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/user-roles")
+      .optionally()
       .reply(200, [{
         role: "admin",
         security_classification: "PUBLIC",
@@ -199,6 +201,7 @@ describe("on POST /createuserrole", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .post("")
+      .optionally()
       .reply(200);
 
     return request(appTest)
@@ -220,6 +223,7 @@ describe("on POST /createuserrole", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .post("")
+      .optionally()
       .reply(200);
 
     return request(appTest)
@@ -239,6 +243,7 @@ describe("on POST /createuserrole", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .post("")
+      .optionally()
       .reply(200);
 
     return request(appTest)
@@ -259,6 +264,7 @@ describe("on POST /createuserrole", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .post("")
+      .optionally()
       .reply(400, {message: "Bad request"});
 
     return request(appTest)
@@ -326,6 +332,7 @@ describe("on POST /updateuserrole", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
+      .optionally()
       .reply(200);
 
     return request(appTest)
@@ -367,6 +374,7 @@ describe("on POST /updateuserrole", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
+      .optionally()
       .reply(200);
 
     return request(appTest)
@@ -383,6 +391,7 @@ describe("on POST /updateuserrole", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
+      .optionally()
       .reply(200);
 
     return request(appTest)
@@ -400,6 +409,7 @@ describe("on POST /updateuserrole", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/user-role")
       .put("")
+      .optionally()
       .reply(400, {message: "Bad request"});
 
     return request(appTest)
