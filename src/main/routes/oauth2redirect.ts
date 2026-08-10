@@ -53,7 +53,7 @@ export const oauth2redirect = (req, res, next) => {
   } else {
     // On successfully obtaining a token, the redirect should go back to ourselves.
     // Note: This *must not* include any query string.
-    req.query.redirect_uri = `${req.protocol}://${req.get("host")}${req.originalUrl}`
+    const redirectUri = `${req.protocol}://${req.get("host")}${req.originalUrl}`
       .replace("https://", "").split("?", 1)[0];
 
     setTempFlowStep(res, "token-exchange-started");
@@ -61,7 +61,7 @@ export const oauth2redirect = (req, res, next) => {
       redirectUri: req.query.redirect_uri,
     });
 
-    accessTokenRequest(req)
+    accessTokenRequest(req, redirectUri)
       .then((result) => {
         logger.info("[TEMP oauth2redirect] Token exchange succeeded", {
           expiresInSeconds: result.expires_in,
