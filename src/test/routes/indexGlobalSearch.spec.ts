@@ -31,7 +31,7 @@ describe("Global Search Indices page", () => {
 
     it("should not return Global Search Indices page when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -50,7 +50,7 @@ describe("Global Search Indices page", () => {
 
     it("should not return Global Search Indices page when authenticated but without required authorized role", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -71,8 +71,6 @@ describe("Global Search Indices page", () => {
     });
 
     it("should return Global Search Indices page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -102,7 +100,7 @@ describe("Global Search Indices page", () => {
 
     it("should not create index when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -132,7 +130,7 @@ describe("Global Search Indices page", () => {
 
     it("should not create index when authenticated but without required authorized role", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -161,8 +159,6 @@ describe("Global Search Indices page", () => {
     });
 
     it("should create index when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")

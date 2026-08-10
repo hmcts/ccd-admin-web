@@ -28,7 +28,7 @@ describe("Index Elasticsearch page", () => {
 
     it("should not return Index Elasticsearch page when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -47,7 +47,7 @@ describe("Index Elasticsearch page", () => {
 
     it("should not return Index Elasticsearch page when authenticated but without required authorized role", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -68,8 +68,6 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should return Index Elasticsearch page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -99,7 +97,7 @@ describe("Index Elasticsearch page", () => {
 
     it("should not get case types when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -129,7 +127,7 @@ describe("Index Elasticsearch page", () => {
 
     it("should not get case types when authenticated but without required authorized role", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -158,8 +156,6 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should get case types when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -193,7 +189,7 @@ describe("Index Elasticsearch page", () => {
 
     it("should not create index when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -223,7 +219,7 @@ describe("Index Elasticsearch page", () => {
 
     it("should not create index when authenticated but without required authorized role", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -252,8 +248,6 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should create index when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")

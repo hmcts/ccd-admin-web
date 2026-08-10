@@ -1,20 +1,16 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
 
 describe("on POST /updatedefinition", () => {
-  const CCD_IMPORT_ROLE = "ccd-import";
 
   beforeEach(() => {
     mock.cleanAll();
   });
 
   it("should respond with Update Definition form populated with response when authenticated but not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
       .optionally()
@@ -35,8 +31,6 @@ describe("on POST /updatedefinition", () => {
   });
 
   it("should respond with Update Definition form populated with response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
       .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);

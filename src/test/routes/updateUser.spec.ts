@@ -1,20 +1,16 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
 
 describe("on POST /updateuser", () => {
-    const CCD_IMPORT_ROLE = "ccd-import";
 
     beforeEach(() => {
         mock.cleanAll();
     });
 
     it("should respond with update user form and populated response when authenticated but not authorized", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        idamServiceMock.resolveRetrieveServiceToken();
         mock("http://localhost:4451")
             .get("/api/data/jurisdictions")
             .optionally()
@@ -33,8 +29,6 @@ describe("on POST /updateuser", () => {
     });
 
     it("should respond with update user form and populated response when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/data/jurisdictions")
         .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
@@ -51,8 +45,6 @@ describe("on POST /updateuser", () => {
     });
 
     it("should redirect with error message when invalid email id is passed", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        idamServiceMock.resolveRetrieveServiceToken();
 
         return request(appTest)
             .post("/updateuser")
@@ -62,8 +54,6 @@ describe("on POST /updateuser", () => {
     });
 
     it("should redirect with error message when current jurisdiction is empty", () => {
-        idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        idamServiceMock.resolveRetrieveServiceToken();
 
         return request(appTest)
             .post("/updateuser")

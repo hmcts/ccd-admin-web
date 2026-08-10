@@ -25,7 +25,7 @@ describe("on Get /createuser", () => {
 
   it("should not respond with Create User form when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    idamServiceMock.optionallyResolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
@@ -51,7 +51,7 @@ describe("on Get /createuser", () => {
 
   it("should not respond with Create User form when authenticated but without required authorized role", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    idamServiceMock.optionallyResolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
@@ -79,8 +79,6 @@ describe("on Get /createuser", () => {
   });
 
   it("should respond with Create User form and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
@@ -102,7 +100,7 @@ describe("on Get /createuser", () => {
 
   it("should handle error when accessing Create User form page when not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    idamServiceMock.optionallyResolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
@@ -121,8 +119,6 @@ describe("on Get /createuser", () => {
   });
 
   it("should handle error when accessing Create User form page when authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
@@ -145,8 +141,6 @@ describe("on POST /createuser", () => {
   });
 
   it("should not respond with Create User form when authenticated but not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
       .put("")
       .optionally()
@@ -169,8 +163,6 @@ describe("on POST /createuser", () => {
   });
 
   it("should respond with Create User form and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
       .put("")
       .reply(200);
@@ -189,8 +181,6 @@ describe("on POST /createuser", () => {
   });
 
   it("should reject an invalid email without calling the back-end", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users")
       .put("")
       .optionally()
@@ -210,8 +200,6 @@ describe("on POST /createuser", () => {
   });
 
   it("should respond with error when jurisdiction is empty", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
 
     return request(appTest)
       .post("/createuser")
@@ -227,8 +215,6 @@ describe("on POST /createuser", () => {
   });
 
   it("should not respond with Create User form when not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
       .put("")
       .optionally()
@@ -252,8 +238,6 @@ describe("on POST /createuser", () => {
   });
 
   it("should redirect to the Create User form after an HTTP 400 response", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
       .put("")
       .reply(400, {message: "Duplicate values"});

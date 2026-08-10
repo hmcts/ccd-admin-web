@@ -27,7 +27,7 @@ describe("Import Definition page", () => {
 
     it("should not return Import Case Definition page when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -67,7 +67,7 @@ describe("Import Definition page", () => {
 
     it("should not return Import Case Definition page when authenticated but without required authorized role", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -110,7 +110,7 @@ describe("Import Definition page", () => {
 
     it("should not return a back-end error status as it is not called", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -130,8 +130,6 @@ describe("Import Definition page", () => {
     });
 
     it("should return Import Case Definition page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -170,8 +168,6 @@ describe("Import Definition page", () => {
     });
 
     it("should return a back-end error status", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -203,7 +199,7 @@ describe("Import Definition page", () => {
 
     it("should not upload a valid Definition file when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -240,7 +236,7 @@ describe("Import Definition page", () => {
 
     it("should not upload a valid Definition file when authenticated but without required authorized role", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -279,8 +275,6 @@ describe("Import Definition page", () => {
     });
 
     it("should upload a valid Definition file when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -336,8 +330,6 @@ describe("Import Definition page", () => {
     });
 
     it("should redirect to Import Definition page without calling back-end if the file is not an Excel file", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -371,8 +363,6 @@ describe("Import Definition page", () => {
     });
 
     it("should redirect to Import Definition page without calling back-end if no file is present on request", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -400,8 +390,6 @@ describe("Import Definition page", () => {
     });
 
     it("should redirect to Import Definition page if there is a back-end error", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -429,8 +417,6 @@ describe("Import Definition page", () => {
     });
 
     it("should upload a valid Definition file and display any warnings from the import process", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -478,7 +464,7 @@ describe("Import Definition page", () => {
 
     it("should display an authorisation error without calling the back-end", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
