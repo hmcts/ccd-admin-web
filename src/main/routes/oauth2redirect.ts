@@ -30,9 +30,9 @@ export const oauth2redirect = (req, res, next) => {
   } else {
     // On successfully obtaining a token, the redirect should go back to ourselves.
     // Note: This *must not* include any query string.
-    req.query.redirect_uri = `${req.protocol}://${req.get("host")}${req.originalUrl}`
+    const redirectUri = `${req.protocol}://${req.get("host")}${req.originalUrl}`
       .replace("https://", "").split("?", 1)[0];
-    accessTokenRequest(req)
+    accessTokenRequest(req, redirectUri)
       .then((result) => {
         res.cookie(COOKIE_ACCESS_TOKEN, result.access_token,
           {
