@@ -53,8 +53,13 @@ NODE_ENV=mocha yarn test
 
 When running outside the CCD Docker stack, set the required environment variables above
 to values supplied by the matching IdAM environment; do not invent or commit secret values.
-The CCD Docker setup generates and injects these values automatically. Then start the
-application:
+For local HTTPS, set `HTTPS_CERT_PATH` and `HTTPS_KEY_PATH` to locally managed certificate
+files. Keep your own IdAM secret values:
+```bash
+source ./scripts/setup-local-env.sh
+```
+
+Then start the application:
 ```bash
 yarn start
 ```
