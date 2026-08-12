@@ -30,6 +30,8 @@ acb.yaml
 
 .history
 
+src/main/resources/localhost-ssl/localhost.key
+
 # Yarn v3
 .pnp.*
 .yarn/*
