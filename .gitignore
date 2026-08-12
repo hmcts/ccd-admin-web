@@ -19,6 +19,11 @@ src/test/public
 
 node-rpm-packaging/
 mochawesome-report/
+smoke-output/
+test-output/
+functional-output/
+playwright-report/
+test-results/
 npm-debug.log.*
 
 .project
