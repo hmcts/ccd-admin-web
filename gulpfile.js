@@ -48,7 +48,7 @@ gulp.task('copy-files', async () => {
 
 // compile scss files whenever they're changed
 gulp.task('watch', (done) => {
-  gulp.watch(stylesheetsDirectory + '/**/*.scss', ['sass']);
+  gulp.watch(stylesheetsDirectory + '/**/*.scss', gulp.series('sass'));
   done();
 });
 
