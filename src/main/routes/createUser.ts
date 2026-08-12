@@ -12,7 +12,7 @@ const url = config.get("adminWeb.jurisdiction_url");
 /* GET create user form. */
 router.get("/createuser", (req, res, next) => {
 
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
+  if (req.adminWebAuthorization?.canManageUserRole) {
     fetch(req, url).then((response) => {
       res.status(200);
       const responseContent: { [k: string]: any } = {};
@@ -46,7 +46,7 @@ function validateCreate(req, res, next) {
 /* POST create user result. */
 router.post("/createuser", validateCreate, (req, res, next) => {
 
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
+  if (req.adminWebAuthorization?.canManageUserRole) {
     createUserProfile(req, new UserProfile(sanitize(req.body.idamId), sanitize(req.body.currentjurisdiction),
       sanitize(req.body.jurisdictionDropdown), sanitize(req.body.caseTypeDropdown), sanitize(req.body.stateDropdown)))
       .then((response) => {
@@ -57,9 +57,10 @@ router.post("/createuser", validateCreate, (req, res, next) => {
         res.redirect(302, "/userprofiles");
       })
       .catch((error) => {
+        const errorText = error.rawResponse || error.message || "Invalid data";
         req.session.error = {
-          status: 400, text: error.rawResponse ? error.rawResponse :
-            error.message ? error.message : "Invalid data",
+          status: 400,
+          text: errorText,
         };
         res.redirect(302, "/createuser");
       });
