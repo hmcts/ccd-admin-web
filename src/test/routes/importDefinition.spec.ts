@@ -29,10 +29,13 @@ describe("Import Definition page", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.optionallyResolveRetrieveServiceToken();
 
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/import-audits")
         .optionally()
-        .reply(200, [{
+        .reply(() => {
+          backendCalled = true;
+          return [200, [{
           caseType: "I am 100% happy with this piece of work",
           case_type: "I am si of it",
           dateImported: "last century",
@@ -40,7 +43,8 @@ describe("Import Definition page", () => {
           fileName: "x343EWFMVl",
           filename: "9343EWFMVl",
           whoImported: "xID_3",
-          who_imported: "ID_3"}]);
+            who_imported: "ID_3"}]];
+        });
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -50,6 +54,7 @@ describe("Import Definition page", () => {
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("<th>Date Imported</th>");
           expect(res.text).not.to.contain("<th>Who Imported</th>");
@@ -69,10 +74,13 @@ describe("Import Definition page", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
       idamServiceMock.optionallyResolveRetrieveServiceToken();
 
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/import-audits")
         .optionally()
-        .reply(200, [{
+        .reply(() => {
+          backendCalled = true;
+          return [200, [{
           caseType: "I am 100% happy with this piece of work",
           case_type: "I am si of it",
           dateImported: "last century",
@@ -80,7 +88,8 @@ describe("Import Definition page", () => {
           fileName: "x343EWFMVl",
           filename: "9343EWFMVl",
           whoImported: "xID_3",
-          who_imported: "ID_3"}]);
+            who_imported: "ID_3"}]];
+        });
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -90,6 +99,7 @@ describe("Import Definition page", () => {
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("<th>Date Imported</th>");
           expect(res.text).not.to.contain("<th>Who Imported</th>");
@@ -116,15 +126,20 @@ describe("Import Definition page", () => {
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});
 
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/import-audits")
         .optionally()
-        .reply(500);
+        .reply(() => {
+          backendCalled = true;
+          return [500];
+        });
 
       return request(app)
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
         });
     });

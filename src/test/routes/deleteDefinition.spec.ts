@@ -37,17 +37,22 @@ describe("Confirm Delete page", () => {
       });
 
       it("should not redirect to the Definitions list when Yes is chosen but unauthorized", () => {
+        let backendCalled = false;
 
         mock("http://localhost:4451")
           .delete("/api/draft/TEST/1")
           .optionally()
-          .reply(204);
+          .reply(() => {
+            backendCalled = true;
+            return [204];
+          });
 
         return request(appTest)
           .post("/deletedefinition")
           .send({definitionVersion: 1, deleteItem: "Yes", itemToDelete: "definition", jurisdictionId: "TEST"})
           .set("Cookie", "accessToken=ey123.ey456")
           .then((res) => {
+            expect(backendCalled).to.be.false;
             expect(res.statusCode).to.equal(200);
             expect(res.headers.location).to.be.undefined;
             expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
@@ -55,17 +60,22 @@ describe("Confirm Delete page", () => {
       });
 
       it("should not redirect to the Definitions list when Yes is chosen when unauthorized", () => {
+        let backendCalled = false;
 
         mock("http://localhost:4451")
           .delete("/api/draft/TEST/1")
           .optionally()
-          .reply(200);
+          .reply(() => {
+            backendCalled = true;
+            return [200];
+          });
 
         return request(appTest)
           .post("/deletedefinition")
           .send({definitionVersion: 1, deleteItem: "Yes", itemToDelete: "definition", jurisdictionId: "TEST"})
           .set("Cookie", "accessToken=ey123.ey456")
           .then((res) => {
+            expect(backendCalled).to.be.false;
             expect(res.statusCode).to.equal(200);
             expect(res.headers.location).to.be.undefined;
             expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");

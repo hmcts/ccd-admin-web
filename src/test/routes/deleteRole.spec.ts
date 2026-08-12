@@ -33,18 +33,23 @@ describe("Confirm Delete page", () => {
         });
 
         it("should redirect to the Roles list when Yes is chosen", () => {
+            let backendCalled = false;
 
             mock("http://localhost:4451")
                 .delete("/api/user-role")
                 .query({ role: "test-role" })
                 .optionally()
-                .reply(204);
+                .reply(() => {
+                    backendCalled = true;
+                    return [204];
+                });
 
             return request(appTest)
                 .post("/deleterole")
                 .send({ deleteItem: "Yes", role: "test-role", itemToDelete: "role" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
+                  expect(backendCalled).to.be.false;
                   expect(res.statusCode).to.equal(200);
                   expect(res.headers.location).to.be.undefined;
                   expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
@@ -52,18 +57,23 @@ describe("Confirm Delete page", () => {
         });
 
         it("should redirect to the Roles list when Yes is chosen but an error occurred", () => {
+            let backendCalled = false;
 
             mock("http://localhost:4451")
                 .delete("/api/user-role")
                 .query({ role: "test-role" })
                 .optionally()
-                .reply(500);
+                .reply(() => {
+                    backendCalled = true;
+                    return [500];
+                });
 
             return request(appTest)
                 .post("/deleterole")
                 .send({ deleteItem: "Yes", role: "test-role", itemToDelete: "role" })
                 .set("Cookie", "accessToken=ey123.ey456")
                 .then((res) => {
+                  expect(backendCalled).to.be.false;
                   expect(res.statusCode).to.equal(200);
                   expect(res.headers.location).to.be.undefined;
                   expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");

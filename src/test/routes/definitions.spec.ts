@@ -18,11 +18,14 @@ describe("Definitions page", () => {
 
   describe("on GET /definitions", () => {
     it("should not return Definitions list for given Jurisdiction when not authorized", () => {
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
         .optionally()
-        .reply(200, [{
+        .reply(() => {
+          backendCalled = true;
+          return [200, [{
           case_types: "Type1,Type2",
           data: {
             Field1: "Some value",
@@ -34,7 +37,8 @@ describe("Definitions page", () => {
             name: "Test",
           },
           status: "DRAFT",
-        }]);
+          }]];
+        });
 
       // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
       const sessionCookie = mockSession("session", "key1", { jurisdiction: "TEST" });
@@ -43,6 +47,7 @@ describe("Definitions page", () => {
         .get("/definitions")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Type1,Type2");
           expect(res.text).not.to.contain("Draft definition");
@@ -82,11 +87,14 @@ describe("Definitions page", () => {
     });
 
     it("should not return all Definitions list if Jurisdiction is not present in session when not authorized", () => {
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({})
         .optionally()
-        .reply(200, [{
+        .reply(() => {
+          backendCalled = true;
+          return [200, [{
           case_types: "Type1,Type2",
           data: {
             Field1: "Some value",
@@ -98,7 +106,8 @@ describe("Definitions page", () => {
             name: "Test",
           },
           status: "DRAFT",
-        }]);
+          }]];
+        });
 
       // Omit jurisdiction in the appTest session object
       const sessionCookie = mockSession("session", "key1", {});
@@ -107,6 +116,7 @@ describe("Definitions page", () => {
         .get("/definitions")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Type1,Type2");
           expect(res.text).not.to.contain("Draft definition");
@@ -148,11 +158,14 @@ describe("Definitions page", () => {
 
   describe("on POST /definitions", () => {
     it("should not return Definitions list when not authorized", () => {
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
         .optionally()
-        .reply(200, [{
+        .reply(() => {
+          backendCalled = true;
+          return [200, [{
           case_types: "Type1,Type2",
           data: {
             Field1: "Some value",
@@ -164,7 +177,8 @@ describe("Definitions page", () => {
             name: "Test",
           },
           status: "DRAFT",
-        }]);
+          }]];
+        });
 
       return request(appTest)
         .post("/definitions")
@@ -173,6 +187,7 @@ describe("Definitions page", () => {
           jurisdictionName: "TEST",
         })
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Type1,Type2");
           expect(res.text).not.to.contain("Draft definition");
@@ -210,11 +225,15 @@ describe("Definitions page", () => {
         });
     });
     it("should not return error from the server when not authorized", () => {
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
         .optionally()
-        .reply(500, "Server Error");
+        .reply(() => {
+          backendCalled = true;
+          return [500, "Server Error"];
+        });
 
       return request(appTest)
         .post("/definitions")
@@ -223,6 +242,7 @@ describe("Definitions page", () => {
           jurisdictionName: "TEST",
         })
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.status).to.equal(200);
         });
     });

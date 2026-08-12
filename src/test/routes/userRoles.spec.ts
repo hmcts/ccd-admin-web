@@ -76,13 +76,17 @@ describe("on Get /user-roles-list", () => {
   it("should respond without user roles list when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.optionallyResolveRetrieveServiceToken();
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/user-roles")
       .optionally()
-      .reply(200, [{
+      .reply(() => {
+        backendCalled = true;
+        return [200, [{
         role: "admin",
         security_classification: "PUBLIC",
-      }]);
+        }]];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -92,6 +96,7 @@ describe("on Get /user-roles-list", () => {
       .get("/user-roles-list")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Create User Role");
         const dom = new JSDOM(res.text);
@@ -142,13 +147,17 @@ describe("on Get /user-roles", () => {
   it("should not show user roles when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.optionallyResolveRetrieveServiceToken();
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/user-roles")
       .optionally()
-      .reply(200, [{
+      .reply(() => {
+        backendCalled = true;
+        return [200, [{
         role: "admin",
         security_classification: "PUBLIC",
-      }]);
+        }]];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -158,6 +167,7 @@ describe("on Get /user-roles", () => {
       .get("/user-roles")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Create User Role");
       });
@@ -191,10 +201,14 @@ describe("on POST /createuserrole", () => {
   });
 
   it("should not respond with user roles page or populated response when authenticated but not authorized", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/user-role")
       .post("")
       .optionally()
-      .reply(200);
+      .reply(() => {
+        backendCalled = true;
+        return [200];
+      });
 
     return request(appTest)
       .post("/createuserrole")
@@ -205,16 +219,21 @@ describe("on POST /createuserrole", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
       });
   });
 
   it("should reject an empty role without calling the back-end", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/user-role")
       .post("")
       .optionally()
-      .reply(200);
+      .reply(() => {
+        backendCalled = true;
+        return [200];
+      });
 
     return request(appTest)
       .post("/createuserrole")
@@ -224,15 +243,20 @@ describe("on POST /createuserrole", () => {
       })
       .expect(302)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location.startsWith("/create-user-role-form")).to.be.true;
       });
   });
 
   it("should reject an empty classification without calling the back-end", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/user-role")
       .post("")
       .optionally()
-      .reply(200);
+      .reply(() => {
+        backendCalled = true;
+        return [200];
+      });
 
     return request(appTest)
       .post("/createuserrole")
@@ -243,15 +267,20 @@ describe("on POST /createuserrole", () => {
       })
       .expect(302)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location.startsWith("/create-user-role")).to.be.true;
       });
   });
 
   it("should not call the back-end when creating without authorisation", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/user-role")
       .post("")
       .optionally()
-      .reply(400, {message: "Bad request"});
+      .reply(() => {
+        backendCalled = true;
+        return [400, {message: "Bad request"}];
+      });
 
     return request(appTest)
       .post("/createuserrole")
@@ -262,6 +291,7 @@ describe("on POST /createuserrole", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
       });
@@ -310,10 +340,14 @@ describe("on POST /updateuserrole", () => {
   });
 
   it("should not respond with user roles page or populated response when authenticated but not authorized", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/user-role")
       .put("")
       .optionally()
-      .reply(200);
+      .reply(() => {
+        backendCalled = true;
+        return [200];
+      });
 
     return request(appTest)
       .post("/updateuserrole")
@@ -324,6 +358,7 @@ describe("on POST /updateuserrole", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
       });
@@ -348,10 +383,14 @@ describe("on POST /updateuserrole", () => {
   });
 
   it("should reject an empty role without calling the back-end", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/user-role")
       .put("")
       .optionally()
-      .reply(200);
+      .reply(() => {
+        backendCalled = true;
+        return [200];
+      });
 
     return request(appTest)
       .post("/updateuserrole")
@@ -359,14 +398,19 @@ describe("on POST /updateuserrole", () => {
       .send({
         classification: "PUBLIC",
       })
-      .expect(200);
+      .expect(200)
+      .then(() => expect(backendCalled).to.be.false);
   });
 
   it("should reject an empty classification without calling the back-end", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/user-role")
       .put("")
       .optionally()
-      .reply(200);
+      .reply(() => {
+        backendCalled = true;
+        return [200];
+      });
 
     return request(appTest)
       .post("/updateuserrole")
@@ -375,14 +419,19 @@ describe("on POST /updateuserrole", () => {
         classification: "",
         role: "ccd-admin",
       })
-      .expect(200);
+      .expect(200)
+      .then(() => expect(backendCalled).to.be.false);
   });
 
   it("should not call the back-end when updating without authorisation", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/user-role")
       .put("")
       .optionally()
-      .reply(400, {message: "Bad request"});
+      .reply(() => {
+        backendCalled = true;
+        return [400, {message: "Bad request"}];
+      });
 
     return request(appTest)
       .post("/updateuserrole")
@@ -393,6 +442,7 @@ describe("on POST /updateuserrole", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
       });

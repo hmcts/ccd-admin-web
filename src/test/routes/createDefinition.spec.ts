@@ -27,10 +27,14 @@ describe("on GET /createdefinition", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.optionallyResolveRetrieveServiceToken();
 
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
       .optionally()
-      .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
+      .reply(() => {
+        backendCalled = true;
+        return [200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -40,6 +44,7 @@ describe("on GET /createdefinition", () => {
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
@@ -53,10 +58,14 @@ describe("on GET /createdefinition", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.optionallyResolveRetrieveServiceToken();
 
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
       .optionally()
-      .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
+      .reply(() => {
+        backendCalled = true;
+        return [200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -66,6 +75,7 @@ describe("on GET /createdefinition", () => {
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
@@ -82,10 +92,14 @@ describe("on GET /createdefinition", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.optionallyResolveRetrieveServiceToken();
 
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
       .optionally()
-      .reply(400, {message: "Duplicate values"});
+      .reply(() => {
+        backendCalled = true;
+        return [400, {message: "Duplicate values"}];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -94,7 +108,8 @@ describe("on GET /createdefinition", () => {
     return request(app)
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(200);
+      .expect(200)
+      .then(() => expect(backendCalled).to.be.false);
   });
 
   it("should respond with Create Definition form and populated response when authenticated and authorized", () => {
@@ -140,10 +155,14 @@ describe("on POST /createdefinition when unauthorized", () => {
   });
 
   it("should not be calling api to `create a Definition`", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/draft")
       .post("")
       .optionally()
-      .reply(201);
+      .reply(() => {
+        backendCalled = true;
+        return [201];
+      });
 
     return request(appTest)
       .post("/createdefinition")
@@ -153,6 +172,7 @@ describe("on POST /createdefinition when unauthorized", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
         const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
@@ -161,10 +181,14 @@ describe("on POST /createdefinition when unauthorized", () => {
   });
 
   it("should not be calling api to `Create Definition`", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/draft")
       .post("")
       .optionally()
-      .reply(400, {message: "Duplicate definition"});
+      .reply(() => {
+        backendCalled = true;
+        return [400, {message: "Duplicate definition"}];
+      });
 
     return request(appTest)
       .post("/createdefinition")
@@ -174,6 +198,7 @@ describe("on POST /createdefinition when unauthorized", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
         const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
@@ -182,10 +207,14 @@ describe("on POST /createdefinition when unauthorized", () => {
   });
 
   it("should not be able to update a Definition successfully", () => {
+    let backendCalled = false;
     mock("http://localhost:4451/api/draft/save")
       .put("")
       .optionally()
-      .reply(200);
+      .reply(() => {
+        backendCalled = true;
+        return [200];
+      });
 
     return request(appTest)
       .post("/createdefinition")
@@ -195,6 +224,7 @@ describe("on POST /createdefinition when unauthorized", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
         const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
