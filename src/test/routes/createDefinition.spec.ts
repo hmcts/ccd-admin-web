@@ -118,10 +118,6 @@ describe("on GET /createdefinition", () => {
       .get("/api/data/jurisdictions")
       .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
 
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
-
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
@@ -137,10 +133,6 @@ describe("on GET /createdefinition", () => {
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
       .reply(400, {message: "Duplicate values"});
-
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, [{}]);
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/createdefinition")

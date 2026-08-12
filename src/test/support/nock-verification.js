@@ -2,11 +2,7 @@ const nock = require("nock");
 const unusedMocks = [];
 
 afterEach(function() {
-  const optionalAuthenticationMocks = [
-    "GET http://localhost:4451/api/idam/adminweb/authorization",
-  ];
-  const pendingMocks = nock.pendingMocks()
-    .filter((pendingMock) => !optionalAuthenticationMocks.includes(pendingMock));
+  const pendingMocks = nock.pendingMocks();
   nock.cleanAll();
 
   if (pendingMocks.length > 0) {

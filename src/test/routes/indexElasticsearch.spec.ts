@@ -69,10 +69,6 @@ describe("Index Elasticsearch page", () => {
 
     it("should return Index Elasticsearch page when authenticated and authorized", () => {
 
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/elasticsearch")
         .set("Cookie", "accessToken=ey123.ey456")
@@ -156,10 +152,6 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should get case types when authenticated and authorized", () => {
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       const apiCall = mock("http://localhost:4451")
         .get("/elastic-support/case-types")
@@ -248,10 +240,6 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should create index when authenticated and authorized", () => {
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       const apiCall = mock("http://localhost:4451")
         .post("/elastic-support/index")

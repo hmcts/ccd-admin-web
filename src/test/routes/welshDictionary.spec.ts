@@ -58,7 +58,6 @@ describe("test route Welsh Dictionary", () => {
     });
 
     it("should return Confirm Delete User Profile page when authenticated and authorized", () => {
-      nock(idamBase).get("/api/idam/adminweb/authorization").reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/welshDictionary")
@@ -119,7 +118,6 @@ describe("test route Welsh Dictionary", () => {
     });
 
     it("should return dictionary as utf-8 csv", () => {
-      nock(idamBase).get("/api/idam/adminweb/authorization").reply(200, {});
 
       nock(tsBase).get("/dictionary").reply(200, dictionaryFromTS);
 

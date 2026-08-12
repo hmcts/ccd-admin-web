@@ -292,9 +292,6 @@ describe("test route manage Welsh Dictionary", () => {
                 },
                 serviceAuthToken: "serviceAuthToken",
             };
-            nock("http://localhost:4451")
-                .get("/api/idam/adminweb/authorization")
-                .reply(200, {});
             // tslint:disable-next-line:prefer-const
             let res;
             // tslint:disable-next-line:prefer-const
@@ -350,9 +347,6 @@ describe("test route manage Welsh Dictionary", () => {
                 },
                 serviceAuthToken: "serviceAuthToken",
             };
-            nock("http://localhost:4451")
-                .get("/api/idam/adminweb/authorization")
-                .reply(200, {});
             // tslint:disable-next-line:prefer-const
             let res;
             // tslint:disable-next-line:prefer-const
@@ -376,9 +370,6 @@ describe("test route manage Welsh Dictionary", () => {
                 },
                 serviceAuthToken: "serviceAuthToken",
             };
-            nock("http://localhost:4451")
-                .get("/api/idam/adminweb/authorization")
-                .reply(200, {});
             // tslint:disable-next-line:prefer-const
             let res;
             // tslint:disable-next-line:prefer-const

@@ -44,10 +44,6 @@ describe("on Get /create-user-role-form", () => {
 
   it("should respond with create user roles form and populated response when authenticated and authorized", () => {
 
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
-
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/create-user-role-form")
       .set("Cookie", "accessToken=ey123.ey456")
@@ -116,10 +112,6 @@ describe("on Get /user-roles-list", () => {
         security_classification: "PUBLIC",
       }]);
 
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
-
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/user-roles-list")
       .set("Cookie", "accessToken=ey123.ey456")
@@ -180,10 +172,6 @@ describe("on Get /user-roles", () => {
         role: "admin",
         security_classification: "PUBLIC",
       }]);
-
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/user-roles")

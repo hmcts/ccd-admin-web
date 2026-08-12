@@ -90,9 +90,6 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete User Profile page when authenticated and authorized", () => {
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/deleteitem")
@@ -112,10 +109,6 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete Definition page when authenticated and authorized", () => {
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/deleteitem")
@@ -138,9 +131,6 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete User Role page when authenticated and authorized", () => {
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/deleteitem")

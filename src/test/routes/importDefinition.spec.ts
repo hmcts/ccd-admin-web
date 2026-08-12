@@ -158,10 +158,6 @@ describe("Import Definition page", () => {
           whoImported: "xID_3",
           who_imported: "ID_3"}]);
 
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
@@ -183,10 +179,6 @@ describe("Import Definition page", () => {
     });
 
     it("should return a back-end error status", () => {
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -292,10 +284,6 @@ describe("Import Definition page", () => {
     it("should upload a valid Definition file when authenticated and authorized", () => {
 
       mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-
-      mock("http://localhost:4451")
         .post("/import")
         .reply(201, "Definition imported");
 
@@ -346,10 +334,6 @@ describe("Import Definition page", () => {
 
     it("should redirect to Import Definition page without calling back-end if the file is not an Excel file", () => {
 
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-
       let apiCalled = false;
       mock("http://localhost:4451")
         .post("/import")
@@ -379,10 +363,6 @@ describe("Import Definition page", () => {
 
     it("should redirect to Import Definition page without calling back-end if no file is present on request", () => {
 
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-
       let apiCalled = false;
       mock("http://localhost:4451")
         .post("/import")
@@ -406,10 +386,6 @@ describe("Import Definition page", () => {
 
     it("should redirect to Import Definition page if there is a back-end error", () => {
 
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-
       const apiCall = mock("http://localhost:4451")
         .post("/import")
         .reply(500, "Error on Definition import");
@@ -432,10 +408,6 @@ describe("Import Definition page", () => {
     });
 
     it("should upload a valid Definition file and display any warnings from the import process", () => {
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       mock("http://localhost:4451")
         .post("/import")

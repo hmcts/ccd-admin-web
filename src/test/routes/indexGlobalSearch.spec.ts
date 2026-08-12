@@ -72,10 +72,6 @@ describe("Global Search Indices page", () => {
 
     it("should return Global Search Indices page when authenticated and authorized", () => {
 
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-
       return request(appTestWithAuthorizedAdminWebRoles)
         .get(GLOBAL_SEARCH_PAGE_ENDPOINT)
         .set("Cookie", COOKIE_TOKEN)
@@ -159,10 +155,6 @@ describe("Global Search Indices page", () => {
     });
 
     it("should create index when authenticated and authorized", () => {
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       const apiCall = mock("http://localhost:4451")
         .post(GLOBAL_SEARCH_POST_ENDPOINT)
