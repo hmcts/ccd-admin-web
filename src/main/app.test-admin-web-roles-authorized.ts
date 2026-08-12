@@ -6,22 +6,13 @@ import * as expressNunjucks from "express-nunjucks";
 import * as path from "node:path";
 import * as favicon from "serve-favicon";
 import * as config from "config";
-import { importAll } from "./import-all/index";
+import { importAll } from "./import-all";
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTestWithAuthorizedAdminWebRoles: express.Express = express();
 appTestWithAuthorizedAdminWebRoles.locals.ENV = env;
 appTestWithAuthorizedAdminWebRoles.locals.elasticSearchReindexEnabled =
   String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true";
-
-// Session
-appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy
-appTestWithAuthorizedAdminWebRoles.use(cookieSession({
-  keys: ["key1", "key2"],
-  name: "session",
-}));
-// setup logging of HTTP requests
-appTestWithAuthorizedAdminWebRoles.use(Express.accessLogger());
 
 const logger = Logger.getLogger("appTestWithAuthorizedAdminWebRoles");
 
@@ -34,10 +25,19 @@ path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]
 
 appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 appTestWithAuthorizedAdminWebRoles.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
+
+// Session
+appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy
+appTestWithAuthorizedAdminWebRoles.use(cookieSession({
+  keys: ["key1", "key2"],
+  name: "session",
+}));
+// setup logging of HTTP requests
+appTestWithAuthorizedAdminWebRoles.use(Express.accessLogger());
+
 appTestWithAuthorizedAdminWebRoles.use(bodyParser.json());
 appTestWithAuthorizedAdminWebRoles.use(bodyParser.urlencoded({ extended: false }));
 appTestWithAuthorizedAdminWebRoles.use(cookieParser());
-appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 
 expressNunjucks(appTestWithAuthorizedAdminWebRoles, {
   filters: {
