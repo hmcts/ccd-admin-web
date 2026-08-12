@@ -29,7 +29,9 @@ export function accessTokenRequest(request, redirectUri = request.query.redirect
   const logger = Logger.getLogger(__filename);
   return fetch(get("idam.oauth2.token_endpoint") + format({ query: params }), options)
     .then((response) =>
-      response.status === 200 ? response : response.text().then((text) => Promise.reject(new Error(text))))
+      response.status === 200 ? response : response.text().then((text) => {
+        throw new Error(text);
+      }))
     .then((response) => response.json())
     .catch((error) => {
       logger.error("Failed to obtain access token:", error);
