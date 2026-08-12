@@ -51,6 +51,17 @@ yarn start
 
 To be able to log on and use the application you have to have a IDAM user with `ccd-import` role created.
 
+### Functional tests
+
+The Playwright functional tests run against a deployed application URL. The first test verifies that an
+unauthenticated browser is redirected to IdAM with the expected OAuth parameters.
+
+```bash
+TEST_URL=https://localhost:3100 yarn test:functional
+```
+
+If `TEST_URL` is not supplied, it defaults to `https://localhost:3100` for local development.
+
 **Note:** You can also start the application by executing:
 ```bash
 yarn tsx server.js

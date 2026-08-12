@@ -19,7 +19,7 @@
     "test:a11y": "PUPPETEER_SKIP_DOWNLOAD=false PUPPETEER_SKIP_CHROME_DOWNLOAD=false PUPPETEER_SKIP_CHROME_HEADLESS_SHELL_DOWNLOAD=true node node_modules/puppeteer/install.mjs && NODE_PATH=. NODE_ENV=test LOG_LEVEL=INFO mocha 'src/test/a11y/**'  --timeout 60000 --reporter-options reportFilename=a11y,inlineAssets=true,reportTitle=ccd-admin-web-a11y",
     "test:coverage": "NODE_PATH=. NODE_ENV=test nyc mocha 'src/test/**/*.ts' --ignore 'src/test/a11y/**'",
     "test:smoke": "echo 'TODO - SMOKE TESTS'",
-    "test:functional": "echo 'TODO - FUNCTIONAL TESTS'",
+    "test:functional": "playwright install chromium && playwright test --config=playwright.config.ts",
     "fortifyScan": "./src/test/java/gradlew -p src/test/java fortifyScan",
     "suppress-cve": "yarn npm audit --recursive --environment production --json > yarn-audit-known-issues",
     "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/** -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info",
@@ -76,6 +76,7 @@
   "devDependencies": {
     "@eslint/css": "^1.4.0",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.1",
     "@tsconfig/node22": "^22.0.5",
     "@types/body-parser": "^1.19.6",
     "@types/chai-as-promised": "^8.0.2",

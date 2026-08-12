@@ -29,4 +29,17 @@ withNightlyPipeline(type, product, component) {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
     }
 
+    afterAlways('test:functional') {
+        junit allowEmptyResults: true, testResults: 'functional-output/results.xml'
+
+        publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : 'functional-output/html',
+            reportFiles          : 'index.html',
+            reportName           : 'Playwright Functional Test Report'
+        ]
+    }
+
 }
