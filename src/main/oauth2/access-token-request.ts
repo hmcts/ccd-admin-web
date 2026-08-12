@@ -10,7 +10,7 @@ const completeRedirectURI = (uri) => {
   return uri;
 };
 
-export function accessTokenRequest(request) {
+export function accessTokenRequest(request, redirectUri = request.query.redirect_uri) {
 
   const options = {
     headers: {
@@ -24,7 +24,7 @@ export function accessTokenRequest(request) {
   const params = {
     code: request.query.code,
     grant_type: "authorization_code",
-    redirect_uri: completeRedirectURI(request.query.redirect_uri),
+    redirect_uri: completeRedirectURI(redirectUri),
   };
   const logger = Logger.getLogger(__filename);
   return fetch(get("idam.oauth2.token_endpoint") + format({ query: params }), options)
