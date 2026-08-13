@@ -53,14 +53,35 @@ To be able to log on and use the application you have to have a IDAM user with `
 
 ### Functional tests
 
-The Playwright functional tests run against a deployed application URL. The first test verifies that an
-unauthenticated browser is redirected to IdAM with the expected OAuth parameters.
+The Playwright functional tests require Node 24, a running instance of CCD Admin Web, and an accessible IdAM login
+page. The first test verifies that an unauthenticated browser reaches a rendered IdAM login form with the expected
+OAuth parameters.
+
+To test a local instance, start the application in one terminal:
 
 ```bash
-TEST_URL=https://localhost:3100 yarn test:functional
+NODE_ENV=test yarn start
 ```
 
-If `TEST_URL` is not supplied, it defaults to `https://localhost:3100` for local development.
+Then run the functional tests in another terminal:
+
+```bash
+yarn test:functional
+```
+
+Using `NODE_ENV=test` loads the repository's non-production test configuration and serves the application over HTTP.
+The local target defaults to `http://localhost:3100`, and the default IdAM login URL is `http://localhost:9002/login`.
+The local IdAM service or tunnel must therefore be running as well. If either service is unavailable, Playwright will
+report `ERR_CONNECTION_REFUSED`.
+
+To test a deployed environment, provide its CCD Admin Web URL:
+
+```bash
+TEST_URL=https://<deployed-admin-web-url> yarn test:functional
+```
+
+The test command installs the required Chromium browser before executing the Playwright suite. Test reports and
+failure artifacts are written to `functional-output/`.
 
 **Note:** You can also start the application by executing:
 ```bash

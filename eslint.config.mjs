@@ -16,7 +16,14 @@ export default defineConfig([
       "server.js",
       "yarn-audit-known-issues",
       "**/*.properties",
-      "src/main/public/**"
+      "src/main/public/**",
+      "coverage/**",
+      "functional-output/**",
+      "mochawesome-report/**",
+      "playwright-report/**",
+      "smoke-output/**",
+      "test-output/**",
+      "test-results/**"
     ],
   },
   { 
