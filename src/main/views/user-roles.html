@@ -54,7 +54,7 @@
         {{ csrfProtection(csrfToken) }}
         <input type="hidden" name="role" value="{{userrole.role}}" />
         <input type="hidden" name="classification" value="{{userrole.security_classification}}" />
-        <a href="#" onclick="document.getElementById('userrole_{{loop.index}}').submit();"><div>{{userrole.role}}</div></a>
+        <button type="submit" class="button-link">{{userrole.role}}</button>
       </form>
       </td>
       <td>
