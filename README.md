@@ -62,7 +62,7 @@ The application uses HTTP, port 3100 by default. Point your browser at http://lo
 
 ### Deployed smoke tests
 
-The non-destructive Supertest smoke suite targets a running deployment through `TEST_URL`:
+The non-destructive Supertest smoke suite targets a running deployment through `TEST_URL`, as part of the CI or locally as required :
 
 ```bash
 TEST_URL=http://localhost:3100 yarn test:smoke
