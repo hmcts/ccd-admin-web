@@ -17,8 +17,8 @@ def adminWebDevelopPr = "PR-325" // This doesn't change frequently, but when it 
 def secrets = [
     'ccd-${env}': [
         secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
-        secret('definition-importer-username', 'DEFINITION_IMPORTER_USERNAME'),
-        secret('definition-importer-password', 'DEFINITION_IMPORTER_PASSWORD'),
+        secret('ccd-importer-autotest-email', 'CCD_IMPORT_AUTOTEST_EMAIL'),
+        secret('ccd-importer-autotest-password', 'CCD_IMPORT_AUTOTEST_PASSWORD'),
         secret('storage-account-primary-connection-string', 'STORAGEACCOUNT_PRIMARY_CONNECTION_STRING'),
         secret('storage-account-secondary-connection-string', 'STORAGEACCOUNT_SECONDARY_CONNECTION_STRING'),
         secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_INSTRUMENTATION_KEY')
@@ -110,7 +110,12 @@ withPipeline("nodejs", product, component) {
     }
 
     afterAlways('test:functional') {
-      junit allowEmptyResults: true, testResults: 'functional-output/results.xml'
+      junit allowEmptyResults: false,
+        keepLongStdio: true,
+        testResults: 'functional-output/results.xml'
+
+      archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/artifacts/**/*'
 
       publishHTML target: [
         allowMissing         : true,

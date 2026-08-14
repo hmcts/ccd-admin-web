@@ -15,8 +15,8 @@ def component = "admin-web"
 
 def secrets = [
     'ccd-${env}': [
-        secret('definition-importer-username', 'DEFINITION_IMPORTER_USERNAME'),
-        secret('definition-importer-password', 'DEFINITION_IMPORTER_PASSWORD')
+        secret('ccd-importer-autotest-email', 'CCD_IMPORT_AUTOTEST_EMAIL'),
+        secret('ccd-importer-autotest-password', 'CCD_IMPORT_AUTOTEST_PASSWORD')
     ]
 ]
 
@@ -47,7 +47,12 @@ withNightlyPipeline(type, product, component) {
     }
 
     afterAlways('test:functional') {
-        junit allowEmptyResults: true, testResults: 'functional-output/results.xml'
+        junit allowEmptyResults: false,
+            keepLongStdio: true,
+            testResults: 'functional-output/results.xml'
+
+        steps.archiveArtifacts allowEmptyArchive: true,
+            artifacts: 'functional-output/artifacts/**/*'
 
         publishHTML target: [
             allowMissing         : true,

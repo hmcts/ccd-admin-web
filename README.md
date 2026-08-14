@@ -56,7 +56,7 @@ To be able to log on and use the application you have to have a IDAM user with `
 The Playwright functional tests require Node 24, a running instance of CCD Admin Web, and an accessible IdAM login
 page. The suite verifies the unauthenticated IdAM redirect, authenticated landing page, import form validation and
 logout journey. Authenticated tests use `PLAYWRIGHT_USERNAME` and `PLAYWRIGHT_PASSWORD`, falling back to the
-`DEFINITION_IMPORTER_USERNAME` and `DEFINITION_IMPORTER_PASSWORD` variables supplied by Jenkins.
+`CCD_IMPORT_AUTOTEST_EMAIL` and `CCD_IMPORT_AUTOTEST_PASSWORD` variables supplied by Jenkins.
 
 To test a local instance, start the application in one terminal:
 
@@ -67,8 +67,8 @@ NODE_ENV=test yarn start
 Then run the functional tests in another terminal:
 
 ```bash
-PLAYWRIGHT_USERNAME=<definition-importer-email> \
-PLAYWRIGHT_PASSWORD=<definition-importer-password> \
+PLAYWRIGHT_USERNAME=<ccd-import-test-email> \
+PLAYWRIGHT_PASSWORD=<ccd-import-test-password> \
 yarn test:functional
 ```
 
