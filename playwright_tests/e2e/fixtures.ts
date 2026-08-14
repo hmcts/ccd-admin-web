@@ -15,8 +15,8 @@ interface PageFixtures {
   importDefinitionPage: ImportDefinitionPage;
 }
 
-const username = process.env.PLAYWRIGHT_USERNAME ?? process.env.CCD_IMPORT_AUTOTEST_EMAIL;
-const password = process.env.PLAYWRIGHT_PASSWORD ?? process.env.CCD_IMPORT_AUTOTEST_PASSWORD;
+const username = process.env.PLAYWRIGHT_USERNAME;
+const password = process.env.PLAYWRIGHT_PASSWORD;
 const adminUser = username && password ? { username, password } : undefined;
 
 export const test = baseTest.extend<PageFixtures>({
