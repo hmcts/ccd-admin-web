@@ -15,8 +15,8 @@ def component = "admin-web"
 
 def secrets = [
     'ccd-${env}': [
-        secret('ccd-importer-autotest-email', 'PLAYWRIGHT_USERNAME'),
-        secret('ccd-importer-autotest-password', 'PLAYWRIGHT_PASSWORD')
+        secret('definition-importer-username', 'PLAYWRIGHT_USERNAME'),
+        secret('definition-importer-password', 'PLAYWRIGHT_PASSWORD')
     ]
 ]
 
