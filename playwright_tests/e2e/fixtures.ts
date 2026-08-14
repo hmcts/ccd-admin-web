@@ -1,6 +1,6 @@
-import { IdamPage } from "@hmcts/playwright-common";
 import { expect, test as baseTest } from "@playwright/test";
 import { AdminWebPage } from "./page-objects/admin-web.po";
+import { IdamLoginPage } from "./page-objects/idam-login.po";
 import { ImportDefinitionPage } from "./page-objects/import-definition.po";
 
 interface AdminUser {
@@ -11,7 +11,7 @@ interface AdminUser {
 interface PageFixtures {
   adminUser?: AdminUser;
   adminWebPage: AdminWebPage;
-  idamPage: IdamPage;
+  idamPage: IdamLoginPage;
   importDefinitionPage: ImportDefinitionPage;
 }
 
@@ -25,7 +25,7 @@ export const test = baseTest.extend<PageFixtures>({
     await use(new AdminWebPage(page));
   },
   idamPage: async ({ page }, use) => {
-    await use(new IdamPage(page));
+    await use(new IdamLoginPage(page));
   },
   importDefinitionPage: async ({ page }, use) => {
     await use(new ImportDefinitionPage(page));

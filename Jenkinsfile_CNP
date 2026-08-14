@@ -17,6 +17,8 @@ def adminWebDevelopPr = "PR-325" // This doesn't change frequently, but when it 
 def secrets = [
     'ccd-${env}': [
         secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
+        secret('ccd-importer-autotest-email', 'PLAYWRIGHT_USERNAME'),
+        secret('ccd-importer-autotest-password', 'PLAYWRIGHT_PASSWORD'),
         secret('storage-account-primary-connection-string', 'STORAGEACCOUNT_PRIMARY_CONNECTION_STRING'),
         secret('storage-account-secondary-connection-string', 'STORAGEACCOUNT_SECONDARY_CONNECTION_STRING'),
         secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_INSTRUMENTATION_KEY')

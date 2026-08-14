@@ -72,8 +72,8 @@ PLAYWRIGHT_PASSWORD=<ccd-import-test-password> \
 yarn test:functional
 ```
 
-If credentials are omitted, only the unauthenticated scenario runs and the authenticated scenarios are reported as
-skipped.
+The authenticated scenarios fail when credentials are missing or rejected by IdAM. Jenkins supplies these variables
+from its configured CCD test-account secrets.
 
 Using `NODE_ENV=test` loads the repository's non-production test configuration and serves the application over HTTP.
 The local target defaults to `http://localhost:3100`, and the default IdAM login URL is `http://localhost:9002/login`.

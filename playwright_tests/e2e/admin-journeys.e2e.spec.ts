@@ -2,11 +2,22 @@ import { expect, test } from "./fixtures";
 
 test.describe("authenticated CCD administrator journeys", () => {
   test.beforeEach(async ({ adminUser, adminWebPage, idamPage }) => {
-    test.skip(!adminUser, "Set PLAYWRIGHT_USERNAME and PLAYWRIGHT_PASSWORD to run authenticated journeys");
+    if (!adminUser) {
+      throw new Error("PLAYWRIGHT_USERNAME and PLAYWRIGHT_PASSWORD are required for authenticated journeys");
+    }
 
     await adminWebPage.goto();
-    await idamPage.login(adminUser!);
-    await expect(adminWebPage.heading).toBeVisible();
+    await idamPage.login(adminUser);
+
+    try {
+      await expect(adminWebPage.heading).toBeVisible();
+    } catch (error) {
+      const idamError = await idamPage.visibleErrorMessage();
+      if (idamError) {
+        throw new Error(`IdAM login failed: ${idamError}`, { cause: error });
+      }
+      throw error;
+    }
   });
 
   test("an authorised user reaches the Admin Web landing page", async ({ adminWebPage }) => {
