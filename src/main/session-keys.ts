@@ -4,10 +4,11 @@ const SESSION_KEYS_CONFIG_PATH = "secrets.ccd.session-keys";
 const SESSION_KEYS_ERROR = "Session signing keys must be configured at secrets.ccd.session-keys as a JSON array with at least two non-empty signing keys.";
 
 export const getSessionKeys = (): string[] => {
-  let sessionKeys: string[];
+  let sessionKeys: unknown;
 
   try {
-    sessionKeys = config.get<string[]>(SESSION_KEYS_CONFIG_PATH);
+    const configuredKeys = config.get<unknown>(SESSION_KEYS_CONFIG_PATH);
+    sessionKeys = typeof configuredKeys === "string" ? JSON.parse(configuredKeys) : configuredKeys;
   } catch (error) {
     throw new Error(`${SESSION_KEYS_ERROR} (${error instanceof Error ? error.message : error})`);
   }

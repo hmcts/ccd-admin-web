@@ -14,6 +14,16 @@ describe("getSessionKeys", () => {
     expect(getSessionKeys()).to.deep.equal(["session-key-1", "session-key-2"]);
   });
 
+  it("should parse session keys loaded from the Key Vault volume", () => {
+    const { getSessionKeys } = proxyquire("../main/session-keys", {
+      config: {
+        get: () => "[\"session-key-1\", \"session-key-2\"]",
+      },
+    });
+
+    expect(getSessionKeys()).to.deep.equal(["session-key-1", "session-key-2"]);
+  });
+
   it("should fail when session keys are missing", () => {
     const { getSessionKeys } = proxyquire("../main/session-keys", {
       config: {
