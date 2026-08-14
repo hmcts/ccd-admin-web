@@ -107,7 +107,7 @@ withPipeline("nodejs", product, component) {
       ]
     }
 
-    afterAlways('test:functional') {
+    afterAlways('functionalTest:preview') {
       junit allowEmptyResults: false,
         keepLongStdio: true,
         testResults: 'functional-output/results.xml'
@@ -116,7 +116,25 @@ withPipeline("nodejs", product, component) {
         artifacts: 'functional-output/artifacts/**/*'
 
       publishHTML target: [
-        allowMissing         : true,
+        allowMissing         : false,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright Functional Test Report'
+      ]
+    }
+
+    afterAlways('functionalTest:aat') {
+      junit allowEmptyResults: false,
+        keepLongStdio: true,
+        testResults: 'functional-output/results.xml'
+
+      archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/artifacts/**/*'
+
+      publishHTML target: [
+        allowMissing         : false,
         alwaysLinkToLastBuild: true,
         keepAll              : true,
         reportDir            : 'functional-output/html',

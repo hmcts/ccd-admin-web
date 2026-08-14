@@ -29,7 +29,7 @@ withNightlyPipeline(type, product, component) {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
     }
 
-    afterAlways('test:functional') {
+    afterAlways('fullFunctionalTest') {
         junit allowEmptyResults: false,
             keepLongStdio: true,
             testResults: 'functional-output/results.xml'
@@ -38,7 +38,7 @@ withNightlyPipeline(type, product, component) {
             artifacts: 'functional-output/artifacts/**/*'
 
         publishHTML target: [
-            allowMissing         : true,
+            allowMissing         : false,
             alwaysLinkToLastBuild: true,
             keepAll              : true,
             reportDir            : 'functional-output/html',
