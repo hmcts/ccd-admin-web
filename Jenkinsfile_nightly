@@ -13,9 +13,26 @@ def type = "nodejs"
 def product = "ccd"
 def component = "admin-web"
 
+def secrets = [
+    'ccd-${env}': [
+        secret('definition-importer-username', 'DEFINITION_IMPORTER_USERNAME'),
+        secret('definition-importer-password', 'DEFINITION_IMPORTER_PASSWORD')
+    ]
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+    [ $class: 'AzureKeyVaultSecret',
+      secretType: 'Secret',
+      name: secretName,
+      version: '',
+      envVariable: envVar
+    ]
+}
+
 withNightlyPipeline(type, product, component) {
     enableSlackNotifications('#ccd-nightly-builds')
     enableFortifyScan()
+    loadVaultSecrets(secrets)
 
     afterAlways('checkout') {
         sh "yarn cache clean"
