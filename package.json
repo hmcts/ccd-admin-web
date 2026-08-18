@@ -192,6 +192,7 @@
     "body-parser": "^2.0.0",
     "on-headers": "^1.1.0",
     "brace-expansion": "^1.1.13",
+    "@opentelemetry/propagator-jaeger": "^2.9.0",
     "cookie": "^1.1.1",
     "diff": "^9.0.0"
   },
