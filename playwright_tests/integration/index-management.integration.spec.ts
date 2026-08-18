@@ -7,6 +7,7 @@ import {
   mockGlobalSearchIndexingSuccess,
 } from "./mocks/index-management.mocks";
 import { IndexManagementPage } from "./page-objects/index-management.po";
+import { ERROR_TEXT_COLOUR } from "../support/assertionData";
 
 test.describe("mocked index-management UI states", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -48,7 +49,7 @@ test.describe("mocked index-management UI states", () => {
     await expect(indexManagementPage.results).toContainText("[STARTING] Creating Global Search Indices");
     const errorMessage = indexManagementPage.results.getByText("Error occurred : Mock global search failure");
     await expect(errorMessage).toBeVisible();
-    await expect(errorMessage).toHaveCSS("color", "rgb(255, 0, 0)");
+    await expect(errorMessage).toHaveCSS("color", ERROR_TEXT_COLOUR);
   });
 
   test("renders a case-type lookup failure and allows the request to be retried", async ({ page }) => {
@@ -56,13 +57,18 @@ test.describe("mocked index-management UI states", () => {
     await mockElasticsearchCaseTypesFailure(page, "Mock case-type lookup failure");
 
     await indexManagementPage.openElasticsearch();
-    await indexManagementPage.submit();
+    const failedCaseTypesResponse = page.waitForResponse((response) => {
+      const url = new URL(response.url());
+      return url.pathname === "/elasticsearch/case-types" && response.status() === 500;
+    });
 
-    const errorMessage = indexManagementPage.results.getByText(
+    await indexManagementPage.submit();
+    await failedCaseTypesResponse;
+
+    await expect(indexManagementPage.errorMessages).toHaveText(
       "Error occurred getting case types : Mock case-type lookup failure",
     );
-    await expect(errorMessage).toBeVisible();
-    await expect(errorMessage).toHaveCSS("color", "rgb(255, 0, 0)");
+    await expect(indexManagementPage.errorMessages).toHaveCSS("color", ERROR_TEXT_COLOUR);
     await expect(indexManagementPage.submitButton).toBeVisible();
   });
 
@@ -82,7 +88,7 @@ test.describe("mocked index-management UI states", () => {
       "[001] Error occurred for case type 'FailingCaseType': Mock indexing failure",
     );
     await expect(errorMessage).toBeVisible();
-    await expect(errorMessage).toHaveCSS("color", "rgb(255, 0, 0)");
+    await expect(errorMessage).toHaveCSS("color", ERROR_TEXT_COLOUR);
     await expect(indexManagementPage.results).toContainText(
       "[002] Created index for case type 'SuccessfulCaseType', jurisdiction 'MockJurisdiction'",
     );

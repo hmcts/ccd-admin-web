@@ -1,6 +1,7 @@
 import { expect, test } from "../e2e/fixtures";
 import { mockWelshDictionaryDownload, mockWelshDictionaryFailure } from "./mocks/welsh-dictionary.mocks";
 import { WelshDictionaryPage } from "./page-objects/welsh-dictionary.po";
+import { ERROR_TEXT_COLOUR } from "../support/assertionData";
 
 test.describe("mocked Welsh dictionary UI states", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -34,6 +35,6 @@ test.describe("mocked Welsh dictionary UI states", () => {
 
     const errorMessage = welshDictionaryPage.results.getByText("Error occurred: Mock dictionary failure");
     await expect(errorMessage).toBeVisible();
-    await expect(errorMessage).toHaveCSS("color", "rgb(255, 0, 0)");
+    await expect(errorMessage).toHaveCSS("color", ERROR_TEXT_COLOUR);
   });
 });

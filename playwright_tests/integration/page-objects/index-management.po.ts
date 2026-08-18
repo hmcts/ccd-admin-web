@@ -2,6 +2,7 @@ import { type Locator, type Page } from "@playwright/test";
 
 export class IndexManagementPage {
   readonly elasticsearchLink: Locator;
+  readonly errorMessages: Locator;
   readonly globalSearchLink: Locator;
   readonly heading: Locator;
   readonly results: Locator;
@@ -11,6 +12,7 @@ export class IndexManagementPage {
     const navigation = page.locator("#navigation");
 
     this.elasticsearchLink = navigation.locator('a[href="/elasticsearch"]');
+    this.errorMessages = page.locator('#index-result div[style*="color: red"]');
     this.globalSearchLink = navigation.locator('a[href="/globalsearch"]');
     this.heading = page.locator("h1.govuk-heading-l");
     this.results = page.locator("#index-result");
