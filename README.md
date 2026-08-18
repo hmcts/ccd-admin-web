@@ -54,8 +54,8 @@ To be able to log on and use the application you have to have a IDAM user with `
 ### Functional tests
 
 The Playwright functional tests require Node 24, a running instance of CCD Admin Web, and an accessible IdAM login
-page. The suite verifies the unauthenticated IdAM redirect, authenticated landing page, import form validation and
-logout journey. Authenticated tests require a validated IdAM account supplied through `PLAYWRIGHT_USERNAME` and
+page. The suite verifies the unauthenticated IdAM redirect, authenticated landing page, administration menu navigation
+and logout journey. Authenticated tests require a validated IdAM account supplied through `PLAYWRIGHT_USERNAME` and
 `PLAYWRIGHT_PASSWORD`.
 
 To test a local instance, start the application in one terminal:
@@ -76,6 +76,10 @@ The authenticated scenarios fail when credentials are missing or rejected by IdA
 `definition-importer-username` and `definition-importer-password` secrets through these variables; the account must
 support interactive IdAM login and have the `ccd-import` role.
 
+Playwright captures the authenticated browser storage state once per target in `.sessions/` and reuses it in a fresh
+browser context for each test. The saved session is validated at the start of each suite and automatically recaptured
+when it has expired or is rejected. Delete `.sessions/` to force a new login while troubleshooting authentication.
+
 Using `NODE_ENV=test` loads the repository's non-production test configuration and serves the application over HTTP.
 The local target defaults to `http://localhost:3100`, and the default IdAM login URL is `http://localhost:9002/login`.
 The local IdAM service or tunnel must therefore be running as well. If either service is unavailable, Playwright will
@@ -89,6 +93,27 @@ TEST_URL=https://<deployed-admin-web-url> yarn test:functional
 
 The test command installs the required Chromium browser before executing the Playwright suite. Test reports and
 failure artifacts are written to `functional-output/`.
+
+### Mocked browser integration tests
+
+The separate Playwright integration suite exercises browser-rendered UI states while intercepting UI-triggered API
+requests. It covers successful and failed Elasticsearch and Global Search indexing, successful and failed Welsh
+dictionary downloads, and the import reindex-confirmation controls. The mocked requests do not reach the corresponding
+backend services, but initial authentication and page rendering still use the target CCD Admin Web environment.
+
+Run it with the same target and IdAM credentials used by the functional suite:
+
+```bash
+TEST_URL=https://<deployed-admin-web-url> \
+PLAYWRIGHT_USERNAME=<ccd-import-test-email> \
+PLAYWRIGHT_PASSWORD=<ccd-import-test-password> \
+yarn test:integration
+```
+
+These tests are only discovered by `playwright-integration.config.ts`; neither `yarn test` nor
+`yarn test:functional` runs them locally. Jenkins invokes the integration command separately after its functional
+suite and publishes independent functional and mocked-integration reports. Reports and screenshots are written to
+`integration-output/`.
 
 **Note:** You can also start the application by executing:
 ```bash

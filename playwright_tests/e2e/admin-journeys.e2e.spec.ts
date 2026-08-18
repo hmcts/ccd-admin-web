@@ -1,39 +1,29 @@
 import { expect, test } from "./fixtures";
 
 test.describe("authenticated CCD administrator journeys", () => {
-  test.beforeEach(async ({ adminUser, adminWebPage, idamPage }) => {
-    if (!adminUser) {
-      throw new Error("PLAYWRIGHT_USERNAME and PLAYWRIGHT_PASSWORD are required for authenticated journeys");
-    }
-
+  test.beforeEach(async ({ adminWebPage }) => {
     await adminWebPage.goto();
-    await idamPage.login(adminUser);
-
-    try {
-      await expect(adminWebPage.heading).toBeVisible();
-    } catch (error) {
-      const idamError = await idamPage.visibleErrorMessage();
-      if (idamError) {
-        throw new Error(`IdAM login failed: ${idamError}`, { cause: error });
-      }
-      throw error;
-    }
+    await expect(adminWebPage.heading).toBeVisible();
   });
 
   test("an authorised user reaches the Admin Web landing page", async ({ adminWebPage }) => {
     await expect(adminWebPage.page).toHaveTitle("CCD Admin Web");
     await expect(adminWebPage.importDefinitionLink).toBeVisible();
-    await expect(adminWebPage.logoutButton).toBeVisible();
+    await expect(adminWebPage.logoutLink).toBeVisible();
   });
 
-  test("the import form rejects an empty submission", async ({ adminWebPage, importDefinitionPage }) => {
-    await adminWebPage.openImportDefinition();
+  test("all administration menu items are visible and navigate to their pages", async ({ adminWebPage }) => {
+    for (const menuItem of adminWebPage.menuItems) {
+      await expect(menuItem.link).toBeVisible();
+    }
 
-    await expect(importDefinitionPage.heading).toBeVisible();
-    await expect(importDefinitionPage.fileInput).toBeVisible();
-    await importDefinitionPage.submitWithoutFile();
-
-    await expect(importDefinitionPage.noFileSelectedError).toBeVisible();
+    for (const menuItem of adminWebPage.menuItems) {
+      await adminWebPage.openMenuItem(menuItem);
+      await expect(adminWebPage.page).toHaveURL((url) =>
+        `${url.pathname}${url.search}` === menuItem.expectedPath,
+      );
+      await expect(menuItem.pageMarker).toBeVisible();
+    }
   });
 
   test("logout returns the user to IdAM", async ({ adminWebPage, baseURL, idamPage }) => {

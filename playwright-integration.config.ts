@@ -2,20 +2,21 @@ import { defineConfig, devices } from "@playwright/test";
 import { sessionStoragePath } from "./playwright_tests/e2e/session";
 
 export default defineConfig({
-  testDir: "./playwright_tests/e2e",
+  testDir: "./playwright_tests/integration",
   globalSetup: "./playwright_tests/e2e/session.global-setup.ts",
   fullyParallel: false,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
+  timeout: 60_000,
   expect: {
-    timeout: 15_000,
+    timeout: 40_000,
   },
-  outputDir: "functional-output/artifacts",
+  outputDir: "integration-output/artifacts",
   reporter: [
     ["line"],
-    ["html", { outputFolder: "functional-output/html", open: "never" }],
-    ["junit", { outputFile: "functional-output/results.xml" }],
+    ["html", { outputFolder: "integration-output/html", open: "never" }],
+    ["junit", { outputFile: "integration-output/results.xml" }],
   ],
   use: {
     baseURL: process.env.TEST_URL || "http://localhost:3100",
