@@ -7,13 +7,12 @@ export class ImportDefinitionPage {
   readonly noFileSelectedError: Locator;
 
   constructor(readonly page: Page) {
-    this.heading = page.getByRole("heading", { level: 1, name: "Import Case Definition" });
-    this.fileInput = page.getByLabel("Choose a file to upload");
-    this.submitButton = page.getByRole("button", { name: "Submit" });
-    this.noFileSelectedError = page.getByText(
-      "No file selected! Please select a Definition spreadsheet to import",
-      { exact: true },
-    );
+    const importForm = page.locator('form[action="/import"]');
+
+    this.heading = page.locator("h1.govuk-heading-l");
+    this.fileInput = importForm.locator("#file");
+    this.submitButton = importForm.locator('button[type="submit"]');
+    this.noFileSelectedError = importForm.locator("#file-error");
   }
 
   async submitWithoutFile(): Promise<void> {

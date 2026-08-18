@@ -8,11 +8,13 @@ export class IndexManagementPage {
   readonly submitButton: Locator;
 
   constructor(readonly page: Page) {
-    this.elasticsearchLink = page.getByRole("link", { name: "Create Elasticsearch Indices", exact: true });
-    this.globalSearchLink = page.getByRole("link", { name: "Create Global Search Indices", exact: true });
-    this.heading = page.getByRole("heading");
+    const navigation = page.locator("#navigation");
+
+    this.elasticsearchLink = navigation.locator('a[href="/elasticsearch"]');
+    this.globalSearchLink = navigation.locator('a[href="/globalsearch"]');
+    this.heading = page.locator("h1.govuk-heading-l");
     this.results = page.locator("#index-result");
-    this.submitButton = page.getByRole("button", { name: "Submit", exact: true });
+    this.submitButton = page.locator("#index-btn");
   }
 
   async openElasticsearch(): Promise<void> {

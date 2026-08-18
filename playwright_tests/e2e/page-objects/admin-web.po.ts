@@ -13,56 +13,58 @@ export class AdminWebPage {
   readonly logoutLink: Locator;
 
   constructor(readonly page: Page) {
-    this.heading = page.getByRole("heading", { name: "Welcome to CCD Admin Web" });
-    this.importDefinitionLink = page.getByRole("link", { name: "Import Case Definition" });
+    const navigation = page.locator("#navigation");
+
+    this.heading = page.locator("h1.govuk-heading-xl");
+    this.importDefinitionLink = navigation.locator('a[href="/import"]');
     this.menuItems = [
       {
         link: this.importDefinitionLink,
         expectedPath: "/import",
-        pageMarker: page.getByRole("heading", { name: "Import Case Definition" }),
+        pageMarker: page.locator('form[action="/import"] #file'),
       },
       {
-        link: page.getByRole("link", { name: "Reindex Tasks", exact: true }),
+        link: navigation.locator('a[href="/reindex"]'),
         expectedPath: "/reindex",
-        pageMarker: page.getByRole("heading", { name: "Reindexed Tasks" }),
+        pageMarker: page.locator("#caseType"),
       },
       {
-        link: page.getByRole("link", { name: "Manage User Profiles", exact: true }),
+        link: navigation.locator('a[href="/jurisdiction?dest=userprofiles"]'),
         expectedPath: "/jurisdiction?dest=userprofiles",
-        pageMarker: page.getByRole("heading", { name: "Jurisdiction Search" }),
+        pageMarker: page.locator("#selectJurisdiction"),
       },
       {
-        link: page.getByRole("link", { name: "Manage User Roles", exact: true }),
+        link: navigation.locator('a[href="/user-roles"]'),
         expectedPath: "/user-roles",
-        pageMarker: page.getByRole("link", { name: "Create User Role", exact: true }),
+        pageMarker: page.locator('a[href="/create-user-role-form?save=create"]'),
       },
       {
-        link: page.getByRole("link", { name: "Manage Definitions", exact: true }),
+        link: navigation.locator('a[href="/jurisdiction?dest=definitions"]'),
         expectedPath: "/jurisdiction?dest=definitions",
-        pageMarker: page.getByRole("heading", { name: "Jurisdiction Search" }),
+        pageMarker: page.locator("#selectJurisdiction"),
       },
       {
-        link: page.getByRole("link", { name: "Create Elasticsearch Indices", exact: true }),
+        link: navigation.locator('a[href="/elasticsearch"]'),
         expectedPath: "/elasticsearch",
-        pageMarker: page.getByRole("heading", { name: "Create Elasticsearch Indices" }),
+        pageMarker: page.locator("#index-btn"),
       },
       {
-        link: page.getByRole("link", { name: "Create Global Search Indices", exact: true }),
+        link: navigation.locator('a[href="/globalsearch"]'),
         expectedPath: "/globalsearch",
-        pageMarker: page.getByRole("heading", { name: "Create Global Search Indices" }),
+        pageMarker: page.locator("#index-btn"),
       },
       {
-        link: page.getByRole("link", { name: "Welsh Translations", exact: true }),
+        link: navigation.locator('a[href="/welshDictionary"]'),
         expectedPath: "/welshDictionary",
-        pageMarker: page.getByRole("heading", { name: "Welsh Dictionary" }),
+        pageMarker: page.locator("#index-btn"),
       },
       {
-        link: page.getByRole("link", { name: "Manage Welsh Translations", exact: true }),
+        link: navigation.locator('a[href="/manageWelshDictionary"]'),
         expectedPath: "/manageWelshDictionary",
-        pageMarker: page.getByRole("heading", { name: "Import Welsh Translations" }),
+        pageMarker: page.locator('form[action="/manageWelshDictionary"] #file'),
       },
     ];
-    this.logoutLink = page.getByRole("link", { name: "Logout" });
+    this.logoutLink = page.locator('a[href="/logout"]');
   }
 
   async goto(): Promise<void> {

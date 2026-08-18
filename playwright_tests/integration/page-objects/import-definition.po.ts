@@ -8,13 +8,13 @@ export class ImportDefinitionIntegrationPage {
   readonly submitButton: Locator;
 
   constructor(readonly page: Page) {
-    this.confirmationCheckbox = page.getByRole("checkbox", {
-      name: /I confirm that I have consulted with the relevant team/,
-    });
-    this.heading = page.getByRole("heading", { name: "Import Case Definition", exact: true });
-    this.navigationLink = page.getByRole("link", { name: "Import Case Definition", exact: true });
-    this.reindexCheckbox = page.getByRole("checkbox", { name: "Perform Reindexing", exact: true });
-    this.submitButton = page.getByRole("button", { name: "Submit", exact: true });
+    const importForm = page.locator('form[action="/import"]');
+
+    this.confirmationCheckbox = importForm.locator("#confirm");
+    this.heading = page.locator("h1.govuk-heading-l");
+    this.navigationLink = page.locator('#navigation a[href="/import"]');
+    this.reindexCheckbox = importForm.locator("#reindex");
+    this.submitButton = importForm.locator('button[type="submit"]');
   }
 
   async open(): Promise<void> {
