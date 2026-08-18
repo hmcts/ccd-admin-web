@@ -22,6 +22,8 @@ mochawesome-report/
 smoke-output/
 test-output/
 functional-output/
+integration-output/
+.sessions/
 playwright-report/
 test-results/
 npm-debug.log.*
