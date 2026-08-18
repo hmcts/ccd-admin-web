@@ -19,6 +19,7 @@ export default defineConfig([
       "src/main/public/**",
       "coverage/**",
       "functional-output/**",
+      "integration-output/**",
       "mochawesome-report/**",
       "playwright-report/**",
       "smoke-output/**",
