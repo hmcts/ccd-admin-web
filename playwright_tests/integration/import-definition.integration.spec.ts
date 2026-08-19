@@ -4,7 +4,7 @@ import { ImportDefinitionIntegrationPage } from "./page-objects/import-definitio
 test.describe("import-definition UI state", () => {
   test.beforeEach(async ({ adminWebPage }) => {
     await adminWebPage.goto();
-    await expect(adminWebPage.heading).toBeVisible();
+    await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
   test("requires confirmation before submitting a reindexing import", async ({ page }) => {

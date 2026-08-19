@@ -12,7 +12,7 @@ import { ERROR_TEXT_COLOUR } from "../support/assertionData";
 test.describe("mocked index-management UI states", () => {
   test.beforeEach(async ({ adminWebPage }) => {
     await adminWebPage.goto();
-    await expect(adminWebPage.heading).toBeVisible();
+    await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
   test("shows progress for each mocked Elasticsearch index request", async ({ page }) => {

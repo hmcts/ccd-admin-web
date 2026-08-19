@@ -6,7 +6,7 @@ import { ERROR_TEXT_COLOUR } from "../support/assertionData";
 test.describe("mocked Welsh dictionary UI states", () => {
   test.beforeEach(async ({ adminWebPage }) => {
     await adminWebPage.goto();
-    await expect(adminWebPage.heading).toBeVisible();
+    await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
   test("downloads a CSV after a successful mocked dictionary response", async ({ page }) => {

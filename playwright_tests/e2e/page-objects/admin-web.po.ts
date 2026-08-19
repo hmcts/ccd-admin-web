@@ -7,16 +7,14 @@ export interface AdminMenuItem {
 }
 
 export class AdminWebPage {
-  readonly heading: Locator;
+  readonly authenticatedMarker: Locator;
   readonly importDefinitionLink: Locator;
   readonly menuItems: readonly AdminMenuItem[];
   readonly logoutLink: Locator;
 
   constructor(readonly page: Page) {
-    const navigation = page.locator("#navigation");
-
-    this.heading = page.locator("h1.govuk-heading-xl");
-    this.importDefinitionLink = navigation.locator('a[href="/import"]');
+    this.authenticatedMarker = page.locator("#currentUser");
+    this.importDefinitionLink = page.locator('a[href="/import"]');
     this.menuItems = [
       {
         link: this.importDefinitionLink,
@@ -24,42 +22,42 @@ export class AdminWebPage {
         pageMarker: page.locator('form[action="/import"] #file'),
       },
       {
-        link: navigation.locator('a[href="/reindex"]'),
+        link: page.locator('a[href="/reindex"]'),
         expectedPath: "/reindex",
         pageMarker: page.locator("#caseType"),
       },
       {
-        link: navigation.locator('a[href="/jurisdiction?dest=userprofiles"]'),
+        link: page.locator('a[href="/jurisdiction?dest=userprofiles"]'),
         expectedPath: "/jurisdiction?dest=userprofiles",
         pageMarker: page.locator("#selectJurisdiction"),
       },
       {
-        link: navigation.locator('a[href="/user-roles"]'),
+        link: page.locator('a[href="/user-roles"]'),
         expectedPath: "/user-roles",
         pageMarker: page.locator('a[href="/create-user-role-form?save=create"]'),
       },
       {
-        link: navigation.locator('a[href="/jurisdiction?dest=definitions"]'),
+        link: page.locator('a[href="/jurisdiction?dest=definitions"]'),
         expectedPath: "/jurisdiction?dest=definitions",
         pageMarker: page.locator("#selectJurisdiction"),
       },
       {
-        link: navigation.locator('a[href="/elasticsearch"]'),
+        link: page.locator('a[href="/elasticsearch"]'),
         expectedPath: "/elasticsearch",
         pageMarker: page.locator("#index-btn"),
       },
       {
-        link: navigation.locator('a[href="/globalsearch"]'),
+        link: page.locator('a[href="/globalsearch"]'),
         expectedPath: "/globalsearch",
         pageMarker: page.locator("#index-btn"),
       },
       {
-        link: navigation.locator('a[href="/welshDictionary"]'),
+        link: page.locator('a[href="/welshDictionary"]'),
         expectedPath: "/welshDictionary",
         pageMarker: page.locator("#index-btn"),
       },
       {
-        link: navigation.locator('a[href="/manageWelshDictionary"]'),
+        link: page.locator('a[href="/manageWelshDictionary"]'),
         expectedPath: "/manageWelshDictionary",
         pageMarker: page.locator('form[action="/manageWelshDictionary"] #file'),
       },

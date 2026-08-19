@@ -9,12 +9,10 @@ export class IndexManagementPage {
   readonly submitButton: Locator;
 
   constructor(readonly page: Page) {
-    const navigation = page.locator("#navigation");
-
-    this.elasticsearchLink = navigation.locator('a[href="/elasticsearch"]');
+    this.elasticsearchLink = page.locator('a[href="/elasticsearch"]');
     this.errorMessages = page.locator('#index-result div[style*="color: red"]');
-    this.globalSearchLink = navigation.locator('a[href="/globalsearch"]');
-    this.heading = page.locator("h1.govuk-heading-l");
+    this.globalSearchLink = page.locator('a[href="/globalsearch"]');
+    this.heading = page.locator("h1.govuk-heading-l, h2.heading-large");
     this.results = page.locator("#index-result");
     this.submitButton = page.locator("#index-btn");
   }

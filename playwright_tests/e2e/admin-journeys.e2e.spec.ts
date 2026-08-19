@@ -3,7 +3,7 @@ import { expect, test } from "./fixtures";
 test.describe("authenticated CCD administrator journeys", () => {
   test.beforeEach(async ({ adminWebPage }) => {
     await adminWebPage.goto();
-    await expect(adminWebPage.heading).toBeVisible();
+    await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
   test("an authorised user reaches the Admin Web landing page", async ({ adminWebPage }) => {

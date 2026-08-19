@@ -11,8 +11,8 @@ export class ImportDefinitionIntegrationPage {
     const importForm = page.locator('form[action="/import"]');
 
     this.confirmationCheckbox = importForm.locator("#confirm");
-    this.heading = page.locator("h1.govuk-heading-l");
-    this.navigationLink = page.locator('#navigation a[href="/import"]');
+    this.heading = page.locator("h1.govuk-heading-l, h2.heading-large");
+    this.navigationLink = page.locator('a[href="/import"]');
     this.reindexCheckbox = importForm.locator("#reindex");
     this.submitButton = importForm.locator('button[type="submit"]');
   }

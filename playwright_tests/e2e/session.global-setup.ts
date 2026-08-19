@@ -6,9 +6,15 @@ import { IdamLoginPage } from "./page-objects/idam-login.po";
 import { sessionStoragePath } from "./session";
 
 const baseUrl = process.env.TEST_URL || "http://localhost:3100";
+const applicationOrigin = new URL(baseUrl).origin;
 const storageStatePath = sessionStoragePath(baseUrl);
+const navigationTimeout = 60_000;
 
 function isTransientNavigationError(error: unknown): boolean {
+  if (error instanceof Error && error.name === "TimeoutError") {
+    return true;
+  }
+
   const message = error instanceof Error ? error.message : String(error);
   return [
     "ERR_CONNECTION_CLOSED",
@@ -25,7 +31,10 @@ async function navigateToApplication(page: Page): Promise<void> {
   const maximumAttempts = 3;
   for (let attempt = 1; attempt <= maximumAttempts; attempt += 1) {
     try {
-      await page.goto(baseUrl, { waitUntil: "domcontentloaded" });
+      await page.goto(baseUrl, {
+        waitUntil: "domcontentloaded",
+        timeout: navigationTimeout,
+      });
       return;
     } catch (error) {
       if (attempt === maximumAttempts || !isTransientNavigationError(error)) {
@@ -39,7 +48,10 @@ async function navigateToApplication(page: Page): Promise<void> {
 async function hasAuthenticatedLandingPage(page: Page): Promise<boolean> {
   const adminWebPage = new AdminWebPage(page);
   await navigateToApplication(page);
-  return adminWebPage.heading.isVisible({ timeout: 10_000 }).catch(() => false);
+  if (new URL(page.url()).origin !== applicationOrigin) {
+    return false;
+  }
+  return adminWebPage.authenticatedMarker.count().then((count) => count > 0).catch(() => false);
 }
 
 async function canReuseSession(browser: Browser): Promise<boolean> {
@@ -81,13 +93,21 @@ async function captureSession(browser: Browser): Promise<void> {
     await idamPage.login({ username, password });
 
     try {
-      await adminWebPage.heading.waitFor({ state: "visible", timeout: 40_000 });
+      await page.waitForURL((url) => url.origin === applicationOrigin, { timeout: 60_000 });
+      await adminWebPage.authenticatedMarker.waitFor({ state: "attached", timeout: 60_000 });
     } catch (error) {
       const idamError = await idamPage.visibleErrorMessage();
       if (idamError) {
         throw new Error(`IdAM login failed while capturing the shared session: ${idamError}`, { cause: error });
       }
-      throw error;
+      const pageTitle = await page.title().catch(() => "unavailable");
+      const headings = await page.locator("h1").allTextContents().catch(() => []);
+      const hasCurrentUserMarker = await page.locator("#currentUser").count().catch(() => 0);
+      throw new Error(
+        `Authentication returned without the CCD Admin landing page: url=${page.url()}, title=${pageTitle}, `
+        + `currentUserMarker=${hasCurrentUserMarker > 0}, headings=${JSON.stringify(headings)}`,
+        { cause: error },
+      );
     }
 
     await context.storageState({ path: storageStatePath });
