@@ -102,7 +102,7 @@ describe("on Get /createuser", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 
-    mock("http://localhost:4451")
+    const jurisdictionsApi = mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
       .replyWithError({status: 400, rawResponse: "Duplicate values"});
 
@@ -114,7 +114,13 @@ describe("on Get /createuser", () => {
       .get("/createuser")
       .set("Cookie", "accessToken=ey123.ey456")
       // not calling /api/data/jurisdiction because not authorized
-      .expect(200);
+      .expect(200)
+      .then((res) => {
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
+        expect(jurisdictionsApi.isDone()).to.be.false;
+      });
   });
 
   it("should handle error when accessing Create User form page when authorized", () => {

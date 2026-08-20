@@ -9,7 +9,7 @@ const errorPage = "error";
  * Delete Definition based on jurisdiction ID and version
  */
 router.post("/deletedefinition", (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
+  if (req.adminWebAuthorization?.canManageDefinition) {
     if (req.body.deleteItem === "Yes") {
         deleteDefinition(req).then((response) => {
             deleteSessionVariables(req);

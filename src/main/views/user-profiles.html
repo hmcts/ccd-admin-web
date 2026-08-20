@@ -29,7 +29,7 @@
     <table border="1">
       <thead>
         <tr>
-          <th colspan="3">
+          <th scope="colgroup" colspan="3">
             <div class="boldcontents" align="center">No User Profiles found</div>
           </th>
         </tr>
@@ -40,22 +40,19 @@
       <table border="1">
         <thead>
           <tr>
-            <th colspan="5">
-          </tr>
-          <tr>
-            <th class="search-result-column-label">
+            <th scope="col" class="search-result-column-label">
               User IdAM ID
             </th>
-            <th>
+            <th scope="col">
               Work basket default jurisdiction
             </th>
-            <th>
+            <th scope="col">
               Work basket default case type
             </th>
-            <th>
+            <th scope="col">
               Work basket default state
             </th>
-            <th>
+            <th scope="col">
               Action
             </th>
           </tr>
@@ -71,9 +68,7 @@
                   <input type="hidden" name="jurisdiction" value="{{userprofile.work_basket_default_jurisdiction}}" />
                   <input type="hidden" name="casetype" value="{{userprofile.work_basket_default_case_type}}" />
                   <input type="hidden" name="state" value="{{userprofile.work_basket_default_state}}" />
-                  <a href="#" onclick="document.getElementById('userprofile_{{loop.index}}').submit();">
-                    <div>{{userprofile.id}}</div>
-                  </a>
+                  <button type="submit" class="button-link">{{userprofile.id}}</button>
                 </form>
               </td>
               <td>
@@ -97,11 +92,6 @@
             </tr>
           {% endfor %}
         </tbody>
-        <tfoot>
-          <tr>
-            <th colspan="5">
-          </tr>
-        </tfoot>
       </table>
     </div>
     {% endif %}

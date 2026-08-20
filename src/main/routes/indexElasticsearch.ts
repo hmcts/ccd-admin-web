@@ -10,7 +10,7 @@ const caseTypesUrl = "/elasticsearch/case-types";
 const indexingUrl = "/elasticsearch/index";
 
 router.get(`/${elasticsearch}`, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
+  if (req.adminWebAuthorization?.canImportDefinition) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
@@ -24,7 +24,7 @@ router.get(`/${elasticsearch}`, (req, res, next) => {
 });
 
 router.get(caseTypesUrl, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
+  if (req.adminWebAuthorization?.canImportDefinition) {
     getCaseTypes(req).then((response) => {
       res.status(200).send(response.body);
     })
@@ -37,7 +37,7 @@ router.get(caseTypesUrl, (req, res, next) => {
 });
 
 router.post(indexingUrl, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
+  if (req.adminWebAuthorization?.canImportDefinition) {
     createElasticIndex(req).then((response) => {
       res.status(200).send(response.body);
     })
