@@ -2,7 +2,7 @@ import { expect, test } from "../e2e/fixtures";
 import { mockFormSubmission } from "./mocks/form-submission.mocks";
 import { ManageWelshTranslationsPage } from "./page-objects/manage-welsh-translations.po";
 
-test.describe("manage Welsh translations UI", () => {
+test.describe("manage Welsh translations UI - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
     await adminWebPage.goto();
     await expect(adminWebPage.authenticatedMarker).toBeAttached();

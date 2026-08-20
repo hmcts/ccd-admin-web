@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-test.describe("authenticated CCD administrator journeys", () => {
+test.describe("authenticated CCD administrator journeys - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
     await adminWebPage.goto();
     await expect(adminWebPage.authenticatedMarker).toBeAttached();

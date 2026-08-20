@@ -28,4 +28,40 @@ export class UserProfilesPage {
   async openJurisdictionSelection(): Promise<void> {
     await this.jurisdictionNavigationLink.click();
   }
+
+  async selectFirstCompleteWorkBasket(): Promise<{
+    caseType: string;
+    jurisdiction: string;
+    state: string;
+  }> {
+    const jurisdictionValues = await this.jurisdictionSelect
+      .locator('option:not([value=""])')
+      .evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value));
+
+    let jurisdiction = "";
+    for (const value of jurisdictionValues) {
+      await this.jurisdictionSelect.selectOption(value);
+      if (await this.caseTypeSelect.locator('option:not([value=""])').count()) {
+        jurisdiction = value;
+        break;
+      }
+    }
+    if (!jurisdiction) {
+      throw new Error("No case type is available for the integration-test jurisdictions");
+    }
+
+    const caseType = await this.caseTypeSelect.locator('option:not([value=""])').first().getAttribute("value");
+    if (!caseType) {
+      throw new Error("No case type is available for the selected integration-test jurisdiction");
+    }
+    await this.caseTypeSelect.selectOption(caseType);
+
+    const state = await this.stateSelect.locator('option:not([value=""])').first().getAttribute("value");
+    if (!state) {
+      throw new Error("No state is available for the selected integration-test case type");
+    }
+    await this.stateSelect.selectOption(state);
+
+    return { caseType, jurisdiction, state };
+  }
 }

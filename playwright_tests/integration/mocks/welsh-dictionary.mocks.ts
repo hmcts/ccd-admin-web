@@ -15,10 +15,10 @@ export async function mockWelshDictionaryDownload(page: Page, csv: string): Prom
   return requests;
 }
 
-export async function mockWelshDictionaryFailure(page: Page, message: string): Promise<void> {
+export async function mockWelshDictionaryFailure(page: Page, message: string, status = 500): Promise<void> {
   await page.route("**/dictionary", async (route) => {
     await route.fulfill({
-      status: 500,
+      status,
       contentType: "text/plain",
       body: message,
     });

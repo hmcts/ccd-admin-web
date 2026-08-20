@@ -1,7 +1,7 @@
 import { expect, test } from "../e2e/fixtures";
 import { ReindexTasksPage } from "./page-objects/reindex-tasks.po";
 
-test.describe("reindex tasks UI", () => {
+test.describe("reindex tasks UI - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
     await adminWebPage.goto();
     await expect(adminWebPage.authenticatedMarker).toBeAttached();

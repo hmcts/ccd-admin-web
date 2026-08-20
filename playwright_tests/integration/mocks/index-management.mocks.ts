@@ -28,20 +28,28 @@ export async function mockElasticsearchIndexing(
   return requestedCaseTypes;
 }
 
-export async function mockGlobalSearchIndexingFailure(page: Page, message: string): Promise<void> {
+export async function mockGlobalSearchIndexingFailure(
+  page: Page,
+  message: string,
+  status = 500,
+): Promise<void> {
   await page.route("**/elastic-support/global-search/index", async (route) => {
     await route.fulfill({
-      status: 500,
+      status,
       contentType: "text/plain",
       body: message,
     });
   });
 }
 
-export async function mockElasticsearchCaseTypesFailure(page: Page, message: string): Promise<void> {
+export async function mockElasticsearchCaseTypesFailure(
+  page: Page,
+  message: string,
+  status = 500,
+): Promise<void> {
   await page.route("**/elasticsearch/case-types", async (route) => {
     await route.fulfill({
-      status: 500,
+      status,
       contentType: "text/plain",
       body: message,
     });
@@ -53,6 +61,7 @@ export async function mockElasticsearchIndexingFailure(
   caseTypes: readonly string[],
   failedCaseType: string,
   message: string,
+  status = 500,
 ): Promise<string[]> {
   const requestedCaseTypes: string[] = [];
 
@@ -67,7 +76,7 @@ export async function mockElasticsearchIndexingFailure(
     }
 
     if (caseType === failedCaseType) {
-      await route.fulfill({ status: 500, contentType: "text/plain", body: message });
+      await route.fulfill({ status, contentType: "text/plain", body: message });
       return;
     }
 
