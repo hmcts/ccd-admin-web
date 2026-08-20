@@ -1,6 +1,5 @@
-import { expect, test } from "../e2e/fixtures";
+import { expect, test } from "./fixtures";
 import { mockFormSubmission } from "./mocks/form-submission.mocks";
-import { ManageWelshTranslationsPage } from "./page-objects/manage-welsh-translations.po";
 
 test.describe("manage Welsh translations UI - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -8,9 +7,11 @@ test.describe("manage Welsh translations UI - positive", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("submits a selected translations CSV to the upload endpoint", async ({ page }) => {
+  test("submits a selected translations CSV to the upload endpoint", async ({
+    manageWelshTranslationsPage,
+    page,
+  }) => {
     const submission = await mockFormSubmission(page, "/manageWelshDictionary");
-    const manageWelshTranslationsPage = new ManageWelshTranslationsPage(page);
     await manageWelshTranslationsPage.open();
 
     await expect(manageWelshTranslationsPage.heading).toHaveText("Import Welsh Translations");

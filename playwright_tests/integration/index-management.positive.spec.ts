@@ -1,9 +1,8 @@
-import { expect, test } from "../e2e/fixtures";
+import { expect, test } from "./fixtures";
 import {
   mockElasticsearchIndexing,
   mockGlobalSearchIndexingSuccess,
 } from "./mocks/index-management.mocks";
-import { IndexManagementPage } from "./page-objects/index-management.po";
 
 test.describe("mocked index-management UI states - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -11,8 +10,7 @@ test.describe("mocked index-management UI states - positive", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("shows progress for each mocked Elasticsearch index request", async ({ page }) => {
-    const indexManagementPage = new IndexManagementPage(page);
+  test("shows progress for each mocked Elasticsearch index request", async ({ indexManagementPage, page }) => {
     const requestedCaseTypes = await mockElasticsearchIndexing(page, ["MockCaseTypeOne", "MockCaseTypeTwo"]);
 
     await indexManagementPage.openElasticsearch();
@@ -33,8 +31,7 @@ test.describe("mocked index-management UI states - positive", () => {
     expect(requestedCaseTypes).toEqual(["MockCaseTypeOne", "MockCaseTypeTwo"]);
   });
 
-  test("renders completion after a successful mocked Global Search request", async ({ page }) => {
-    const indexManagementPage = new IndexManagementPage(page);
+  test("renders completion after a successful mocked Global Search request", async ({ indexManagementPage, page }) => {
     const requests = await mockGlobalSearchIndexingSuccess(page);
 
     await indexManagementPage.openGlobalSearch();

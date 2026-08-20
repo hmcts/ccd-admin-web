@@ -1,5 +1,4 @@
-import { expect, test } from "../e2e/fixtures";
-import { ReindexTasksPage } from "./page-objects/reindex-tasks.po";
+import { expect, test } from "./fixtures";
 
 test.describe("reindex tasks UI - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -7,8 +6,7 @@ test.describe("reindex tasks UI - positive", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("renders the task filter and current task state", async ({ page }) => {
-    const reindexTasksPage = new ReindexTasksPage(page);
+  test("renders the task filter and current task state", async ({ reindexTasksPage }) => {
     await reindexTasksPage.open();
 
     await expect(reindexTasksPage.heading).toHaveText("Reindexed Tasks");
@@ -18,8 +16,7 @@ test.describe("reindex tasks UI - positive", () => {
     await expect(reindexTasksPage.taskTable).toBeVisible();
   });
 
-  test("filters tasks by a selected case type", async ({ page }) => {
-    const reindexTasksPage = new ReindexTasksPage(page);
+  test("filters tasks by a selected case type", async ({ page, reindexTasksPage }) => {
     await reindexTasksPage.open();
     const caseType = await reindexTasksPage.selectFirstCaseType();
 
@@ -32,8 +29,7 @@ test.describe("reindex tasks UI - positive", () => {
     await expect(reindexTasksPage.taskTable).toBeVisible();
   });
 
-  test("persists the auto-refresh preference across page loads", async ({ page }) => {
-    const reindexTasksPage = new ReindexTasksPage(page);
+  test("persists the auto-refresh preference across page loads", async ({ page, reindexTasksPage }) => {
     await reindexTasksPage.open();
     await page.evaluate(() => window.localStorage.removeItem("reindexAutoRefreshEnabled"));
     await page.reload({ waitUntil: "domcontentloaded" });

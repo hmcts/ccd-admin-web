@@ -1,7 +1,5 @@
-import { expect, test } from "../e2e/fixtures";
+import { expect, test } from "./fixtures";
 import { mockFormSubmission } from "./mocks/form-submission.mocks";
-import { DeleteConfirmationPage } from "./page-objects/delete-confirmation.po";
-import { UserRolesPage } from "./page-objects/user-roles.po";
 
 test.describe("user-role administration UI - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -9,8 +7,7 @@ test.describe("user-role administration UI - positive", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("renders the role list and administration controls", async ({ page }) => {
-    const userRolesPage = new UserRolesPage(page);
+  test("renders the role list and administration controls", async ({ userRolesPage }) => {
     await userRolesPage.open();
 
     await expect(userRolesPage.table).toBeVisible();
@@ -22,9 +19,8 @@ test.describe("user-role administration UI - positive", () => {
     await expect(userRolesPage.createLink).toBeVisible();
   });
 
-  test("submits a valid role and classification to the create endpoint", async ({ page }) => {
+  test("submits a valid role and classification to the create endpoint", async ({ page, userRolesPage }) => {
     const submission = await mockFormSubmission(page, "/createuserrole");
-    const userRolesPage = new UserRolesPage(page);
     await userRolesPage.open();
     await userRolesPage.createLink.click();
 
@@ -41,8 +37,7 @@ test.describe("user-role administration UI - positive", () => {
     expect(formData.has("_csrf")).toBe(true);
   });
 
-  test("safely cancels role deletion", async ({ page }) => {
-    const deleteConfirmationPage = new DeleteConfirmationPage(page);
+  test("safely cancels role deletion", async ({ deleteConfirmationPage, page }) => {
     await page.goto("/deleteitem?item=role&roleParameter=playwright-test-role");
     await expect(deleteConfirmationPage.heading).toHaveText("Confirm Delete User Role");
 

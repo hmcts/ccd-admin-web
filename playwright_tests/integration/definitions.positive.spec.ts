@@ -1,8 +1,5 @@
-import { expect, test } from "../e2e/fixtures";
+import { expect, test } from "./fixtures";
 import { mockFormSubmission } from "./mocks/form-submission.mocks";
-import { DefinitionsPage } from "./page-objects/definitions.po";
-import { DeleteConfirmationPage } from "./page-objects/delete-confirmation.po";
-import { JurisdictionSelectionPage } from "./page-objects/jurisdiction-selection.po";
 
 test.describe("definition administration UI - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -10,10 +7,7 @@ test.describe("definition administration UI - positive", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("selects a jurisdiction and renders its definitions", async ({ page }) => {
-    const definitionsPage = new DefinitionsPage(page);
-    const jurisdictionSelectionPage = new JurisdictionSelectionPage(page);
-
+  test("selects a jurisdiction and renders its definitions", async ({ definitionsPage, jurisdictionSelectionPage, page }) => {
     await definitionsPage.openJurisdictionSelection();
     await jurisdictionSelectionPage.selectFirstJurisdiction();
     await jurisdictionSelectionPage.submit();
@@ -30,10 +24,12 @@ test.describe("definition administration UI - positive", () => {
     await expect(definitionsPage.createLink).toBeVisible();
   });
 
-  test("submits a valid definition to the create endpoint", async ({ page }) => {
+  test("submits a valid definition to the create endpoint", async ({
+    definitionsPage,
+    jurisdictionSelectionPage,
+    page,
+  }) => {
     const submission = await mockFormSubmission(page, "/createdefinition");
-    const definitionsPage = new DefinitionsPage(page);
-    const jurisdictionSelectionPage = new JurisdictionSelectionPage(page);
     await definitionsPage.openJurisdictionSelection();
     const jurisdiction = await jurisdictionSelectionPage.selectFirstJurisdiction();
     await jurisdictionSelectionPage.submit();
@@ -50,8 +46,7 @@ test.describe("definition administration UI - positive", () => {
     expect(formData.has("_csrf")).toBe(true);
   });
 
-  test("safely cancels definition deletion", async ({ page }) => {
-    const deleteConfirmationPage = new DeleteConfirmationPage(page);
+  test("safely cancels definition deletion", async ({ deleteConfirmationPage, page }) => {
     await page.goto("/deleteitem?item=definition&jurisdictionId=PLAYWRIGHT&version=1");
     await expect(deleteConfirmationPage.heading).toHaveText("Confirm Delete Definition");
 

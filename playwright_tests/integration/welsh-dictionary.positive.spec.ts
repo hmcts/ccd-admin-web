@@ -1,6 +1,5 @@
-import { expect, test } from "../e2e/fixtures";
+import { expect, test } from "./fixtures";
 import { mockWelshDictionaryDownload } from "./mocks/welsh-dictionary.mocks";
-import { WelshDictionaryPage } from "./page-objects/welsh-dictionary.po";
 
 test.describe("mocked Welsh dictionary UI states - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -8,8 +7,7 @@ test.describe("mocked Welsh dictionary UI states - positive", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("downloads a CSV after a successful mocked dictionary response", async ({ page }) => {
-    const welshDictionaryPage = new WelshDictionaryPage(page);
+  test("downloads a CSV after a successful mocked dictionary response", async ({ page, welshDictionaryPage }) => {
     const requests = await mockWelshDictionaryDownload(page, "English phrase,Welsh phrase");
 
     await welshDictionaryPage.open();

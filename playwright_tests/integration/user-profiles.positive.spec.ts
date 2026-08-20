@@ -1,8 +1,5 @@
-import { expect, test } from "../e2e/fixtures";
+import { expect, test } from "./fixtures";
 import { mockFormSubmission } from "./mocks/form-submission.mocks";
-import { DeleteConfirmationPage } from "./page-objects/delete-confirmation.po";
-import { JurisdictionSelectionPage } from "./page-objects/jurisdiction-selection.po";
-import { UserProfilesPage } from "./page-objects/user-profiles.po";
 
 test.describe("user-profile administration UI - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -10,10 +7,11 @@ test.describe("user-profile administration UI - positive", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("selects a jurisdiction and renders its user profiles", async ({ page }) => {
-    const jurisdictionSelectionPage = new JurisdictionSelectionPage(page);
-    const userProfilesPage = new UserProfilesPage(page);
-
+  test("selects a jurisdiction and renders its user profiles", async ({
+    jurisdictionSelectionPage,
+    page,
+    userProfilesPage,
+  }) => {
     await userProfilesPage.openJurisdictionSelection();
     await jurisdictionSelectionPage.selectFirstJurisdiction();
     await jurisdictionSelectionPage.submit();
@@ -30,10 +28,12 @@ test.describe("user-profile administration UI - positive", () => {
     await expect(userProfilesPage.createLink).toBeVisible();
   });
 
-  test("submits a complete user profile to the create endpoint", async ({ page }) => {
+  test("submits a complete user profile to the create endpoint", async ({
+    jurisdictionSelectionPage,
+    page,
+    userProfilesPage,
+  }) => {
     const submission = await mockFormSubmission(page, "/createuser");
-    const jurisdictionSelectionPage = new JurisdictionSelectionPage(page);
-    const userProfilesPage = new UserProfilesPage(page);
     await userProfilesPage.openJurisdictionSelection();
     await jurisdictionSelectionPage.selectFirstJurisdiction();
     await jurisdictionSelectionPage.submit();
@@ -53,8 +53,7 @@ test.describe("user-profile administration UI - positive", () => {
     expect(formData.has("_csrf")).toBe(true);
   });
 
-  test("safely cancels profile deletion", async ({ page }) => {
-    const deleteConfirmationPage = new DeleteConfirmationPage(page);
+  test("safely cancels profile deletion", async ({ deleteConfirmationPage, page }) => {
     await page.goto("/deleteitem?item=user&idamId=playwright-test%40example.com");
     await expect(deleteConfirmationPage.heading).toHaveText("Confirm Delete User Profile");
 

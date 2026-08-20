@@ -1,6 +1,4 @@
-import { expect, test } from "../e2e/fixtures";
-import { DeleteConfirmationPage } from "./page-objects/delete-confirmation.po";
-import { UserRolesPage } from "./page-objects/user-roles.po";
+import { expect, test } from "./fixtures";
 
 test.describe("user-role administration UI - negative", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -8,8 +6,7 @@ test.describe("user-role administration UI - negative", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("validates an empty role before submitting the create form", async ({ page }) => {
-    const userRolesPage = new UserRolesPage(page);
+  test("validates an empty role before submitting the create form", async ({ page, userRolesPage }) => {
     await userRolesPage.open();
     await userRolesPage.createLink.click();
 
@@ -21,8 +18,7 @@ test.describe("user-role administration UI - negative", () => {
 
   });
 
-  test("requires a delete decision", async ({ page }) => {
-    const deleteConfirmationPage = new DeleteConfirmationPage(page);
+  test("requires a delete decision", async ({ deleteConfirmationPage, page }) => {
     await page.goto("/deleteitem?item=role&roleParameter=playwright-test-role");
     await expect(deleteConfirmationPage.heading).toHaveText("Confirm Delete User Role");
 

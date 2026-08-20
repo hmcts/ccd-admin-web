@@ -1,7 +1,4 @@
-import { expect, test } from "../e2e/fixtures";
-import { DeleteConfirmationPage } from "./page-objects/delete-confirmation.po";
-import { JurisdictionSelectionPage } from "./page-objects/jurisdiction-selection.po";
-import { UserProfilesPage } from "./page-objects/user-profiles.po";
+import { expect, test } from "./fixtures";
 
 test.describe("user-profile administration UI - negative", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -9,9 +6,7 @@ test.describe("user-profile administration UI - negative", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("validates required profile fields", async ({ page }) => {
-    const jurisdictionSelectionPage = new JurisdictionSelectionPage(page);
-    const userProfilesPage = new UserProfilesPage(page);
+  test("validates required profile fields", async ({ jurisdictionSelectionPage, userProfilesPage }) => {
     await userProfilesPage.openJurisdictionSelection();
     await jurisdictionSelectionPage.selectFirstJurisdiction();
     await jurisdictionSelectionPage.submit();
@@ -25,8 +20,7 @@ test.describe("user-profile administration UI - negative", () => {
 
   });
 
-  test("requires a delete decision", async ({ page }) => {
-    const deleteConfirmationPage = new DeleteConfirmationPage(page);
+  test("requires a delete decision", async ({ deleteConfirmationPage, page }) => {
     await page.goto("/deleteitem?item=user&idamId=playwright-test%40example.com");
     await expect(deleteConfirmationPage.heading).toHaveText("Confirm Delete User Profile");
 
