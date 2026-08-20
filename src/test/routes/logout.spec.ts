@@ -20,6 +20,7 @@ describe("logout", () => {
   let response;
   let next;
   let fetch;
+  let fetchMockInstance;
   let logout;
 
   beforeEach(() => {
@@ -50,8 +51,10 @@ describe("logout", () => {
   it("should call IdAM OAuth 2 logout endpoint with JWT token, and redirect to IdAM login page", (done) => {
     response.redirect.callsFake(() => {
       try {
-        expect(fetch.called(LOGOUT_ENDPOINT.replace(":token", ACCESS_TOKEN))).to.be.true;
-        expect(fetch.lastOptions().headers.Authorization).to.equal("Basic "
+        const lastCall = fetchMockInstance.callHistory.lastCall();
+        expect(fetchMockInstance.callHistory.called(
+          LOGOUT_ENDPOINT.replace(":token", ACCESS_TOKEN))).to.be.true;
+        expect(lastCall.options.headers.authorization).to.equal("Basic "
           + Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"));
         expect(next).not.to.be.called;
         expect(response.clearCookie).to.be.calledWith(COOKIE_ACCESS_TOKEN);
