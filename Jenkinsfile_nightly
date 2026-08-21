@@ -13,9 +13,27 @@ def type = "nodejs"
 def product = "ccd"
 def component = "admin-web"
 
+env.FUNCTIONAL_TESTS_WORKERS='3'
+
+def secrets = [
+    'ccd-${env}': [
+        secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
+    ]
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+    [ $class: 'AzureKeyVaultSecret',
+      secretType: 'Secret',
+      name: secretName,
+      version: '',
+      envVariable: envVar
+    ]
+}
+
 withNightlyPipeline(type, product, component) {
     enableSlackNotifications('#ccd-nightly-builds')
     enableFortifyScan()
+    loadVaultSecrets(secrets)
 
     afterAlways('checkout') {
         sh "yarn cache clean"
@@ -27,6 +45,40 @@ withNightlyPipeline(type, product, component) {
 
     afterAlways('fortify-scan') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+    }
+
+    afterAlways('fullFunctionalTest') {
+        junit allowEmptyResults: false,
+            keepLongStdio: true,
+            testResults: 'functional-output/e2e/results.xml'
+
+        steps.archiveArtifacts allowEmptyArchive: true,
+            artifacts: 'functional-output/e2e/artifacts/**/*'
+
+        publishHTML target: [
+            allowMissing         : false,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : 'functional-output/e2e/html',
+            reportFiles          : 'index.html',
+            reportName           : 'Playwright Functional Test Report'
+        ]
+
+        junit allowEmptyResults: false,
+            keepLongStdio: true,
+            testResults: 'functional-output/integration/results.xml'
+
+        steps.archiveArtifacts allowEmptyArchive: true,
+            artifacts: 'functional-output/integration/artifacts/**/*'
+
+        publishHTML target: [
+            allowMissing         : false,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : 'functional-output/integration/html',
+            reportFiles          : 'index.html',
+            reportName           : 'Playwright Integration Test Report'
+        ]
     }
 
 }

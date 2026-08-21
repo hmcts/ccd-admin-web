@@ -1,12 +1,12 @@
-import * as config from "config";
+import config from "config";
 import { fetch } from "../service/get-service";
 import router from "./home";
 import { sanitize } from "../util/sanitize";
 
-const url = config.get("adminWeb.jurisdiction_url");
+const url = config.get<string>("adminWeb.jurisdiction_url");
 
 /* GET Jurisdiction page. */
-router.get("/jurisdiction", (req, res, next) => {
+router.get("/jurisdiction", (req: any, res: any, next: any) => {
   fetch(req, url).then((response) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};

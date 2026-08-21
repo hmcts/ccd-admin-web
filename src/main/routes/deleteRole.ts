@@ -9,7 +9,7 @@ const errorPage = "error";
 /**
  * Delete User Role.
  */
-router.post("/deleterole", (req, res, next) => {
+router.post("/deleterole", (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     if (req.body.deleteItem === "Yes") {
       deleteSessionVariables(req);

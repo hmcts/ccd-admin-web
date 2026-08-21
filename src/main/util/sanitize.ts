@@ -1,5 +1,5 @@
-const xssFilters = require("xss-filters");
+import { inHTMLData } from "xss-filters";
 
 export function sanitize(data) {
-    return xssFilters.inHTMLData(data);
+    return inHTMLData(data);
 }

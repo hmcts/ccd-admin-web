@@ -1,37 +1,37 @@
-{% extends "layout_template.html" %}
-{% from "macros/formElements.html" import errorDisplay %}
+{% extends "layout_template.njk" %}
+{% from "components/formElements.njk" import errorsFor, successBanner %}
 {% block content %}
-{% include "menu.html" %}
-{% if success%}
-<div class="success"><div class="admin-ui">{{success}}</div></div>
-{% endif%}
-
-<h2 class="heading-large padding">Import Welsh Translations</h2>
-<div class="grid-row">
-  <div class="column-two-thirds padding">
-
-    <form action="/manageWelshDictionary" method="post" enctype="multipart/form-data">
-      <div class="form-group">
-        {% if not error %}
-        <p>Choose a csv file containing translations of format "englishPhrase","welshPhrase" or optionally "englishPhrase","welshPhrase","yesOrNo","yes","no"</p>
-        {% endif %}
-        {% if error %}
-        <div class="error-summary govuk-error-message">
-          {{ errorDisplay(error) }}
+  {{ successBanner(success) }}
+  <h1 class="govuk-heading-l">Import Welsh Translations</h1>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="/manageWelshDictionary" method="post" enctype="multipart/form-data">
+        <div class="govuk-form-group">
+          {% if not error %}
+            <p class="govuk-body">Choose a csv file containing translations in one of the following formats :</p>
+            <ul class="govuk-list govuk-list--bullet">
+              <li>"englishPhrase","welshPhrase"</li>
+              <li>"englishPhrase","welshPhrase","yesOrNo","yes","no"</li>
+            </ul>
+          {% endif %}
+          {% if error %}
+            <div class="error-summary govuk-error-message">
+              {{ errorsFor("file", error) }}
+            </div>
+          {% endif %}
+          <label class="govuk-label" for="file">
+            Upload a .csv file
+          </label>
+          <input class="govuk-file-upload" type="file" id="file" name="file" accept=".csv"/>
         </div>
-        {% endif %}
-        <input type="file" id="file" name="file" accept=".csv"/>
-      </div>
         {% if adminWebAuthorization.canLoadWelshTranslation or adminWebAuthorization.canManageWelshTranslation %}
-        <div class="form-group">
-          <button type="submit" class="button" value="Submit">Submit</button>
-        </div>
+          <div class="govuk-form-group">
+            <button type="submit"  class="govuk-button" data-module="govuk-button" value="Submit">Submit</button>
+          </div>
         {% else %}
-        <p>User does not access rights</p>
+          <p class="govuk-body">User does not have access rights</p>
         {% endif %}
-    </form>
-
+      </form>
+    </div>
   </div>
-</div>
-
 {% endblock %}

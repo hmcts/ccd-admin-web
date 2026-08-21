@@ -1,0 +1,47 @@
+import { expect, test } from "./fixtures";
+import { mockFormSubmission } from "./mocks/form-submission.mocks";
+
+test.describe("user-role administration UI - positive", () => {
+  test.beforeEach(async ({ adminWebPage }) => {
+    await adminWebPage.goto();
+    await expect(adminWebPage.authenticatedMarker).toBeAttached();
+  });
+
+  test("renders the role list and administration controls", async ({ userRolesPage }) => {
+    await userRolesPage.open();
+
+    await expect(userRolesPage.table).toBeVisible();
+    await expect(userRolesPage.table.locator("thead tr:last-child th")).toHaveText([
+      "Role",
+      "Security Classification",
+      "Action",
+    ]);
+    await expect(userRolesPage.createLink).toBeVisible();
+  });
+
+  test("submits a valid role and classification to the create endpoint", async ({ page, userRolesPage }) => {
+    const submission = await mockFormSubmission(page, "/createuserrole");
+    await userRolesPage.open();
+    await userRolesPage.createLink.click();
+
+    await expect(userRolesPage.classificationSelect).toHaveValue("PUBLIC");
+    await userRolesPage.roleInput.fill("playwright-test-role");
+    await userRolesPage.classificationSelect.selectOption("PRIVATE");
+    await userRolesPage.submitButton.click();
+
+    const formData = new URLSearchParams(submission.body);
+    expect(submission.count).toBe(1);
+    expect(submission.contentType).toContain("application/x-www-form-urlencoded");
+    expect(formData.get("role")).toBe("playwright-test-role");
+    expect(formData.get("classification")).toBe("PRIVATE");
+    expect(formData.has("_csrf")).toBe(true);
+  });
+
+  test("safely cancels role deletion", async ({ deleteConfirmationPage, page }) => {
+    await page.goto("/deleteitem?item=role&roleParameter=playwright-test-role");
+    await expect(deleteConfirmationPage.heading).toHaveText("Confirm Delete User Role");
+
+    await deleteConfirmationPage.cancelDeletion();
+    await expect(page).toHaveURL((url) => url.pathname === "/user-roles");
+  });
+});
