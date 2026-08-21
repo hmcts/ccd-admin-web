@@ -2,7 +2,6 @@
 import { Logger } from "@hmcts/nodejs-logging";
 import * as fs from "fs";
 import * as https from "https";
-import * as path from "path";
 import { app } from "./app";
 
 const logger = Logger.getLogger("server");
@@ -11,10 +10,14 @@ const logger = Logger.getLogger("server");
 const port = process.env.PORT || "3100";
 
 if (app.locals.ENV === "development") {
-  const sslDirectory = path.join(__dirname, "resources", "localhost-ssl");
+  const certificatePath = process.env.HTTPS_CERT_PATH;
+  const keyPath = process.env.HTTPS_KEY_PATH;
+  if (!certificatePath || !keyPath) {
+    throw new Error("HTTPS_CERT_PATH and HTTPS_KEY_PATH must both be set in development");
+  }
   const sslOptions = {
-    cert: fs.readFileSync(path.join(sslDirectory, "localhost.crt")),
-    key: fs.readFileSync(path.join(sslDirectory, "localhost.key")),
+    cert: fs.readFileSync(certificatePath),
+    key: fs.readFileSync(keyPath),
     secureProtocol: "TLS_method",
   };
   const server = https.createServer(sslOptions, app);
