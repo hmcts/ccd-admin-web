@@ -13,6 +13,8 @@ def type = "nodejs"
 def product = "ccd"
 def component = "admin-web"
 
+env.FUNCTIONAL_TESTS_WORKERS='3'
+
 def secrets = [
     'ccd-${env}': [
         secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')

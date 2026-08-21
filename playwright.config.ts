@@ -21,7 +21,7 @@ export default defineConfig({
     baseURL: process.env.TEST_URL || "http://localhost:3100",
     ignoreHTTPSErrors: true,
     storageState: sessionStoragePath(),
-    screenshot: "on",
+    screenshot: "only-on-failure",
     trace: "retain-on-failure",
     video: "retain-on-failure",
   },

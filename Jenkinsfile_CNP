@@ -41,6 +41,7 @@ def vaultOverrides = [
 ]
 
 env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+env.FUNCTIONAL_TESTS_WORKERS='3'
 
 withPipeline("nodejs", product, component) {
     onMaster {

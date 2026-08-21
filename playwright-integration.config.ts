@@ -1,13 +1,25 @@
 import { defineConfig, devices } from "@playwright/test";
 import { sessionStoragePath } from "./playwright_tests/e2e/session";
 
+function resolveWorkerCount(): number | undefined {
+  const configured = process.env.FUNCTIONAL_TESTS_WORKERS?.trim();
+  if (!configured) {
+    return process.env.CI ? 3 : undefined;
+  }
+
+  const workerCount = Number.parseInt(configured, 10);
+  return Number.isFinite(workerCount) && workerCount > 0
+    ? workerCount
+    : process.env.CI ? 3 : undefined;
+}
+
 export default defineConfig({
   testDir: "./playwright_tests/integration",
   globalSetup: "./playwright_tests/e2e/session.global-setup.ts",
   fullyParallel: false,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: resolveWorkerCount(),
   timeout: 60_000,
   expect: {
     timeout: 40_000,
@@ -22,7 +34,7 @@ export default defineConfig({
     baseURL: process.env.TEST_URL || "http://localhost:3100",
     ignoreHTTPSErrors: true,
     storageState: sessionStoragePath(),
-    screenshot: "on",
+    screenshot: "only-on-failure",
     trace: "retain-on-failure",
     video: "retain-on-failure",
   },

@@ -122,6 +122,11 @@ TEST_URL=https://ccd-admin-web.aat.platform.hmcts.net \
 ./scripts/run-playwright-tests.sh --skip-install
 ```
 
+The E2E suite uses one CI worker because it includes logout of the shared session. The integration suite reads
+`FUNCTIONAL_TESTS_WORKERS`; Jenkins sets it to `3`, while local runs use Playwright's default unless explicitly
+overridden. The combined runner logs the run context, worker counts, detected CPU cores and total agent memory before
+starting the suites.
+
 ### Mocked browser integration tests
 
 The separate Playwright integration suite exercises browser-rendered UI states while intercepting UI-triggered API

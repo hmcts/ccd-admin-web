@@ -62,6 +62,19 @@ if [[ "$install_browser" == true ]]; then
   yarn playwright install chromium || exit $?
 fi
 
+run_context="local-run"
+e2e_workers="playwright-default"
+if [[ -n "${CI:-}" ]]; then
+  run_context="ci"
+  e2e_workers="1"
+fi
+integration_workers="${FUNCTIONAL_TESTS_WORKERS:-playwright-default}"
+agent_hardware="agent_cpu_cores=unknown | agent_ram_gib=unknown"
+if detected_hardware="$(node -e 'const { cpus, totalmem } = require("node:os"); const cores = cpus()?.length ?? "unknown"; const ram = Math.round((totalmem() / 1024 ** 3) * 10) / 10; process.stdout.write(`agent_cpu_cores=${cores} | agent_ram_gib=${ram}`);')"; then
+  agent_hardware="$detected_hardware"
+fi
+echo "[playwright] $run_context | e2e_workers=$e2e_workers | integration_workers=$integration_workers | $agent_hardware"
+
 e2e_status=0
 integration_status=0
 
