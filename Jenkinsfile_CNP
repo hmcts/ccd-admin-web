@@ -17,8 +17,6 @@ def adminWebDevelopPr = "PR-325" // This doesn't change frequently, but when it 
 def secrets = [
     'ccd-${env}': [
         secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
-        secret('definition-importer-username', 'PLAYWRIGHT_USERNAME'),
-        secret('definition-importer-password', 'PLAYWRIGHT_PASSWORD'),
         secret('storage-account-primary-connection-string', 'STORAGEACCOUNT_PRIMARY_CONNECTION_STRING'),
         secret('storage-account-secondary-connection-string', 'STORAGEACCOUNT_SECONDARY_CONNECTION_STRING'),
         secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_INSTRUMENTATION_KEY')
@@ -112,36 +110,68 @@ withPipeline("nodejs", product, component) {
     afterAlways('functionalTest:preview') {
       junit allowEmptyResults: false,
         keepLongStdio: true,
-        testResults: 'functional-output/results.xml'
+        testResults: 'functional-output/e2e/results.xml'
 
       archiveArtifacts allowEmptyArchive: true,
-        artifacts: 'functional-output/artifacts/**/*'
+        artifacts: 'functional-output/e2e/artifacts/**/*'
 
       publishHTML target: [
         allowMissing         : false,
         alwaysLinkToLastBuild: true,
         keepAll              : true,
-        reportDir            : 'functional-output/html',
+        reportDir            : 'functional-output/e2e/html',
         reportFiles          : 'index.html',
         reportName           : 'Playwright Functional Test Report'
+      ]
+
+      junit allowEmptyResults: false,
+        keepLongStdio: true,
+        testResults: 'functional-output/integration/results.xml'
+
+      archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/integration/artifacts/**/*'
+
+      publishHTML target: [
+        allowMissing         : false,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/integration/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright Integration Test Report'
       ]
     }
 
     afterAlways('functionalTest:aat') {
       junit allowEmptyResults: false,
         keepLongStdio: true,
-        testResults: 'functional-output/results.xml'
+        testResults: 'functional-output/e2e/results.xml'
 
       archiveArtifacts allowEmptyArchive: true,
-        artifacts: 'functional-output/artifacts/**/*'
+        artifacts: 'functional-output/e2e/artifacts/**/*'
 
       publishHTML target: [
         allowMissing         : false,
         alwaysLinkToLastBuild: true,
         keepAll              : true,
-        reportDir            : 'functional-output/html',
+        reportDir            : 'functional-output/e2e/html',
         reportFiles          : 'index.html',
         reportName           : 'Playwright Functional Test Report'
+      ]
+
+      junit allowEmptyResults: false,
+        keepLongStdio: true,
+        testResults: 'functional-output/integration/results.xml'
+
+      archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/integration/artifacts/**/*'
+
+      publishHTML target: [
+        allowMissing         : false,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/integration/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright Integration Test Report'
       ]
     }
 

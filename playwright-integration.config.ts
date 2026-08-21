@@ -12,11 +12,11 @@ export default defineConfig({
   expect: {
     timeout: 40_000,
   },
-  outputDir: "integration-output/artifacts",
+  outputDir: "functional-output/integration/artifacts",
   reporter: [
     ["line"],
-    ["html", { outputFolder: "integration-output/html", open: "never" }],
-    ["junit", { outputFile: "integration-output/results.xml" }],
+    ["html", { outputFolder: "functional-output/integration/html", open: "never" }],
+    ["junit", { outputFile: "functional-output/integration/results.xml" }],
   ],
   use: {
     baseURL: process.env.TEST_URL || "http://localhost:3100",

@@ -15,8 +15,7 @@ def component = "admin-web"
 
 def secrets = [
     'ccd-${env}': [
-        secret('definition-importer-username', 'PLAYWRIGHT_USERNAME'),
-        secret('definition-importer-password', 'PLAYWRIGHT_PASSWORD')
+        secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
     ]
 ]
 
@@ -49,18 +48,34 @@ withNightlyPipeline(type, product, component) {
     afterAlways('fullFunctionalTest') {
         junit allowEmptyResults: false,
             keepLongStdio: true,
-            testResults: 'functional-output/results.xml'
+            testResults: 'functional-output/e2e/results.xml'
 
         steps.archiveArtifacts allowEmptyArchive: true,
-            artifacts: 'functional-output/artifacts/**/*'
+            artifacts: 'functional-output/e2e/artifacts/**/*'
 
         publishHTML target: [
             allowMissing         : false,
             alwaysLinkToLastBuild: true,
             keepAll              : true,
-            reportDir            : 'functional-output/html',
+            reportDir            : 'functional-output/e2e/html',
             reportFiles          : 'index.html',
             reportName           : 'Playwright Functional Test Report'
+        ]
+
+        junit allowEmptyResults: false,
+            keepLongStdio: true,
+            testResults: 'functional-output/integration/results.xml'
+
+        steps.archiveArtifacts allowEmptyArchive: true,
+            artifacts: 'functional-output/integration/artifacts/**/*'
+
+        publishHTML target: [
+            allowMissing         : false,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : 'functional-output/integration/html',
+            reportFiles          : 'index.html',
+            reportName           : 'Playwright Integration Test Report'
         ]
     }
 

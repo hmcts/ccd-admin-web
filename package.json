@@ -19,7 +19,7 @@
     "test:a11y": "PUPPETEER_SKIP_DOWNLOAD=false PUPPETEER_SKIP_CHROME_DOWNLOAD=false PUPPETEER_SKIP_CHROME_HEADLESS_SHELL_DOWNLOAD=true node node_modules/puppeteer/install.mjs && NODE_PATH=. NODE_ENV=test LOG_LEVEL=INFO mocha 'src/test/a11y/**'  --timeout 60000 --reporter-options reportFilename=a11y,inlineAssets=true,reportTitle=ccd-admin-web-a11y",
     "test:coverage": "NODE_PATH=. NODE_ENV=test nyc mocha 'src/test/**/*.ts' --ignore 'src/test/a11y/**'",
     "test:smoke": "echo 'TODO - SMOKE TESTS'",
-    "test:functional": "playwright install chromium && playwright test --config=playwright.config.ts",
+    "test:functional": "./scripts/run-playwright-tests.sh",
     "test:fullfunctional": "yarn test:functional",
     "test:integration": "playwright install chromium && playwright test --config=playwright-integration.config.ts",
     "typecheck:playwright": "tsc --project playwright_tests/tsconfig.json",

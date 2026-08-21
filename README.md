@@ -53,10 +53,20 @@ To be able to log on and use the application you have to have a IDAM user with `
 
 ### Functional tests
 
-The Playwright functional tests require Node 24, a running instance of CCD Admin Web, and an accessible IdAM login
-page. The suite verifies the unauthenticated IdAM redirect, authenticated landing page, administration menu navigation
-and logout journey. Authenticated tests require a validated IdAM account supplied through `PLAYWRIGHT_USERNAME` and
-`PLAYWRIGHT_PASSWORD`.
+The Playwright functional tests require Node 24, a running instance of CCD Admin Web, and accessible IdAM web and
+testing-support endpoints. The suite verifies the unauthenticated IdAM redirect, authenticated landing page,
+administration menu navigation and logout journey. Global setup reuses a valid saved session or creates a unique CCD
+Admin user with `@hmcts/playwright-common` using the `ccd_admin` client and the following roles:
+
+- `idam-user-dashboard--access`
+- `ccd-import`
+- `load-translations`
+- `manage-translations`
+
+Set `OAUTH2_CLIENT_SECRET` to the environment's `ccd-admin-web-oauth2-client-secret` value to enable dynamic creation.
+`CREATE_USER_CLIENT_ID`, `CREATE_USER_CLIENT_SECRET`, `CREATE_USER_SCOPE`, `IDAM_WEB_URL` and
+`IDAM_TESTING_SUPPORT_URL` can override the defaults. Supplying both `PLAYWRIGHT_USERNAME` and
+`PLAYWRIGHT_PASSWORD` bypasses dynamic creation and uses that static account instead.
 
 To test a local instance, start the application in one terminal:
 
@@ -72,13 +82,22 @@ PLAYWRIGHT_PASSWORD=<ccd-import-test-password> \
 yarn test:functional
 ```
 
-The authenticated scenarios fail when credentials are missing or rejected by IdAM. Jenkins currently supplies the
-`definition-importer-username` and `definition-importer-password` secrets through these variables; the account must
-support interactive IdAM login and have the `ccd-import` role.
+For dynamic local execution, provide the target. The runner uses Azure CLI to load
+`ccd-admin-web-oauth2-client-secret` from the matching `ccd-aat`, `ccd-demo` or `ccd-saat` vault when the secret is not
+already present in the environment:
 
-Playwright captures the authenticated browser storage state once per target in `.sessions/` and reuses it in a fresh
-browser context for each test. The saved session is validated at the start of each suite and automatically recaptured
-when it has expired or is rejected. Delete `.sessions/` to force a new login while troubleshooting authentication.
+```bash
+TEST_URL=https://ccd-admin-web.aat.platform.hmcts.net \
+yarn test:functional
+```
+
+Jenkins loads the same client secret from `ccd-${env}`. Preview resolves through the existing AAT Vault override.
+User creation or interactive login failures fail global setup and therefore fail the suite.
+
+Playwright creates one user for the E2E and integration suites and keeps its generated credentials and authenticated
+browser storage state per target in the ignored `.sessions/` directory. The saved session is validated at the start of
+each suite; if E2E logout invalidates it, integration logs in again with the same generated user instead of creating a
+second one. Delete `.sessions/` to force creation of a new user while troubleshooting authentication.
 
 Using `NODE_ENV=test` loads the repository's non-production test configuration and serves the application over HTTP.
 The local target defaults to `http://localhost:3100`, and the default IdAM login URL is `http://localhost:9002/login`.
@@ -91,8 +110,17 @@ To test a deployed environment, provide its CCD Admin Web URL:
 TEST_URL=https://<deployed-admin-web-url> yarn test:functional
 ```
 
-The test command installs the required Chromium browser before executing the Playwright suite. Test reports and
-failure artifacts are written to `functional-output/`.
+The test command installs the required Chromium browser before executing the Playwright suites. E2E reports and
+failure artifacts are written to `functional-output/e2e/`; integration output is written to
+`functional-output/integration/`.
+
+The same combined runner can be called directly from the command line. Use `--skip-install` after Chromium has already
+been installed:
+
+```bash
+TEST_URL=https://ccd-admin-web.aat.platform.hmcts.net \
+./scripts/run-playwright-tests.sh --skip-install
+```
 
 ### Mocked browser integration tests
 
@@ -101,7 +129,7 @@ requests. It covers successful and failed Elasticsearch and Global Search indexi
 dictionary downloads, and the import reindex-confirmation controls. The mocked requests do not reach the corresponding
 backend services, but initial authentication and page rendering still use the target CCD Admin Web environment.
 
-Run it with the same target and IdAM credentials used by the functional suite:
+Run it with the same target and IdAM setup used by the functional suite. This example uses a static-account override:
 
 ```bash
 TEST_URL=https://<deployed-admin-web-url> \
@@ -110,10 +138,10 @@ PLAYWRIGHT_PASSWORD=<ccd-import-test-password> \
 yarn test:integration
 ```
 
-These tests are only discovered by `playwright-integration.config.ts`; neither `yarn test` nor
-`yarn test:functional` runs them locally. Jenkins invokes the integration command separately after its functional
-suite and publishes independent functional and mocked-integration reports. Reports and screenshots are written to
-`integration-output/`.
+These tests are only discovered by `playwright-integration.config.ts`; `yarn test` does not run them. The CI-facing
+`yarn test:functional` command runs the E2E and integration suites sequentially and returns a failure if either suite
+fails. Jenkins publishes their independent HTML and JUnit reports and archives both sets of failure artifacts from
+their respective directories under `functional-output/`.
 
 **Note:** You can also start the application by executing:
 ```bash

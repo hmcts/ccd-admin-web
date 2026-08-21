@@ -1,6 +1,7 @@
 import { chromium, type Browser, type BrowserContext, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
+import { resolveAdminUserCredentials } from "./dynamic-admin-user";
 import { AdminWebPage } from "./page-objects/admin-web.po";
 import { IdamLoginPage } from "./page-objects/idam-login.po";
 import { sessionStoragePath } from "./session";
@@ -75,13 +76,7 @@ async function canReuseSession(browser: Browser): Promise<boolean> {
 }
 
 async function captureSession(browser: Browser): Promise<void> {
-  const username = process.env.PLAYWRIGHT_USERNAME;
-  const password = process.env.PLAYWRIGHT_PASSWORD;
-  if (!username || !password) {
-    throw new Error(
-      "PLAYWRIGHT_USERNAME and PLAYWRIGHT_PASSWORD are required to capture an authenticated Playwright session",
-    );
-  }
+  const { username, password } = await resolveAdminUserCredentials(baseUrl);
 
   const context = await browser.newContext({ baseURL: baseUrl, ignoreHTTPSErrors: true });
   try {
