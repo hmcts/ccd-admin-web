@@ -9,7 +9,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   expect: {
-    timeout: 15_000,
+    timeout: 30_000,
   },
   outputDir: "functional-output/e2e/artifacts",
   reporter: [

@@ -122,7 +122,7 @@ withPipeline("nodejs", product, component) {
         keepAll              : true,
         reportDir            : 'functional-output/e2e/html',
         reportFiles          : 'index.html',
-        reportName           : 'Playwright Functional Test Report'
+        reportName           : 'Playwright E2E Test Report'
       ]
 
       junit allowEmptyResults: false,
@@ -156,7 +156,7 @@ withPipeline("nodejs", product, component) {
         keepAll              : true,
         reportDir            : 'functional-output/e2e/html',
         reportFiles          : 'index.html',
-        reportName           : 'Playwright Functional Test Report'
+        reportName           : 'Playwright E2E Test Report'
       ]
 
       junit allowEmptyResults: false,
