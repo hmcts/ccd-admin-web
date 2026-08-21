@@ -1,12 +1,12 @@
-import * as chai from "chai";
-import * as nock from "nock";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
+import { expect, use } from "chai";
+import nock from "nock";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 import { Definition } from "../../main/domain/definition";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("Create Definition service - create Definition", () => {
 
@@ -28,7 +28,7 @@ describe("Create Definition service - create Definition", () => {
     config.get.withArgs("adminWeb.createdefinition_url").returns(createDefinitionUrl);
 
     createDefinition = proxyquire("../../main/service/create-definition-service", {
-      config,
+      "config": config,
     }).createDefinition;
   });
 
@@ -108,7 +108,7 @@ describe("Create Definition service - update Definition", () => {
     config.get.withArgs("adminWeb.updatedefinition_url").returns(updateDefinitionUrl);
 
     createDefinition = proxyquire("../../main/service/create-definition-service", {
-      config,
+      "config": config,
     }).createDefinition;
   });
 

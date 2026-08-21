@@ -1,17 +1,17 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as mock from "nock";
-import * as request from "supertest";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import mock from "nock";
+import request from "supertest";
 
 describe("Confirm Delete page", () => {
   describe("on POST /deleterole when unauthorized", () => {
         const CCD_IMPORT_ROLE = "ccd-import";
 
         it("should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
 
             return request(appTest)
                 .post("/deleterole")
@@ -20,12 +20,13 @@ describe("Confirm Delete page", () => {
                 .then((res) => {
                     expect(res.statusCode).to.equal(200);
                     expect(res.headers.location).to.be.undefined;
-                    expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+                    expect(res.text).to.contain("Unauthorised role");
+                    expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
                 });
         });
         it("should redirect to the Roles list when No is chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
 
             return request(appTest)
                 .post("/deleterole")
@@ -34,13 +35,14 @@ describe("Confirm Delete page", () => {
                 .then((res) => {
                   expect(res.statusCode).to.equal(200);
                   expect(res.headers.location).to.be.undefined;
-                  expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+                  expect(res.text).to.contain("Unauthorised role");
+                  expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
                 });
         });
 
         it("should redirect to the Roles list when Yes is chosen", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
 
             mock("http://localhost:4453")
                 .delete("/api/user-role")
@@ -54,13 +56,14 @@ describe("Confirm Delete page", () => {
                 .then((res) => {
                   expect(res.statusCode).to.equal(200);
                   expect(res.headers.location).to.be.undefined;
-                  expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+                  expect(res.text).to.contain("Unauthorised role");
+                  expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
                 });
         });
 
         it("should redirect to the Roles list when Yes is chosen but an error occurred", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
 
             mock("http://localhost:4453")
                 .delete("/api/user-role")
@@ -74,7 +77,8 @@ describe("Confirm Delete page", () => {
                 .then((res) => {
                   expect(res.statusCode).to.equal(200);
                   expect(res.headers.location).to.be.undefined;
-                  expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+                  expect(res.text).to.contain("Unauthorised role");
+                  expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
                 });
         });
     });
@@ -83,8 +87,8 @@ describe("Confirm Delete page", () => {
     const CCD_IMPORT_ROLE = "ccd-import";
 
     it("should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/deleterole")
@@ -96,8 +100,8 @@ describe("Confirm Delete page", () => {
         });
     });
     it("should redirect to the Roles list when No is chosen", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/deleterole")
@@ -110,8 +114,8 @@ describe("Confirm Delete page", () => {
     });
 
     it("should redirect to the Roles list when Yes is chosen", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4453")
         .delete("/api/user-role")
@@ -128,8 +132,8 @@ describe("Confirm Delete page", () => {
     });
 
     it("should redirect to the Roles list when Yes is chosen but an error occurred", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       mock("http://localhost:4453")
         .delete("/api/user-role")

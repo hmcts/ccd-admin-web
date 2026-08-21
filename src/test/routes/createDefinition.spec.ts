@@ -2,11 +2,11 @@ import { app } from "../../main/app";
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import { get } from "config";
+import config from "config";
 import { JSDOM } from "jsdom";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as mock from "nock";
-import * as request from "supertest";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import mock from "nock";
+import request from "supertest";
 
 const CCD_IMPORT_ROLE = "ccd-import";
 
@@ -19,13 +19,13 @@ describe("on GET /createdefinition", () => {
       .get("/createdefinition")
       .then((res) => {
         expect(res.statusCode).to.equal(302);
-        expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+        expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
       });
   });
 
   it("should not respond with form / populated response if authenticated but not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
@@ -43,14 +43,14 @@ describe("on GET /createdefinition", () => {
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
       });
   });
 
   it("should not respond with form / populated response if authenticated but without required authorized role", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
@@ -68,17 +68,17 @@ describe("on GET /createdefinition", () => {
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
         // The "Import Case Definition" menu item should still be displayed (as this user is authorised for that)
-        const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-        expect(menuItem).to.equal("Import Case Definition");
+        const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+        expect(menuItem).to.contain("Import Case Definition");
       });
   });
 
   it("should not be calling api when accessing Create Definition form page when not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
@@ -95,8 +95,8 @@ describe("on GET /createdefinition", () => {
   });
 
   it("should respond with Create Definition form and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
@@ -117,12 +117,12 @@ describe("on GET /createdefinition", () => {
   });
 
   it("should handle error when accessing Create Definition form page", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .replyWithError({ status: 400, rawResponse: "Duplicate values" });
+      .reply(400, { status: 400, rawResponse: "Duplicate values" });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -141,8 +141,8 @@ describe("on POST /createdefinition when unauthorized", () => {
   });
 
   it("should not be calling api to `create a Definition`", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")
       .post("")
       .reply(201);
@@ -157,14 +157,14 @@ describe("on POST /createdefinition when unauthorized", () => {
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
       });
   });
 
   it("should not be calling api to `Create Definition`", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")
       .post("")
       .replyWithError({ status: 400, rawResponse: "Duplicate definition" });
@@ -179,14 +179,14 @@ describe("on POST /createdefinition when unauthorized", () => {
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
       });
   });
 
   it("should not be able to update a Definition successfully", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+    resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft/save")
       .put("")
       .reply(200);
@@ -201,8 +201,8 @@ describe("on POST /createdefinition when unauthorized", () => {
       .then((res) => {
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
-        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-        expect(errorHeading).to.equal("Unauthorised role");
+        const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+        expect(errorHeading).to.contain("Unauthorised role");
       });
   });
 
@@ -212,8 +212,8 @@ describe("on POST /createdefinition when unauthorized", () => {
     });
 
     it("should redirect to Definitions list page on creating a Definition successfully", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451/api/draft")
         .post("")
         .reply(201);
@@ -231,8 +231,8 @@ describe("on POST /createdefinition when unauthorized", () => {
     });
 
     it("should respond with error if the Definition data is empty", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/createdefinition")
@@ -247,11 +247,11 @@ describe("on POST /createdefinition when unauthorized", () => {
     });
 
     it("should respond with Create Definition form due to server error", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-      mock("http://localhost:4451/api/draft")
-        .post("")
-        .replyWithError({status: 400, rawResponse: "Duplicate definition"});
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
+      mock("http://localhost:4451")
+        .post("/api/draft")
+        .reply(400, {status: 400, rawResponse: "Duplicate definition"});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/createdefinition")
@@ -266,8 +266,8 @@ describe("on POST /createdefinition when unauthorized", () => {
     });
 
     it("should redirect to Definitions list page on updating a Definition successfully", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451/api/draft/save")
         .put("")
         .reply(200);
