@@ -2,8 +2,8 @@ import { chromium, type Browser, type BrowserContext, type Page } from "@playwri
 import fs from "node:fs";
 import path from "node:path";
 import { resolveAdminUserCredentials } from "./dynamic-admin-user";
-import { AdminWebPage } from "./page-objects/admin-web.po";
-import { IdamLoginPage } from "./page-objects/idam-login.po";
+import { AdminWebPage } from "../page-objects/admin-web.po";
+import { IdamLoginPage } from "../page-objects/idam-login.po";
 import { sessionStoragePath } from "./session";
 
 const baseUrl = process.env.TEST_URL || "http://localhost:3100";

@@ -62,7 +62,7 @@ export class AdminWebPage {
         pageMarker: page.locator('form[action="/manageWelshDictionary"] #file'),
       },
     ];
-    this.logoutLink = page.locator('a[href="/logout"]');
+    this.logoutLink = page.locator("button.govuk-button.logout");
   }
 
   async goto(): Promise<void> {

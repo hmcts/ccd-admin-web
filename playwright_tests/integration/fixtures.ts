@@ -1,19 +1,17 @@
-import { expect, test as baseTest } from "../e2e/fixtures";
-import { DefinitionsPage } from "./page-objects/definitions.po";
-import { DeleteConfirmationPage } from "./page-objects/delete-confirmation.po";
-import { ImportDefinitionIntegrationPage } from "./page-objects/import-definition.po";
-import { IndexManagementPage } from "./page-objects/index-management.po";
-import { JurisdictionSelectionPage } from "./page-objects/jurisdiction-selection.po";
-import { ManageWelshTranslationsPage } from "./page-objects/manage-welsh-translations.po";
-import { ReindexTasksPage } from "./page-objects/reindex-tasks.po";
-import { UserProfilesPage } from "./page-objects/user-profiles.po";
-import { UserRolesPage } from "./page-objects/user-roles.po";
-import { WelshDictionaryPage } from "./page-objects/welsh-dictionary.po";
+import { expect, test as baseTest } from "../fixtures";
+import { DefinitionsPage } from "../page-objects/definitions.po";
+import { DeleteConfirmationPage } from "../page-objects/delete-confirmation.po";
+import { IndexManagementPage } from "../page-objects/index-management.po";
+import { JurisdictionSelectionPage } from "../page-objects/jurisdiction-selection.po";
+import { ManageWelshTranslationsPage } from "../page-objects/manage-welsh-translations.po";
+import { ReindexTasksPage } from "../page-objects/reindex-tasks.po";
+import { UserProfilesPage } from "../page-objects/user-profiles.po";
+import { UserRolesPage } from "../page-objects/user-roles.po";
+import { WelshDictionaryPage } from "../page-objects/welsh-dictionary.po";
 
 interface IntegrationPageFixtures {
   definitionsPage: DefinitionsPage;
   deleteConfirmationPage: DeleteConfirmationPage;
-  importDefinitionIntegrationPage: ImportDefinitionIntegrationPage;
   indexManagementPage: IndexManagementPage;
   jurisdictionSelectionPage: JurisdictionSelectionPage;
   manageWelshTranslationsPage: ManageWelshTranslationsPage;
@@ -29,9 +27,6 @@ export const test = baseTest.extend<IntegrationPageFixtures>({
   },
   deleteConfirmationPage: async ({ page }, use) => {
     await use(new DeleteConfirmationPage(page));
-  },
-  importDefinitionIntegrationPage: async ({ page }, use) => {
-    await use(new ImportDefinitionIntegrationPage(page));
   },
   indexManagementPage: async ({ page }, use) => {
     await use(new IndexManagementPage(page));

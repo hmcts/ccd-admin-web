@@ -1,4 +1,4 @@
-import { expect, test } from "./fixtures";
+import { expect, test } from "../fixtures";
 
 test.describe("authenticated CCD administrator journeys - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {

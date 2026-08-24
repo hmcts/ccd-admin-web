@@ -1,4 +1,4 @@
-import { expect, test } from "./fixtures";
+import { expect, test } from "../fixtures";
 
 test("an unauthenticated user is redirected to IdAM login", async ({ baseURL, idamPage }) => {
   const applicationUrl = new URL(baseURL as string);

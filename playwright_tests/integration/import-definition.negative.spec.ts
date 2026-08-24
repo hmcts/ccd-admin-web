@@ -6,22 +6,22 @@ test.describe("import-definition UI - negative", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("requires confirmation before submitting a reindexing import", async ({ importDefinitionIntegrationPage }) => {
-    await importDefinitionIntegrationPage.open();
-    await expect(importDefinitionIntegrationPage.heading).toBeVisible();
-    await expect(importDefinitionIntegrationPage.confirmationCheckbox).toBeDisabled();
-    await expect(importDefinitionIntegrationPage.submitButton).toBeEnabled();
+  test("requires confirmation before submitting a reindexing import", async ({ importDefinitionPage }) => {
+    await importDefinitionPage.open();
+    await expect(importDefinitionPage.heading).toBeVisible();
+    await expect(importDefinitionPage.confirmationCheckbox).toBeDisabled();
+    await expect(importDefinitionPage.submitButton).toBeEnabled();
 
-    await importDefinitionIntegrationPage.reindexCheckbox.check();
-    await expect(importDefinitionIntegrationPage.confirmationCheckbox).toBeEnabled();
-    await expect(importDefinitionIntegrationPage.submitButton).toBeDisabled();
+    await importDefinitionPage.reindexCheckbox.check();
+    await expect(importDefinitionPage.confirmationCheckbox).toBeEnabled();
+    await expect(importDefinitionPage.submitButton).toBeDisabled();
 
-    await importDefinitionIntegrationPage.confirmationCheckbox.check();
-    await expect(importDefinitionIntegrationPage.submitButton).toBeEnabled();
+    await importDefinitionPage.confirmationCheckbox.check();
+    await expect(importDefinitionPage.submitButton).toBeEnabled();
 
-    await importDefinitionIntegrationPage.reindexCheckbox.uncheck();
-    await expect(importDefinitionIntegrationPage.confirmationCheckbox).toBeDisabled();
-    await expect(importDefinitionIntegrationPage.confirmationCheckbox).not.toBeChecked();
-    await expect(importDefinitionIntegrationPage.submitButton).toBeEnabled();
+    await importDefinitionPage.reindexCheckbox.uncheck();
+    await expect(importDefinitionPage.confirmationCheckbox).toBeDisabled();
+    await expect(importDefinitionPage.confirmationCheckbox).not.toBeChecked();
+    await expect(importDefinitionPage.submitButton).toBeEnabled();
   });
 });
