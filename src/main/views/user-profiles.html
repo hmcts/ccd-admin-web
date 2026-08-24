@@ -6,16 +6,12 @@
 {% endblock %}
 {% block head %}
   {{super()}}
-  <script type="text/javascript">
-  // var jurisdictionString = {{userprofiles |safe }}
-  // var jurisdictionLookups = $.parseJSON(jurisdictionString);
-  </script>
 {% endblock %}
 
 {% block content %}
   {% include "menu.html" %}
   {% if success %}
-    <div class="success"><div class="admin-ui">&#10004;   {{success | safe}}</div></div>
+    <div class="success"><div class="admin-ui">&#10004;   {{success}}</div></div>
   {% endif %}
   {% if error %}
     <div class="error-summary govuk-error-message">
