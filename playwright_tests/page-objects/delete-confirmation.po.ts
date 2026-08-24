@@ -12,7 +12,7 @@ export class DeleteConfirmationPage {
     this.heading = page.locator("h1.govuk-heading-l, h2.heading-large");
     this.noOption = this.form.locator("#deleteItem_No");
     this.submitButton = this.form.locator('button[type="submit"]');
-    this.validationError = this.form.locator(".error-message");
+    this.validationError = this.form.locator("#deleteItem-error");
   }
 
   async cancelDeletion(): Promise<void> {
