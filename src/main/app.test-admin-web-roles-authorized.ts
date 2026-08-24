@@ -14,6 +14,8 @@ appTestWithAuthorizedAdminWebRoles.locals.ENV = env;
 appTestWithAuthorizedAdminWebRoles.locals.elasticSearchReindexEnabled =
   String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true";
 
+appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
+
 // Session
 appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy
 appTestWithAuthorizedAdminWebRoles.use(cookieSession({
@@ -32,12 +34,10 @@ appTestWithAuthorizedAdminWebRoles.set("view engine", "html");
 appTestWithAuthorizedAdminWebRoles.set("views", [path.join(__dirname, "views"),
 path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
 
-appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 appTestWithAuthorizedAdminWebRoles.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 appTestWithAuthorizedAdminWebRoles.use(bodyParser.json());
 appTestWithAuthorizedAdminWebRoles.use(bodyParser.urlencoded({ extended: false }));
 appTestWithAuthorizedAdminWebRoles.use(cookieParser());
-appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 
 expressNunjucks(appTestWithAuthorizedAdminWebRoles, {
   filters: {
