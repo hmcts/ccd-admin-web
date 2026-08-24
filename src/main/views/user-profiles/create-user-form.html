@@ -9,9 +9,8 @@
   {{super()}}
 
   <script type="text/javascript">
-  var jurisdictionString = {{jurisdictions |safe }}
-  var jurisdictionLookups = $.parseJSON(jurisdictionString);
-  var idamId = "{{idamId |safe }}"
+  var jurisdictionLookups = [];
+  var idamId = "{{idamId}}"
 
   var updateCaseTypeBasedOn = function(index) {
 
@@ -42,6 +41,8 @@
   }
 
   $(document).ready(function(){
+    jurisdictionLookups = $.parseJSON($("#jurisdictionData").val());
+
         $('#createuserform').validate({ // initialize the plugin
             onkeyup: function(element) {$(element).valid()},
             onclick: function(element) {$(element).valid()},
@@ -138,7 +139,8 @@
             {% else %}
                 <input class="form-control" id="idamId" name="idamId" type="text"/><br><br>
             {% endif%}
-            <input type="hidden" id="jurisdiction" name="jurisdiction" value="{{jurisdiction | safe}}"/>
+            <input type="hidden" id="jurisdictionData" value="{{jurisdictions}}"/>
+            <input type="hidden" id="jurisdiction" name="jurisdiction" value="{{jurisdiction}}"/>
             <label class="form-label" >Work basket default jurisdiction</label>
             {{  dropdown("jurisdictionDropdown") }}
             <label class="form-label">Work basket default case type</label>
