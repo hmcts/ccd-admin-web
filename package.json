@@ -178,7 +178,6 @@
     "follow-redirects": "^1.15.5",
     "copy-props": "^4.0.0",
     "ajv@npm:^4.7.0": "npm:^8.0.0",
-    "ajv@npm:^6.14.0": "npm:ajv@8.20.0",
     "ajv@npm:^8.0.0": "npm:^8.0.0",
     "minimist": "^1.2.6",
     "moment": "^2.29.4",
