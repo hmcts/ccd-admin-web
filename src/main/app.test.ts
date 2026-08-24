@@ -12,6 +12,8 @@ const env = process.env.NODE_ENV || "development";
 export const appTest: express.Express = express();
 appTest.locals.ENV = env;
 
+appTest.use(express.static(path.join(__dirname, "public")));
+
 // Session
 appTest.set("trust proxy", 1); // trust first proxy
 appTest.use(cookieSession({
@@ -31,7 +33,6 @@ appTest.set("view engine", "html");
 appTest.set("views", [path.join(__dirname, "views"),
 path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
 
-appTest.use(express.static(path.join(__dirname, "public")));
 appTest.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 appTest.use(bodyParser.json());
 appTest.use(bodyParser.urlencoded({ extended: false }));
