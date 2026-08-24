@@ -1,12 +1,13 @@
-import * as config from "config";
+import config from "config";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { fetch } from "../service/get-service";
 import router from "./home";
 import { sanitize } from "../util/sanitize";
 import { validate } from "../validators/validateUserProfile";
+import path from "node:path";
 
 const errorPage = "error";
-const url = config.get("adminWeb.jurisdiction_url");
+const url = config.get<string>("adminWeb.jurisdiction_url");
 
 // Apply Validation
 function validateUpdate(req, res, next) {
@@ -14,7 +15,7 @@ function validateUpdate(req, res, next) {
 }
 
 /* POST form data to Create User form. */
-router.post("/updateuser", validateUpdate, (req, res, next) => {
+router.post("/updateuser", validateUpdate, (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     fetch(req, url).then((response) => {
         res.status(200);
@@ -34,7 +35,7 @@ router.post("/updateuser", validateUpdate, (req, res, next) => {
             responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
             delete req.session.error;
         }
-        res.render("user-profiles/create-user-form", responseContent);
+        res.render(path.join("user-profiles", "manage-user-profile-form"), responseContent);
     }).catch((error) => {
         // Call the next middleware, which is the error handler
         next(error);

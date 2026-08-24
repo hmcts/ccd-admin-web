@@ -1,10 +1,8 @@
 import * as chai from "chai";
-import * as nock from "nock";
-import * as sinonChai from "sinon-chai";
+import nock from "nock";
 import { getReindexTasks } from "../../main/service/reindex-task-service";
 
 const expect = chai.expect;
-chai.use(sinonChai);
 
 describe("Reindex task service", () => {
 

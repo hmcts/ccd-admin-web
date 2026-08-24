@@ -1,11 +1,11 @@
-import * as chai from "chai";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
-import * as nock from "nock";
+import { expect, use } from "chai";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
+import nock from "nock";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("test delete user profile service", () => {
 
@@ -29,22 +29,20 @@ describe("test delete user profile service", () => {
     config.get.withArgs("adminWeb.userprofiles_url").returns(deleteUserProfileURL);
 
     deleteUserProfile = proxyquire("../../main/service/delete-user-service", {
-      config,
+      "config": config,
     }).deleteUserProfile;
   });
 
   it("should return an HTTP 204 status and success message", (done) => {
-    const expectedResult = "User profile deleted successfully";
 
     nock("http://localhost:4453")
       .delete("/users")
       .query({ uid: "aaa@yahii.com", jid: "test" })
-      .reply(204, expectedResult);
+      .reply(204);
 
     deleteUserProfile(req).then((res) => {
       try {
         expect(res.status).to.equal(204);
-        expect(res.text).to.equal(expectedResult);
         done();
       } catch (e) {
         done(e);

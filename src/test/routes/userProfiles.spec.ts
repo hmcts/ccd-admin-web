@@ -1,11 +1,11 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as mock from "nock";
-import * as mockSession from "mock-session";
-import * as request from "supertest-session";
-import * as sinon from "sinon";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import mock from "nock";
+import mockSession from "mock-session";
+import request from "supertest-session";
+import sinon from "sinon";
 
 describe("User profiles page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
@@ -20,8 +20,8 @@ describe("User profiles page", () => {
 
   describe("on GET /userprofiles", () => {
     it("should not return user profiles for given Jurisdiction without authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
@@ -42,13 +42,14 @@ describe("User profiles page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Case Type 3");
           expect(res.text).not.to.contain("Jurisdiction 3");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          expect(res.text).to.contain("Unauthorised role");
+          expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
     });
 
     it("should return user profiles for given Jurisdiction with authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
@@ -73,8 +74,8 @@ describe("User profiles page", () => {
     });
 
     it("should not return all user profiles if Jurisdiction is not present in session without authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4453")
       .get("/users")
       .query({})
@@ -99,13 +100,14 @@ describe("User profiles page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Case Type 3");
           expect(res.text).not.to.contain("Jurisdiction 3");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          expect(res.text).to.contain("Unauthorised role");
+          expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
     });
 
     it("should return all user profiles if Jurisdiction is not present in session with authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
         .query({})
@@ -136,8 +138,8 @@ describe("User profiles page", () => {
 
   describe("on POST /userprofiles", () => {
     it("should not return user profiles list without authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
@@ -158,13 +160,14 @@ describe("User profiles page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Case Type 3");
           expect(res.text).not.to.contain("Jurisdiction 3");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          expect(res.text).to.contain("Unauthorised role");
+          expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
     });
 
     it("should return user profiles list with authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
@@ -189,8 +192,8 @@ describe("User profiles page", () => {
     });
 
     it("should return error from the server", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, { canManageUserProfile: true });
@@ -198,7 +201,7 @@ describe("User profiles page", () => {
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
-        .replyWithError({ code: 500, text: "Server Error" });
+        .reply(500, { code: 500, text: "Server Error" });
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/userprofiles")
@@ -213,8 +216,8 @@ describe("User profiles page", () => {
     });
 
     it("should not call /users if user is not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, { canManageUserProfile: true });

@@ -1,6 +1,6 @@
-import * as chai from "chai";
-import * as nock from "nock";
-import * as sinonChai from "sinon-chai";
+import { expect, use } from "chai";
+import nock from "nock";
+import sinonChai from "sinon-chai";
 import {appTestWithAuthorizedAdminWebRoles} from "../../main/app.test-admin-web-roles-authorized";
 import {
     doUploadTranslations,
@@ -8,11 +8,11 @@ import {
     doUploadTranslationsThen,
     doUploadTranslationsCatch,
 } from "../../main/routes/manageWelshDictionary";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as request from "supertest";
+import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import request from "supertest";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("test route manage Welsh Dictionary", () => {
 
@@ -265,7 +265,7 @@ describe("test route manage Welsh Dictionary", () => {
             const req = {
                 accessToken: "userAuthToken",
                 file: {
-                    buffer: new Buffer(8),
+                    buffer: Buffer.alloc(8),
                     originalname: "dummy_filename.csv",
                 },
                 serviceAuthToken: "serviceAuthToken",
@@ -285,12 +285,12 @@ describe("test route manage Welsh Dictionary", () => {
         });
 
         it("should return Entry page when authenticated and authorized", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
             const req = {
                 accessToken: "userAuthToken",
                 file: {
-                    buffer: new Buffer(8),
+                    buffer: Buffer.alloc(8),
                     originalname: "dummy_filename.xslx",
                 },
                 serviceAuthToken: "serviceAuthToken",
@@ -313,12 +313,12 @@ describe("test route manage Welsh Dictionary", () => {
         });
 
         // it("should return Updated page when authenticated and authorised", () => {
-        //     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        //     idamServiceMock.resolveRetrieveServiceToken();
+        //     resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+        //     resolveRetrieveServiceToken();
         //     const req = {
         //         accessToken: "userAuthToken",
         //         file: {
-        //             buffer: new Buffer(8),
+        //             buffer: Buffer.alloc(8),
         //             originalname: "dummy_filename.csv",
         //         },
         //         serviceAuthToken: "serviceAuthToken",
@@ -341,8 +341,8 @@ describe("test route manage Welsh Dictionary", () => {
         // });
 
         it("should respond with Not CSV error when authenticated and authorized", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
             const req = {
                 accessToken: "userAuthToken",
                 adminWebAuthorization: {
@@ -350,7 +350,7 @@ describe("test route manage Welsh Dictionary", () => {
                     canManageWelshTranslation: false,
                 },
                 file: {
-                    buffer: new Buffer(8),
+                    buffer: Buffer.alloc(8),
                     originalname: "dummy_filename.xslx",
                 },
                 serviceAuthToken: "serviceAuthToken",
@@ -373,12 +373,12 @@ describe("test route manage Welsh Dictionary", () => {
         });
 
         it("should respond with Welsh Translation response when authenticated and authorized", () => {
-            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            idamServiceMock.resolveRetrieveServiceToken();
+            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            resolveRetrieveServiceToken();
             const req = {
                 accessToken: "userAuthToken",
                 file: {
-                    buffer: new Buffer(8),
+                    buffer: Buffer.alloc(8),
                     originalname: "dummy_filename.csv",
                 },
                 serviceAuthToken: "serviceAuthToken",
@@ -407,8 +407,8 @@ describe("test route manage Welsh Dictionary", () => {
             nock.cleanAll();
         });
 
-        idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        idamServiceMock.resolveRetrieveServiceToken();
+        resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+        resolveRetrieveServiceToken();
         nock("http://localhost:4451")
             .get("/api/idam/adminweb/authorization")
             .reply(200, {});
