@@ -2,6 +2,9 @@ appInsights:
   enabled: false
 secrets:
   ccd:
+    session-keys:
+      - test-session-key-1
+      - test-session-key-2
     microservicekey-ccd-admin: AAAAAAAAAAAAAAAD
     ccd-admin-web-oauth2-client-secret: IIIIIIIIIIIIIIII
     AppInsightsInstrumentationKey: "some-key"

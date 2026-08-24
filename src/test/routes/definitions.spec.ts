@@ -9,6 +9,7 @@ import * as sinon from "sinon";
 
 describe("Definitions page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
+  const TEST_SESSION_KEY = "test-session-key-1";
 
   beforeEach(() => {
     const config = {
@@ -39,8 +40,8 @@ describe("Definitions page", () => {
           status: "DRAFT",
         }]);
 
-      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
-      const sessionCookie = mockSession("session", "key1", { jurisdiction: "TEST" });
+      // Set jurisdiction in the appTest session object, which is stored as a cookie signed with the test session key.
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, { jurisdiction: "TEST" });
 
       return request(appTest)
         .get("/definitions")
@@ -73,8 +74,8 @@ describe("Definitions page", () => {
           status: "DRAFT",
         }]);
 
-      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
-      const sessionCookie = mockSession("session", "key1", { jurisdiction: "TEST" });
+      // Set jurisdiction in the appTest session object, which is stored as a cookie signed with the test session key.
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, { jurisdiction: "TEST" });
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/definitions")
@@ -107,7 +108,7 @@ describe("Definitions page", () => {
         }]);
 
       // Omit jurisdiction in the appTest session object
-      const sessionCookie = mockSession("session", "key1", {});
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, {});
 
       return request(appTest)
         .get("/definitions")
@@ -141,7 +142,7 @@ describe("Definitions page", () => {
         }]);
 
       // Omit jurisdiction in the appTest session object
-      const sessionCookie = mockSession("session", "key1", {});
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/definitions")
