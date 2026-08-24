@@ -5,7 +5,7 @@ import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
 import * as path from "path";
 import * as favicon from "serve-favicon";
-import * as config from "config";
+import config = require("config");
 import { importAll } from "./import-all/index";
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";

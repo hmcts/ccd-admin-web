@@ -1,6 +1,6 @@
 import * as fetch from "node-fetch";
 import { format } from "url";
-import { get } from "config";
+import config = require("config");
 import { Logger } from "@hmcts/nodejs-logging";
 
 const completeRedirectURI = (uri) => {
@@ -15,7 +15,7 @@ export function accessTokenRequest(request, redirectUri = request.query.redirect
   const options = {
     headers: {
       "Authorization": "Basic "
-        + Buffer.from(get("idam.oauth2.client_id") + ":" + get("secrets.ccd.ccd-admin-web-oauth2-client-secret"))
+        + Buffer.from(config.get("idam.oauth2.client_id") + ":" + config.get("secrets.ccd.ccd-admin-web-oauth2-client-secret"))
           .toString("base64"),
       "Content-Type": "application/x-www-form-urlencoded",
     },
@@ -27,7 +27,7 @@ export function accessTokenRequest(request, redirectUri = request.query.redirect
     redirect_uri: completeRedirectURI(redirectUri),
   };
   const logger = Logger.getLogger(__filename);
-  return fetch(get("idam.oauth2.token_endpoint") + format({ query: params }), options)
+  return fetch(config.get("idam.oauth2.token_endpoint") + format({ query: params }), options)
     .then((response) =>
       response.status === 200 ? response : response.text().then((text) => Promise.reject(new Error(text))))
     .then((response) => response.json())

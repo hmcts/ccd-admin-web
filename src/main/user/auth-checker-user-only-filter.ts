@@ -1,5 +1,5 @@
 import { authorize } from "./user-request-authorizer";
-import { get } from "config";
+import config = require("config");
 import { Logger } from "@hmcts/nodejs-logging";
 
 export const authCheckerUserOnlyFilter = (req, res, next) => {
@@ -19,8 +19,8 @@ export const authCheckerUserOnlyFilter = (req, res, next) => {
       if (error.status === 403) {
         next(error);
       } else {
-        res.redirect(302, `${get("adminWeb.login_url")}?response_type=code&client_id=` +
-          `${get("idam.oauth2.client_id")}&redirect_uri=${REDIRECT_URI}`);
+        res.redirect(302, `${config.get("adminWeb.login_url")}?response_type=code&client_id=` +
+          `${config.get("idam.oauth2.client_id")}&redirect_uri=${REDIRECT_URI}`);
       }
     });
 };

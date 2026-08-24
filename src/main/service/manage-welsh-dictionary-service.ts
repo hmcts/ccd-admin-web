@@ -1,4 +1,4 @@
-import * as config from "config";
+import config = require("config");
 import * as request from "superagent";
 const { Readable } = require("stream");
 const csv = require("fast-csv");

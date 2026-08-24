@@ -1,4 +1,4 @@
-import * as config from "config";
+import config = require("config");
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { render } from "../util/render";
 import router from "./home";

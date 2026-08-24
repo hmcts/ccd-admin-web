@@ -1,7 +1,7 @@
 import * as healthcheck from "@hmcts/nodejs-healthcheck";
 import { Express, Logger } from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
-import * as config from "config";
+import config = require("config");
 import * as cookieParser from "cookie-parser";
 import * as csrf from "csurf";
 import * as express from "express";

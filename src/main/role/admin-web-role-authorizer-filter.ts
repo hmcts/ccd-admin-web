@@ -1,4 +1,4 @@
-import * as config from "config";
+import config = require("config");
 import Debug from "debug";
 import { fetch } from "../service/get-service";
 import { Logger } from "@hmcts/nodejs-logging";

@@ -1,4 +1,4 @@
-import * as config from "config";
+import config = require("config");
 import { createDefinition } from "../service/create-definition-service";
 import { Definition } from "../domain/definition";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";

@@ -1,4 +1,4 @@
-import * as config from "config";
+import config = require("config");
 import { createUserProfile } from "../service/create-user-service";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { fetch } from "../service/get-service";

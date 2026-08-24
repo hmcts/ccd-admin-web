@@ -1,7 +1,7 @@
 import { COOKIE_ACCESS_TOKEN } from "./oauth2redirect";
 import * as express from "express";
 import * as fetch from "node-fetch";
-import { get } from "config";
+import config = require("config");
 
 const router = express.Router();
 const TOKEN_PLACEHOLDER = ":token";
@@ -13,13 +13,13 @@ export const logout = (req, res, next) => {
     const options = {
       headers: {
         "Authorization": "Basic "
-          + Buffer.from(get("idam.oauth2.client_id") + ":" + get("secrets.ccd.ccd-admin-web-oauth2-client-secret"))
+          + Buffer.from(config.get("idam.oauth2.client_id") + ":" + config.get("secrets.ccd.ccd-admin-web-oauth2-client-secret"))
             .toString("base64"),
         "Content-Type": "application/x-www-form-urlencoded",
       },
       method: "DELETE",
     };
-    fetch(get("idam.oauth2.logout_endpoint").replace(TOKEN_PLACEHOLDER, accessToken), options)
+    fetch(config.get("idam.oauth2.logout_endpoint").replace(TOKEN_PLACEHOLDER, accessToken), options)
       .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
         // Delete the session

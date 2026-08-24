@@ -1,4 +1,4 @@
-import * as config from "config";
+import config = require("config");
 import * as request from "superagent";
 import { Logger } from "@hmcts/nodejs-logging";
 

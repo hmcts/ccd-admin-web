@@ -1,6 +1,6 @@
 import { app } from "../../main/app";
 import { expect } from "chai";
-import { get } from "config";
+import config = require("config");
 import * as idamServiceMock from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
 import * as mock from "nock";
@@ -20,7 +20,7 @@ describe("Home page", () => {
         .get("/")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 

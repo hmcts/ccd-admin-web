@@ -1,4 +1,4 @@
-import * as config from "config";
+import config = require("config");
 import { fetch } from "../service/get-service";
 import router from "./home";
 import { sanitize } from "../util/sanitize";

@@ -1,5 +1,5 @@
 import * as express from "express";
-import * as config from "config";
+import config = require("config");
 import { accessTokenRequest } from "../oauth2/access-token-request";
 
 export const COOKIE_ACCESS_TOKEN = "accessToken";

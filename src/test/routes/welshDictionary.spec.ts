@@ -2,7 +2,7 @@ import * as chai from "chai";
 import * as nock from "nock";
 import { JSDOM } from "jsdom";
 import * as sinonChai from "sinon-chai";
-import { get } from "config";
+import config = require("config");
 import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import * as idamServiceMock from "../http-mocks/idam";
@@ -26,7 +26,7 @@ describe("test route Welsh Dictionary", () => {
         .get("/welshDictionary")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to
             .be.true;
         });
     });
@@ -100,7 +100,7 @@ describe("test route Welsh Dictionary", () => {
         .get("/dictionary")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to
             .be.true;
         });
     });

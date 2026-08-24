@@ -1,7 +1,7 @@
 import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import { get } from "config";
+import configModule = require("config");
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import { JSDOM } from "jsdom";
@@ -25,7 +25,7 @@ describe("Confirm Delete page", () => {
         .get("/deleteitem")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(configModule.get("adminWeb.login_url"))).to.be.true;
         });
     });
 

@@ -4,7 +4,7 @@ import * as idamServiceMock from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
 import * as mock from "nock";
 import * as request from "supertest";
-import { get } from "config";
+import config = require("config");
 
 describe("Jurisdiction page", () => {
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe("Jurisdiction page", () => {
         .get("/jurisdiction")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 

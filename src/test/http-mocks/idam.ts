@@ -1,4 +1,4 @@
-import * as config from "config";
+import config = require("config");
 import * as mock from "nock";
 import * as HttpStatus from "http-status-codes";
 

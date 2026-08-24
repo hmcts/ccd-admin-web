@@ -1,5 +1,5 @@
 import * as request from "superagent";
-import * as config from "config";
+import config = require("config");
 import { Logger } from "@hmcts/nodejs-logging";
 import { UserProfile } from "domain/userprofile";
 
