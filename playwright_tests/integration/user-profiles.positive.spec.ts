@@ -39,6 +39,7 @@ test.describe("user-profile administration UI - positive", () => {
     await jurisdictionSelectionPage.submit();
     await userProfilesPage.createLink.click();
 
+    await expect(userProfilesPage.form).toBeVisible();
     await userProfilesPage.idamIdInput.fill("playwright-profile@example.com");
     const workBasket = await userProfilesPage.selectFirstCompleteWorkBasket();
     await userProfilesPage.submitButton.click();

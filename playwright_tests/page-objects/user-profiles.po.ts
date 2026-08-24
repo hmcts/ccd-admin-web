@@ -36,8 +36,10 @@ export class UserProfilesPage {
     jurisdiction: string;
     state: string;
   }> {
-    const jurisdictionValues = await this.jurisdictionSelect
-      .locator('option:not([value=""])')
+    const jurisdictionOptions = this.jurisdictionSelect.locator('option:not([value=""])');
+    await jurisdictionOptions.first().waitFor({ state: "attached" });
+
+    const jurisdictionValues = await jurisdictionOptions
       .evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value));
 
     let jurisdiction = "";
