@@ -15,7 +15,7 @@ function resolveWorkerCount(): number | undefined {
 
 export default defineConfig({
   testDir: "./playwright_tests/integration",
-  globalSetup: "./playwright_tests/e2e/session.global-setup.ts",
+  globalSetup: "./playwright_tests/e2e/integration-session.global-setup.ts",
   fullyParallel: false,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,

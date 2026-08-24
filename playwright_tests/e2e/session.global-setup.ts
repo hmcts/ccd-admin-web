@@ -112,12 +112,16 @@ async function captureSession(browser: Browser): Promise<void> {
   }
 }
 
-export default async function globalSetup(): Promise<void> {
+interface SessionSetupOptions {
+  forceRefresh?: boolean;
+}
+
+export async function setupSession({ forceRefresh = false }: SessionSetupOptions = {}): Promise<void> {
   fs.mkdirSync(path.dirname(storageStatePath), { recursive: true });
 
   const browser = await chromium.launch();
   try {
-    if (await canReuseSession(browser)) {
+    if (!forceRefresh && await canReuseSession(browser)) {
       return;
     }
     await captureSession(browser);
@@ -125,3 +129,5 @@ export default async function globalSetup(): Promise<void> {
     await browser.close();
   }
 }
+
+export default setupSession;
