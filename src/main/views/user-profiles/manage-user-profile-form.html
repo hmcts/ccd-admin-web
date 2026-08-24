@@ -9,7 +9,7 @@
 
   <script type="text/javascript">
   var jurisdictionString = {{jurisdictions | safe }}
-  var jurisdictionLookups = $.parseJSON(jurisdictionString);
+  var jurisdictionLookups = JSON.parse(jurisdictionString);
   var idamId = "{{idamId | safe }}"
 
   var updateCaseTypeBasedOn = function(index) {
