@@ -6,6 +6,7 @@ export class UserProfilesPage {
   readonly createLink: Locator;
   readonly form: Locator;
   readonly idamIdInput: Locator;
+  readonly idamIdValidationError: Locator;
   readonly jurisdictionNavigationLink: Locator;
   readonly jurisdictionSelect: Locator;
   readonly stateSelect: Locator;
@@ -18,6 +19,7 @@ export class UserProfilesPage {
     this.caseTypeSelect = page.locator("#caseTypeDropdown");
     this.createLink = page.locator('a[href="/createuser"]');
     this.idamIdInput = this.form.locator("#idamId");
+    this.idamIdValidationError = this.form.locator("#idamId-error");
     this.jurisdictionNavigationLink = page.locator('a[href="/jurisdiction?dest=userprofiles"]');
     this.jurisdictionSelect = page.locator("#jurisdictionDropdown");
     this.stateSelect = page.locator("#stateDropdown");
