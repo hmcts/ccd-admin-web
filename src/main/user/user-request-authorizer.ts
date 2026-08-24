@@ -20,9 +20,16 @@ export const ERROR_UNAUTHORIZED_USER_ID = {
 export const COOKIE_ACCESS_TOKEN = "accessToken";
 export const AUTHORIZATION = "Authorization";
 
+const toError = (authorizationError) => {
+  const error = new Error(authorizationError.message) as any;
+  error.error = authorizationError.error;
+  error.status = authorizationError.status;
+  return error;
+};
+
 const authorizeRoles = (user) => new Promise((resolve, reject) => {
   if (!isUserAuthorized(user)) {
-    reject(ERROR_UNAUTHORIZED_ROLE);
+    reject(toError(ERROR_UNAUTHORIZED_ROLE));
   } else {
     resolve();
   }
@@ -33,7 +40,7 @@ export const authorize = (request) => {
   const bearerToken = request.get(AUTHORIZATION) || (request.cookies ? request.cookies[COOKIE_ACCESS_TOKEN] : null);
 
   if (!bearerToken) {
-    return Promise.reject(ERROR_TOKEN_MISSING);
+    return Promise.reject(toError(ERROR_TOKEN_MISSING));
   }
 
   request.accessToken = bearerToken.startsWith("Bearer ") ? bearerToken : "Bearer " + bearerToken;
