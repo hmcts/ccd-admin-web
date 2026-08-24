@@ -18,7 +18,7 @@ export default defineConfig({
   globalSetup: "./playwright_tests/e2e/session.global-setup.ts",
   fullyParallel: false,
   forbidOnly: Boolean(process.env.CI),
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
   workers: resolveWorkerCount(),
   timeout: 60_000,
   expect: {
