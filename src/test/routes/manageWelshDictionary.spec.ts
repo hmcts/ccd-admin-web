@@ -7,7 +7,7 @@ import {
     doGetWelshDictionary,
     doUploadTranslationsThen,
     doUploadTranslationsCatch,
-} from "../../main/routes/manageWelshDictionary";
+} from "routes/manageWelshDictionary";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as request from "supertest";
 
@@ -89,7 +89,7 @@ describe("test route manage Welsh Dictionary", () => {
 
     describe("test function doUploadTranslations", () => {
         const res = {
-            render(renderInput, responseContent) {
+            render(responseContent) {
                 // empty
             },
         };
