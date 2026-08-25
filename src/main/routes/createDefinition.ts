@@ -18,7 +18,7 @@ function getErrorText(error) {
 
 /* GET create definition form. */
 router.get("/createdefinition", (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
+  if (req.adminWebAuthorization?.canManageDefinition) {
   fetch(req, url).then((response) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
@@ -45,7 +45,7 @@ router.get("/createdefinition", (req, res, next) => {
 
 /* POST create user result. */
 router.post("/createdefinition", (req, res) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
+  if (req.adminWebAuthorization?.canManageDefinition) {
     createDefinition(req, new Definition(sanitize(req.session.jurisdiction),
                                          sanitize(req.body.description),
                                          sanitize(req.body.data),
