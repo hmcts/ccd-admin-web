@@ -87,7 +87,7 @@ describe("test manage Welsh Dictionary Service", () => {
       const mockedStream = new PassThrough();
       const data = getRowDataArrayFromCsv(mockedStream);
       const translations = buildTranslationsJson(data);
-      expect(translations.length).eq(0);
+      expect(translations).to.have.lengthOf(0);
       done();
     });
   });
@@ -95,7 +95,7 @@ describe("test manage Welsh Dictionary Service", () => {
   describe("test empty data", () => {
     it("should get empty JSON message from data", (done) => {
       const jsonString = buildTranslationsJson(Promise.resolve([]));
-      expect(jsonString.length).eq(0);
+      expect(jsonString).to.have.lengthOf(0);
       done();
     });
   });
@@ -103,7 +103,7 @@ describe("test manage Welsh Dictionary Service", () => {
   describe("test unexpected data", () => {
     it("should get empty JSON message from unexpected data", (done) => {
       const jsonString = buildTranslationsJson(Promise.resolve([{2: "phrase 1", 3: "trans phase 1"}]));
-      expect(jsonString.length).eq(0);
+      expect(jsonString).to.have.lengthOf(0);
       done();
     });
   });
@@ -116,7 +116,7 @@ describe("test manage Welsh Dictionary Service", () => {
                              {0: "phrase 3", 1: "trans phase 3"}])
           .then((result) => {
             const jsonString = buildTranslationsJson(result);
-            expect(jsonString.length).eq(128);
+            expect(jsonString).to.have.lengthOf(128);
             done();
           })
           .catch(() => {
@@ -133,8 +133,8 @@ describe("test manage Welsh Dictionary Service", () => {
             {0: "phrase 3", 1: "trans phase 3", 2: "true", 3: "yes translation", 4: "no translation"}])
         .then((result) => {
             const jsonString = buildTranslationsJson(result);
-            expect(jsonString.length).eq(250);
-            expect(jsonString.includes("invalid")).eq(false);
+            expect(jsonString).to.have.lengthOf(250);
+            expect(jsonString).to.not.include("invalid");
             done();
           })
           .catch(() => {
