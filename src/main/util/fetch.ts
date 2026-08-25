@@ -8,6 +8,6 @@ export const fetch = (...args) => {
           return res;
       }
 
-      return Promise.reject(res);
+      throw res;
     });
 };
