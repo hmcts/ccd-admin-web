@@ -1,6 +1,6 @@
 import * as config from "config";
 import * as request from "superagent";
-const { Readable } = require("stream");
+const { Readable } = require("node:stream");
 const csv = require("fast-csv");
 
 export function buildTranslationsJson(data) {

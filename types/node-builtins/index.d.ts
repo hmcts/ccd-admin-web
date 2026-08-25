@@ -10,6 +10,10 @@ declare module "node:path" {
   export * from "path";
 }
 
+declare module "node:stream" {
+  export * from "stream";
+}
+
 declare module "node:url" {
   export * from "url";
 }
