@@ -114,7 +114,10 @@ describe("on Get /createuser", () => {
       .get("/createuser")
       .set("Cookie", "accessToken=ey123.ey456")
       // not calling /api/data/jurisdiction because not authorized
-      .expect(200);
+      .expect(200)
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+      });
   });
 
   it("should handle error when accessing Create User form page when authorized", () => {
@@ -132,7 +135,10 @@ describe("on Get /createuser", () => {
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/createuser")
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(400);
+      .expect(400)
+      .then((res) => {
+        expect(res.statusCode).to.equal(400);
+      });
   });
 });
 
