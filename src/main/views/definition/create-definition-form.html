@@ -35,14 +35,9 @@
     });
 
     let getJurisdiction = () => {
-      let jurisdictionString = {
-      {
-        jurisdictions | safe
-      }
-    }
-      ;
-      let jurisdictionLookups = $.parseJSON(jurisdictionString);
-      return jurisdictionLookups.filter(jurisdiction => {
+      let jurisdictionString = $("#jurisdictionData").val();
+    let jurisdictionLookups = $.parseJSON(jurisdictionString);
+    return jurisdictionLookups.filter(jurisdiction => {
         return jurisdiction.id === "{{ currentjurisdiction }}";
       })[0];
     };
@@ -108,6 +103,7 @@
       <input type="hidden" id="status" name="status" value="{{ status }}"/>
       <input type="hidden" id="version" name="version" value="{{ version }}"/>
       <input type="hidden" id="update" name="update" value="{{ update }}"/>
+      <input type="hidden" id="jurisdictionData" value="{{ jurisdictions }}"/>
     </div>
     <button type="submit" class="button" value="Submit">{{ submitButtonText }}</button>
     <a href="/definitions" class="button">Cancel</a>

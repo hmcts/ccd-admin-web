@@ -105,9 +105,7 @@
     }
     $("select#jurisdictionDropdown").html(listItems);
 
-    {%
-      if idamId %
-    }
+    {% if idamId %}
     $('select#jurisdictionDropdown>option').filter(function () {
       return $(this).val() == "{{jurisdiction}}";
     }).prop('selected', true);
@@ -120,9 +118,7 @@
       return $(this).val() == "{{state}}";
     }).prop('selected', true);
 
-    {%
-      endif %
-    }
+    {% endif %}
   });
 
 </script>
