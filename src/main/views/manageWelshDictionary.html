@@ -20,6 +20,7 @@
           {{ errorDisplay(error) }}
         </div>
         {% endif %}
+        <label class="form-label" for="file">Welsh translations CSV file</label>
         <input type="file" id="file" name="file" accept=".csv"/>
       </div>
         {% if adminWebAuthorization.canLoadWelshTranslation or adminWebAuthorization.canManageWelshTranslation %}
