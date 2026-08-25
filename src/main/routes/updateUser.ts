@@ -15,7 +15,7 @@ function validateUpdate(req, res, next) {
 
 /* POST form data to Create User form. */
 router.post("/updateuser", validateUpdate, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
+  if (req.adminWebAuthorization?.canManageUserRole) {
     fetch(req, url).then((response) => {
         res.status(200);
         const responseContent: { [k: string]: any } = {};
