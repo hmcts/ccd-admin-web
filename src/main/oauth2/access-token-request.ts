@@ -1,5 +1,5 @@
 import * as fetch from "node-fetch";
-import { format } from "url";
+import { format } from "node:url";
 import { get } from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 
