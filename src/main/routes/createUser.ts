@@ -9,6 +9,21 @@ import { validate } from "../validators/validateUserProfile";
 
 const errorPage = "error";
 const url = config.get("adminWeb.jurisdiction_url");
+
+function getSelectedJurisdiction(req) {
+  if (req.query.jurisdiction) {
+    return req.query.jurisdiction;
+  }
+  return req.session.jurisdiction;
+}
+
+function getErrorText(error) {
+  if (error.rawResponse) {
+    return error.rawResponse;
+  }
+  return error.message || "Invalid data";
+}
+
 /* GET create user form. */
 router.get("/createuser", (req, res, next) => {
 
@@ -22,8 +37,7 @@ router.get("/createuser", (req, res, next) => {
       responseContent.currentjurisdiction = sanitize(req.session.jurisdiction);
       responseContent.heading = "Create User Profile";
       responseContent.submitButtonText = "Create";
-      responseContent.jurisdiction = req.query.jurisdiction ?
-        sanitize(req.query.jurisdiction) : sanitize(req.session.jurisdiction);
+      responseContent.jurisdiction = sanitize(getSelectedJurisdiction(req));
       if (req.session.error) {
         responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
         delete req.session.error;
@@ -57,9 +71,9 @@ router.post("/createuser", validateCreate, (req, res, next) => {
         res.redirect(302, "/userprofiles");
       })
       .catch((error) => {
+        const errorText = getErrorText(error);
         req.session.error = {
-          status: 400, text: error.rawResponse ? error.rawResponse :
-            error.message ? error.message : "Invalid data",
+          status: 400, text: errorText,
         };
         res.redirect(302, "/createuser");
       });
