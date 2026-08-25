@@ -17,7 +17,7 @@ export function rowToTranslationJson(element) {
   translation += JSON.stringify(element[0]) + ":{";
   translation += "\"translation\":" + JSON.stringify(element[1] ? element[1] : "");
   if (element[2]) {
-    translation += ",\"yesOrNo\":" + JSON.stringify(element[2] ? true : false);
+    translation += ",\"yesOrNo\":" + JSON.stringify(true);
     translation += ",\"yes\":" + JSON.stringify(element[3] ? element[3] :  "");
     translation += ",\"no\":" + JSON.stringify(element[4] ? element[4] :  "");
   }
