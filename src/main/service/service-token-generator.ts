@@ -1,7 +1,7 @@
 import * as jwtDecode from "jwt-decode";
 import * as otp from "otp";
 import { fetch } from "../util/fetch";
-import * as config from "config";
+import config = require("config");
 
 const idamS2SUrl = config.get("idam.s2s_url");
 const serviceName = config.get("idam.service_name");
