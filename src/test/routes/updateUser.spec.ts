@@ -57,7 +57,11 @@ describe("on POST /updateuser", () => {
             .post("/updateuser")
             .send({ idamId: "anasyahoo.com", currentjurisdiction: "test" })
             .set("Cookie", "accessToken=ey123.ey456")
-            .expect(302);
+            .expect(302)
+            .then((res) => {
+                expect(res.statusCode).to.equal(302);
+                expect(res.headers.location.startsWith("/userprofiles")).to.be.true;
+            });
     });
 
     it("should redirect with error message when current jurisdiction is empty", () => {
@@ -68,6 +72,10 @@ describe("on POST /updateuser", () => {
             .post("/updateuser")
             .send({ idamId: "anas@yahoo.com" })
             .set("Cookie", "accessToken=ey123.ey456")
-            .expect(302);
+            .expect(302)
+            .then((res) => {
+                expect(res.statusCode).to.equal(302);
+                expect(res.headers.location.startsWith("/jurisdiction")).to.be.true;
+            });
     });
 });
