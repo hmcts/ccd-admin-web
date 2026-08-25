@@ -1,5 +1,6 @@
 import { expect, test } from "./fixtures";
 import { GOVUK_ERROR_TEXT_COLOURS } from "../support/assertionData";
+import { mockDefinitionFormNavigation } from "./mocks/form-navigation.mocks";
 
 test.describe("definition administration UI - negative", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -7,11 +8,9 @@ test.describe("definition administration UI - negative", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("rejects a definition without a description", async ({ definitionsPage, jurisdictionSelectionPage }) => {
+  test("rejects a definition without a description", async ({ definitionsPage, page }) => {
+    await mockDefinitionFormNavigation(page);
     await definitionsPage.openJurisdictionSelection();
-    await jurisdictionSelectionPage.selectFirstJurisdiction();
-    await jurisdictionSelectionPage.submit();
-    await definitionsPage.createLink.click();
 
     await expect(definitionsPage.form).toBeVisible();
     await definitionsPage.submitButton.click();

@@ -1,5 +1,6 @@
 import { expect, test } from "./fixtures";
 import { mockFormSubmission } from "./mocks/form-submission.mocks";
+import { mockDefinitionFormNavigation } from "./mocks/form-navigation.mocks";
 
 test.describe("definition administration UI - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -26,14 +27,11 @@ test.describe("definition administration UI - positive", () => {
 
   test("submits a valid definition to the create endpoint", async ({
     definitionsPage,
-    jurisdictionSelectionPage,
     page,
   }) => {
     const submission = await mockFormSubmission(page, "/createdefinition");
+    const jurisdiction = await mockDefinitionFormNavigation(page);
     await definitionsPage.openJurisdictionSelection();
-    const jurisdiction = await jurisdictionSelectionPage.selectFirstJurisdiction();
-    await jurisdictionSelectionPage.submit();
-    await definitionsPage.createLink.click();
 
     await definitionsPage.descriptionInput.fill("Playwright definition");
     await expect(definitionsPage.jurisdictionId).toHaveText(jurisdiction);

@@ -1,5 +1,6 @@
 import { expect, test } from "./fixtures";
 import { mockFormSubmission } from "./mocks/form-submission.mocks";
+import { mockUserProfileFormNavigation } from "./mocks/form-navigation.mocks";
 
 test.describe("user-profile administration UI - positive", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -29,15 +30,12 @@ test.describe("user-profile administration UI - positive", () => {
   });
 
   test("submits a complete user profile to the create endpoint", async ({
-    jurisdictionSelectionPage,
     page,
     userProfilesPage,
   }) => {
     const submission = await mockFormSubmission(page, "/createuser");
+    await mockUserProfileFormNavigation(page);
     await userProfilesPage.openJurisdictionSelection();
-    await jurisdictionSelectionPage.selectFirstJurisdiction();
-    await jurisdictionSelectionPage.submit();
-    await userProfilesPage.createLink.click();
 
     await expect(userProfilesPage.form).toBeVisible();
     await userProfilesPage.idamIdInput.fill("playwright-profile@example.com");

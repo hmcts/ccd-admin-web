@@ -1,4 +1,5 @@
 import { expect, test } from "./fixtures";
+import { mockUserProfileFormNavigation } from "./mocks/form-navigation.mocks";
 
 test.describe("user-profile administration UI - negative", () => {
   test.beforeEach(async ({ adminWebPage }) => {
@@ -6,11 +7,9 @@ test.describe("user-profile administration UI - negative", () => {
     await expect(adminWebPage.authenticatedMarker).toBeAttached();
   });
 
-  test("validates required profile fields", async ({ jurisdictionSelectionPage, userProfilesPage }) => {
+  test("validates required profile fields", async ({ page, userProfilesPage }) => {
+    await mockUserProfileFormNavigation(page);
     await userProfilesPage.openJurisdictionSelection();
-    await jurisdictionSelectionPage.selectFirstJurisdiction();
-    await jurisdictionSelectionPage.submit();
-    await userProfilesPage.createLink.click();
 
     await userProfilesPage.submitButton.click();
     await expect(userProfilesPage.idamIdValidationError).toHaveText("Enter IdAM Id");
@@ -20,11 +19,9 @@ test.describe("user-profile administration UI - negative", () => {
 
   });
 
-  test("validates a malformed IdAM email address", async ({ jurisdictionSelectionPage, page, userProfilesPage }) => {
+  test("validates a malformed IdAM email address", async ({ page, userProfilesPage }) => {
+    await mockUserProfileFormNavigation(page);
     await userProfilesPage.openJurisdictionSelection();
-    await jurisdictionSelectionPage.selectFirstJurisdiction();
-    await jurisdictionSelectionPage.submit();
-    await userProfilesPage.createLink.click();
 
     await userProfilesPage.idamIdInput.fill("not-an-email-address");
     await userProfilesPage.submitButton.click();
