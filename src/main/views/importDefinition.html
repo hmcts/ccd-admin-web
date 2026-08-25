@@ -14,6 +14,7 @@
             {{ errorDisplay(error) }}
           </div>
         {% endif %}
+        <label class="form-label" for="file">Case definition file</label>
         <input type="file" id="file" name="file" accept=".xlsx"/>
       </div>
       {% if elasticSearchReindexEnabled %}
