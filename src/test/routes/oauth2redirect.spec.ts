@@ -1,7 +1,7 @@
-import { app } from "../../main/app";
+import {app} from "../../main/app";
 import * as chai from "chai";
-import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
-import { expect } from "chai";
+import {COOKIE_ACCESS_TOKEN} from "routes/oauth2redirect";
+import {expect} from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as request from "supertest";
 import * as proxyquire from "proxyquire";
@@ -14,7 +14,7 @@ chai.use(sinonChai);
 describe("oauth2redirect", () => {
 
   const token = "ey123.ey456";
-  const parseSetCookie = (setCookieHeader: string): {[key: string]: string} => {
+  const parseSetCookie = (setCookieHeader: string): { [key: string]: string } => {
     return setCookieHeader.split(";").reduce((cookies, cookiePart) => {
       const separatorIndex = cookiePart.indexOf("=");
       if (separatorIndex === -1) {
@@ -24,7 +24,7 @@ describe("oauth2redirect", () => {
       const name = cookiePart.substr(0, separatorIndex).trim();
       cookies[name] = decodeURIComponent(cookiePart.substr(separatorIndex + 1).trim());
       return cookies;
-    }, {} as {[key: string]: string});
+    }, {} as { [key: string]: string });
   };
 
   describe("when OAuth2 code is present", () => {
@@ -83,7 +83,7 @@ describe("oauth2redirect", () => {
       accessTokenRequest.withArgs(req).returns(Promise.resolve(TOKEN));
 
       oauth2redirect = proxyquire("../../main/routes/oauth2redirect", {
-        "../oauth2/access-token-request": { accessTokenRequest },
+        "../oauth2/access-token-request": {accessTokenRequest},
         "config": config,
       }).oauth2redirect;
     });

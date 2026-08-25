@@ -1,6 +1,6 @@
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
 import router from "./home";
-import { sanitize } from "../util/sanitize";
+import {sanitize} from "../util/sanitize";
 
 const errorPage = "error";
 

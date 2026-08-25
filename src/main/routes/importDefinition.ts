@@ -1,10 +1,10 @@
 import * as config from "config";
 import * as express from "express";
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { fetch } from "../service/get-service";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {fetch} from "../service/get-service";
 import * as multer from "multer";
-import { uploadFile } from "../service/import-service";
-import { sanitize } from "../util/sanitize";
+import {uploadFile} from "../service/import-service";
+import {sanitize} from "../util/sanitize";
 
 const errorPage = "error";
 const router = express.Router();

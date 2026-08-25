@@ -1,7 +1,7 @@
-import { COOKIE_ACCESS_TOKEN } from "./oauth2redirect";
+import {COOKIE_ACCESS_TOKEN} from "./oauth2redirect";
 import * as express from "express";
 import * as fetch from "node-fetch";
-import { get } from "config";
+import {get} from "config";
 
 const router = express.Router();
 const TOKEN_PLACEHOLDER = ":token";

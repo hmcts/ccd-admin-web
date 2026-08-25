@@ -1,4 +1,4 @@
-import { Express, Logger } from "@hmcts/nodejs-logging";
+import {Express, Logger} from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as express from "express";
@@ -6,7 +6,8 @@ import * as expressNunjucks from "express-nunjucks";
 import * as path from "node:path";
 import * as favicon from "serve-favicon";
 import * as config from "config";
-import { importAll } from "./import-all/index";
+import {importAll} from "./import-all/index";
+
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTestWithAuthorizedAdminWebRoles: express.Express = express();
@@ -32,11 +33,11 @@ const logger = Logger.getLogger("appTestWithAuthorizedAdminWebRoles");
 // view engine setup
 appTestWithAuthorizedAdminWebRoles.set("view engine", "html");
 appTestWithAuthorizedAdminWebRoles.set("views", [path.join(__dirname, "views"),
-path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
+  path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
 
 appTestWithAuthorizedAdminWebRoles.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 appTestWithAuthorizedAdminWebRoles.use(bodyParser.json());
-appTestWithAuthorizedAdminWebRoles.use(bodyParser.urlencoded({ extended: false }));
+appTestWithAuthorizedAdminWebRoles.use(bodyParser.urlencoded({extended: false}));
 appTestWithAuthorizedAdminWebRoles.use(cookieParser());
 
 expressNunjucks(appTestWithAuthorizedAdminWebRoles, {

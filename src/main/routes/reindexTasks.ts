@@ -1,8 +1,8 @@
 import * as config from "config";
-import { Router } from "express";
-import { getReindexTasks } from "../service/reindex-task-service";
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { sanitize } from "../util/sanitize";
+import {Router} from "express";
+import {getReindexTasks} from "../service/reindex-task-service";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {sanitize} from "../util/sanitize";
 
 const errorPage = "error";
 
@@ -24,7 +24,7 @@ function getValidPage(pageParam: unknown): number {
 
 function getPaginationPages(currentPage: number, totalPages: number): Array<number | string> {
   if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, index) => index + 1);
+    return Array.from({length: totalPages}, (_, index) => index + 1);
   }
 
   if (currentPage <= 4) {
@@ -56,7 +56,7 @@ router.get("/reindex", async (req, res) => {
 
     const caseTypes: string[] = Array.from(
       new Set<string>(allTasks.map((t: any) => t.caseType)),
-    ).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+    ).sort((a, b) => a.localeCompare(b, undefined, {sensitivity: "base"}));
 
     const hasServerPagination = isPagedResponse(pagedTasksResponse);
     let taskSource: any[];

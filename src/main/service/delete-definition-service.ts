@@ -1,6 +1,6 @@
 import * as request from "superagent";
 import * as config from "config";
-import { Logger } from "@hmcts/nodejs-logging";
+import {Logger} from "@hmcts/nodejs-logging";
 
 export function deleteDefinition(req) {
   const logger = Logger.getLogger(__filename);

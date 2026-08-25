@@ -1,9 +1,9 @@
-import { app } from "../../main/app";
-import { appTest } from "../../main/app.test";
-import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
-import { expect } from "chai";
-import { get } from "config";
-import { JSDOM } from "jsdom";
+import {app} from "../../main/app";
+import {appTest} from "../../main/app.test";
+import {appTestWithAuthorizedAdminWebRoles} from "../../main/app.test-admin-web-roles-authorized";
+import {expect} from "chai";
+import {get} from "config";
+import {JSDOM} from "jsdom";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
@@ -29,7 +29,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
+      .reply(200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]);
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -54,7 +54,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
+      .reply(200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]);
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -82,7 +82,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .replyWithError({ status: 400, rawResponse: "Duplicate values" });
+      .replyWithError({status: 400, rawResponse: "Duplicate values"});
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -103,7 +103,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
+      .reply(200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]);
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -125,7 +125,7 @@ describe("on GET /createdefinition", () => {
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .replyWithError({ status: 400, rawResponse: "Duplicate values" });
+      .replyWithError({status: 400, rawResponse: "Duplicate values"});
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -173,7 +173,7 @@ describe("on POST /createdefinition when unauthorized", () => {
     idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4451/api/draft")
       .post("")
-      .replyWithError({ status: 400, rawResponse: "Duplicate definition" });
+      .replyWithError({status: 400, rawResponse: "Duplicate definition"});
 
     return request(appTest)
       .post("/createdefinition")

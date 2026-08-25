@@ -1,7 +1,7 @@
 import * as express from "express";
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { getCaseTypes, createElasticIndex } from "../service/elastic-index-service";
-import { sanitize } from "../util/sanitize";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {getCaseTypes, createElasticIndex} from "../service/elastic-index-service";
+import {sanitize} from "../util/sanitize";
 
 const errorPage = "error";
 const router = express.Router();
@@ -28,9 +28,9 @@ router.get(caseTypesUrl, (req, res, next) => {
     getCaseTypes(req).then((response) => {
       res.status(200).send(response.body);
     })
-    .catch((error) => {
-      res.status(400).send(error.response.text);
-    });
+      .catch((error) => {
+        res.status(400).send(error.response.text);
+      });
   } else {
     res.status(403).send(error_unauthorized_role(req));
   }
@@ -41,9 +41,9 @@ router.post(indexingUrl, (req, res, next) => {
     createElasticIndex(req).then((response) => {
       res.status(200).send(response.body);
     })
-    .catch((error) => {
-      res.status(400).send(error.response.text);
-    });
+      .catch((error) => {
+        res.status(400).send(error.response.text);
+      });
   } else {
     res.status(403).send(error_unauthorized_role(req));
   }

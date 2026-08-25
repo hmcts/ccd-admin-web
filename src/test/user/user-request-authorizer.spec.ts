@@ -40,8 +40,8 @@ describe("UserRequestAuthorizer", () => {
       };
 
       userRequestAuthorizer = proxyquire("../../main/user/user-request-authorizer", {
-      "../role/roles-based-authorizer": roleAuthorizer,
-      "./user-resolver": userResolver,
+        "../role/roles-based-authorizer": roleAuthorizer,
+        "./user-resolver": userResolver,
       });
     });
 
@@ -61,7 +61,7 @@ describe("UserRequestAuthorizer", () => {
     });
 
     it("should reject when user cannot be resolved", (done) => {
-      const ERROR = { error: "oops", status: 401 };
+      const ERROR = {error: "oops", status: 401};
       userResolver.getTokenDetails.returns(Promise.reject(ERROR));
 
       userRequestAuthorizer.authorize(request)

@@ -1,7 +1,7 @@
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { deleteSessionVariables } from "../util/clearSession";
-import { deleteRole } from "../service/delete-role-service";
-import { sanitize } from "../util/sanitize";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {deleteSessionVariables} from "../util/clearSession";
+import {deleteRole} from "../service/delete-role-service";
+import {sanitize} from "../util/sanitize";
 import router from "./home";
 
 const errorPage = "error";
@@ -22,7 +22,7 @@ router.post("/deleterole", (req, res, next) => {
             "Unexpected error : Please contact your administrator",
         };
         res.redirect(302,
-            `/deleteitem?item=${sanitize(req.body.itemToDelete)}&roleParameter=${sanitize(req.body.role)}`);
+          `/deleteitem?item=${sanitize(req.body.itemToDelete)}&roleParameter=${sanitize(req.body.role)}`);
       });
     } else if (req.body.deleteItem === "No") {
       deleteSessionVariables(req);
@@ -31,7 +31,7 @@ router.post("/deleterole", (req, res, next) => {
       deleteSessionVariables(req);
       req.session.response = {error: "Please choose Yes or No"};
       res.redirect(302,
-          `/deleteitem?item=${sanitize(req.body.itemToDelete)}&roleParameter=${sanitize(req.body.role)}`);
+        `/deleteitem?item=${sanitize(req.body.itemToDelete)}&roleParameter=${sanitize(req.body.role)}`);
     }
   } else {
     res.render(errorPage, error_unauthorized_role(req));

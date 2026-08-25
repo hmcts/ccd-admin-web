@@ -1,7 +1,7 @@
 import * as chai from "chai";
 import * as nock from "nock";
 import * as proxyquire from "proxyquire";
-import { flattenJsonResponse } from "routes/welshDictionary";
+import {flattenJsonResponse} from "routes/welshDictionary";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
 
@@ -80,7 +80,7 @@ describe("welshDictionaryService::getWelshDictionary", () => {
   describe("Successful flatten received Welsh dictionary response", () => {
     it("should return array of strings ", (done) => {
       const dict =
-      `{
+        `{
         "translations": {
             "texta": {
                 "translation": "welsha",
@@ -121,11 +121,11 @@ describe("welshDictionaryService::getWelshDictionary", () => {
   describe("Successful handle special characters in received Welsh dictionary response", () => {
     it("should return correctly formatted array of strings ", (done) => {
       const dict =
-      `{
+        `{
         "translations": {
       `
-      + "\"<details><summary><u>Help with interest rates</u></summary><div class=\\\"panel\\\">\\n\\n You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example, if you have a contract with a specific rate. \\n\\n The court will decide if you're entitled to some, or all, of the interest claimed.</div></details><br />\": {"
-      + `
+        + "\"<details><summary><u>Help with interest rates</u></summary><div class=\\\"panel\\\">\\n\\n You can claim 8% interest on money owed to you. This is the statutory rate. If you know that a different rate applies you can use that. For example, if you have a contract with a specific rate. \\n\\n The court will decide if you're entitled to some, or all, of the interest claimed.</div></details><br />\": {"
+        + `
                 "translation": "welsha",
                 "yesOrNo": true,
                 "yes": "yesa",

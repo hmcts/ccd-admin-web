@@ -1,5 +1,5 @@
-import { getTokenDetails } from "./user-resolver";
-import { isUserAuthorized } from "../role/roles-based-authorizer";
+import {getTokenDetails} from "./user-resolver";
+import {isUserAuthorized} from "../role/roles-based-authorizer";
 
 export const ERROR_TOKEN_MISSING = {
   error: "Bearer token missing",

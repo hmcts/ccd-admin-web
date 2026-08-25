@@ -1,8 +1,8 @@
 import * as config from "config";
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { render } from "../util/render";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {render} from "../util/render";
 import router from "./home";
-import { validate } from "../validators/validateJurisdiction";
+import {validate} from "../validators/validateJurisdiction";
 
 const definitionsPage = "definitions";
 const errorPage = "error";

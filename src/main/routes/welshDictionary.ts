@@ -1,7 +1,7 @@
 import * as express from "express";
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { getDictionary } from "../service/welsh-dictionary-service";
-import { sanitize } from "../util/sanitize";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {getDictionary} from "../service/welsh-dictionary-service";
+import {sanitize} from "../util/sanitize";
 
 const errorPage = "error";
 const welshDictionary = "welshDictionary";
@@ -29,7 +29,7 @@ router.get(dictionaryUrl, (req, res, next) => {
       const csvContent = flattenJsonResponse(data);
       const download = "\ufeff\ufeff" + // utf-8 BOM for excel (must be twice as browsers strip out first one)
         Buffer.from(csvContent, "utf8").toString("utf8");
-      res.set({ "content-type": "text/csv; charset=utf-8" });
+      res.set({"content-type": "text/csv; charset=utf-8"});
       res.send(download);
     }).catch((error) => {
       res.status(400).send(error.response);

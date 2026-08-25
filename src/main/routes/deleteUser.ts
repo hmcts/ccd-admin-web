@@ -1,7 +1,7 @@
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { deleteSessionVariables } from "../util/clearSession";
-import { deleteUserProfile } from "../service/delete-user-service";
-import { sanitize } from "../util/sanitize";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {deleteSessionVariables} from "../util/clearSession";
+import {deleteUserProfile} from "../service/delete-user-service";
+import {sanitize} from "../util/sanitize";
 import router from "./home";
 
 const errorPage = "error";

@@ -16,11 +16,11 @@ $nta-font-path: '/node_modules/@govuk/platform-template/assets/fonts';
 }
 
 pre.error-message {
-  white-space: pre-wrap;       /* Since CSS 2.1 */
-  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;      /* Opera 4-6 */
-  white-space: -o-pre-wrap;    /* Opera 7 */
-  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
 
 .descr {
@@ -199,7 +199,7 @@ hr {
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
   font-size: 32px;
-  line-height: 1.09375; 
+  line-height: 1.09375;
 }
 
 .boldcontents {

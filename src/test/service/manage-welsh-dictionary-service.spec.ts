@@ -3,8 +3,13 @@ import * as nock from "nock";
 import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
-import {buildTranslationsJson, rowToTranslationJson, getRowDataArrayFromCsv} from "../../main/service/manage-welsh-dictionary-service";
-const { PassThrough } = require("stream");
+import {
+  buildTranslationsJson,
+  rowToTranslationJson,
+  getRowDataArrayFromCsv,
+} from "../../main/service/manage-welsh-dictionary-service";
+
+const {PassThrough} = require("stream");
 const expect = chai.expect;
 chai.use(sinonChai);
 
@@ -112,16 +117,16 @@ describe("test manage Welsh Dictionary Service", () => {
     it("should get good JSON message from data", (done) => {
 
       Promise.resolve([{0: "phrase 1", 1: "trans phase 1"},
-                             {0: "phrase 2", 1: "trans phase 2"},
-                             {0: "phrase 3", 1: "trans phase 3"}])
-          .then((result) => {
-            const jsonString = buildTranslationsJson(result);
-            expect(jsonString).to.have.lengthOf(128);
-            done();
-          })
-          .catch(() => {
-            throw new Error("Promise should have been resolved");
-          });
+        {0: "phrase 2", 1: "trans phase 2"},
+        {0: "phrase 3", 1: "trans phase 3"}])
+        .then((result) => {
+          const jsonString = buildTranslationsJson(result);
+          expect(jsonString).to.have.lengthOf(128);
+          done();
+        })
+        .catch(() => {
+          throw new Error("Promise should have been resolved");
+        });
     });
   });
 
@@ -129,17 +134,17 @@ describe("test manage Welsh Dictionary Service", () => {
     it("should get good JSON message from data", (done) => {
 
       Promise.resolve([{0: "phrase 1", 1: "trans phase 1", 2: true, 3: "yes translation", 4: "no translation"},
-            {0: "phrase 2", 1: "trans phase 2", 2: false, 3: "invalid", 4: "invalid"},
-            {0: "phrase 3", 1: "trans phase 3", 2: "true", 3: "yes translation", 4: "no translation"}])
+        {0: "phrase 2", 1: "trans phase 2", 2: false, 3: "invalid", 4: "invalid"},
+        {0: "phrase 3", 1: "trans phase 3", 2: "true", 3: "yes translation", 4: "no translation"}])
         .then((result) => {
-            const jsonString = buildTranslationsJson(result);
-            expect(jsonString).to.have.lengthOf(250);
-            expect(jsonString).to.not.include("invalid");
-            done();
-          })
-          .catch(() => {
-            throw new Error("Promise should have been resolved");
-          });
+          const jsonString = buildTranslationsJson(result);
+          expect(jsonString).to.have.lengthOf(250);
+          expect(jsonString).to.not.include("invalid");
+          done();
+        })
+        .catch(() => {
+          throw new Error("Promise should have been resolved");
+        });
     });
   });
 
@@ -148,13 +153,13 @@ describe("test manage Welsh Dictionary Service", () => {
 
       Promise.resolve([{0: "phrase 1", 1: undefined, 2: true}])
         .then((result) => {
-            const jsonString = rowToTranslationJson(result[0]);
-            expect(jsonString).eq("\"phrase 1\":{\"translation\":\"\",\"yesOrNo\":true,\"yes\":\"\",\"no\":\"\"}");
-            done();
-          })
-          .catch(() => {
-            throw new Error("Promise should have been resolved");
-          });
+          const jsonString = rowToTranslationJson(result[0]);
+          expect(jsonString).eq("\"phrase 1\":{\"translation\":\"\",\"yesOrNo\":true,\"yes\":\"\",\"no\":\"\"}");
+          done();
+        })
+        .catch(() => {
+          throw new Error("Promise should have been resolved");
+        });
     });
   });
 

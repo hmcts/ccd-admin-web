@@ -1,11 +1,11 @@
 import * as config from "config";
-import { createUserProfile } from "../service/create-user-service";
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { fetch } from "../service/get-service";
+import {createUserProfile} from "../service/create-user-service";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {fetch} from "../service/get-service";
 import router from "./home";
-import { sanitize } from "../util/sanitize";
-import { UserProfile } from "../domain/userprofile";
-import { validate } from "../validators/validateUserProfile";
+import {sanitize} from "../util/sanitize";
+import {UserProfile} from "../domain/userprofile";
+import {validate} from "../validators/validateUserProfile";
 
 const errorPage = "error";
 const url = config.get("adminWeb.jurisdiction_url");
@@ -57,6 +57,7 @@ router.get("/createuser", (req, res, next) => {
 function validateCreate(req, res, next) {
   validate(req, res, next, "/createuser");
 }
+
 /* POST create user result. */
 router.post("/createuser", validateCreate, (req, res, next) => {
 

@@ -1,6 +1,6 @@
 import * as express from "express";
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { createGlobalSearchIndex } from "../service/global-search-index-service";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {createGlobalSearchIndex} from "../service/global-search-index-service";
 import {sanitize} from "../util/sanitize";
 
 const errorPage = "error";
@@ -28,9 +28,9 @@ router.post(globalSearchIndexingUrl, (req, res, next) => {
     createGlobalSearchIndex(req).then((response) => {
       res.status(200).send(response.body);
     })
-    .catch((error) => {
-      res.status(400).send(error.response.text);
-    });
+      .catch((error) => {
+        res.status(400).send(error.response.text);
+      });
   } else {
     res.status(403).send(error_unauthorized_role(req));
   }

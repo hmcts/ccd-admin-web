@@ -23,7 +23,7 @@ describe("Test Delete Definition service", () => {
         jurisdictionId: "TEST",
       },
       serviceAuthToken: "serviceAuthToken",
-      session: { jurisdiction: "TEST" },
+      session: {jurisdiction: "TEST"},
     };
 
     const config = {
