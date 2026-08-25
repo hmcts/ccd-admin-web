@@ -89,7 +89,7 @@ describe("test route manage Welsh Dictionary", () => {
 
     describe("test function doUploadTranslations", () => {
         const res = {
-            render(responseContent) {
+            render() {
                 // empty
             },
         };
