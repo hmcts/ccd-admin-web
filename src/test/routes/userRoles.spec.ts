@@ -375,7 +375,11 @@ describe("on POST /updateuserrole", () => {
       .send({
         classification: "PUBLIC",
       })
-      .expect(200);
+      .expect(200)
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.text).to.contain("Update User Role");
+      });
   });
 
   it("should respond with error when classification is empty", () => {
@@ -392,7 +396,11 @@ describe("on POST /updateuserrole", () => {
         classification: "",
         role: "ccd-admin",
       })
-      .expect(200);
+      .expect(200)
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.text).to.contain("Update User Role");
+      });
   });
 
   it("should respond with create user form due to server error", () => {
@@ -481,7 +489,11 @@ describe("on POST /updateuserroleform", () => {
       .post("/updateuserroleform")
       .send({role: "ccd-admin*34", classification: "PUBLIC"})
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(302);
+      .expect(302)
+      .then((res) => {
+        expect(res.statusCode).to.equal(302);
+        expect(res.headers.location.startsWith("/user-roles-list")).to.be.true;
+      });
   });
 
   it("should redirect with error message when current jurisdiction is empty", () => {
@@ -492,6 +504,10 @@ describe("on POST /updateuserroleform", () => {
       .post("/updateuserroleform")
       .send({role: "ccd-admin", classification: "PUBLIC)))"})
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(302);
+      .expect(302)
+      .then((res) => {
+        expect(res.statusCode).to.equal(302);
+        expect(res.headers.location.startsWith("/user-roles-list")).to.be.true;
+      });
   });
 });
