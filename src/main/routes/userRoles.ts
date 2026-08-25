@@ -17,6 +17,13 @@ const createUserRoleHeading = "Create User Role";
 const updateUserRoleHeading = "Update User Role";
 const url = config.get("adminWeb.alluserroles_url");
 
+function getErrorText(error) {
+  if (error.rawResponse) {
+    return error.rawResponse;
+  }
+  return error.message || "Invalid data";
+}
+
 /* GET User roles landing page. */
 router.get("/user-roles", (req, res, next) => {
   const responseContent: { [k: string]: any } = {};
@@ -126,9 +133,9 @@ router.post("/createuserrole", validateCreate, (req, res, next) => {
       res.redirect(302, "/user-roles-list");
     })
     .catch((error) => {
+      const errorText = getErrorText(error);
       req.session.error = {
-        status: 400, text: error.rawResponse ? error.rawResponse :
-          error.message ? error.message : "Invalid data",
+        status: 400, text: errorText,
       };
       res.redirect(302, "/create-user-role-form");
     });
@@ -153,9 +160,9 @@ router.post("/updateuserrole", validateUpdate, (req, res, next) => {
         res.redirect(302, "/user-roles-list");
       })
       .catch((error) => {
+        const errorText = getErrorText(error);
         req.session.error = {
-          errorBy: "update", status: 400, text: error.rawResponse ? error.rawResponse :
-            error.message ? error.message : "Invalid data",
+          errorBy: "update", status: 400, text: errorText,
         };
         res.redirect(302, "/create-user-role-form");
       });
