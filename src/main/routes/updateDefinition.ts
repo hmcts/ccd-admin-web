@@ -9,7 +9,7 @@ const url = config.get("adminWeb.jurisdiction_url");
 
 /* POST form data to Create Definition form. */
 router.post("/updatedefinition", (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
+  if (req.adminWebAuthorization?.canManageDefinition) {
   fetch(req, url).then((response) => {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
