@@ -407,13 +407,13 @@ describe("test route manage Welsh Dictionary", () => {
         const CCD_IMPORT_ROLE = "ccd-import";
         beforeEach(() => {
             nock.cleanAll();
+            idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+            idamServiceMock.resolveRetrieveServiceToken();
+            nock("http://localhost:4451")
+                .get("/api/idam/adminweb/authorization")
+                .reply(200, {});
         });
 
-        idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        idamServiceMock.resolveRetrieveServiceToken();
-        nock("http://localhost:4451")
-            .get("/api/idam/adminweb/authorization")
-            .reply(200, {});
         it("should respond with Welsh Translation csvfile response when authenticated and authorized", () => {
             return request(appTestWithAuthorizedAdminWebRoles)
                 .get("/manageWelshDictionary")
