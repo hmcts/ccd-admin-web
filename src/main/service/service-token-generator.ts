@@ -7,7 +7,7 @@ const idamS2SUrl = get("idam.s2s_url");
 const serviceName = get("idam.service_name");
 const secret = get("secrets.ccd.microservicekey-ccd-admin");
 
-// TODO Caching should be handled by a singleton service
+// Module scope provides one shared S2S token cache for the application process.
 const cache = {};
 
 export const serviceTokenGenerator = () => {
