@@ -36,10 +36,8 @@
 
     let getJurisdiction = () => {
       let jurisdictionString = $("#jurisdictionData").val();
-    let jurisdictionLookups = $.parseJSON(jurisdictionString);
-    return jurisdictionLookups.filter(jurisdiction => {
-        return jurisdiction.id === "{{ currentjurisdiction }}";
-      })[0];
+      let jurisdictionLookups = JSON.parse(jurisdictionString);
+      return jurisdictionLookups.find(jurisdiction => jurisdiction.id === "{{ currentjurisdiction }}");
     };
 
     $("#jurisdictionId").text(getJurisdiction().id);
@@ -92,12 +90,10 @@
       </table>
       <label class="form-label" for="description">Definition description</label>
       <input type="hidden" id="casetypes" name="casetypes" value="{{ casetypes }}"/>
-      {% if update %}
-      <input type="text" class="form-control" id="description" name="description" value="{{ description }}"
-             maxlength="100"/><br><br>
-      {% else %}
-      <input type="text" class="form-control" id="description" name="description" maxlength="100"/><br><br>
-      {% endif %}
+      <input type="text" class="form-control" id="description" name="description" maxlength="100"
+        {% if update %} value="{{ description }}" {% endif %}
+      /><br><br>
+
       <!-- Empty data element for now -->
       <input type="hidden" id="data" name="data" value="{&quot;Field 1&quot;: &quot;Value 1&quot;}"/>
       <input type="hidden" id="status" name="status" value="{{ status }}"/>
