@@ -9,6 +9,13 @@ import { sanitize } from "../util/sanitize";
 const errorPage = "error";
 const url = config.get("adminWeb.jurisdiction_url");
 
+function getErrorText(error) {
+  if (error.rawResponse) {
+    return error.rawResponse;
+  }
+  return error.message || "Invalid data";
+}
+
 /* GET create definition form. */
 router.get("/createdefinition", (req, res, next) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
@@ -54,9 +61,9 @@ router.post("/createdefinition", (req, res) => {
       res.redirect(302, "/definitions");
     })
     .catch((error) => {
+      const errorText = getErrorText(error);
       req.session.error = {
-        status: 400, text: error.rawResponse ? error.rawResponse :
-          error.message ? error.message : "Invalid data",
+        status: 400, text: errorText,
       };
       res.redirect(302, "/createdefinition");
     });
