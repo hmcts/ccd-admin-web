@@ -48,18 +48,18 @@ export function flattenJsonResponse(res: object) {
     str = str + "," + (v.yesOrNo ? v.yesOrNo : "");
     str = str + "," + (v.yes ? wrapSpecialCharacters(v.yes) : "");
     str = str + "," + (v.no ? wrapSpecialCharacters(v.no) : "");
-    flat.push(str.replace(/[,]{1,4}$/g, "")); // remove trailing commas
+    flat.push(str.replace(/,{1,4}$/g, "")); // remove trailing commas
   });
   return flat.join("\r\n");
 }
 
 function wrapSpecialCharacters(text: string): string {
   // Return if no special characters
-  if (typeof text !== "string" || !text.match(/[,\n\"]/g)) {
+  if (typeof text !== "string" || !text.match(/[,\n"]/g)) {
     return text;
   }
 
-  return "\"" + text.replace(/[\"]/g, "\"\"") + "\"";
+  return "\"" + text.replace(/"/g, "\"\"") + "\"";
 }
 
 export default router;
