@@ -77,7 +77,7 @@ describe("Get service", () => {
 
       fetch(req, definitionsUrl, query).then((res) => {
         try {
-          expect(JSON.parse(res).definitions.length).to.equal(2);
+          expect(JSON.parse(res).definitions).to.have.lengthOf(2);
           expect(res).to.equal(JSON.stringify(expectedResult));
           done();
         } catch (e) {
@@ -121,7 +121,7 @@ describe("Get service", () => {
 
       fetch(req, definitionsUrl, query).then((res) => {
         try {
-          expect(JSON.parse(res).definitions.length).to.equal(1);
+          expect(JSON.parse(res).definitions).to.have.lengthOf(1);
           expect(res).to.equal(JSON.stringify(expectedResult));
           done();
         } catch (e) {
