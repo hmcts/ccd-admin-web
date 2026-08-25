@@ -180,7 +180,7 @@ describe("test route Reindex Tasks", () => {
           const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
           const tableText = rows.map((row) => row.textContent || "").join(" ");
 
-          expect(rows.length).to.equal(25);
+          expect(rows).to.have.lengthOf(25);
           expect(tableText).to.include("CaseType30");
           expect(tableText).to.not.include("CaseType5");
 
@@ -205,7 +205,7 @@ describe("test route Reindex Tasks", () => {
           const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
           const tableText = rows.map((row) => row.textContent || "").join(" ");
 
-          expect(rows.length).to.equal(5);
+          expect(rows).to.have.lengthOf(5);
           expect(tableText).to.include("CaseType5");
           expect(tableText).to.not.include("CaseType30");
 
