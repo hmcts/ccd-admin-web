@@ -91,7 +91,10 @@ describe("on GET /createdefinition", () => {
     return request(app)
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(200);
+      .expect(200)
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+      });
   });
 
   it("should respond with Create Definition form and populated response when authenticated and authorized", () => {
@@ -131,7 +134,10 @@ describe("on GET /createdefinition", () => {
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(400);
+      .expect(400)
+      .then((res) => {
+        expect(res.statusCode).to.equal(400);
+      });
   });
 });
 
