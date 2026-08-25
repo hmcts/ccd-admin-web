@@ -51,15 +51,16 @@
 
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
-            <label class="form-label" for="userroles">User Role</label>
             {%if update == true%}
+                 <span class="form-label">User Role</span>
                  <input type="hidden" id="role" name="role" value="{{role}}" />
-                 <label class="form-label-bold" >{{role}}</label><br><br>
+                 <span class="form-label-bold">{{role}}</span><br><br>
                  <input class="form-control" id="update" name="update" type="hidden" value="{{update}}"/>
             {% else %}
+                 <label class="form-label" for="role">User Role</label>
                  <input type="text" class="form-control" id="role" name="role" maxlength="100"/><br><br>
             {% endif %}
-            <label class="form-label">Security Classification</label>
+            <label class="form-label" for="classification">Security Classification</label>
             {{serverListChosenValue(securityClassifications, "classification", chosenClassification)}}
         </div>
         <button type="submit" class="button" value="Submit">{{submitButtonText}}</button>
@@ -68,5 +69,4 @@
     </div>
 
   {% endblock %}
-
 
