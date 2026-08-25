@@ -51,7 +51,7 @@ router.get("/user-roles-list", (req, res, next) => {
 });
 
 function fetchUserRolesIfAuthorizedOrError(req, res, next, responseContent) {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
+  if (req.adminWebAuthorization?.canManageUserRole) {
     fetch(req, url).then((response) => {
         responseContent.userroles = JSON.parse(sanitize(response));
         res.render("user-roles", responseContent);
@@ -70,7 +70,7 @@ router.get("/create-user-role-form", (req, res, next) => {
   if (req.query.save) {
     delete req.session.error;
   }
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
+  if (req.adminWebAuthorization?.canManageUserRole) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
@@ -126,7 +126,7 @@ function validateUpdateForm(req, res, next) {
 }
 
 router.post("/createuserrole", validateCreate, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
+  if (req.adminWebAuthorization?.canManageUserRole) {
   saveUserRole(req, new UserRole(sanitize(req.body.role), sanitize(req.body.classification)), true)
     .then((response) => {
       req.session.success = `User role created.`;
@@ -145,7 +145,7 @@ router.post("/createuserrole", validateCreate, (req, res, next) => {
 });
 
 router.post("/updateuserroleform", validateUpdateForm, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
+  if (req.adminWebAuthorization?.canManageUserRole) {
     processResponse(req, res);
   } else {
     res.render(errorPage, error_unauthorized_role(req));
@@ -153,7 +153,7 @@ router.post("/updateuserroleform", validateUpdateForm, (req, res, next) => {
 });
 
 router.post("/updateuserrole", validateUpdate, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
+  if (req.adminWebAuthorization?.canManageUserRole) {
     saveUserRole(req, new UserRole(sanitize(req.body.role), sanitize(req.body.classification)), false)
       .then((response) => {
         req.session.success = `User role updated.`;
