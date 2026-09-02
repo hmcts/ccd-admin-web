@@ -27,11 +27,15 @@ describe("Import Definition page", () => {
 
     it("should not return Import Case Definition page when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/import-audits")
-        .reply(200, [{
+        .optionally()
+        .reply(() => {
+          backendCalled = true;
+          return [200, [{
           caseType: "I am 100% happy with this piece of work",
           case_type: "I am si of it",
           dateImported: "last century",
@@ -39,7 +43,8 @@ describe("Import Definition page", () => {
           fileName: "x343EWFMVl",
           filename: "9343EWFMVl",
           whoImported: "xID_3",
-          who_imported: "ID_3"}]);
+            who_imported: "ID_3"}]];
+        });
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -49,6 +54,7 @@ describe("Import Definition page", () => {
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("<th>Date Imported</th>");
           expect(res.text).not.to.contain("<th>Who Imported</th>");
@@ -66,11 +72,15 @@ describe("Import Definition page", () => {
 
     it("should not return Import Case Definition page when authenticated but without required authorized role", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/import-audits")
-        .reply(200, [{
+        .optionally()
+        .reply(() => {
+          backendCalled = true;
+          return [200, [{
           caseType: "I am 100% happy with this piece of work",
           case_type: "I am si of it",
           dateImported: "last century",
@@ -78,7 +88,8 @@ describe("Import Definition page", () => {
           fileName: "x343EWFMVl",
           filename: "9343EWFMVl",
           whoImported: "xID_3",
-          who_imported: "ID_3"}]);
+            who_imported: "ID_3"}]];
+        });
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -88,6 +99,7 @@ describe("Import Definition page", () => {
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("<th>Date Imported</th>");
           expect(res.text).not.to.contain("<th>Who Imported</th>");
@@ -108,27 +120,31 @@ describe("Import Definition page", () => {
 
     it("should not return a back-end error status as it is not called", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {});
 
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/import-audits")
-        .reply(500);
+        .optionally()
+        .reply(() => {
+          backendCalled = true;
+          return [500];
+        });
 
       return request(app)
         .get("/import")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
         });
     });
 
     it("should return Import Case Definition page when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -141,10 +157,6 @@ describe("Import Definition page", () => {
           filename: "9343EWFMVl",
           whoImported: "xID_3",
           who_imported: "ID_3"}]);
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/import")
@@ -167,12 +179,6 @@ describe("Import Definition page", () => {
     });
 
     it("should return a back-end error status", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       mock("http://localhost:4451")
         .get("/api/import-audits")
@@ -200,15 +206,20 @@ describe("Import Definition page", () => {
 
     it("should not upload a valid Definition file when authenticated but not authorized", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, [{}]);
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/import")
-        .reply(201, "Definition imported");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
 
       const file = {
         buffer: new Buffer(8),
@@ -226,21 +237,26 @@ describe("Import Definition page", () => {
           expect(errorHeading).to.equal("Unauthorised role");
 
           // Assert that the back-end is not called
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
         });
     });
 
     it("should not upload a valid Definition file when authenticated but without required authorized role", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {canManageUserProfile: true});
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/import")
-        .reply(201, "Definition imported");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
 
       const file = {
         buffer: new Buffer(8),
@@ -261,17 +277,11 @@ describe("Import Definition page", () => {
           expect(menuItem).to.equal("Manage User Profiles");
 
           // Assert that the back-end is not called
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
         });
     });
 
     it("should upload a valid Definition file when authenticated and authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       mock("http://localhost:4451")
         .post("/import")
@@ -323,16 +333,15 @@ describe("Import Definition page", () => {
     });
 
     it("should redirect to Import Definition page without calling back-end if the file is not an Excel file", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
+      let apiCalled = false;
       mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-
-      const apiCall = mock("http://localhost:4451")
         .post("/import")
-        .reply(201, "Definition imported");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
 
       const file = {
         buffer: new Buffer(8),
@@ -348,21 +357,20 @@ describe("Import Definition page", () => {
           expect(res.headers.location).to.equal("/import");
 
           // Assert that the back-end is not called
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
         });
     });
 
     it("should redirect to Import Definition page without calling back-end if no file is present on request", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
 
+      let apiCalled = false;
       mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-
-      const apiCall = mock("http://localhost:4451")
         .post("/import")
-        .reply(201, "Definition imported");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/import")
@@ -372,17 +380,11 @@ describe("Import Definition page", () => {
           expect(res.headers.location).to.equal("/import");
 
           // Assert that the back-end is not called
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
         });
     });
 
     it("should redirect to Import Definition page if there is a back-end error", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       const apiCall = mock("http://localhost:4451")
         .post("/import")
@@ -406,12 +408,6 @@ describe("Import Definition page", () => {
     });
 
     it("should upload a valid Definition file and display any warnings from the import process", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       mock("http://localhost:4451")
         .post("/import")
@@ -453,17 +449,22 @@ describe("Import Definition page", () => {
         });
     });
 
-    it("should display an error page if there is an error not handled elsewhere", () => {
+    it("should display an authorisation error without calling the back-end", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(403, "Forbidden");
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/import")
-        .reply(201, "Definition imported");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
 
       const file = {
         buffer: new Buffer(8),
@@ -483,7 +484,7 @@ describe("Import Definition page", () => {
           expect(errorSummary).to.equal("Forbidden (403)");
 
           // Assert that the back-end is not called
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
         });
     });
   });
