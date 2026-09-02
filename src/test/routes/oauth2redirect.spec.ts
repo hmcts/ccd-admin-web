@@ -27,22 +27,40 @@ describe("oauth2redirect", () => {
     }, {} as {[key: string]: string});
   };
 
+  const createOauthSession = () => {
+    return request(app)
+      .get("/")
+      .redirects(0)
+      .then((res) => {
+        const redirectLocation = res.headers.location;
+        const stateMatch = /[?&]state=([^&]+)/.exec(redirectLocation);
+        return {
+          sessionCookies: res.get("Set-Cookie"),
+          state: stateMatch && decodeURIComponent(stateMatch[1]),
+        };
+      });
+  };
+
   describe("when OAuth2 code is present", () => {
     it("should set an accessToken cookie and redirect to /", () => {
       idamServiceMock.resolveExchangeCode(token);
 
-      return request(app)
-        .get("/oauth2redirect?code=abc123")
-        .then((res) => {
-          const cookies = res.get("Set-Cookie").map(parseSetCookie);
-          expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.true;
-          expect(res.headers.location).to.equal("/");
+      return createOauthSession()
+        .then(({ sessionCookies, state }) => {
+          return request(app)
+            .get(`/oauth2redirect?code=abc123&state=${encodeURIComponent(state)}`)
+            .set("Cookie", sessionCookies)
+            .then((res) => {
+              const cookies = res.get("Set-Cookie").map(parseSetCookie);
+              expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.true;
+              expect(res.headers.location).to.equal("/");
+            });
         });
     });
   });
 
-  describe("when OAuth2 code is not present", () => {
-    it("should not set an accessToken cookie", () => {
+  describe("when OAuth2 state is not present", () => {
+    it("should reject the callback and not set an accessToken cookie", () => {
       idamServiceMock.resolveExchangeCode(token);
 
       return request(app)
@@ -50,8 +68,27 @@ describe("oauth2redirect", () => {
         .then((res) => {
           const cookies = res.get("Set-Cookie").map(parseSetCookie);
           expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.false;
-          expect(res.status).to.equal(500);
-          expect(res.text).includes("Error: Unable to obtain access token - no OAuth2 code provided");
+          expect(res.status).to.equal(400);
+          expect(res.text).includes("Invalid state parameter - possible CSRF attack");
+        });
+    });
+  });
+
+  describe("when OAuth2 code is not present but state is valid", () => {
+    it("should return 400 and not set an accessToken cookie", () => {
+      idamServiceMock.resolveExchangeCode(token);
+
+      return createOauthSession()
+        .then(({ sessionCookies, state }) => {
+          return request(app)
+            .get(`/oauth2redirect?state=${encodeURIComponent(state)}`)
+            .set("Cookie", sessionCookies)
+            .then((res) => {
+              const cookies = res.get("Set-Cookie").map(parseSetCookie);
+              expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.false;
+              expect(res.status).to.equal(400);
+              expect(res.text).includes("Unable to obtain access token - no OAuth2 code provided");
+            });
         });
     });
   });
@@ -76,7 +113,8 @@ describe("oauth2redirect", () => {
       };
 
       req = sinonExpressMock.mockReq();
-      req.query = {code: "code", redirect_uri: "https://localhost:5000"};
+      req.query = {code: "code", redirect_uri: "https://localhost:5000", state: "oauth-state"};
+      req.session = {oauthState: "oauth-state"};
       res = sinonExpressMock.mockRes();
       next = sinon.stub();
       accessTokenRequest = sinon.stub();
