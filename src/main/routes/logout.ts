@@ -7,7 +7,7 @@ const router = express.Router();
 const TOKEN_PLACEHOLDER = ":token";
 
 export const logout = (req, res, next) => {
-  const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];
+  const accessToken = req.cookies?.[COOKIE_ACCESS_TOKEN];
 
   if (accessToken) {
     const options = {

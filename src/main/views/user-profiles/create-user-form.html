@@ -129,21 +129,22 @@
       {{ csrfProtection(csrfToken) }}
         <div class="form-group">
           <input class="form-control" id="currentjurisdiction" name="currentjurisdiction" type="hidden" value="{{currentjurisdiction}}">
-            <label class="form-label" for="first-name-2">User IdAM ID</label>
             {% if idamId%}
-                <label class="form-label-bold" >{{idamId}}</label><br><br>
+                <span class="form-label">User IdAM ID</span>
+                <span class="form-label-bold">{{idamId}}</span><br><br>
                  <input class="form-control" id="idamId" name="idamId" type="hidden" value="{{idamId}}"/>
                  <input class="form-control" id="update" name="update" type="hidden" value="{{update}}"/>
 
             {% else %}
+                <label class="form-label" for="idamId">User IdAM ID</label>
                 <input class="form-control" id="idamId" name="idamId" type="text"/><br><br>
             {% endif%}
             <input type="hidden" id="jurisdiction" name="jurisdiction" value="{{jurisdiction | safe}}"/>
-            <label class="form-label" >Work basket default jurisdiction</label>
+            <label class="form-label" for="jurisdictionDropdown">Work basket default jurisdiction</label>
             {{  dropdown("jurisdictionDropdown") }}
-            <label class="form-label">Work basket default case type</label>
+            <label class="form-label" for="caseTypeDropdown">Work basket default case type</label>
             {{   dropdown("caseTypeDropdown") }}
-            <label class="form-label">Work basket default state</label>
+            <label class="form-label" for="stateDropdown">Work basket default state</label>
             {{  dropdown("stateDropdown")}}
         </div>
         <button type="submit" class="button" value="Submit">{{submitButtonText}}</button>

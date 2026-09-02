@@ -80,7 +80,7 @@ describe("on GET /createdefinition", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
     idamServiceMock.resolveRetrieveServiceToken();
 
-    mock("http://localhost:4451")
+    const jurisdictionsApi = mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
       .replyWithError({ status: 400, rawResponse: "Duplicate values" });
 
@@ -91,7 +91,13 @@ describe("on GET /createdefinition", () => {
     return request(app)
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(200);
+      .expect(200)
+      .then((res) => {
+        const dom = new JSDOM(res.text);
+        const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
+        expect(errorHeading).to.equal("Unauthorised role");
+        expect(jurisdictionsApi.isDone()).to.be.false;
+      });
   });
 
   it("should respond with Create Definition form and populated response when authenticated and authorized", () => {

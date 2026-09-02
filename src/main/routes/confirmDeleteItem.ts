@@ -6,7 +6,7 @@ const errorPage = "error";
 
 /* GET */
 router.get("/deleteitem", (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
+  if (req.adminWebAuthorization?.canManageDefinition) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));

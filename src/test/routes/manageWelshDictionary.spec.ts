@@ -17,22 +17,24 @@ chai.use(sinonChai);
 describe("test route manage Welsh Dictionary", () => {
 
     describe("test function doUploadTranslationsThen", () => {
-        const req = {
-            authentication: {
-                user: "",
-            },
-            file: {
-                originalname: "dummy_filename.csv",
-            },
-            serviceAuthToken: "serviceAuthToken",
-            session: {
-                error: "",
-                success: "",
-            },
-        };
-        const expectedSuccess = "Successfully uploaded the translations from " + req.file.originalname + ".";
-        const responseContent = doUploadTranslationsThen(req);
-        expect(responseContent.success).to.equal(expectedSuccess);
+        it("test function doUploadTranslationsThen", () => {
+            const req = {
+                authentication: {
+                    user: "",
+                },
+                file: {
+                    originalname: "dummy_filename.csv",
+                },
+                serviceAuthToken: "serviceAuthToken",
+                session: {
+                    error: "",
+                    success: "",
+                },
+            };
+            const expectedSuccess = "Successfully uploaded the translations from " + req.file.originalname + ".";
+            const responseContent = doUploadTranslationsThen(req);
+            expect(responseContent.success).to.equal(expectedSuccess);
+        });
     });
 
     describe("test function doUploadTranslationsCatch", () => {
