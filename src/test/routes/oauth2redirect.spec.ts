@@ -1,6 +1,6 @@
 import {app} from "../../main/app";
 import * as chai from "chai";
-import {COOKIE_ACCESS_TOKEN} from "routes/oauth2redirect";
+import {COOKIE_ACCESS_TOKEN} from "../../main/routes/oauth2redirect";
 import {expect} from "chai";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as request from "supertest";
