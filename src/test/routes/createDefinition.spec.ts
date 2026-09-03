@@ -137,7 +137,6 @@ describe("on GET /createdefinition", () => {
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(400)
       .then((res) => {
         expect(res.statusCode).to.equal(400);
       });
