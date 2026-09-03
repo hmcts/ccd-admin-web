@@ -156,5 +156,46 @@ describe("Get service", () => {
         });
       });
     });
+
+    describe("downstream failures", () => {
+      it("should preserve an HTTP 500 response", (done) => {
+        nock(definitionStoreHost)
+          .get(definitionsEndpoint)
+          .query(query)
+          .reply(500, "Internal Server Error");
+
+        fetch(req, definitionsUrl, query)
+          .then(() => done(new Error("Expected the HTTP 500 response to reject")))
+          .catch((err) => {
+            try {
+              expect(err.status).to.equal(500);
+              expect(err.response.text).to.equal("Internal Server Error");
+              done();
+            } catch (e) {
+              done(e);
+            }
+          });
+      });
+
+      it("should distinguish a connection reset from an HTTP response", (done) => {
+        nock(definitionStoreHost)
+          .get(definitionsEndpoint)
+          .query(query)
+          .replyWithError({code: "ECONNRESET", message: "Connection reset"});
+
+        fetch(req, definitionsUrl, query)
+          .then(() => done(new Error("Expected the connection reset to reject")))
+          .catch((err) => {
+            try {
+              expect(err.code).to.equal("ECONNRESET");
+              expect(err.response).to.be.undefined;
+              expect(err.text).to.equal("Error retrieving data: no error response");
+              done();
+            } catch (e) {
+              done(e);
+            }
+          });
+      });
+    });
   });
 });

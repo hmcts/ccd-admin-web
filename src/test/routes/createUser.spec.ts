@@ -25,11 +25,16 @@ describe("on Get /createuser", () => {
 
   it("should not respond with Create User form when authenticated but not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    idamServiceMock.optionallyResolveRetrieveServiceToken();
 
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .reply(200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]);
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -39,6 +44,7 @@ describe("on Get /createuser", () => {
       .get("/createuser")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
@@ -50,11 +56,16 @@ describe("on Get /createuser", () => {
 
   it("should not respond with Create User form when authenticated but without required authorized role", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    idamServiceMock.optionallyResolveRetrieveServiceToken();
 
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .reply(200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]);
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -64,6 +75,7 @@ describe("on Get /createuser", () => {
       .get("/createuser")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
@@ -77,16 +89,10 @@ describe("on Get /createuser", () => {
   });
 
   it("should respond with Create User form and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
       .reply(200, [{id: "jd_1", name: "Jurisdiction 1"}, {id: "jd_2", name: "Jurisdiction 2"}]);
-
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {canManageUserRole: true});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/createuser")
@@ -100,11 +106,16 @@ describe("on Get /createuser", () => {
 
   it("should handle error when accessing Create User form page when not authorized", () => {
     idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    idamServiceMock.optionallyResolveRetrieveServiceToken();
 
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .replyWithError({status: 400, rawResponse: "Duplicate values"});
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [400, {message: "Duplicate values"}];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -115,22 +126,14 @@ describe("on Get /createuser", () => {
       .set("Cookie", "accessToken=ey123.ey456")
       // not calling /api/data/jurisdiction because not authorized
       .expect(200)
-      .then((res) => {
-        expect(res.statusCode).to.equal(200);
-      });
+      .then(() => expect(backendCalled).to.be.false);
   });
 
   it("should handle error when accessing Create User form page when authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .replyWithError({status: 400, rawResponse: "Duplicate values"});
-
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
+      .reply(400, {message: "Duplicate values"});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/createuser")
@@ -148,11 +151,14 @@ describe("on POST /createuser", () => {
   });
 
   it("should not respond with Create User form when authenticated but not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    let backendCalled = false;
     mock("http://localhost:4453/users/save")
       .put("")
-      .reply(200);
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [200];
+      });
 
     return request(appTest)
       .post("/createuser")
@@ -163,6 +169,7 @@ describe("on POST /createuser", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
         const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
@@ -171,8 +178,6 @@ describe("on POST /createuser", () => {
   });
 
   it("should respond with Create User form and populated response when authenticated and authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
     mock("http://localhost:4453/users/save")
       .put("")
       .reply(200);
@@ -190,12 +195,15 @@ describe("on POST /createuser", () => {
       });
   });
 
-  it("should respond with error when invalid email is passed", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+  it("should reject an invalid email without calling the back-end", () => {
+    let backendCalled = false;
     mock("http://localhost:4453/users")
       .put("")
-      .reply(200);
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [200];
+      });
 
     return request(appTest)
       .post("/createuser")
@@ -206,13 +214,12 @@ describe("on POST /createuser", () => {
       })
       .expect(302)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location.startsWith("/createuser")).to.be.true;
       });
   });
 
   it("should respond with error when jurisdiction is empty", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
 
     return request(appTest)
       .post("/createuser")
@@ -228,11 +235,14 @@ describe("on POST /createuser", () => {
   });
 
   it("should not respond with Create User form when not authorized", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+    let backendCalled = false;
     mock("http://localhost:4453/users/save")
       .put("")
-      .replyWithError({status: 400, rawResponse: "Duplicate values"});
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [400, {message: "Duplicate values"}];
+      });
 
     return request(appTest)
       .post("/createuser")
@@ -244,6 +254,7 @@ describe("on POST /createuser", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
         const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
@@ -251,12 +262,10 @@ describe("on POST /createuser", () => {
       });
   });
 
-  it("should respond with Create User form due to server error", () => {
-    idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    idamServiceMock.resolveRetrieveServiceToken();
+  it("should redirect to the Create User form after an HTTP 400 response", () => {
     mock("http://localhost:4453/users/save")
       .put("")
-      .replyWithError({status: 400, rawResponse: "Duplicate values"});
+      .reply(400, {message: "Duplicate values"});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .post("/createuser")

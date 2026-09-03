@@ -1,5 +1,6 @@
 #!groovy
 import uk.gov.hmcts.contino.GithubAPI
+
 properties(
         [[$class: 'GithubProjectProperty', projectUrlStr: 'https://github.com/hmcts/ccd-admin-web'],
          pipelineTriggers([[$class: 'GitHubPushTrigger']])]
@@ -8,11 +9,11 @@ properties(
 @Library("Infrastructure@cve-dashboard")
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
-def product = "ccd"
-def component = "admin-web"
+def product = 'ccd'
+def component = 'admin-web'
 
 // Variables to switch pipeline logic and wiring per type of build
-def adminWebDevelopPr = "PR-325" // This doesn't change frequently, but when it does, only change this value.
+def adminWebDevelopPr = 'PR-325' // This doesn't change frequently, but when it does, only change this value.
 
 def secrets = [
     'ccd-${env}': [
@@ -39,9 +40,9 @@ def vaultOverrides = [
     'spreview': 'saat'
 ]
 
-env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
 
-withPipeline("nodejs", product, component) {
+withPipeline('nodejs', product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')
     }
@@ -63,11 +64,57 @@ withPipeline("nodejs", product, component) {
     enableCveDashboardIngestion()
 
     afterAlways('checkout') {
-        sh "yarn cache clean"
+        sh 'yarn cache clean'
     }
 
     afterAlways('build') {
-         yarnBuilder.yarn('setup')
+        yarnBuilder.yarn('setup')
     }
 
+    afterAlways('test') {
+        steps.junit allowEmptyResults: true, testResults: 'test-output/**/*result.xml'
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-output/**,coverage/**'
+        steps.publishHTML target: [
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'test-output',
+            reportFiles: 'unit.html',
+            reportName: 'Unit Test Report'
+        ]
+        steps.publishHTML target: [
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'coverage/lcov-report',
+            reportFiles: 'index.html',
+            reportName: 'Unit Test Coverage'
+        ]
+    }
+
+    afterAlways('fortify-scan') {
+        steps.publishHTML target: [
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'Fortify Scan',
+            reportFiles: 'FortifyScanReport.html',
+            reportName: 'Fortify Scan Report'
+        ]
+    }
+
+    ['preview', 'aat', 'prod', 'demo', 'perftest', 'ithc'].each { testEnvironment ->
+        afterAlways("smoketest:${testEnvironment}") {
+            steps.junit allowEmptyResults: true, testResults: 'smoke-output/**/*result.xml'
+            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**'
+            steps.publishHTML target: [
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'smoke-output',
+                reportFiles: 'smoke.html',
+                reportName: "Smoke Test Report - ${testEnvironment}"
+            ]
+        }
+    }
 }

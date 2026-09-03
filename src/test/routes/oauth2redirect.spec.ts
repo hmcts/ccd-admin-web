@@ -43,8 +43,6 @@ describe("oauth2redirect", () => {
 
   describe("when OAuth2 code is not present", () => {
     it("should not set an accessToken cookie", () => {
-      idamServiceMock.resolveExchangeCode(token);
-
       return request(app)
         .get("/oauth2redirect")
         .then((res) => {
@@ -82,7 +80,7 @@ describe("oauth2redirect", () => {
       accessTokenRequest = sinon.stub();
       accessTokenRequest.withArgs(req).returns(Promise.resolve(TOKEN));
 
-      oauth2redirect = proxyquire("../../main/routes/oauth2redirect", {
+      oauth2redirect = proxyquire.noCallThru()("../../main/routes/oauth2redirect", {
         "../oauth2/access-token-request": {accessTokenRequest},
         "config": config,
       }).oauth2redirect;
