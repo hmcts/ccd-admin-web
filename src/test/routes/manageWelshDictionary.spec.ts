@@ -7,7 +7,7 @@ import {
   doGetWelshDictionary,
   doUploadTranslationsThen,
   doUploadTranslationsCatch,
-} from "routes/manageWelshDictionary";
+} from "../../main/routes/manageWelshDictionary";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as request from "supertest";
 
