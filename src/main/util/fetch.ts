@@ -21,7 +21,7 @@ const allowedOrigins = [
 const getAllowedUrl = (url: string): string => {
   const parsedUrl = new URL(url);
 
-  if (allowedOrigins.indexOf(parsedUrl.origin) === -1) {
+  if (!allowedOrigins.includes(parsedUrl.origin)) {
     throw new Error(`URL origin is not allowed: ${parsedUrl.origin}`);
   }
 
@@ -29,7 +29,8 @@ const getAllowedUrl = (url: string): string => {
 };
 
 export const fetch = async (url: string, init?: RequestInit) => {
-  const res = await _fetch(getAllowedUrl(url), init);
+  const allowedUrl = getAllowedUrl(url);
+  const res = await _fetch(allowedUrl, init); // NOSONAR - URL origin is validated against configured services.
 
   if (res.status >= 200 && res.status < 300) {
     return res;
