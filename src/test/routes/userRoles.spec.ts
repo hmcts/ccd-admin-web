@@ -493,7 +493,6 @@ describe("on POST /updateuserroleform", () => {
       .post("/updateuserroleform")
       .send({role: "ccd-admin*34", classification: "PUBLIC"})
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(302)
       .then((res) => {
         expect(res.statusCode).to.equal(302);
         expect(res.headers.location.startsWith("/user-roles-list")).to.be.true;
