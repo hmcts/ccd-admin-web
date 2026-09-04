@@ -1,7 +1,7 @@
 let gulp = require('gulp');
 let nodemon = require('gulp-nodemon');
 let livereload = require('gulp-livereload');
-let sass = require('gulp-sass')(require('sass'));
+let sass = require('gulp-sass/legacy')(require('sass'));
 let path = require('path');
 let { finished } = require('stream/promises');
 
