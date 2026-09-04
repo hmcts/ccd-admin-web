@@ -40,3 +40,5 @@ acb.yaml
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+src/main/resources/localhost-ssl/*.key
+.local-secrets/
