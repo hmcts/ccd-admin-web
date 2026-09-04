@@ -13,15 +13,15 @@ export class FetchError extends Error {
   }
 }
 
-const allowedOrigins = [
+const allowedOrigins = new Set([
   new URL(get<string>("idam.base_url")).origin,
   new URL(get<string>("idam.s2s_url")).origin,
-];
+]);
 
 const getAllowedUrl = (url: string): string => {
   const parsedUrl = new URL(url);
 
-  if (!allowedOrigins.includes(parsedUrl.origin)) {
+  if (!allowedOrigins.has(parsedUrl.origin)) {
     throw new Error(`URL origin is not allowed: ${parsedUrl.origin}`);
   }
 
