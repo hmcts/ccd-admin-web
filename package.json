@@ -32,11 +32,11 @@
     "@hmcts/nodejs-healthcheck": "^1.8.6",
     "@hmcts/nodejs-logging": "^4.0.4",
     "@hmcts/properties-volume": "^1.4.1",
-    "@snyk/protect": "^1.1306.2",
+    "@snyk/protect": "^1.1307.0",
     "@types/node": "^25.9.5",
-    "applicationinsights": "^3.15.1",
+    "applicationinsights": "^3.16.0",
     "body-parser": "^2.3.0",
-    "brace-expansion": "^5.0.8",
+    "brace-expansion": "^5.0.9",
     "config": "^4.4.2",
     "cookie-parser": "^1.4.7",
     "cookie-session": "^2.1.1",
@@ -54,10 +54,10 @@
     "helmet": "^8.3.0",
     "jquery": "^4.0.0",
     "jquery-validation": "^1.22.1",
-    "js-yaml": "^4.3.0",
+    "js-yaml": "^4.3.2",
     "jsdom": "^29.1.1",
     "jwt-decode": "^4.0.0",
-    "multer": "^2.2.0",
+    "multer": "^2.3.0",
     "node-fetch": "^3.3.2",
     "nunjucks": "^3.2.4",
     "on-headers": "^1.1.0",
@@ -65,7 +65,7 @@
     "otp": "^0.1.3",
     "path-to-regexp": "^8.4.2",
     "require-directory": "^2.1.1",
-    "sass": "^1.102.0",
+    "sass": "^1.103.1",
     "serve-favicon": "^2.5.1",
     "sinon-stub-promise": "^4.0.0",
     "superagent": "^10.3.0",
@@ -76,7 +76,7 @@
   "devDependencies": {
     "@eslint/css": "^1.4.0",
     "@eslint/js": "^10.0.1",
-    "@tsconfig/node22": "^22.0.5",
+    "@tsconfig/node22": "^22.0.6",
     "@types/body-parser": "^1.19.6",
     "@types/chai-as-promised": "^8.0.2",
     "@types/cookie-parser": "^1.4.10",
@@ -89,18 +89,18 @@
     "@types/xss-filters": "^1.2.0",
     "chai": "^6.2.2",
     "chai-as-promised": "^8.0.2",
-    "cookie": "^1.1.1",
-    "eslint": "^10.8.0",
+    "cookie": "^2.0.1",
+    "eslint": "^10.9.1",
     "eslint-plugin-mocha": "^11.3.0",
     "fetch-mock": "^12.6.0",
-    "globals": "^17.8.0",
+    "globals": "^17.12.0",
     "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.3",
     "karma": "^6.4.4",
-    "mocha": "^11.7.6",
+    "mocha": "^11.8.0",
     "mochawesome": "^7.1.4",
     "mock-session": "^0.0.5",
-    "nock": "^14.0.16",
+    "nock": "^14.0.17",
     "nyc": "^18.0.0",
     "pa11y": "^9.1.1",
     "proxyquire": "^2.1.3",
@@ -110,21 +110,23 @@
     "sonar-scanner": "^3.1.0",
     "supertest": "^7.2.2",
     "supertest-session": "^5.0.1",
-    "tsx": "^4.23.1",
+    "tsx": "^4.23.13",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.65.0"
+    "typescript-eslint": "^8.69.0"
   },
   "mocha": {
     "LOG_LEVEL": "OFF",
     "import": [
       "tsx"
     ],
-    "file": ["src/test/support/nock-verification.js"],
+    "file": [
+      "src/test/support/nock-verification.js"
+    ],
     "exit": true,
     "reporter": "./src/test/reporters/jenkins.js",
     "reporter-options": [
-        "reportDir=mochawesome-report",
-        "inlineAssets=true"
+      "reportDir=mochawesome-report",
+      "inlineAssets=true"
     ]
   },
   "nyc": {
