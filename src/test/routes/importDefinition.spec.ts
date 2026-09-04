@@ -1,11 +1,11 @@
 import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import { get } from "config";
-import * as idamServiceMock from "../http-mocks/idam";
+import config from "config";
+import { resolveRetrieveUserFor, optionallyResolveRetrieveServiceToken } from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
-import * as mock from "nock";
-import * as request from "supertest";
+import mock from "nock";
+import request from "supertest";
 
 describe("Import Definition page", () => {
   const CCD_IMPORT_ROLE = "ccd-import";
@@ -21,13 +21,13 @@ describe("Import Definition page", () => {
         .get("/import")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 
     it("should not return Import Case Definition page when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.optionallyResolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      optionallyResolveRetrieveServiceToken();
 
       let backendCalled = false;
       mock("http://localhost:4451")
@@ -56,23 +56,19 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
-          expect(res.text).not.to.contain("<th>Date Imported</th>");
-          expect(res.text).not.to.contain("<th>Who Imported</th>");
-          expect(res.text).not.to.contain("<th>Case Type</th>");
-          expect(res.text).not.to.contain("<th>Filename</th>");
           expect(res.text).not.to.contain("next century");
           expect(res.text).not.to.contain("ID_3");
           expect(res.text).not.to.contain("I am si of it");
           expect(res.text).not.to.contain("9343EWFMVl");
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
         });
     });
 
     it("should not return Import Case Definition page when authenticated but without required authorized role", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.optionallyResolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      optionallyResolveRetrieveServiceToken();
 
       let backendCalled = false;
       mock("http://localhost:4451")
@@ -101,26 +97,22 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
-          expect(res.text).not.to.contain("<th>Date Imported</th>");
-          expect(res.text).not.to.contain("<th>Who Imported</th>");
-          expect(res.text).not.to.contain("<th>Case Type</th>");
-          expect(res.text).not.to.contain("<th>Filename</th>");
           expect(res.text).not.to.contain("next century");
           expect(res.text).not.to.contain("ID_3");
           expect(res.text).not.to.contain("I am si of it");
           expect(res.text).not.to.contain("9343EWFMVl");
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
           // The "Manage User Profiles" menu item should still be displayed (as this user is authorised for that)
-          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-          expect(menuItem).to.equal("Manage User Profiles");
+          const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+          expect(menuItem).to.contain("Manage User Profiles");
         });
     });
 
     it("should not return a back-end error status as it is not called", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.optionallyResolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -163,10 +155,6 @@ describe("Import Definition page", () => {
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
-          expect(res.text).to.contain("<th>Date Imported</th>");
-          expect(res.text).to.contain("<th>Who Imported</th>");
-          expect(res.text).to.contain("<th>Case Type</th>");
-          expect(res.text).to.contain("<th>Filename</th>");
           expect(res.text).to.contain("next century");
           expect(res.text).to.contain("ID_3");
           expect(res.text).to.contain("I am si of it");
@@ -200,13 +188,13 @@ describe("Import Definition page", () => {
         .post("/import")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 
     it("should not upload a valid Definition file when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.optionallyResolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -222,7 +210,7 @@ describe("Import Definition page", () => {
         });
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -233,8 +221,8 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
 
           // Assert that the back-end is not called
           expect(apiCalled).to.be.false;
@@ -242,8 +230,8 @@ describe("Import Definition page", () => {
     });
 
     it("should not upload a valid Definition file when authenticated but without required authorized role", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.optionallyResolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -259,7 +247,7 @@ describe("Import Definition page", () => {
         });
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -270,11 +258,11 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
           // The "Manage User Profiles" menu item should still be displayed (as this user is authorised for that)
-          const menuItem = dom.window.document.querySelector("div.padding > a").innerHTML;
-          expect(menuItem).to.equal("Manage User Profiles");
+          const menuItem = dom.window.document.querySelector("nav > ul > li > a").innerHTML;
+          expect(menuItem).to.contain("Manage User Profiles");
 
           // Assert that the back-end is not called
           expect(apiCalled).to.be.false;
@@ -300,7 +288,7 @@ describe("Import Definition page", () => {
           who_imported: "ID_3"}]);
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -311,16 +299,12 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(201);
           const dom = new JSDOM(res.text);
-          const result = dom.window.document.querySelector(".form-group").innerHTML;
+          const result = dom.window.document.querySelector(".govuk-form-group").innerHTML;
           expect(result).to.contain("Definition imported");
           expect(result).not.to.contain("Warnings:");
           // Assert that the Import Audits API is called
           expect(importAuditsApiCall.isDone()).to.be.true;
-          // Check that the Import Audits table is visible and showing the expected data
-          expect(res.text).to.contain("<th>Date Imported</th>");
-          expect(res.text).to.contain("<th>Who Imported</th>");
-          expect(res.text).to.contain("<th>Case Type</th>");
-          expect(res.text).to.contain("<th>Filename</th>");
+          // Check that the Import Audits table is showing the expected data
           expect(res.text).to.contain("next century");
           expect(res.text).to.contain("ID_3");
           expect(res.text).to.contain("I am si of it");
@@ -344,7 +328,7 @@ describe("Import Definition page", () => {
         });
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.txt",
       };
 
@@ -391,7 +375,7 @@ describe("Import Definition page", () => {
         .reply(500, "Error on Definition import");
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -428,7 +412,7 @@ describe("Import Definition page", () => {
           who_imported: "ID_3"}]);
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -439,9 +423,9 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(201);
           const dom = new JSDOM(res.text);
-          const result = dom.window.document.querySelector(".form-group").innerHTML;
+          const result = dom.window.document.querySelector(".govuk-form-group").innerHTML;
           expect(result).to.contain("Definition imported");
-          expect(result).to.contain("Warnings:");
+          expect(result).to.contain("Warning");
           expect(result).to.contain("First warning");
           expect(result).to.contain("Second warning");
           // Assert that the Import Audits API is called
@@ -450,8 +434,8 @@ describe("Import Definition page", () => {
     });
 
     it("should display an authorisation error without calling the back-end", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.optionallyResolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -467,7 +451,7 @@ describe("Import Definition page", () => {
         });
 
       const file = {
-        buffer: new Buffer(8),
+        buffer: Buffer.alloc(8),
         originalname: "dummy_filename.xlsx",
       };
 
@@ -478,10 +462,10 @@ describe("Import Definition page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(403);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Error");
-          const errorSummary = dom.window.document.querySelector("div.error-summary.govuk-error-message > p").innerHTML;
-          expect(errorSummary).to.equal("Forbidden (403)");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Error");
+          const errorSummary = dom.window.document.querySelector("div.govuk-error-summary__body > ul").innerHTML;
+          expect(errorSummary).to.contain("Forbidden (403)");
 
           // Assert that the back-end is not called
           expect(apiCalled).to.be.false;

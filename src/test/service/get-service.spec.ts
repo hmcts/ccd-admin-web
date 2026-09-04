@@ -1,10 +1,7 @@
-import * as chai from "chai";
-import * as nock from "nock";
-import * as sinonChai from "sinon-chai";
+import { expect } from "chai";
+import nock from "nock";
 import { fetch } from "../../main/service/get-service";
 
-const expect = chai.expect;
-chai.use(sinonChai);
 
 describe("Get service", () => {
 
@@ -178,10 +175,13 @@ describe("Get service", () => {
       });
 
       it("should distinguish a connection reset from an HTTP response", (done) => {
+        const connectionResetError = new Error("Connection reset") as NodeJS.ErrnoException;
+        connectionResetError.code = "ECONNRESET";
+
         nock(definitionStoreHost)
           .get(definitionsEndpoint)
           .query(query)
-          .replyWithError({code: "ECONNRESET", message: "Connection reset"});
+          .replyWithError(connectionResetError);
 
         fetch(req, definitionsUrl, query)
           .then(() => done(new Error("Expected the connection reset to reject")))

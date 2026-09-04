@@ -1,10 +1,10 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as mock from "nock";
-import * as mockSession from "mock-session";
-import * as request from "supertest";
-import * as sinon from "sinon";
+import mock from "nock";
+import mockSession from "mock-session";
+import request from "supertest-session";
+import sinon from "sinon";
 
 describe("Definitions page", () => {
 
@@ -51,7 +51,8 @@ describe("Definitions page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Type1,Type2");
           expect(res.text).not.to.contain("Draft definition");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          expect(res.text).to.contain("Unauthorised role");
+          expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
         });
     });
 
@@ -79,7 +80,7 @@ describe("Definitions page", () => {
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/definitions")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
-        .then((res) => {
+          .then((res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).to.contain("Type1,Type2");
           expect(res.text).to.contain("Draft definition");
@@ -120,7 +121,8 @@ describe("Definitions page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Type1,Type2");
           expect(res.text).not.to.contain("Draft definition");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          expect(res.text).to.contain("Unauthorised role");
+          expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
         });
     });
 

@@ -1,9 +1,9 @@
-import * as config from "config";
-import * as mock from "nock";
-import * as HttpStatus from "http-status-codes";
+import config from "config";
+import mock from "nock";
+import HttpStatus from "http-status-codes";
 
-const idamApiBaseUrl = config.get("idam.base_url");
-const s2sAuthServiceBaseUrl = config.get("idam.s2s_url");
+const idamApiBaseUrl = config.get<string>("idam.base_url");
+const s2sAuthServiceBaseUrl = config.get<string>("idam.s2s_url");
 
 export const defaultAuthToken =
   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJpZGFtIiwiaWF0IjoxNDgzMjI4ODAwLCJleHAiOjQxMDI0NDQ4MDAsImF1ZCI6ImNtY" +

@@ -20,6 +20,7 @@ def secrets = [
         secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
         secret('storage-account-primary-connection-string', 'STORAGEACCOUNT_PRIMARY_CONNECTION_STRING'),
         secret('storage-account-secondary-connection-string', 'STORAGEACCOUNT_SECONDARY_CONNECTION_STRING'),
+        secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_INSTRUMENTATION_KEY')
     ],
     's2s-${env}': [
         secret('microservicekey-ccd-admin', 'IDAM_SERVICE_KEY'),
@@ -72,25 +73,41 @@ withPipeline('nodejs', product, component) {
     }
 
     afterAlways('test') {
-        steps.junit allowEmptyResults: true, testResults: 'test-output/**/*result.xml'
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-output/**,coverage/**'
-        steps.publishHTML target: [
-            allowMissing: true,
-            alwaysLinkToLastBuild: true,
-            keepAll: true,
-            reportDir: 'test-output',
-            reportFiles: 'unit.html',
-            reportName: 'Unit Test Report'
-        ]
-        steps.publishHTML target: [
-            allowMissing: true,
-            alwaysLinkToLastBuild: true,
-            keepAll: true,
-            reportDir: 'coverage/lcov-report',
-            reportFiles: 'index.html',
-            reportName: 'Unit Test Coverage'
-        ]
+    
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "mochawesome-report",
+        reportFiles          : "unit.html",
+        reportName           : "Unit Test Report"
+      ]
     }
+
+    afterAlways('test:a11y') {
+    
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "mochawesome-report",
+        reportFiles          : "a11y.html",
+        reportName           : "Accessibility Test Report"
+      ]
+    }
+
+    afterAlways('test:coverage') {
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "coverage/lcov-report",
+        reportFiles          : "index.html",
+        reportName           : "Code Coverage Report"
+      ]
+    }
+
 
     afterAlways('fortify-scan') {
         steps.publishHTML target: [

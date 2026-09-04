@@ -1,12 +1,12 @@
-import * as chai from "chai";
-import * as nock from "nock";
-import * as proxyquire from "proxyquire";
+import { expect, use } from "chai";
+import nock from "nock";
+import proxyquire from "proxyquire";
 import { flattenJsonResponse } from "routes/welshDictionary";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("welshDictionaryService::getWelshDictionary", () => {
 
@@ -27,7 +27,7 @@ describe("welshDictionaryService::getWelshDictionary", () => {
     config.get.withArgs("adminWeb.welsh_translation_get_dictionary_url").returns(indexingUrl);
 
     getDictionary = proxyquire("../../main/service/welsh-dictionary-service", {
-      config,
+      "config": config,
     }).getDictionary;
   });
 

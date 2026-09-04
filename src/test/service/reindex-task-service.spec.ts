@@ -1,10 +1,8 @@
 import * as chai from "chai";
-import * as nock from "nock";
-import * as sinonChai from "sinon-chai";
+import nock from "nock";
 import { getReindexTasks } from "../../main/service/reindex-task-service";
 
 const expect = chai.expect;
-chai.use(sinonChai);
 
 describe("Reindex task service", () => {
 
@@ -100,9 +98,12 @@ describe("Reindex task service", () => {
   });
 
     it("should handle connection errors gracefully", async () => {
+      const connectionResetError = new Error("Connection reset") as NodeJS.ErrnoException;
+      connectionResetError.code = "ECONNRESET";
+
       nock(definitionStoreHost)
         .get(reindexEndpoint)
-        .replyWithError({ code: "ECONNRESET", message: "Connection reset" });
+        .replyWithError(connectionResetError);
 
       try {
         await getReindexTasks(req);

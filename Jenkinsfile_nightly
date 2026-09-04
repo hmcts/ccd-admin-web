@@ -26,13 +26,13 @@ withNightlyPipeline(type, product, component) {
     }
 
     afterAlways('test') {
-        steps.junit allowEmptyResults: true, testResults: 'test-output/**/*result.xml'
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-output/**,coverage/**'
+        steps.junit allowEmptyResults: true, testResults: 'mochawesome-report/**/*result.xml'
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'mochawesome-report/**,coverage/**'
         steps.publishHTML target: [
             allowMissing: true,
             alwaysLinkToLastBuild: true,
             keepAll: true,
-            reportDir: 'test-output',
+            reportDir: 'mochawesome-report',
             reportFiles: 'unit.html',
             reportName: 'Unit Test Report'
         ]
