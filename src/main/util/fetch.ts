@@ -1,4 +1,5 @@
-import _fetch, { RequestInfo, RequestInit, Response } from "node-fetch";
+import {get} from "config";
+import _fetch, {RequestInit, Response} from "node-fetch";
 
 export class FetchError extends Error {
   public readonly response: Response;
@@ -12,13 +13,27 @@ export class FetchError extends Error {
   }
 }
 
-export const fetch = (url: RequestInfo, init?: RequestInit) => {
-  return _fetch(url, init)
-    .then((res) => {
-      if (res.status >= 200 && res.status < 300) {
-        return res;
-      }
+const allowedOrigins = [
+  new URL(get<string>("idam.base_url")).origin,
+  new URL(get<string>("idam.s2s_url")).origin,
+];
 
-      throw new FetchError(res);
-    });
+const getAllowedUrl = (url: string): string => {
+  const parsedUrl = new URL(url);
+
+  if (allowedOrigins.indexOf(parsedUrl.origin) === -1) {
+    throw new Error(`URL origin is not allowed: ${parsedUrl.origin}`);
+  }
+
+  return parsedUrl.toString();
+};
+
+export const fetch = async (url: string, init?: RequestInit) => {
+  const res = await _fetch(getAllowedUrl(url), init);
+
+  if (res.status >= 200 && res.status < 300) {
+    return res;
+  }
+
+  throw new FetchError(res);
 };
