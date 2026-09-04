@@ -8,9 +8,73 @@ properties(
 
 @Library("Infrastructure@cve-dashboard")
 
-def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def product = 'ccd'
 def component = 'admin-web'
+
+class CcdYarnBuilder extends uk.gov.hmcts.contino.YarnBuilder {
+    CcdYarnBuilder(steps) {
+        super(steps)
+    }
+
+    @Override
+    def securityCheck() {
+        try {
+            steps.sh """
+                set +ex
+                export NVM_DIR='/home/jenkinsssh/.nvm'
+                . /opt/nvm/nvm.sh || true
+                nvm install
+                set -ex
+            """
+
+            steps.sh label: 'corepack enable', script: '''
+                mkdir -p $HOME/.local/bin
+                corepack enable --install-directory $HOME/.local/bin
+            '''
+
+            steps.writeFile(file: 'yarn-audit-with-suppressions.sh', text: steps.libraryResource('uk/gov/hmcts/pipeline/yarn/yarn-audit-with-suppressions.sh'))
+            steps.writeFile(file: 'prettyPrintAudit.sh', text: steps.libraryResource('uk/gov/hmcts/pipeline/yarn/prettyPrintAudit.sh'))
+            steps.writeFile(file: 'transform-v4-to-v3-audit.cjs', text: steps.libraryResource('uk/gov/hmcts/pipeline/yarn/transform-v4-to-v3-audit.cjs'))
+
+            steps.sh '''
+                sed -i 's/yarn npm audit --recursive --environment production --json/yarn npm audit --all --environment production --json/g' yarn-audit-with-suppressions.sh
+            '''
+
+            this.steps.withCredentials([this.steps.usernamePassword(credentialsId: this.steps.env.GIT_CREDENTIALS_ID, passwordVariable: 'BEARER_TOKEN', usernameVariable: 'APP_ID')]) {
+                steps.sh """
+                    export PATH=\$HOME/.local/bin:\$PATH
+                    export YARN_VERSION=\$(jq -r '.packageManager' package.json | sed 's/yarn@//' | grep -o '^[^.]*')
+                    chmod +x yarn-audit-with-suppressions.sh
+                    ./yarn-audit-with-suppressions.sh
+                """
+            }
+        } finally {
+            steps.sh '''
+                if [ ! -s yarn-audit-result-formatted ] || ! jq -e . yarn-audit-result-formatted >/dev/null 2>&1; then
+                    echo 'No valid yarn-audit-result-formatted file was produced.'
+                    echo '---- yarn-audit-result ----'
+                    sed -n '1,120p' yarn-audit-result || true
+                    printf '%s\n' '{"type":"auditSummary","data":{"vulnerabilities":{"info":0,"low":0,"moderate":0,"high":0,"critical":0}}}' > yarn-audit-issues-result
+                else
+                    jq -c '. | {type: "auditSummary", data: .metadata}' yarn-audit-result-formatted > yarn-audit-issues-result-summary
+                    jq -cr '.advisories| to_entries[] | {"type": "auditAdvisory", "data": { "advisory": .value }}' yarn-audit-result-formatted > yarn-audit-issues-advisories
+                    cat yarn-audit-issues-result-summary yarn-audit-issues-advisories > yarn-audit-issues-result
+                fi
+            '''
+            String issues = steps.readFile('yarn-audit-issues-result')
+            String knownIssues = null
+            if (steps.fileExists('yarn-audit-known-issues-result')) {
+                knownIssues = steps.readFile('yarn-audit-known-issues-result')
+            }
+            def cveReport = prepareCVEReport(issues, knownIssues)
+            new uk.gov.hmcts.pipeline.CVEPublisher(steps).publishCVEReport('node', cveReport)
+        }
+    }
+}
+
+def nodePipelineType = new uk.gov.hmcts.contino.NodePipelineType(this, product, component)
+nodePipelineType.builder = new CcdYarnBuilder(this)
+def yarnBuilder = nodePipelineType.builder
 
 // Variables to switch pipeline logic and wiring per type of build
 def adminWebDevelopPr = 'PR-325' // This doesn't change frequently, but when it does, only change this value.
@@ -42,7 +106,7 @@ def vaultOverrides = [
 
 env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
 
-withPipeline('nodejs', product, component) {
+withPipeline(nodePipelineType, product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')
     }
