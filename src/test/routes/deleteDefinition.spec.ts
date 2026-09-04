@@ -1,7 +1,6 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import mock from "nock";
 import request from "supertest";
 
@@ -11,11 +10,8 @@ beforeEach(() => {
 
 describe("Confirm Delete page", () => {
   describe("on POST /deletedefinition when not authorized", () => {
-      const CCD_IMPORT_ROLE = "ccd-import";
 
       it("should not redirect to the Confirm Delete page when Yes or No is not chosen", () => {
-        resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        resolveRetrieveServiceToken();
 
         return request(appTest)
           .post("/deletedefinition")
@@ -29,8 +25,6 @@ describe("Confirm Delete page", () => {
           });
       });
       it("should not redirect to the Definitions list when No is chosen but unauthorized", () => {
-        resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        resolveRetrieveServiceToken();
 
         return request(appTest)
           .post("/deletedefinition")
@@ -45,18 +39,22 @@ describe("Confirm Delete page", () => {
       });
 
       it("should not redirect to the Definitions list when Yes is chosen but unauthorized", () => {
-        resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        resolveRetrieveServiceToken();
+        let backendCalled = false;
 
         mock("http://localhost:4451")
           .delete("/api/draft/TEST/1")
-          .reply(204);
+          .optionally()
+          .reply(() => {
+            backendCalled = true;
+            return [204];
+          });
 
         return request(appTest)
           .post("/deletedefinition")
           .send({definitionVersion: 1, deleteItem: "Yes", itemToDelete: "definition", jurisdictionId: "TEST"})
           .set("Cookie", "accessToken=ey123.ey456")
           .then((res) => {
+            expect(backendCalled).to.be.false;
             expect(res.statusCode).to.equal(200);
             expect(res.headers.location).to.be.undefined;
             expect(res.text).to.contain("Unauthorised role");
@@ -65,18 +63,22 @@ describe("Confirm Delete page", () => {
       });
 
       it("should not redirect to the Definitions list when Yes is chosen when unauthorized", () => {
-        resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        resolveRetrieveServiceToken();
+        let backendCalled = false;
 
         mock("http://localhost:4451")
           .delete("/api/draft/TEST/1")
-          .reply(200);
+          .optionally()
+          .reply(() => {
+            backendCalled = true;
+            return [200];
+          });
 
         return request(appTest)
           .post("/deletedefinition")
           .send({definitionVersion: 1, deleteItem: "Yes", itemToDelete: "definition", jurisdictionId: "TEST"})
           .set("Cookie", "accessToken=ey123.ey456")
           .then((res) => {
+            expect(backendCalled).to.be.false;
             expect(res.statusCode).to.equal(200);
             expect(res.headers.location).to.be.undefined;
             expect(res.text).to.contain("Unauthorised role");
@@ -86,11 +88,8 @@ describe("Confirm Delete page", () => {
     });
 
   describe("on POST /deletedefinition when authorized", () => {
-    const CCD_IMPORT_ROLE = "ccd-import";
 
     it("should redirect to the Confirm Delete page when Yes or No is not chosen", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/deletedefinition")
@@ -103,8 +102,6 @@ describe("Confirm Delete page", () => {
         });
     });
     it("should redirect to the Definitions list when No is chosen", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/deletedefinition")
@@ -117,8 +114,6 @@ describe("Confirm Delete page", () => {
     });
 
     it("should redirect to the Definitions list when Yes is chosen", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .delete("/api/draft/TEST/1")
@@ -135,8 +130,6 @@ describe("Confirm Delete page", () => {
     });
 
     it("should redirect to the Definitions list when Yes is chosen but an error occurred", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .delete("/api/draft/TEST/1")

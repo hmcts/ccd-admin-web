@@ -1,6 +1,5 @@
 import { expect } from "chai";
 import Debug from "debug";
-import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
 import mock from "nock";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
@@ -43,10 +42,6 @@ describe("admin-web-role-authorizer-filter", () => {
   });
 
   describe("when filter is called", () => {
-    beforeEach(() => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-    });
 
     it("should call next middleware with error", (done) => {
 
@@ -67,8 +62,6 @@ describe("admin-web-role-authorizer-filter", () => {
 
     it("should call next middleware without error", (done) => {
 
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
       mock("http://adminweb")
         .get("/authorize")
         .reply(200, authorization);

@@ -5,7 +5,7 @@ import sinonChai from "sinon-chai";
 import config from "config";
 import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
-import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import { resolveRetrieveUserFor, optionallyResolveRetrieveServiceToken } from "../http-mocks/idam";
 import request from "supertest";
 
 
@@ -33,7 +33,7 @@ describe("test route Welsh Dictionary", () => {
 
     it("should not return Welsh Dictionary page when authenticated but not authorized", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
       nock(idamBase)
         .get("/api/idam/adminweb/authorization")
         .reply(200, { canImportDefinition: true });
@@ -58,9 +58,6 @@ describe("test route Welsh Dictionary", () => {
     });
 
     it("should return Confirm Delete User Profile page when authenticated and authorized", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-      nock(idamBase).get("/api/idam/adminweb/authorization").reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/welshDictionary")
@@ -107,7 +104,7 @@ describe("test route Welsh Dictionary", () => {
 
     it("should not return dictionary as utf-8 csv", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
       nock(idamBase)
         .get("/api/idam/adminweb/authorization")
         .reply(200, { canImportDefinition: true });
@@ -121,9 +118,6 @@ describe("test route Welsh Dictionary", () => {
     });
 
     it("should return dictionary as utf-8 csv", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-      nock(idamBase).get("/api/idam/adminweb/authorization").reply(200, {});
 
       nock(tsBase).get("/dictionary").reply(200, dictionaryFromTS);
 

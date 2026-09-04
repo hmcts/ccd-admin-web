@@ -98,7 +98,13 @@ describe("Reindex task service", () => {
   });
 
     it("should handle connection errors gracefully", async () => {
-      // no nock() here -> causes ECONNREFUSED
+      const connectionResetError = new Error("Connection reset") as NodeJS.ErrnoException;
+      connectionResetError.code = "ECONNRESET";
+
+      nock(definitionStoreHost)
+        .get(reindexEndpoint)
+        .replyWithError(connectionResetError);
+
       try {
         await getReindexTasks(req);
         throw new Error("Expected connection error was not thrown");

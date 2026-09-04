@@ -8,13 +8,14 @@ import {
     doUploadTranslationsThen,
     doUploadTranslationsCatch,
 } from "../../main/routes/manageWelshDictionary";
-import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import { resolveRetrieveUserFor, optionallyResolveRetrieveServiceToken } from "../http-mocks/idam";
 import request from "supertest";
 
 
 use(sinonChai);
 
 describe("test route manage Welsh Dictionary", () => {
+    const CCD_IMPORT_ROLE = "ccd-import";
 
     describe("test function doUploadTranslationsThen", () => {
         const req = {
@@ -256,7 +257,6 @@ describe("test route manage Welsh Dictionary", () => {
     });
 
     describe("on POST /manageWelshDictionary", () => {
-        const CCD_IMPORT_ROLE = "ccd-import";
         beforeEach(() => {
             nock.cleanAll();
         });
@@ -285,8 +285,6 @@ describe("test route manage Welsh Dictionary", () => {
         });
 
         it("should return Entry page when authenticated and authorized", () => {
-            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            resolveRetrieveServiceToken();
             const req = {
                 accessToken: "userAuthToken",
                 file: {
@@ -295,9 +293,6 @@ describe("test route manage Welsh Dictionary", () => {
                 },
                 serviceAuthToken: "serviceAuthToken",
             };
-            nock("http://localhost:4451")
-                .get("/api/idam/adminweb/authorization")
-                .reply(200, {});
             // tslint:disable-next-line:prefer-const
             let res;
             // tslint:disable-next-line:prefer-const
@@ -314,7 +309,7 @@ describe("test route manage Welsh Dictionary", () => {
 
         // it("should return Updated page when authenticated and authorised", () => {
         //     resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        //     resolveRetrieveServiceToken();
+        //     optionallyResolveRetrieveServiceToken();
         //     const req = {
         //         accessToken: "userAuthToken",
         //         file: {
@@ -341,8 +336,6 @@ describe("test route manage Welsh Dictionary", () => {
         // });
 
         it("should respond with Not CSV error when authenticated and authorized", () => {
-            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            resolveRetrieveServiceToken();
             const req = {
                 accessToken: "userAuthToken",
                 adminWebAuthorization: {
@@ -355,9 +348,6 @@ describe("test route manage Welsh Dictionary", () => {
                 },
                 serviceAuthToken: "serviceAuthToken",
             };
-            nock("http://localhost:4451")
-                .get("/api/idam/adminweb/authorization")
-                .reply(200, {});
             // tslint:disable-next-line:prefer-const
             let res;
             // tslint:disable-next-line:prefer-const
@@ -373,8 +363,6 @@ describe("test route manage Welsh Dictionary", () => {
         });
 
         it("should respond with Welsh Translation response when authenticated and authorized", () => {
-            resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-            resolveRetrieveServiceToken();
             const req = {
                 accessToken: "userAuthToken",
                 file: {
@@ -383,9 +371,6 @@ describe("test route manage Welsh Dictionary", () => {
                 },
                 serviceAuthToken: "serviceAuthToken",
             };
-            nock("http://localhost:4451")
-                .get("/api/idam/adminweb/authorization")
-                .reply(200, {});
             // tslint:disable-next-line:prefer-const
             let res;
             // tslint:disable-next-line:prefer-const
@@ -402,13 +387,12 @@ describe("test route manage Welsh Dictionary", () => {
     });
 
     describe("on GET /manageWelshDictionary", () => {
-        const CCD_IMPORT_ROLE = "ccd-import";
         beforeEach(() => {
             nock.cleanAll();
         });
 
         resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-        resolveRetrieveServiceToken();
+        optionallyResolveRetrieveServiceToken();
         nock("http://localhost:4451")
             .get("/api/idam/adminweb/authorization")
             .reply(200, {});

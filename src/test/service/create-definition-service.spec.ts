@@ -86,6 +86,53 @@ describe("Create Definition service - create Definition", () => {
         }
       });
   });
+
+  it("should preserve an HTTP 400 validation response", (done) => {
+    const expectedResult = {
+      error: "Bad Request",
+      message: "Duplicate definition",
+    };
+
+    nock("http://localhost:4451")
+      .post("/api/draft")
+      .reply(400, expectedResult);
+
+    createDefinition(req,
+      new Definition("TEST", "Draft definition", "{\"Field 1\": \"Some value\"}", "ccd@hmcts.net"))
+      .then(() => done(new Error("Expected the HTTP 400 response to reject")))
+      .catch((err) => {
+        try {
+          expect(err.status).to.equal(400);
+          expect(err.response.body.message).to.equal(expectedResult.message);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+  });
+
+  it("should distinguish a connection reset from an HTTP response", (done) => {
+    const connectionResetError = new Error("Connection reset") as NodeJS.ErrnoException;
+    connectionResetError.code = "ECONNRESET";
+
+    nock("http://localhost:4451")
+      .post("/api/draft")
+      .replyWithError(connectionResetError);
+
+    createDefinition(req,
+      new Definition("TEST", "Draft definition", "{\"Field 1\": \"Some value\"}", "ccd@hmcts.net"))
+      .then(() => done(new Error("Expected the connection reset to reject")))
+      .catch((err) => {
+        try {
+          expect(err.code).to.equal("ECONNRESET");
+          expect(err.response).to.be.undefined;
+          expect(err.text).to.equal("Error creating/updating definition: no error response");
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+  });
 });
 
 describe("Create Definition service - update Definition", () => {
