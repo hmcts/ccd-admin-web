@@ -22,7 +22,7 @@ jobs:
           ref: master
 
       - name: Run yarn audit
-        run: yarn npm audit --recursive --environment production --json > yarn-audit-known-issues || true
+        run: yarn npm audit --all --environment production --json > yarn-audit-known-issues || true
         # continue-on-error: true
 
       - name: Check if working directory has changes
