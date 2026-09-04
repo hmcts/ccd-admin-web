@@ -11,9 +11,125 @@ properties(
 def product = 'ccd'
 def component = 'admin-web'
 
-class CcdYarnBuilder extends uk.gov.hmcts.contino.YarnBuilder {
+class CcdNodePipelineType implements uk.gov.hmcts.contino.PipelineType, Serializable {
+    def steps
+    def product
+    def app
+    uk.gov.hmcts.contino.Builder builder
+
+    CcdNodePipelineType(steps, product, component) {
+        this.steps = steps
+        this.product = product
+        this.app = component
+
+        this.steps.env.PRODUCT = product
+        builder = new CcdYarnBuilder(steps)
+    }
+}
+
+class CcdYarnBuilder implements uk.gov.hmcts.contino.Builder, Serializable {
+    def steps
+    def yarnDelegate
+
     CcdYarnBuilder(steps) {
-        super(steps)
+        this.steps = steps
+        this.yarnDelegate = new uk.gov.hmcts.contino.YarnBuilder(steps)
+    }
+
+    def build() {
+        yarnDelegate.build()
+    }
+
+    def fortifyScan() {
+        yarnDelegate.fortifyScan()
+    }
+
+    def test() {
+        yarnDelegate.test()
+    }
+
+    def sonarScan() {
+        yarnDelegate.sonarScan()
+    }
+
+    def highLevelDataSetup(String dataSetupEnvironment) {
+        yarnDelegate.highLevelDataSetup(dataSetupEnvironment)
+    }
+
+    def smokeTest() {
+        yarnDelegate.smokeTest()
+    }
+
+    def functionalTest() {
+        yarnDelegate.functionalTest()
+    }
+
+    def e2eTest() {
+        yarnDelegate.e2eTest()
+    }
+
+    def performanceTest() {
+        yarnDelegate.performanceTest()
+    }
+
+    def apiGatewayTest() {
+        yarnDelegate.apiGatewayTest()
+    }
+
+    def crossBrowserTest() {
+        yarnDelegate.crossBrowserTest()
+    }
+
+    def crossBrowserTest(String browser) {
+        yarnDelegate.crossBrowserTest(browser)
+    }
+
+    def addVersionInfo() {
+        yarnDelegate.addVersionInfo()
+    }
+
+    def mutationTest() {
+        yarnDelegate.mutationTest()
+    }
+
+    def fullFunctionalTest() {
+        yarnDelegate.fullFunctionalTest()
+    }
+
+    def securityScan() {
+        yarnDelegate.securityScan()
+    }
+
+    def techStackMaintenance() {
+        yarnDelegate.techStackMaintenance()
+    }
+
+    def runProviderVerification() {
+        yarnDelegate.runProviderVerification()
+    }
+
+    def runProviderVerification(pactBrokerUrl, version, publish) {
+        yarnDelegate.runProviderVerification(pactBrokerUrl, version, publish)
+    }
+
+    def runConsumerTests() {
+        yarnDelegate.runConsumerTests()
+    }
+
+    def runConsumerTests(pactBrokerUrl, version) {
+        yarnDelegate.runConsumerTests(pactBrokerUrl, version)
+    }
+
+    def runConsumerCanIDeploy() {
+        yarnDelegate.runConsumerCanIDeploy()
+    }
+
+    def setupToolVersion() {
+        yarnDelegate.setupToolVersion()
+    }
+
+    def yarn(String task, String prepend = "") {
+        yarnDelegate.yarn(task, prepend)
     }
 
     @Override
@@ -30,7 +146,7 @@ class CcdYarnBuilder extends uk.gov.hmcts.contino.YarnBuilder {
             steps.sh label: 'corepack enable', script: '''
                 mkdir -p $HOME/.local/bin
                 corepack enable --install-directory $HOME/.local/bin
-            '''
+            ''', returnStatus: true
 
             steps.writeFile(file: 'yarn-audit-with-suppressions.sh', text: steps.libraryResource('uk/gov/hmcts/pipeline/yarn/yarn-audit-with-suppressions.sh'))
             steps.writeFile(file: 'prettyPrintAudit.sh', text: steps.libraryResource('uk/gov/hmcts/pipeline/yarn/prettyPrintAudit.sh'))
@@ -66,14 +182,13 @@ class CcdYarnBuilder extends uk.gov.hmcts.contino.YarnBuilder {
             if (steps.fileExists('yarn-audit-known-issues-result')) {
                 knownIssues = steps.readFile('yarn-audit-known-issues-result')
             }
-            def cveReport = prepareCVEReport(issues, knownIssues)
+            def cveReport = yarnDelegate.prepareCVEReport(issues, knownIssues)
             new uk.gov.hmcts.pipeline.CVEPublisher(steps).publishCVEReport('node', cveReport)
         }
     }
 }
 
-def nodePipelineType = new uk.gov.hmcts.contino.NodePipelineType(this, product, component)
-nodePipelineType.builder = new CcdYarnBuilder(this)
+def nodePipelineType = new CcdNodePipelineType(this, product, component)
 def yarnBuilder = nodePipelineType.builder
 
 // Variables to switch pipeline logic and wiring per type of build
