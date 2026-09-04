@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-import { Logger } from "@hmcts/nodejs-logging";
-import * as fs from "fs";
-import * as https from "https";
-import * as path from "path";
-import { app } from "./app";
+import {Logger} from "@hmcts/nodejs-logging";
+import * as fs from "node:fs";
+import * as https from "node:https";
+import * as path from "node:path";
+import {app} from "./app";
 
 const logger = Logger.getLogger("server");
 
-// TODO: set the right port for your application
-const port = process.env.PORT || "3100";
+const DEFAULT_PORT = "3100";
+const port = process.env.PORT || DEFAULT_PORT;
 
 if (app.locals.ENV === "development") {
   const sslDirectory = path.join(__dirname, "resources", "localhost-ssl");

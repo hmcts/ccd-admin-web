@@ -1,7 +1,7 @@
 import * as chai from "chai";
 import * as nock from "nock";
 import * as sinonChai from "sinon-chai";
-import { getReindexTasks } from "../../main/service/reindex-task-service";
+import {getReindexTasks} from "../../main/service/reindex-task-service";
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -54,7 +54,7 @@ describe("Reindex task service", () => {
         .reply(200, expectedResult);
 
       const result = await getReindexTasks(req);
-      expect(result.length).to.equal(2);
+      expect(result).to.have.lengthOf(2);
       expect(result[0].caseType).to.equal("CaseTypeA");
     });
 
@@ -63,11 +63,11 @@ describe("Reindex task service", () => {
 
       nock(definitionStoreHost)
         .get(reindexEndpoint)
-        .query({ caseType })
+        .query({caseType})
         .reply(200, [expectedResult[0]]);
 
       const result = await getReindexTasks(req, caseType);
-      expect(result.length).to.equal(1);
+      expect(result).to.have.lengthOf(1);
       expect(result[0].caseType).to.equal(caseType);
     });
 
@@ -76,28 +76,28 @@ describe("Reindex task service", () => {
 
       nock(definitionStoreHost)
         .get(reindexEndpoint)
-        .query({ caseType, page: 1, size: 25 })
-        .reply(200, { content: [expectedResult[0]], totalElements: 1, totalPages: 1, number: 1 });
+        .query({caseType, page: 1, size: 25})
+        .reply(200, {content: [expectedResult[0]], totalElements: 1, totalPages: 1, number: 1});
 
       const result = await getReindexTasks(req, caseType, 1, 25);
-      expect(result.content.length).to.equal(1);
+      expect(result.content).to.have.lengthOf(1);
       expect(result.content[0].caseType).to.equal(caseType);
     });
   });
 
   describe("failed data retrieval", () => {
     it("should throw an error when the service is unavailable", async () => {
-    nock(definitionStoreHost)
-      .get(reindexEndpoint)
-      .reply(500, "Internal Server Error");
+      nock(definitionStoreHost)
+        .get(reindexEndpoint)
+        .reply(500, "Internal Server Error");
 
-    try {
-      await getReindexTasks(req);
-      throw new Error("Expected error was not thrown");
-    } catch (err) {
-      expect(err.message).to.include("HTTP 500");
-    }
-  });
+      try {
+        await getReindexTasks(req);
+        throw new Error("Expected error was not thrown");
+      } catch (err) {
+        expect(err.message).to.include("HTTP 500");
+      }
+    });
 
     it("should handle connection errors gracefully", async () => {
       nock(definitionStoreHost)

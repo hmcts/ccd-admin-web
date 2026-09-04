@@ -1,9 +1,9 @@
-import { app } from "../../main/app";
-import { appTest } from "../../main/app.test";
-import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
-import { expect } from "chai";
-import { get } from "config";
-import { JSDOM } from "jsdom";
+import {app} from "../../main/app";
+import {appTest} from "../../main/app.test";
+import {appTestWithAuthorizedAdminWebRoles} from "../../main/app.test-admin-web-roles-authorized";
+import {expect} from "chai";
+import {get} from "config";
+import {JSDOM} from "jsdom";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
@@ -493,7 +493,10 @@ describe("on POST /updateuserroleform", () => {
       .post("/updateuserroleform")
       .send({role: "ccd-admin*34", classification: "PUBLIC"})
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(302);
+      .then((res) => {
+        expect(res.statusCode).to.equal(302);
+        expect(res.headers.location.startsWith("/user-roles-list")).to.be.true;
+      });
   });
 
   it("should redirect with error message when current jurisdiction is empty", () => {
@@ -502,6 +505,9 @@ describe("on POST /updateuserroleform", () => {
       .post("/updateuserroleform")
       .send({role: "ccd-admin", classification: "PUBLIC)))"})
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(302);
+      .then((res) => {
+        expect(res.statusCode).to.equal(302);
+        expect(res.headers.location.startsWith("/user-roles-list")).to.be.true;
+      });
   });
 });

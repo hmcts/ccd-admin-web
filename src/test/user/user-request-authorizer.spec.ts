@@ -40,8 +40,8 @@ describe("UserRequestAuthorizer", () => {
       };
 
       userRequestAuthorizer = proxyquire("../../main/user/user-request-authorizer", {
-      "../role/roles-based-authorizer": roleAuthorizer,
-      "./user-resolver": userResolver,
+        "../role/roles-based-authorizer": roleAuthorizer,
+        "./user-resolver": userResolver,
       });
     });
 
@@ -52,13 +52,16 @@ describe("UserRequestAuthorizer", () => {
       userRequestAuthorizer.authorize(request)
         .then(() => done(new Error("Promise should have been rejected")))
         .catch((error) => {
-          expect(error).to.equal(userRequestAuthorizer.ERROR_TOKEN_MISSING);
+          expect(error).to.be.instanceOf(Error);
+          expect(error.error).to.equal(userRequestAuthorizer.ERROR_TOKEN_MISSING.error);
+          expect(error.message).to.equal(userRequestAuthorizer.ERROR_TOKEN_MISSING.message);
+          expect(error.status).to.equal(userRequestAuthorizer.ERROR_TOKEN_MISSING.status);
           done();
         });
     });
 
     it("should reject when user cannot be resolved", (done) => {
-      const ERROR = { error: "oops", status: 401 };
+      const ERROR = {error: "oops", status: 401};
       userResolver.getTokenDetails.returns(Promise.reject(ERROR));
 
       userRequestAuthorizer.authorize(request)
@@ -122,7 +125,10 @@ describe("UserRequestAuthorizer", () => {
           done(new Error("Promise should have been rejected"));
         })
         .catch((error) => {
-          expect(error).to.equal(userRequestAuthorizer.ERROR_UNAUTHORIZED_ROLE);
+          expect(error).to.be.instanceOf(Error);
+          expect(error.error).to.equal(userRequestAuthorizer.ERROR_UNAUTHORIZED_ROLE.error);
+          expect(error.message).to.equal(userRequestAuthorizer.ERROR_UNAUTHORIZED_ROLE.message);
+          expect(error.status).to.equal(userRequestAuthorizer.ERROR_UNAUTHORIZED_ROLE.status);
           done();
         });
     });

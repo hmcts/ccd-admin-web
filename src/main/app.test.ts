@@ -1,16 +1,18 @@
-import { Express, Logger } from "@hmcts/nodejs-logging";
+import {Express, Logger} from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
-import * as path from "path";
+import * as path from "node:path";
 import * as favicon from "serve-favicon";
-import { importAll } from "./import-all/index";
+import {importAll} from "./import-all";
 
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTest: express.Express = express();
 appTest.locals.ENV = env;
+
+appTest.use(express.static(path.join(__dirname, "public")));
 
 // Session
 appTest.set("trust proxy", 1); // trust first proxy
@@ -29,12 +31,11 @@ const logger = Logger.getLogger("appTest");
 // view engine setup
 appTest.set("view engine", "html");
 appTest.set("views", [path.join(__dirname, "views"),
-path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
+  path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
 
-appTest.use(express.static(path.join(__dirname, "public")));
 appTest.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 appTest.use(bodyParser.json());
-appTest.use(bodyParser.urlencoded({ extended: false }));
+appTest.use(bodyParser.urlencoded({extended: false}));
 appTest.use(cookieParser());
 
 expressNunjucks(appTest, {

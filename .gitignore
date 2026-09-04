@@ -30,6 +30,8 @@ coverage/
 .scannerwork/
 acb.yaml
 
+src/main/resources/localhost-ssl/localhost.key
+
 .history
 
 # Yarn v3

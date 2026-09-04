@@ -1,26 +1,27 @@
 import * as healthcheck from "@hmcts/nodejs-healthcheck";
-import { Express, Logger } from "@hmcts/nodejs-logging";
+import {Express, Logger} from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
 import * as config from "config";
 import * as cookieParser from "cookie-parser";
 import * as csrf from "csurf";
 import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
-import * as path from "path";
+import * as path from "node:path";
 import * as favicon from "serve-favicon";
-import { sanitize } from "./util/sanitize";
+import {sanitize} from "./util/sanitize";
 
-import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
-import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
-import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
-import { importAll } from "./import-all/index";
+import {authCheckerUserOnlyFilter} from "./user/auth-checker-user-only-filter";
+import {adminWebRoleAuthorizerFilter} from "./role/admin-web-role-authorizer-filter";
+import {Helmet, IConfig as HelmetConfig} from "./modules/helmet";
+import {importAll} from "./import-all/index";
 
 const enableAppInsights = require("./app-insights/app-insights");
 
 enableAppInsights();
 
-import { serviceFilter } from "./service/service-filter";
-import { COOKIE_ACCESS_TOKEN } from "./user/user-request-authorizer";
+import {serviceFilter} from "./service/service-filter";
+import {COOKIE_ACCESS_TOKEN} from "./user/user-request-authorizer";
+
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const app: express.Express = express();
@@ -54,15 +55,15 @@ const logger = Logger.getLogger("app");
 // view engine setup
 app.set("view engine", "html");
 app.set("views", [path.join(__dirname, "views"),
-path.join(__dirname, "/../../node_modules/govuk-frontend/"),
-path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/"),
-path.join(__dirname, "/../../node_modules/govuk-frontend/components"),
-path.join(__dirname, "/../../lib/")]);
+  path.join(__dirname, "/../../node_modules/govuk-frontend/"),
+  path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/"),
+  path.join(__dirname, "/../../node_modules/govuk-frontend/components"),
+  path.join(__dirname, "/../../lib/")]);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 new Helmet(config.get<HelmetConfig>("security")).enableFor(app);
 

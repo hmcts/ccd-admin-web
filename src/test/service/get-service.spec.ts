@@ -1,7 +1,7 @@
 import * as chai from "chai";
 import * as nock from "nock";
 import * as sinonChai from "sinon-chai";
-import { fetch } from "../../main/service/get-service";
+import {fetch} from "../../main/service/get-service";
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -19,12 +19,12 @@ describe("Get service", () => {
   beforeEach(() => {
     req = {
       accessToken: "userAuthToken",
-      body: { jurisdictionName: "TEST" },
+      body: {jurisdictionName: "TEST"},
       serviceAuthToken: "serviceAuthToken",
       session: {},
     };
 
-    query = { jurisdiction: req.body.jurisdictionName };
+    query = {jurisdiction: req.body.jurisdictionName};
   });
 
   describe("successful data retrieval", () => {
@@ -77,7 +77,7 @@ describe("Get service", () => {
 
       fetch(req, definitionsUrl, query).then((res) => {
         try {
-          expect(JSON.parse(res).definitions.length).to.equal(2);
+          expect(JSON.parse(res).definitions).to.have.lengthOf(2);
           expect(res).to.equal(JSON.stringify(expectedResult));
           done();
         } catch (e) {
@@ -110,7 +110,7 @@ describe("Get service", () => {
         accessToken: "userAuthToken",
         body: {},
         serviceAuthToken: "serviceAuthToken",
-        session: { jurisdiction: "test2" },
+        session: {jurisdiction: "test2"},
       };
       query = {};
 
@@ -121,7 +121,7 @@ describe("Get service", () => {
 
       fetch(req, definitionsUrl, query).then((res) => {
         try {
-          expect(JSON.parse(res).definitions.length).to.equal(1);
+          expect(JSON.parse(res).definitions).to.have.lengthOf(1);
           expect(res).to.equal(JSON.stringify(expectedResult));
           done();
         } catch (e) {

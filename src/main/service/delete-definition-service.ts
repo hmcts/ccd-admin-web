@@ -1,10 +1,12 @@
 import * as request from "superagent";
 import * as config from "config";
-import { Logger } from "@hmcts/nodejs-logging";
+import {Logger} from "@hmcts/nodejs-logging";
 
 export function deleteDefinition(req) {
   const logger = Logger.getLogger(__filename);
   const url = config.get("adminWeb.deletedefinition_url");
+  const jurisdictionId = encodeURIComponent(req.body.jurisdictionId);
+  const definitionVersion = encodeURIComponent(req.body.definitionVersion);
 
   const headers = {
     Accept: "application/json",
@@ -12,7 +14,7 @@ export function deleteDefinition(req) {
     ServiceAuthorization: req.serviceAuthToken,
   };
   return request
-    .delete(`${url}/${req.body.jurisdictionId}/${req.body.definitionVersion}`)
+    .delete(`${url}/${jurisdictionId}/${definitionVersion}`)
     .set("Content-Type", "application/json")
     .set(headers)
     .then((res) => {
