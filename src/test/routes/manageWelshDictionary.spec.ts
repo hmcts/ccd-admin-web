@@ -1,14 +1,15 @@
 import * as chai from "chai";
+import {get} from "config";
 import * as nock from "nock";
 import * as sinonChai from "sinon-chai";
+import {app} from "../../main/app";
 import {appTestWithAuthorizedAdminWebRoles} from "../../main/app.test-admin-web-roles-authorized";
 import {
-  doUploadTranslations,
   doGetWelshDictionary,
-  doUploadTranslationsThen,
+  doUploadTranslations,
   doUploadTranslationsCatch,
+  doUploadTranslationsThen,
 } from "../../main/routes/manageWelshDictionary";
-import * as idamServiceMock from "../http-mocks/idam";
 import * as request from "supertest";
 
 const expect = chai.expect;
@@ -388,17 +389,6 @@ describe("test route manage Welsh Dictionary", () => {
   });
 
   describe("on GET /manageWelshDictionary", () => {
-    const CCD_IMPORT_ROLE = "ccd-import";
-
-    beforeEach(() => {
-      nock.cleanAll();
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-      nock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-    });
-
     it("should respond with Welsh Translation csvfile response when authenticated and authorized", () => {
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/manageWelshDictionary")
@@ -414,7 +404,7 @@ describe("test route manage Welsh Dictionary", () => {
     });
 
     it("should respond with Welsh Translation csvfile response when NOT authenticated and NOT authorized", () => {
-      return request(appTestWithAuthorizedAdminWebRoles)
+      return request(app)
         .get("/manageWelshDictionary")
         .send({
           adminWebAuthorization: {
@@ -426,8 +416,9 @@ describe("test route manage Welsh Dictionary", () => {
           version: 1,
         })
         .set("Cookie", "accessToken=ey123.ey456")
-        .then((res: { statusCode: any; }) => {
-          expect(res.statusCode).to.equal(200);
+        .then((res: { headers: any; statusCode: any; }) => {
+          expect(res.statusCode).to.equal(302);
+          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
         });
     });
   });
