@@ -24,7 +24,7 @@ const authorizeRoles = (user) => new Promise((resolve, reject) => {
   if (!isUserAuthorized(user)) {
     reject(ERROR_UNAUTHORIZED_ROLE);
   } else {
-    resolve();
+    resolve(user);
   }
 });
 

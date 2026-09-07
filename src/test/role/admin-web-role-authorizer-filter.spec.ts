@@ -1,13 +1,14 @@
 import { expect } from "chai";
 import Debug from "debug";
-import * as mock from "nock";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
+import mock from "nock";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
 
 describe("admin-web-role-authorizer-filter", () => {
 
   const adminWebAuthorizationUrl = "http://adminweb/authorize";
   const authorization = {canDance: true, canDrink: false};
+  const CCD_IMPORT_ROLE = "ccd-import";
   const loginUrl = "http://idam.login";
   const clientId = "ccd_admin";
   let filter;
@@ -36,11 +37,12 @@ describe("admin-web-role-authorizer-filter", () => {
     config.get.withArgs("idam.oauth2.client_id").returns(clientId);
 
     filter = proxyquire("../../main/role/admin-web-role-authorizer-filter", {
-      config,
+      "config": config,
     }).adminWebRoleAuthorizerFilter;
   });
 
   describe("when filter is called", () => {
+
     it("should call next middleware with error", (done) => {
 
       mock("http://adminweb")
@@ -59,6 +61,7 @@ describe("admin-web-role-authorizer-filter", () => {
     });
 
     it("should call next middleware without error", (done) => {
+
       mock("http://adminweb")
         .get("/authorize")
         .reply(200, authorization);

@@ -1,15 +1,29 @@
-{% extends "layout_template.html" %}
+{% extends "layout_template.njk" %}
 {% block page_title %}
   Error
 {% endblock %}
 {% block content %}
-{% include "menu.html" %}
-  {% if error.error %}
-    <h2 class="heading-large padding">{{ error.error | safe }}</h2>
-  {% else %}
-    <h2 class="heading-large padding">{{ error.name }}</h2>
-  {% endif %}
-  <div class="error-summary govuk-error-message">
-    {% include "error-message.html" %}
+  <div class="govuk-error-summary" data-module="govuk-error-summary">
+    <div role="alert">
+      {% if error.error %}
+        <h1 class="govuk-error-summary__title">
+          {{ error.error | safe }}
+        </h1>
+      {% else %}
+        <h1 class="govuk-error-summary__title">
+          {{ error.name }}
+        </h1>
+      {% endif %}
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          {% if error.status %}
+            <li>{{ error.message }} ({{ error.status }})</li>
+          {% else %}
+            <li>{{ error }}</li>
+          {% endif %}
+          <li>{{ error.response.text if error.response else error.text }}</li>
+        </ul>
+      </div>
+    </div>
   </div>
 {% endblock %}

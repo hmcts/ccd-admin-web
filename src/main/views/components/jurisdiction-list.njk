@@ -1,5 +1,5 @@
-<div class="form-group">
-  <select id="jurisdictionName" name="jurisdictionName" class="form-control">
+<div class="govuk-form-group">
+  <select id="jurisdictionName" name="jurisdictionName" class="govuk-select">
     <option value="" selected>--Select a value--</option>
     {% for jurisdiction in jurisdictions %}
       <option value="{{ jurisdiction.id }}">{{jurisdiction.name}}</option>

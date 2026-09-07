@@ -8,7 +8,7 @@ const errorPage = "error";
 /**
  * Delete Definition based on jurisdiction ID and version
  */
-router.post("/deletedefinition", (req, res, next) => {
+router.post("/deletedefinition", (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
     if (req.body.deleteItem === "Yes") {
         deleteDefinition(req).then((response) => {

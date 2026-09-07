@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import * as request from "supertest";
+import request from "supertest";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 
 describe("not found page", () => {
@@ -8,6 +8,6 @@ describe("not found page", () => {
       .get("/route-that-does-not-exist");
 
     expect(response.status).to.equal(404);
-    expect(response.text).to.contain("<h1>Not found</h1>");
+    expect(response.text).to.contain("Page not found");
   });
 });

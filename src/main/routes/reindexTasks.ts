@@ -1,4 +1,4 @@
-import * as config from "config";
+import config from "config";
 import { Router } from "express";
 import { getReindexTasks } from "../service/reindex-task-service";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";

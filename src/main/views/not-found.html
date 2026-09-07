@@ -1,9 +1,10 @@
-<html>
-  <head>
-  </head>
-  
-  <body>
-    <h1>Not found</h1>
-    <p>TODO: replace with a proper template in your application</p>
-  </body>
-</html>
+{% extends "layout_template.njk" %}
+{% block content %}
+<div class="govuk-warning-text">
+  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+  <strong class="govuk-warning-text__text">
+    <span class="govuk-visually-hidden">Warning</span>
+    Page not found
+  </strong>
+</div>
+{% endblock %}

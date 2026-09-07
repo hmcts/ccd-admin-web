@@ -1,11 +1,13 @@
-import * as config from "config";
-import * as express from "express";
+import config from "config";
+import express from "express";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { fetch } from "../service/get-service";
-import * as multer from "multer";
+import multer from "multer";
 import { uploadFile } from "../service/import-service";
 import { sanitize } from "../util/sanitize";
+import path from "node:path";
 
+const importDefinitionPage = path.join("definition", "importDefinition");
 const errorPage = "error";
 const router = express.Router();
 const storage = multer.memoryStorage();
@@ -21,9 +23,9 @@ const upload = multer({
   },
   storage,
 }).single("file");
-const url = config.get("adminWeb.import_audits_url");
+const url = config.get<string>("adminWeb.import_audits_url");
 
-router.post("/import", (req, res, next) => {
+router.post("/import", (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     upload(req, res, (err) => {
       if (err) {
@@ -46,7 +48,7 @@ router.post("/import", (req, res, next) => {
             fetch(req, url).then((data) => {
               responseContent.importAudits = JSON.parse(sanitize(data));
               responseContent.response = response;
-              res.render("importDefinition", responseContent);
+              res.render(importDefinitionPage, responseContent);
             })
               .catch((error) => {
                 // Call the next middleware, which is the error handler
@@ -64,7 +66,7 @@ router.post("/import", (req, res, next) => {
             responseContent.user = sanitize(JSON.stringify(req.authentication.user));
             responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
             delete req.session.error;
-            res.render("importDefinition", responseContent);
+            res.render(importDefinitionPage, responseContent);
           });
       }
     });
@@ -74,7 +76,7 @@ router.post("/import", (req, res, next) => {
 });
 
 /* GET Import Definition page. */
-router.get("/import", (req, res, next) => {
+router.get("/import", (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     fetch(req, url).then((response) => {
       res.status(200);
@@ -89,7 +91,7 @@ router.get("/import", (req, res, next) => {
         responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
         delete req.session.error;
       }
-      res.render("importDefinition", responseContent);
+      res.render(importDefinitionPage, responseContent);
     })
       .catch((error) => {
         // Call the next middleware, which is the error handler
