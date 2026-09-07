@@ -81,7 +81,7 @@ withPipeline('nodejs', product, component) {
         reportDir            : "mochawesome-report",
         reportFiles          : "unit.html",
         reportName           : "Unit Test Report"
-      ]∂
+      ]
     
       publishHTML target: [
         allowMissing         : true,
