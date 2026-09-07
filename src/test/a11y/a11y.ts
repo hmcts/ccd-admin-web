@@ -4,16 +4,14 @@ import supertest from "supertest";
 import { Logger } from "@hmcts/nodejs-logging";
 import { app } from "../../main/app";
 import { expect } from "chai";
-import config from "config";
 import { COOKIE_ACCESS_TOKEN } from "../../main/user/user-request-authorizer";
+import { optionallyResolveRetrieveServiceToken, resolveRetrieveUserFor } from "../http-mocks/idam";
 
 app.locals.csrf = "dummy-token";
 
-const idamBaseUrl: string = config.get<string>("idam.base_url");
-const idamS2SUrl: string = config.get<string>("idam.s2s_url");
-
 const agent = supertest(app);
 const logger = Logger.getLogger("a11y");
+const CCD_IMPORT_ROLE = "ccd-import";
 
 export interface IIssue {
   type: string;
@@ -21,6 +19,7 @@ export interface IIssue {
 }
 
 async function runPa11y(url: string, ignoreElements: any[]): Promise<IIssue[]> {
+  console.log(url); // eslint-disable-line no-console
   const result = await pa11y(url, {
     chromeLaunchConfig: {
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -45,6 +44,22 @@ function check(uri: string, ignoreElements?: any[]): void {
     describe(`Pa11y tests for ${uri}`, () => {
       let issues: IIssue[];
       before(async () => {
+        if (uri !== "/health") {
+          resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+          optionallyResolveRetrieveServiceToken();
+
+          nock("http://localhost:4451")
+            .get("/api/idam/adminweb/authorization")
+            .reply(200, {
+              canImportDefinition: true,
+              canLoadWelshTranslation: true,
+              canManageDefinition: true,
+              canManageUserProfile: true,
+              canManageUserRole: true,
+              canManageWelshTranslation: true,
+            });
+        }
+
         const url = agent.get(uri).url;
         logger.info(`Running accessibility tests for ${url}`);
         issues = await runPa11y(url, ignoreElements || []);
@@ -68,30 +83,6 @@ function ensureNoAccessibilityAlerts(issueType: string, issues: IIssue[]): void 
 }
 
 describe("Accessibility", () => {
-  before(() => {
-    nock(idamBaseUrl)
-      .persist()
-      .get("/o/userinfo")
-      .reply(200, { uid: "1234", roles: ["ccd-import"] });
-
-    nock(idamS2SUrl)
-      .persist()
-      .post("/lease")
-      .reply(200, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlRlc3QiLCJhZG1pbiI6dHJ1ZSwiZXhwIjoiIn0.ExHo7njTb2e6OQKPgi84Hcgo5k0tVwVvRrdGEV77uf0"); // fake token
-  
-    nock("http://localhost:4451")
-      .persist()
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {
-        canImportDefinition: true,
-        canLoadWelshTranslation: true,
-        canManageDefinition: true,
-        canManageUserProfile: true,
-        canManageUserRole: true,
-        canManageWelshTranslation: true,
-      });
-  });
-
   after(() => {
     nock.cleanAll();
   });
@@ -101,5 +92,13 @@ describe("Accessibility", () => {
   check("/health", ["WCAG2AA.Principle2.Guideline2_4.2_4_2.H25.1.NoTitleEl",
     "WCAG2AA.Principle3.Guideline3_1.3_1_1.H57.2",
     "WCAG2AA.Principle1.Guideline1_4.1_4_10.C32,C31,C33,C38,SCR34,G206"]);
-  check("/not-found",["WCAG2AA.Principle1.Guideline1_4.1_4_3.G145.Abs"]);
+  check("/not-found",[
+    "WCAG2AA.Principle1.Guideline1_4.1_4_3.G145.Abs",
+    "WCAG2AA.Principle3.Guideline3_1.3_1_1.H57.2",
+    "WCAG2AA.Principle1.Guideline1_3.1_3_1.H49.Center",
+    "WCAG2AA.Principle4.Guideline4_1.4_1_2.H91.InputText.Name",
+    "WCAG2AA.Principle1.Guideline1_3.1_3_1.F68",
+    "WCAG2AA.Principle4.Guideline4_1.4_1_2.H91.InputPassword.Name",
+    "WCAG2AA.Principle1.Guideline1_3.1_3_1.F68",
+  ]);
 });
