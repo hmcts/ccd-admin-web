@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import * as request from "supertest";
+import request from "supertest";
 
 describe("deployed application smoke tests", () => {
-  const testUrl = process.env.TEST_URL;
+  const testUrl = process.env.TEST_URL || "";
 
   before(() => {
     if (!testUrl) {
@@ -36,7 +36,7 @@ describe("deployed application smoke tests", () => {
     expect(response.headers.location).to.be.a("string");
 
     const loginUrl = new URL(response.headers.location);
-    const redirectUri = loginUrl.searchParams.get("redirect_uri");
+    const redirectUri = loginUrl.searchParams.get("redirect_uri") || "";
     const expectedLoginUrl = process.env.ADMINWEB_LOGIN_URL;
 
     expect(loginUrl.searchParams.get("response_type")).to.equal("code");
