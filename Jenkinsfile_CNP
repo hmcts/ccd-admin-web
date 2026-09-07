@@ -81,10 +81,7 @@ withPipeline('nodejs', product, component) {
         reportDir            : "mochawesome-report",
         reportFiles          : "unit.html",
         reportName           : "Unit Test Report"
-      ]
-    }
-
-    afterAlways('test:a11y') {
+      ]∂
     
       publishHTML target: [
         allowMissing         : true,
@@ -94,9 +91,6 @@ withPipeline('nodejs', product, component) {
         reportFiles          : "a11y.html",
         reportName           : "Accessibility Test Report"
       ]
-    }
-
-    afterAlways('test:coverage') {
 
       publishHTML target: [
         allowMissing         : true,
@@ -122,13 +116,13 @@ withPipeline('nodejs', product, component) {
 
     ['preview', 'aat', 'prod', 'demo', 'perftest', 'ithc'].each { testEnvironment ->
         afterAlways("smoketest:${testEnvironment}") {
-            steps.junit allowEmptyResults: true, testResults: 'smoke-output/**/*result.xml'
-            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**'
+            steps.junit allowEmptyResults: true, testResults: 'mochawesome-report/**/*result.xml'
+            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'mochawesome-report/**'
             steps.publishHTML target: [
                 allowMissing: true,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: 'smoke-output',
+                reportDir: 'mochawesome-report',
                 reportFiles: 'smoke.html',
                 reportName: "Smoke Test Report - ${testEnvironment}"
             ]
