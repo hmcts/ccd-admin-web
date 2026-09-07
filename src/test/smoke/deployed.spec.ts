@@ -12,7 +12,7 @@ describe("deployed application smoke tests", () => {
     try {
       new URL(testUrl);
     } catch (error) {
-      throw new Error(`TEST_URL must be a valid absolute URL: ${testUrl}`);
+      throw new Error("TEST_URL must be a valid absolute URL: " + testUrl, { cause: error });
     }
   });
 

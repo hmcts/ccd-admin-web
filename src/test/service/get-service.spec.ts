@@ -175,7 +175,7 @@ describe("Get service", () => {
       });
 
       it("should distinguish a connection reset from an HTTP response", (done) => {
-        const connectionResetError = new Error("Connection reset") as NodeJS.ErrnoException;
+        const connectionResetError = new Error("Connection reset") as Error & { code?: string };
         connectionResetError.code = "ECONNRESET";
 
         nock(definitionStoreHost)

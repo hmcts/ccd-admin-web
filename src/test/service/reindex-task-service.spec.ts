@@ -98,7 +98,7 @@ describe("Reindex task service", () => {
   });
 
     it("should handle connection errors gracefully", async () => {
-      const connectionResetError = new Error("Connection reset") as NodeJS.ErrnoException;
+      const connectionResetError = new Error("Connection reset") as Error & { code?: string };
       connectionResetError.code = "ECONNRESET";
 
       nock(definitionStoreHost)

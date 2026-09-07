@@ -1,5 +1,5 @@
-const Mocha = require("mocha");
-const Mochawesome = require("mochawesome");
+import Mocha from "mocha";
+import Mochawesome from "mochawesome";
 
 function JenkinsReporter(runner, options) {
   const reporterOptions = options.reporterOptions || {};
