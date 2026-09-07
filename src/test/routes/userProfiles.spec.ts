@@ -1,14 +1,12 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as mockSession from "mock-session";
-import * as request from "supertest-session";
+import * as request from "supertest";
 import * as sinon from "sinon";
 
 describe("User profiles page", () => {
-  const CCD_IMPORT_ROLE = "ccd-import";
 
   beforeEach(() => {
     const config = {
@@ -20,18 +18,6 @@ describe("User profiles page", () => {
 
   describe("on GET /userprofiles", () => {
     it("should not return user profiles for given Jurisdiction without authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-      mock("http://localhost:4453")
-        .get("/users")
-        .query({ jurisdiction: "Mike" })
-        .reply(200, [{
-          id: "ID_3",
-          work_basket_default_case_type: "Case Type 3",
-          work_basket_default_jurisdiction: "Jurisdiction 3",
-          work_basket_default_state: "State 3",
-        }]);
-
       // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
       const sessionCookie = mockSession("session", "key1", { jurisdiction: "Mike" });
 
@@ -47,8 +33,6 @@ describe("User profiles page", () => {
     });
 
     it("should return user profiles for given Jurisdiction with authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
@@ -73,22 +57,6 @@ describe("User profiles page", () => {
     });
 
     it("should not return all user profiles if Jurisdiction is not present in session without authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-      mock("http://localhost:4453")
-      .get("/users")
-      .query({})
-      .reply(200, [{
-        id: "ID_3",
-        work_basket_default_case_type: "Case Type 3",
-        work_basket_default_jurisdiction: "Jurisdiction 3",
-        work_basket_default_state: "State 3",
-      }]);
-
-      mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {canManageUserProfile: true});
-
       // Omit jurisdiction in the appTest session object
       const sessionCookie = mockSession("session", "key1", {});
 
@@ -104,8 +72,6 @@ describe("User profiles page", () => {
     });
 
     it("should return all user profiles if Jurisdiction is not present in session with authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
         .query({})
@@ -115,10 +81,6 @@ describe("User profiles page", () => {
           work_basket_default_jurisdiction: "Jurisdiction 3",
           work_basket_default_state: "State 3",
         }]);
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {canManageUserProfile: true});
 
       // Omit jurisdiction in the appTest session object
       const sessionCookie = mockSession("session", "key1", {});
@@ -136,18 +98,6 @@ describe("User profiles page", () => {
 
   describe("on POST /userprofiles", () => {
     it("should not return user profiles list without authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-      mock("http://localhost:4453")
-        .get("/users")
-        .query({ jurisdiction: "Mike" })
-        .reply(200, [{
-          id: "ID_3",
-          work_basket_default_case_type: "Case Type 3",
-          work_basket_default_jurisdiction: "Jurisdiction 3",
-          work_basket_default_state: "State 3",
-        }]);
-
       return request(appTest)
         .post("/userprofiles")
         .set("Cookie", "accessToken=ey123.ey456")
@@ -163,8 +113,6 @@ describe("User profiles page", () => {
     });
 
     it("should return user profiles list with authorized roles", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
@@ -188,17 +136,11 @@ describe("User profiles page", () => {
         });
     });
 
-    it("should return error from the server", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, { canManageUserProfile: true });
-
+    it("should return an error page for an HTTP 500 response", () => {
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
-        .replyWithError({ code: 500, text: "Server Error" });
+        .reply(500, "Server Error");
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/userprofiles")
@@ -213,16 +155,15 @@ describe("User profiles page", () => {
     });
 
     it("should not call /users if user is not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, { canManageUserProfile: true });
-
+      let usersApiCalled = false;
       mock("http://localhost:4453")
         .get("/users")
         .query({ jurisdiction: "Mike" })
-        .replyWithError({ code: 500, text: "Server Error" });
+        .optionally()
+        .reply(() => {
+          usersApiCalled = true;
+          return [500, "Server Error"];
+        });
 
       return request(appTest)
         .post("/userprofiles")
@@ -231,8 +172,8 @@ describe("User profiles page", () => {
           jurisdictionName: "Mike",
         })
         .then((res) => {
-          // I have not called /users
           expect(res.status).to.equal(200);
+          expect(usersApiCalled).to.be.false;
         });
     });
 
