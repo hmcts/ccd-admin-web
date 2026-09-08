@@ -1,6 +1,5 @@
 import { expect } from "chai";
 import Debug from "debug";
-import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
@@ -9,7 +8,6 @@ describe("admin-web-role-authorizer-filter", () => {
 
   const adminWebAuthorizationUrl = "http://adminweb/authorize";
   const authorization = {canDance: true, canDrink: false};
-  const CCD_IMPORT_ROLE = "ccd-import";
   const loginUrl = "http://idam.login";
   const clientId = "ccd_admin";
   let filter;
@@ -43,11 +41,6 @@ describe("admin-web-role-authorizer-filter", () => {
   });
 
   describe("when filter is called", () => {
-    beforeEach(() => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
-    });
-
     it("should call next middleware with error", (done) => {
 
       mock("http://adminweb")
@@ -66,9 +59,6 @@ describe("admin-web-role-authorizer-filter", () => {
     });
 
     it("should call next middleware without error", (done) => {
-
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
       mock("http://adminweb")
         .get("/authorize")
         .reply(200, authorization);
