@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import * as fetchMock from "fetch-mock";
+import fetchMock from "fetch-mock";
 import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
@@ -49,6 +49,7 @@ describe("Access Token Request", () => {
 
   let config;
   let fetch;
+  let fetchMockInstance;
   let accessTokenRequest;
 
   beforeEach(() => {
@@ -56,7 +57,8 @@ describe("Access Token Request", () => {
       get: sinon.stub(),
     };
     config.get.withArgs("idam.oauth2.redirect_uri_allowlist").returns(REDIRECT_ALLOWLIST);
-    fetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, RESPONSE);
+    fetchMockInstance = fetchMock.createInstance().post(`begin:${TOKEN_ENDPOINT}`, RESPONSE);
+    fetch = fetchMockInstance.fetchHandler;
 
     accessTokenRequest = proxyquire("../../main/oauth2/access-token-request", {
       config,
@@ -71,10 +73,11 @@ describe("Access Token Request", () => {
 
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
-        expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers.Authorization).to.equal(
+        const lastCall = fetchMockInstance.callHistory.lastCall();
+        expect(fetchMockInstance.callHistory.called()).to.be.true;
+        expect(lastCall.options.headers.authorization).to.equal(
           "Basic " + Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"));
-        const requestedUrl = url.parse(fetch.lastUrl(), true);
+        const requestedUrl = url.parse(lastCall.url, true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
         done();
@@ -89,10 +92,11 @@ describe("Access Token Request", () => {
 
     accessTokenRequest(REQUEST)
       .then(() => {
-        expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers.Authorization).to.equal(
+        const lastCall = fetchMockInstance.callHistory.lastCall();
+        expect(fetchMockInstance.callHistory.called()).to.be.true;
+        expect(lastCall.options.headers.authorization).to.equal(
           "Basic " + Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"));
-        const requestedUrl = url.parse(fetch.lastUrl(), true);
+        const requestedUrl = url.parse(lastCall.url, true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
         done();
@@ -107,8 +111,9 @@ describe("Access Token Request", () => {
 
     accessTokenRequest(REQUEST_WITH_PORT)
       .then(() => {
-        expect(fetch.called()).to.be.true;
-        const requestedUrl = url.parse(fetch.lastUrl(), true);
+        const lastCall = fetchMockInstance.callHistory.lastCall();
+        expect(fetchMockInstance.callHistory.called()).to.be.true;
+        const requestedUrl = url.parse(lastCall.url, true);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL_WITH_PORT);
         done();
       })
