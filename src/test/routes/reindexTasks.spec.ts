@@ -5,7 +5,7 @@ import { app } from "../../main/app";
 import nock from "nock";
 import request from "supertest";
 import config from "config";
-import { resolveRetrieveServiceToken, resolveRetrieveUserFor } from "../http-mocks/idam";
+import { optionallyResolveRetrieveServiceToken, resolveRetrieveUserFor } from "../http-mocks/idam";
 
 const expect = chai.expect;
 
@@ -70,7 +70,7 @@ describe("test route Reindex Tasks", () => {
 
     it("should return unauthorised when user does not have import definition permission", () => {
       resolveRetrieveUserFor("1", "ccd-import");
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       nock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")

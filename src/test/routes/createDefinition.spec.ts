@@ -4,7 +4,7 @@ import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-we
 import { expect } from "chai";
 import config from "config";
 import { JSDOM } from "jsdom";
-import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import { resolveRetrieveUserFor, optionallyResolveRetrieveServiceToken } from "../http-mocks/idam";
 import mock from "nock";
 import request from "supertest";
 
@@ -25,11 +25,16 @@ describe("on GET /createdefinition", () => {
 
   it("should not respond with form / populated response if authenticated but not authorized", () => {
     resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    resolveRetrieveServiceToken();
+    optionallyResolveRetrieveServiceToken();
 
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -39,6 +44,7 @@ describe("on GET /createdefinition", () => {
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
@@ -50,11 +56,16 @@ describe("on GET /createdefinition", () => {
 
   it("should not respond with form / populated response if authenticated but without required authorized role", () => {
     resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    resolveRetrieveServiceToken();
+    optionallyResolveRetrieveServiceToken();
 
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -64,6 +75,7 @@ describe("on GET /createdefinition", () => {
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.statusCode).to.equal(200);
         expect(res.text).not.to.contain("Jurisdiction 1");
         expect(res.text).not.to.contain("Jurisdiction 2");
@@ -78,11 +90,16 @@ describe("on GET /createdefinition", () => {
 
   it("should not be calling api when accessing Create Definition form page when not authorized", () => {
     resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    resolveRetrieveServiceToken();
+    optionallyResolveRetrieveServiceToken();
 
+    let backendCalled = false;
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .replyWithError({ status: 400, rawResponse: "Duplicate values" });
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [400, {message: "Duplicate values"}];
+      });
 
     mock("http://localhost:4451")
       .get("/api/idam/adminweb/authorization")
@@ -91,20 +108,15 @@ describe("on GET /createdefinition", () => {
     return request(app)
       .get("/createdefinition")
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(200);
+      .expect(200)
+      .then(() => expect(backendCalled).to.be.false);
   });
 
   it("should respond with Create Definition form and populated response when authenticated and authorized", () => {
-    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
       .reply(200, [{ id: "jd_1", name: "Jurisdiction 1" }, { id: "jd_2", name: "Jurisdiction 2" }]);
-
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, {});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/createdefinition")
@@ -117,16 +129,10 @@ describe("on GET /createdefinition", () => {
   });
 
   it("should handle error when accessing Create Definition form page", () => {
-    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    resolveRetrieveServiceToken();
 
     mock("http://localhost:4451")
       .get("/api/data/jurisdictions")
-      .reply(400, { status: 400, rawResponse: "Duplicate values" });
-
-    mock("http://localhost:4451")
-      .get("/api/idam/adminweb/authorization")
-      .reply(200, [{}]);
+      .reply(400, {message: "Duplicate values"});
 
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/createdefinition")
@@ -141,11 +147,14 @@ describe("on POST /createdefinition when unauthorized", () => {
   });
 
   it("should not be calling api to `create a Definition`", () => {
-    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    resolveRetrieveServiceToken();
+    let backendCalled = false;
     mock("http://localhost:4451/api/draft")
       .post("")
-      .reply(201);
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [201];
+      });
 
     return request(appTest)
       .post("/createdefinition")
@@ -155,6 +164,7 @@ describe("on POST /createdefinition when unauthorized", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
         const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
@@ -163,11 +173,14 @@ describe("on POST /createdefinition when unauthorized", () => {
   });
 
   it("should not be calling api to `Create Definition`", () => {
-    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    resolveRetrieveServiceToken();
+    let backendCalled = false;
     mock("http://localhost:4451/api/draft")
       .post("")
-      .replyWithError({ status: 400, rawResponse: "Duplicate definition" });
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [400, {message: "Duplicate definition"}];
+      });
 
     return request(appTest)
       .post("/createdefinition")
@@ -177,6 +190,7 @@ describe("on POST /createdefinition when unauthorized", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
         const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
@@ -185,11 +199,14 @@ describe("on POST /createdefinition when unauthorized", () => {
   });
 
   it("should not be able to update a Definition successfully", () => {
-    resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-    resolveRetrieveServiceToken();
+    let backendCalled = false;
     mock("http://localhost:4451/api/draft/save")
       .put("")
-      .reply(200);
+      .optionally()
+      .reply(() => {
+        backendCalled = true;
+        return [200];
+      });
 
     return request(appTest)
       .post("/createdefinition")
@@ -199,6 +216,7 @@ describe("on POST /createdefinition when unauthorized", () => {
       })
       .expect(200)
       .then((res) => {
+        expect(backendCalled).to.be.false;
         expect(res.headers.location).to.be.undefined;
         const dom = new JSDOM(res.text);
         const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
@@ -212,8 +230,6 @@ describe("on POST /createdefinition when unauthorized", () => {
     });
 
     it("should redirect to Definitions list page on creating a Definition successfully", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
       mock("http://localhost:4451/api/draft")
         .post("")
         .reply(201);
@@ -231,9 +247,6 @@ describe("on POST /createdefinition when unauthorized", () => {
     });
 
     it("should respond with error if the Definition data is empty", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/createdefinition")
         .set("Cookie", "accessToken=ey123.ey456")
@@ -246,12 +259,10 @@ describe("on POST /createdefinition when unauthorized", () => {
         });
     });
 
-    it("should respond with Create Definition form due to server error", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-      mock("http://localhost:4451")
-        .post("/api/draft")
-        .reply(400, {status: 400, rawResponse: "Duplicate definition"});
+    it("should redirect to the Create Definition form after an HTTP 400 response", () => {
+      mock("http://localhost:4451/api/draft")
+        .post("")
+        .reply(400, {message: "Duplicate definition"});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/createdefinition")
@@ -266,8 +277,6 @@ describe("on POST /createdefinition when unauthorized", () => {
     });
 
     it("should redirect to Definitions list page on updating a Definition successfully", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
       mock("http://localhost:4451/api/draft/save")
         .put("")
         .reply(200);

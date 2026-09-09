@@ -3,7 +3,7 @@ import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-we
 import { expect } from "chai";
 import config from "config";
 import { JSDOM } from "jsdom";
-import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import { resolveRetrieveUserFor, optionallyResolveRetrieveServiceToken } from "../http-mocks/idam";
 import mock from "nock";
 import request from "supertest";
 import { ERROR_UNAUTHORIZED_ROLE } from "../../main/user/user-request-authorizer";
@@ -31,7 +31,7 @@ describe("Global Search Indices page", () => {
 
     it("should not return Global Search Indices page when authenticated but not authorized", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -50,7 +50,7 @@ describe("Global Search Indices page", () => {
 
     it("should not return Global Search Indices page when authenticated but without required authorized role", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -71,12 +71,6 @@ describe("Global Search Indices page", () => {
     });
 
     it("should return Global Search Indices page when authenticated and authorized", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get(GLOBAL_SEARCH_PAGE_ENDPOINT)
@@ -102,21 +96,26 @@ describe("Global Search Indices page", () => {
 
     it("should not create index when authenticated but not authorized", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, [{}]);
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post(GLOBAL_SEARCH_POST_ENDPOINT)
-        .reply(201, "Created");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Created"];
+        });
 
       return request(app)
         .post(GLOBAL_SEARCH_POST_ENDPOINT)
         .set("Cookie", COOKIE_TOKEN)
         .then((res) => {
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
           expect(res.status).to.equal(403);
           const error = JSON.parse(res.text);
           expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
@@ -127,21 +126,26 @@ describe("Global Search Indices page", () => {
 
     it("should not create index when authenticated but without required authorized role", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {canManageUserProfile: true});
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post(GLOBAL_SEARCH_POST_ENDPOINT)
-        .reply(201, ["A"]);
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, ["A"]];
+        });
 
       return request(app)
         .post(GLOBAL_SEARCH_POST_ENDPOINT)
         .set("Cookie", COOKIE_TOKEN)
         .then((res) => {
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
           expect(res.status).to.equal(403);
           const error = JSON.parse(res.text);
           expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
@@ -151,12 +155,6 @@ describe("Global Search Indices page", () => {
     });
 
     it("should create index when authenticated and authorized", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       const apiCall = mock("http://localhost:4451")
         .post(GLOBAL_SEARCH_POST_ENDPOINT)

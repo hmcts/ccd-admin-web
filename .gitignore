@@ -26,6 +26,7 @@ integration-output/
 .sessions/
 playwright-report/
 test-results/
+smoke-output/
 npm-debug.log.*
 
 .project

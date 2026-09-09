@@ -2,7 +2,7 @@ import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
 import config from "config";
-import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import { resolveRetrieveUserFor, optionallyResolveRetrieveServiceToken } from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
 import mock from "nock";
 import request from "supertest";
@@ -28,7 +28,7 @@ describe("Index Elasticsearch page", () => {
 
     it("should not return Index Elasticsearch page when authenticated but not authorized", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -47,7 +47,7 @@ describe("Index Elasticsearch page", () => {
 
     it("should not return Index Elasticsearch page when authenticated but without required authorized role", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -68,12 +68,6 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should return Index Elasticsearch page when authenticated and authorized", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/elasticsearch")
@@ -99,21 +93,26 @@ describe("Index Elasticsearch page", () => {
 
     it("should not get case types when authenticated but not authorized", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, [{}]);
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .get("/elasticsearch/case-types")
-        .reply(200, ["A"]);
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [200, ["A"]];
+        });
 
       return request(app)
         .get("/elasticsearch/case-types")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
           expect(res.status).to.equal(403);
           const error = JSON.parse(res.text);
           expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
@@ -124,21 +123,26 @@ describe("Index Elasticsearch page", () => {
 
     it("should not get case types when authenticated but without required authorized role", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {canManageUserProfile: true});
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .get("/elasticsearch/case-types")
-        .reply(200, ["A"]);
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [200, ["A"]];
+        });
 
       return request(app)
         .get("/elasticsearch/case-types")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
           expect(res.status).to.equal(403);
           const error = JSON.parse(res.text);
           expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
@@ -148,12 +152,6 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should get case types when authenticated and authorized", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       const apiCall = mock("http://localhost:4451")
         .get("/elastic-support/case-types")
@@ -183,21 +181,26 @@ describe("Index Elasticsearch page", () => {
 
     it("should not create index when authenticated but not authorized", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, [{}]);
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/elasticsearch/index")
-        .reply(201, "Created");
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Created"];
+        });
 
       return request(app)
         .post("/elasticsearch/index")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
           expect(res.status).to.equal(403);
           const error = JSON.parse(res.text);
           expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
@@ -208,21 +211,26 @@ describe("Index Elasticsearch page", () => {
 
     it("should not create index when authenticated but without required authorized role", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {canManageUserProfile: true});
 
-      const apiCall = mock("http://localhost:4451")
+      let apiCalled = false;
+      mock("http://localhost:4451")
         .post("/elasticsearch/index")
-        .reply(201, ["A"]);
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, ["A"]];
+        });
 
       return request(app)
         .post("/elasticsearch/index")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
-          expect(apiCall.isDone()).to.be.false;
+          expect(apiCalled).to.be.false;
           expect(res.status).to.equal(403);
           const error = JSON.parse(res.text);
           expect(error.error.error).to.equal(ERROR_UNAUTHORIZED_ROLE.error);
@@ -232,13 +240,6 @@ describe("Index Elasticsearch page", () => {
     });
 
     it("should create index when authenticated and authorized", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
-
       const apiCall = mock("http://localhost:4451")
         .post("/elastic-support/index")
         .reply(201, "Created");

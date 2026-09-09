@@ -1,7 +1,7 @@
 import { app } from "../../main/app";
 import { expect } from "chai";
 import config from "config";
-import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import { resolveRetrieveUserFor, optionallyResolveRetrieveServiceToken } from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
 import mock from "nock";
 import request from "supertest";
@@ -26,7 +26,7 @@ describe("Home page", () => {
 
     it("should return Home page when authenticated", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")

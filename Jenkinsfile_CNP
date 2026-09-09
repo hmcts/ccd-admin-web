@@ -1,5 +1,6 @@
 #!groovy
 import uk.gov.hmcts.contino.GithubAPI
+
 properties(
         [[$class: 'GithubProjectProperty', projectUrlStr: 'https://github.com/hmcts/ccd-admin-web'],
          pipelineTriggers([[$class: 'GitHubPushTrigger']])]
@@ -8,11 +9,11 @@ properties(
 @Library("Infrastructure@cve-dashboard")
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
-def product = "ccd"
-def component = "admin-web"
+def product = 'ccd'
+def component = 'admin-web'
 
 // Variables to switch pipeline logic and wiring per type of build
-def adminWebDevelopPr = "PR-325" // This doesn't change frequently, but when it does, only change this value.
+def adminWebDevelopPr = 'PR-325' // This doesn't change frequently, but when it does, only change this value.
 
 def secrets = [
     'ccd-${env}': [
@@ -43,7 +44,7 @@ def vaultOverrides = [
 env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 env.FUNCTIONAL_TESTS_WORKERS='3'
 
-withPipeline("nodejs", product, component) {
+withPipeline('nodejs', product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')
     }
@@ -65,11 +66,11 @@ withPipeline("nodejs", product, component) {
     enableCveDashboardIngestion()
 
     afterAlways('checkout') {
-        sh "yarn cache clean"
+        sh 'yarn cache clean'
     }
 
     afterAlways('build') {
-         yarnBuilder.yarn('setup')
+        yarnBuilder.yarn('setup')
     }
 
     afterAlways('test') {
@@ -82,9 +83,6 @@ withPipeline("nodejs", product, component) {
         reportFiles          : "unit.html",
         reportName           : "Unit Test Report"
       ]
-    }
-
-    afterAlways('test:a11y') {
     
       publishHTML target: [
         allowMissing         : true,
@@ -94,9 +92,6 @@ withPipeline("nodejs", product, component) {
         reportFiles          : "a11y.html",
         reportName           : "Accessibility Test Report"
       ]
-    }
-
-    afterAlways('test:coverage') {
 
       publishHTML target: [
         allowMissing         : true,
@@ -176,4 +171,30 @@ withPipeline("nodejs", product, component) {
       ]
     }
 
+
+    afterAlways('fortify-scan') {
+        steps.publishHTML target: [
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'Fortify Scan',
+            reportFiles: 'FortifyScanReport.html',
+            reportName: 'Fortify Scan Report'
+        ]
+    }
+
+    ['preview', 'aat', 'prod', 'demo', 'perftest', 'ithc'].each { testEnvironment ->
+        afterAlways("smoketest:${testEnvironment}") {
+            steps.junit allowEmptyResults: true, testResults: 'mochawesome-report/**/*result.xml'
+            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'mochawesome-report/**'
+            steps.publishHTML target: [
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'mochawesome-report',
+                reportFiles: 'smoke.html',
+                reportName: "Smoke Test Report - ${testEnvironment}"
+            ]
+        }
+    }
 }

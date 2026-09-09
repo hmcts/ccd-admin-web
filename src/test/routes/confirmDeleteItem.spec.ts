@@ -2,7 +2,7 @@ import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
 import config from "config";
-import { resolveRetrieveUserFor, resolveRetrieveServiceToken } from "../http-mocks/idam";
+import { resolveRetrieveUserFor, optionallyResolveRetrieveServiceToken } from "../http-mocks/idam";
 import mock from "nock";
 import { JSDOM } from "jsdom";
 import request from "supertest";
@@ -33,7 +33,7 @@ describe("Confirm Delete page", () => {
 
     it("should not return Confirm Delete User Profile page when authenticated but not authorized", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
         .reply(200, {canImportDefinition: true});
@@ -61,7 +61,7 @@ describe("Confirm Delete page", () => {
 
     it("should not return Confirm Delete Definition page when authenticated but not authorized", () => {
       resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
+      optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")
@@ -92,11 +92,6 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete User Profile page when authenticated and authorized", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/deleteitem")
@@ -116,12 +111,6 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete Definition page when authenticated and authorized", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/deleteitem")
@@ -144,11 +133,6 @@ describe("Confirm Delete page", () => {
     });
 
     it("should return Confirm Delete User Role page when authenticated and authorized", () => {
-      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      resolveRetrieveServiceToken();
-      mock("http://localhost:4451")
-        .get("/api/idam/adminweb/authorization")
-        .reply(200, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/deleteitem")
