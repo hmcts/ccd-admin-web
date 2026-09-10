@@ -16,7 +16,8 @@ def component = 'admin-web'
 env.FUNCTIONAL_TESTS_WORKERS='3'
 
 def secrets = [
-    'ccd-${env}': [
+    // Nightly runs against AAT, so use the intended Key Vault explicitly.
+    'ccd-aat': [
         secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
     ]
 ]
