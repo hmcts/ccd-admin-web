@@ -21,6 +21,40 @@ def secrets = [
     ]
 ]
 
+def publishPlaywrightReports(def pipelineSteps) {
+    pipelineSteps.junit allowEmptyResults: true,
+        keepLongStdio: true,
+        testResults: 'functional-output/e2e/results.xml'
+
+    pipelineSteps.archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/e2e/artifacts/**/*'
+
+    pipelineSteps.publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/e2e/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright E2E Test Report'
+    ]
+
+    pipelineSteps.junit allowEmptyResults: true,
+        keepLongStdio: true,
+        testResults: 'functional-output/integration/results.xml'
+
+    pipelineSteps.archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/integration/artifacts/**/*'
+
+    pipelineSteps.publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/integration/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright Integration Test Report'
+    ]
+}
+
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
     [ $class: 'AzureKeyVaultSecret',
       secretType: 'Secret',
@@ -77,37 +111,7 @@ withNightlyPipeline(type, product, component) {
     }
 
     afterAlways('fullFunctionalTest') {
-        junit allowEmptyResults: false,
-            keepLongStdio: true,
-            testResults: 'functional-output/e2e/results.xml'
-
-        steps.archiveArtifacts allowEmptyArchive: true,
-            artifacts: 'functional-output/e2e/artifacts/**/*'
-
-        publishHTML target: [
-            allowMissing         : false,
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : 'functional-output/e2e/html',
-            reportFiles          : 'index.html',
-            reportName           : 'Playwright Functional Test Report'
-        ]
-
-        junit allowEmptyResults: false,
-            keepLongStdio: true,
-            testResults: 'functional-output/integration/results.xml'
-
-        steps.archiveArtifacts allowEmptyArchive: true,
-            artifacts: 'functional-output/integration/artifacts/**/*'
-
-        publishHTML target: [
-            allowMissing         : false,
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : 'functional-output/integration/html',
-            reportFiles          : 'index.html',
-            reportName           : 'Playwright Integration Test Report'
-        ]
+        publishPlaywrightReports(steps)
     }
 
 }
