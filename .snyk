@@ -3,6 +3,6 @@ version: v1.12.0
 ignore: {}
 # The historical tunnel-agent patch is no longer required: the vulnerable
 # @hmcts/nodejs-logging > log4js > request dependency chain is absent from yarn.lock.
-# Remaining audit findings are recorded in yarn-audit-known-issues.
+# The remaining audit finding is recorded in yarn-audit-known-issues.
 # patches apply the minimum changes required to fix a vulnerability
 patches: {}
