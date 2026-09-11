@@ -4,7 +4,6 @@ import { fetch } from "../service/get-service";
 import router from "./home";
 import { sanitize } from "../util/sanitize";
 import { validate } from "../validators/validateUserProfile";
-import path from "node:path";
 
 const errorPage = "error";
 const url = config.get<string>("adminWeb.jurisdiction_url");
@@ -35,7 +34,7 @@ router.post("/updateuser", validateUpdate, (req: any, res: any, next: any) => {
             responseContent.error = JSON.parse(sanitize(JSON.stringify(req.session.error)));
             delete req.session.error;
         }
-        res.render(path.join("user-profiles", "manage-user-profile-form"), responseContent);
+        res.render("user-profiles/manage-user-profile-form", responseContent);
     }).catch((error) => {
         // Call the next middleware, which is the error handler
         next(error);
