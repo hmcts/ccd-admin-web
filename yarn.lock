@@ -4058,6 +4058,9 @@ __metadata:
     typescript-eslint: "npm:^8.69.0"
     validator: "npm:^13.15.35"
     xss-filters: "npm:^1.2.7"
+  dependenciesMeta:
+    sonar-scanner:
+      built: true
   languageName: unknown
   linkType: soft
 
