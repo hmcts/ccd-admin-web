@@ -1,13 +1,40 @@
-import _fetch from "node-fetch";
+import {get} from "config";
+import _fetch, {RequestInit, Response} from "node-fetch";
 
-export const fetch = (...args) => {
-  return _fetch(...args)
-    .then((res) => {
+export class FetchError extends Error {
+  public readonly response: Response;
+  public readonly status: number;
 
-      if (res.status >= 200 && res.status < 300) {
-          return res;
-      }
+  constructor(response: Response) {
+    super(`HTTP ${response.status} ${response.statusText}`);
+    this.name = "FetchError";
+    this.response = response;
+    this.status = response.status;
+  }
+}
 
-      return Promise.reject(res);
-    });
+const allowedOrigins = new Set([
+  new URL(get<string>("idam.base_url")).origin,
+  new URL(get<string>("idam.s2s_url")).origin,
+]);
+
+const getAllowedUrl = (url: string): string => {
+  const parsedUrl = new URL(url);
+
+  if (!allowedOrigins.has(parsedUrl.origin)) {
+    throw new Error(`URL origin is not allowed: ${parsedUrl.origin}`);
+  }
+
+  return parsedUrl.toString();
+};
+
+export const fetch = async (url: string, init?: RequestInit) => {
+  const allowedUrl = getAllowedUrl(url);
+  const res = await _fetch(allowedUrl, init); // NOSONAR - URL origin is validated against configured services.
+
+  if (res.status >= 200 && res.status < 300) {
+    return res;
+  }
+
+  throw new FetchError(res);
 };

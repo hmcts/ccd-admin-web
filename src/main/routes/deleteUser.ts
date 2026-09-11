@@ -1,7 +1,7 @@
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { deleteSessionVariables } from "../util/clearSession";
-import { deleteUserProfile } from "../service/delete-user-service";
-import { sanitize } from "../util/sanitize";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {deleteSessionVariables} from "../util/clearSession";
+import {deleteUserProfile} from "../service/delete-user-service";
+import {sanitize} from "../util/sanitize";
 import router from "./home";
 
 const errorPage = "error";
@@ -10,7 +10,7 @@ const errorPage = "error";
  * Delete user profile based on IdAM ID
  */
 router.post("/deleteuser", (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
+  if (req.adminWebAuthorization?.canManageUserRole) {
     if (req.body.deleteItem === "Yes") {
       deleteSessionVariables(req);
       deleteUserProfile(req).then((response) => {

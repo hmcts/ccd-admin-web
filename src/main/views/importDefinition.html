@@ -11,23 +11,28 @@
         {% include "response.html" %}
         {% if error %}
         <div class="error-summary govuk-error-message">
-            {{ errorDisplay(error) }}
-          </div>
+          {{ errorDisplay(error) }}
+        </div>
         {% endif %}
+        <label class="form-label" for="file">Case definition file</label>
         <input type="file" id="file" name="file" accept=".xlsx"/>
       </div>
       {% if elasticSearchReindexEnabled %}
       <div style="display: grid;">
         <div style="display: inline-flex;">
-          <div class="img"><img src="images/icon-important.png" alt="Important" width="36" height="32" style="padding-top: 10px;"></div>
+          <div class="img"><img src="images/icon-important.png" alt="Important" width="36" height="32"
+                                style="padding-top: 10px;"></div>
           <div class="form-group" style="padding: 8px 10px 9px 12px;">
             <p>
-              <span style="font-weight: 800">PROD:</span> Do not tick these checkboxes without Release Management approval<br>
+              <span style="font-weight: 800">PROD:</span> Do not tick these checkboxes without Release Management
+              approval<br>
               (controlled use; service downtime required). <br>
             </p>
             <p><span style="font-weight: 800">Perftest:</span> Do not use without Performance team approval. <br></p>
             <p><span style="font-weight: 800">Other envs:</span> Only use after discussion with relevant teams. <br></p>
-            <p>Refer to <a href="https://hmcts.github.io/ops-runbooks/Elastic-Search-and-Logstash/elasticsearch-reindexing-guidance.html#elasticsearch-reindexing-guidance" target="_blank"><i>Reindexing guidance page.</i></a></p>
+            <p>Refer to <a
+              href="https://hmcts.github.io/ops-runbooks/Elastic-Search-and-Logstash/elasticsearch-reindexing-guidance.html#elasticsearch-reindexing-guidance"
+              target="_blank"><i>Reindexing guidance page.</i></a></p>
           </div>
         </div>
       </div>
@@ -37,8 +42,11 @@
       </div>
       <div class="form-group">
         <div class="multiple-choice">
-          <input id="confirm" name="confirm" type="checkbox" value="true" onchange="updateState()" title="confirm reindexing">
-          <label for="confirm">I confirm that I have consulted with the <span style="font-weight: 800">relevant team</span> to review the automated reindexing process and fully understand the associated impacts.</label>
+          <input id="confirm" name="confirm" type="checkbox" value="true" onchange="updateState()"
+                 title="confirm reindexing">
+          <label for="confirm">I confirm that I have consulted with the <span
+            style="font-weight: 800">relevant team</span> to review the automated reindexing process and fully
+            understand the associated impacts.</label>
         </div>
       </div>
       <script type="text/javascript">

@@ -3,7 +3,9 @@
 {% block content %}
 {% include "menu.html" %}
 {% if success%}
-<div class="success"><div class="admin-ui">{{success}}</div></div>
+<div class="success">
+  <div class="admin-ui">{{success}}</div>
+</div>
 {% endif%}
 
 <h2 class="heading-large padding">Import Welsh Translations</h2>
@@ -13,22 +15,24 @@
     <form action="/manageWelshDictionary" method="post" enctype="multipart/form-data">
       <div class="form-group">
         {% if not error %}
-        <p>Choose a csv file containing translations of format "englishPhrase","welshPhrase" or optionally "englishPhrase","welshPhrase","yesOrNo","yes","no"</p>
+        <p>Choose a csv file containing translations of format "englishPhrase","welshPhrase" or optionally
+          "englishPhrase","welshPhrase","yesOrNo","yes","no"</p>
         {% endif %}
         {% if error %}
         <div class="error-summary govuk-error-message">
           {{ errorDisplay(error) }}
         </div>
         {% endif %}
+        <label class="form-label" for="file">Welsh translations CSV file</label>
         <input type="file" id="file" name="file" accept=".csv"/>
       </div>
-        {% if adminWebAuthorization.canLoadWelshTranslation or adminWebAuthorization.canManageWelshTranslation %}
-        <div class="form-group">
-          <button type="submit" class="button" value="Submit">Submit</button>
-        </div>
-        {% else %}
-        <p>User does not access rights</p>
-        {% endif %}
+      {% if adminWebAuthorization.canLoadWelshTranslation or adminWebAuthorization.canManageWelshTranslation %}
+      <div class="form-group">
+        <button type="submit" class="button" value="Submit">Submit</button>
+      </div>
+      {% else %}
+      <p>User does not have access rights</p>
+      {% endif %}
     </form>
 
   </div>

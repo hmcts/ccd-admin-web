@@ -1,13 +1,13 @@
-import { COOKIE_ACCESS_TOKEN } from "./oauth2redirect";
+import {COOKIE_ACCESS_TOKEN} from "./oauth2redirect";
 import * as express from "express";
 import * as fetch from "node-fetch";
-import { get } from "config";
+import {get} from "config";
 
 const router = express.Router();
 const TOKEN_PLACEHOLDER = ":token";
 
 export const logout = (req, res, next) => {
-  const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];
+  const accessToken = req.cookies?.[COOKIE_ACCESS_TOKEN];
 
   if (accessToken) {
     const options = {

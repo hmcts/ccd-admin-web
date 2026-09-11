@@ -1,20 +1,20 @@
 {% from "macros/csrf.html" import csrfProtection %}
 
- {% block content %}
- {% if importAudits?.length == 0 %}
- <table border="1">
-    <thead>
-    <tr>
-      <th>
-        <div class="boldcontents" align="center">Imports audits are not found</div>
-      </th>
-    </tr>
-    </thead>
- </table>
- {%else%}
-  <div class="padding heading-medium">Most recent uploads history</div>
-  <div class="padding ngx-pagination">
-    <table border="1">
+{% block content %}
+{% if importAudits?.length == 0 %}
+<table border="1">
+  <thead>
+  <tr>
+    <th>
+      <div class="boldcontents text-center">Imports audits are not found</div>
+    </th>
+  </tr>
+  </thead>
+</table>
+{%else%}
+<div class="padding heading-medium">Most recent uploads history</div>
+<div class="padding ngx-pagination">
+  <table border="1">
     <thead>
     <tr>
       <th>Date Imported</th>
@@ -25,7 +25,7 @@
     </thead>
     <tbody>
     {% for audit in importAudits %}
-    <tr >
+    <tr>
       <td>
         {{audit.date_imported}}
       </td>
@@ -41,8 +41,7 @@
     {% endfor %}
     </tbody>
   </table>
-  </div>
- {% endif %}
+</div>
+{% endif %}
 
- {% endblock %}
-
+{% endblock %}
