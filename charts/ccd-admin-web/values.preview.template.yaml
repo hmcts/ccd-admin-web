@@ -2,6 +2,7 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
+    IDAM_OAUTH2_REDIRECT_URI_ALLOWLIST: "${SERVICE_FQDN}"
     ADMINWEB_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
     ADMINWEB_IMPORT_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/import
     ADMINWEB_JURISDICTIONS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/data/jurisdictions
