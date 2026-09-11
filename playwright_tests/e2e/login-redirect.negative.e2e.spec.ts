@@ -11,9 +11,9 @@ test("an unauthenticated user is redirected to IdAM login", async ({ baseURL, id
   );
 
   await expect(idamPage.page).toHaveTitle(/HMCTS|Sign in|Idam Simulator/i);
-  await expect(idamPage.usernameInput).toBeVisible();
-  await expect(idamPage.passwordInput).toBeVisible();
-  await expect(idamPage.submitBtn).toBeVisible();
+  await idamPage.usernameInput.waitFor({ state: "visible" });
+  await idamPage.passwordInput.waitFor({ state: "visible" });
+  await idamPage.submitBtn.waitFor({ state: "visible" });
 
   const loginUrl = new URL(idamPage.page.url());
   const redirectUrl = new URL(loginUrl.searchParams.get("redirect_uri") as string);

@@ -73,6 +73,23 @@ export class AdminWebPage {
     await this.page.goto("/", { waitUntil: "domcontentloaded" });
   }
 
+  async govukFrontendAssetLoads(): Promise<boolean> {
+    const response = await this.page.request.get("/js/govuk-frontend.min.js");
+    return response.ok() && (await response.text()).includes("initAll");
+  }
+
+  async staticAssetsLoad(): Promise<boolean> {
+    const assetPaths = [
+      "/stylesheets/app.css",
+      "/js/jquery.min.js",
+      "/js/jquery.validate.min.js",
+      "/js/govuk-frontend.min.js",
+      "/favicon.ico",
+    ];
+    const responses = await Promise.all(assetPaths.map((assetPath) => this.page.request.get(assetPath)));
+    return responses.every((response) => response.ok());
+  }
+
   async openImportDefinition(): Promise<void> {
     await this.importDefinitionLink.click();
   }

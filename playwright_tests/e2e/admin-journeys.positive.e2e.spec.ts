@@ -13,13 +13,10 @@ test.describe("authenticated CCD administrator journeys - positive", () => {
   });
 
   test("initialises GOV.UK Frontend on the landing page", async ({ adminWebPage }) => {
-    const page = adminWebPage.page;
-    const govukFrontendAsset = await page.request.get("/js/govuk-frontend.min.js");
-
     await expect(adminWebPage.body).toHaveClass(/js-enabled/);
     await expect(adminWebPage.body).toHaveClass(/govuk-frontend-supported/);
-    expect(govukFrontendAsset.ok()).toBe(true);
-    expect(await govukFrontendAsset.text()).toContain("initAll");
+    expect(await adminWebPage.staticAssetsLoad()).toBe(true);
+    expect(await adminWebPage.govukFrontendAssetLoads()).toBe(true);
     await expect(adminWebPage.govukButton).toHaveAttribute(
       "data-govuk-button-init",
       "",
@@ -48,8 +45,8 @@ test.describe("authenticated CCD administrator journeys - positive", () => {
     await expect(idamPage.page).toHaveURL((url) =>
       url.origin !== applicationOrigin && url.pathname.includes("/login"),
     );
-    await expect(idamPage.usernameInput).toBeVisible();
-    await expect(idamPage.passwordInput).toBeVisible();
-    await expect(idamPage.submitBtn).toBeVisible();
+    await idamPage.usernameInput.waitFor({ state: "visible" });
+    await idamPage.passwordInput.waitFor({ state: "visible" });
+    await idamPage.submitBtn.waitFor({ state: "visible" });
   });
 });
