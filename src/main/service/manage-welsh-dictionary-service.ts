@@ -4,12 +4,10 @@ import { Readable } from "stream";
 import { parseStream } from "fast-csv";
 
 export function buildTranslationsJson(data) {
-  let translations = "";
-  for (const element of data) {
-      if (translations.length > 0) { translations += ","; }
-      translations += rowToTranslationJson(element);
-  }
-  return translations;
+  return data
+    .map((element) => rowToTranslationJson(element))
+    .filter((translation) => translation.length > 0)
+    .join(",");
 }
 
 export function rowToTranslationJson(element) {

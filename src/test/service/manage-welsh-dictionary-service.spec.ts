@@ -138,6 +138,23 @@ describe("test manage Welsh Dictionary Service", () => {
     });
   });
 
+  describe("test blank rows", () => {
+    it("should ignore blank rows before, between, and after valid rows", () => {
+      const jsonString = buildTranslationsJson([
+        [],
+        {0: "phrase 1", 1: "trans phase 1"},
+        [],
+        {0: "phrase 2", 1: "trans phase 2"},
+        [],
+      ]);
+
+      expect(jsonString).to.equal(
+        '"phrase 1":{"translation":"trans phase 1"},"phrase 2":{"translation":"trans phase 2"}',
+      );
+      expect(() => JSON.parse(`{${jsonString}}`)).not.to.throw();
+    });
+  });
+
   describe("test three rows of data with yesOrNo", () => {
     it("should get good JSON message from data", (done) => {
 
