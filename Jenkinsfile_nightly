@@ -13,9 +13,62 @@ def type = 'nodejs'
 def product = 'ccd'
 def component = 'admin-web'
 
+env.FUNCTIONAL_TESTS_WORKERS='3'
+
+def secrets = [
+    // Nightly runs against AAT, so use the intended Key Vault explicitly.
+    'ccd-aat': [
+        secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
+    ]
+]
+
+def publishPlaywrightReports(def pipelineSteps) {
+    pipelineSteps.junit allowEmptyResults: true,
+        keepLongStdio: true,
+        testResults: 'functional-output/e2e/results.xml'
+
+    pipelineSteps.archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/e2e/artifacts/**/*'
+
+    pipelineSteps.publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/e2e/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright E2E Test Report'
+    ]
+
+    pipelineSteps.junit allowEmptyResults: true,
+        keepLongStdio: true,
+        testResults: 'functional-output/integration/results.xml'
+
+    pipelineSteps.archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/integration/artifacts/**/*'
+
+    pipelineSteps.publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/integration/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright Integration Test Report'
+    ]
+}
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+    [ $class: 'AzureKeyVaultSecret',
+      secretType: 'Secret',
+      name: secretName,
+      version: '',
+      envVariable: envVar
+    ]
+}
+
 withNightlyPipeline(type, product, component) {
     enableSlackNotifications('#ccd-nightly-builds')
     enableFortifyScan()
+    loadVaultSecrets(secrets)
 
     afterAlways('checkout') {
         sh 'yarn cache clean'
@@ -57,4 +110,9 @@ withNightlyPipeline(type, product, component) {
             reportName: 'Fortify Scan Report'
         ]
     }
+
+    afterAlways('fullFunctionalTest') {
+        publishPlaywrightReports(steps)
+    }
+
 }

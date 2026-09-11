@@ -16,6 +16,7 @@ def component = 'admin-web'
 def adminWebDevelopPr = 'PR-325' // This doesn't change frequently, but when it does, only change this value.
 
 def secrets = [
+    // loadVaultSecrets resolves the ${env} placeholder for each CNP environment.
     'ccd-${env}': [
         secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
         secret('storage-account-primary-connection-string', 'STORAGEACCOUNT_PRIMARY_CONNECTION_STRING'),
@@ -41,7 +42,42 @@ def vaultOverrides = [
     'spreview': 'saat'
 ]
 
-env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
+def publishPlaywrightReports(def pipelineSteps) {
+    pipelineSteps.junit allowEmptyResults: true,
+        keepLongStdio: true,
+        testResults: 'functional-output/e2e/results.xml'
+
+    pipelineSteps.archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/e2e/artifacts/**/*'
+
+    pipelineSteps.publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/e2e/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright E2E Test Report'
+    ]
+
+    pipelineSteps.junit allowEmptyResults: true,
+        keepLongStdio: true,
+        testResults: 'functional-output/integration/results.xml'
+
+    pipelineSteps.archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/integration/artifacts/**/*'
+
+    pipelineSteps.publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/integration/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright Integration Test Report'
+    ]
+}
+
+env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+env.FUNCTIONAL_TESTS_WORKERS='3'
 
 withPipeline('nodejs', product, component) {
     onMaster {
@@ -100,6 +136,14 @@ withPipeline('nodejs', product, component) {
         reportFiles          : "index.html",
         reportName           : "Code Coverage Report"
       ]
+    }
+
+    afterAlways('functionalTest:preview') {
+        publishPlaywrightReports(steps)
+    }
+
+    afterAlways('functionalTest:aat') {
+        publishPlaywrightReports(steps)
     }
 
 

@@ -19,7 +19,10 @@
     "test:a11y": "PUPPETEER_SKIP_DOWNLOAD=false PUPPETEER_SKIP_CHROME_DOWNLOAD=false PUPPETEER_SKIP_CHROME_HEADLESS_SHELL_DOWNLOAD=true node node_modules/puppeteer/install.mjs && NODE_PATH=. NODE_ENV=test LOG_LEVEL=INFO mocha 'src/test/a11y/**'  --timeout 60000 --reporter-options reportFilename=a11y,reportTitle=ccd-admin-web-a11y",
     "test:coverage": "NODE_PATH=. NODE_ENV=test nyc mocha 'src/test/**/*.ts' --ignore 'src/test/a11y/**'  --ignore 'src/test/smoke/**'",
     "test:smoke": "NODE_PATH=. NODE_ENV=test LOG_LEVEL=OFF mocha 'src/test/smoke/**/*.spec.ts' --reporter-options reportFilename=smoke,reportTitle=ccd-admin-web-smoke,junitOutput=mochawesome-report/smoke-result.xml,suiteName=ccd-admin-web-smoke",
-    "test:functional": "echo 'TODO - FUNCTIONAL TESTS'",
+    "test:functional": "./scripts/run-playwright-tests.sh",
+    "test:fullfunctional": "yarn test:functional",
+    "test:integration": "playwright install chromium && playwright test --config=playwright-integration.config.ts",
+    "typecheck:playwright": "tsc --project playwright_tests/tsconfig.json",
     "fortifyScan": "./src/test/java/gradlew -p src/test/java fortifyScan",
     "suppress-cve": "yarn npm audit --recursive --environment production --json > yarn-audit-known-issues",
     "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-admin-web' -Dsonar.sources=src/main/ -Dsonar.tests=src/test/ -Dsonar.exclusions=node_modules/** -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info",
@@ -76,6 +79,8 @@
   "devDependencies": {
     "@eslint/css": "^1.4.0",
     "@eslint/js": "^10.0.1",
+    "@hmcts/playwright-common": "1.1.3",
+    "@playwright/test": "^1.62.1",
     "@tsconfig/node22": "^22.0.6",
     "@types/body-parser": "^1.19.6",
     "@types/chai-as-promised": "^8.0.2",
@@ -103,6 +108,7 @@
     "nock": "^14.0.17",
     "nyc": "^18.0.0",
     "pa11y": "^9.1.1",
+    "playwright-core": "1.62.1",
     "proxyquire": "^2.1.3",
     "sinon": "^22.1.0",
     "sinon-chai": "^4.0.1",
@@ -113,6 +119,11 @@
     "tsx": "^4.23.13",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.69.0"
+  },
+  "dependenciesMeta": {
+    "sonar-scanner": {
+      "built": true
+    }
   },
   "mocha": {
     "LOG_LEVEL": "OFF",
