@@ -12,6 +12,20 @@ test.describe("authenticated CCD administrator journeys - positive", () => {
     await expect(adminWebPage.logoutLink).toBeVisible();
   });
 
+  test("initialises GOV.UK Frontend on the landing page", async ({ adminWebPage }) => {
+    const page = adminWebPage.page;
+    const govukFrontendAsset = await page.request.get("/js/govuk-frontend.min.js");
+
+    await expect(adminWebPage.body).toHaveClass(/js-enabled/);
+    await expect(adminWebPage.body).toHaveClass(/govuk-frontend-supported/);
+    expect(govukFrontendAsset.ok()).toBe(true);
+    expect(await govukFrontendAsset.text()).toContain("initAll");
+    await expect(adminWebPage.govukButton).toHaveAttribute(
+      "data-govuk-button-init",
+      "",
+    );
+  });
+
   test("all administration menu items are visible and navigate to their pages", async ({ adminWebPage }) => {
     for (const menuItem of adminWebPage.menuItems) {
       await expect(menuItem.link).toBeVisible();

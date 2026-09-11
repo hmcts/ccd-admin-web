@@ -8,12 +8,16 @@ export interface AdminMenuItem {
 
 export class AdminWebPage {
   readonly authenticatedMarker: Locator;
+  readonly body: Locator;
+  readonly govukButton: Locator;
   readonly importDefinitionLink: Locator;
   readonly menuItems: readonly AdminMenuItem[];
   readonly logoutLink: Locator;
 
   constructor(readonly page: Page) {
     this.authenticatedMarker = page.locator("#currentUser");
+    this.body = page.locator("body");
+    this.govukButton = page.locator('[data-module="govuk-button"]');
     this.importDefinitionLink = page.locator('a[href="/import"]');
     this.menuItems = [
       {
