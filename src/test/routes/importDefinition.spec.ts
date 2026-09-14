@@ -368,6 +368,35 @@ describe("Import Definition page", () => {
         });
     });
 
+    it("should redirect to Import Definition page without calling back-end if the file exceeds the 8MB limit", () => {
+
+      let apiCalled = false;
+      mock("http://localhost:4451")
+        .post("/import")
+        .optionally()
+        .reply(() => {
+          apiCalled = true;
+          return [201, "Definition imported"];
+        });
+
+      const file = {
+        buffer: Buffer.alloc(8000001),
+        originalname: "dummy_filename.xlsx",
+      };
+
+      return request(appTestWithAuthorizedAdminWebRoles)
+        .post("/import")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .attach("file", file.buffer, file.originalname)
+        .then((res) => {
+          expect(res.statusCode).to.equal(302);
+          expect(res.headers.location).to.equal("/import");
+
+          // Assert that the back-end is not called
+          expect(apiCalled).to.be.false;
+        });
+    });
+
     it("should redirect to Import Definition page if there is a back-end error", () => {
 
       const apiCall = mock("http://localhost:4451")
