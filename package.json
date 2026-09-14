@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "sass:watch": "NODE_PATH=. sass --watch src/main/public/stylesheets/app.scss:src/main/public/stylesheets/app.css --source-map --style=expanded --quiet --load-path=node_modules",
     "sass": "NODE_PATH=. sass src/main/public/stylesheets/app.scss:src/main/public/stylesheets/app.css --source-map --style=expanded --quiet --load-path=node_modules",
-    "test": "NODE_PATH=. NODE_ENV=test mocha 'src/test/**/*.ts' --ignore 'src/test/a11y/**' --ignore 'src/test/smoke/**' --reporter-options reportFilename=unit,reportTitle=ccd-admin-web-unit",
+    "test": "NODE_PATH=. NODE_ENV=test nyc mocha 'src/test/**/*.ts' --ignore 'src/test/a11y/**' --ignore 'src/test/smoke/**' --reporter-options reportFilename=unit,reportTitle=ccd-admin-web-unit",
     "test:specific": "NODE_PATH=. NODE_ENV=test LOG_LEVEL=DEBUG mocha ",
     "test:a11y": "PUPPETEER_SKIP_DOWNLOAD=false PUPPETEER_SKIP_CHROME_DOWNLOAD=false PUPPETEER_SKIP_CHROME_HEADLESS_SHELL_DOWNLOAD=true node node_modules/puppeteer/install.mjs && NODE_PATH=. NODE_ENV=test LOG_LEVEL=INFO mocha 'src/test/a11y/**'  --timeout 60000 --reporter-options reportFilename=a11y,reportTitle=ccd-admin-web-a11y",
     "test:coverage": "NODE_PATH=. NODE_ENV=test nyc mocha 'src/test/**/*.ts' --ignore 'src/test/a11y/**'  --ignore 'src/test/smoke/**'",
