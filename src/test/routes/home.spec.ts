@@ -26,7 +26,7 @@ describe("Home page", () => {
 
     it("should return Home page when authenticated", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/idam/adminweb/authorization")

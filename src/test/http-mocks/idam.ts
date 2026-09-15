@@ -49,6 +49,13 @@ export function resolveRetrieveServiceToken(token: string = defaultAuthToken) {
     .reply(HttpStatus.OK, token);
 }
 
+export function optionallyResolveRetrieveServiceToken(token: string = defaultAuthToken) {
+  return mock(s2sAuthServiceBaseUrl)
+    .post("/lease")
+    .optionally()
+    .reply(HttpStatus.OK, token);
+}
+
 export function rejectRetrieveServiceToken(reason: string = "HTTP error") {
   return mock(s2sAuthServiceBaseUrl)
     .post("/lease")
