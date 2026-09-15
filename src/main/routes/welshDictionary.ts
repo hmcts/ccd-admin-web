@@ -1,7 +1,7 @@
 import * as express from "express";
-import { error_unauthorized_role } from "../util/error_unauthorized_role";
-import { getDictionary } from "../service/welsh-dictionary-service";
-import { sanitize } from "../util/sanitize";
+import {error_unauthorized_role} from "../util/error_unauthorized_role";
+import {getDictionary} from "../service/welsh-dictionary-service";
+import {sanitize} from "../util/sanitize";
 
 const errorPage = "error";
 const welshDictionary = "welshDictionary";
@@ -9,7 +9,7 @@ const router = express.Router();
 const dictionaryUrl = "/dictionary";
 
 router.get(`/${welshDictionary}`, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageWelshTranslation) {
+  if (req.adminWebAuthorization?.canManageWelshTranslation) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
@@ -23,13 +23,13 @@ router.get(`/${welshDictionary}`, (req, res, next) => {
 
 // retrieve latest welsh dictionary and convert to csv
 router.get(dictionaryUrl, (req, res, next) => {
-  if (req.adminWebAuthorization && req.adminWebAuthorization.canManageWelshTranslation) {
+  if (req.adminWebAuthorization?.canManageWelshTranslation) {
     getDictionary(req).then((response) => {
       const data = JSON.parse(response.text).translations;
       const csvContent = flattenJsonResponse(data);
       const download = "\ufeff\ufeff" + // utf-8 BOM for excel (must be twice as browsers strip out first one)
         Buffer.from(csvContent, "utf8").toString("utf8");
-      res.set({ "content-type": "text/csv; charset=utf-8" });
+      res.set({"content-type": "text/csv; charset=utf-8"});
       res.send(download);
     }).catch((error) => {
       res.status(400).send(error.response);
@@ -48,18 +48,18 @@ export function flattenJsonResponse(res: object) {
     str = str + "," + (v.yesOrNo ? v.yesOrNo : "");
     str = str + "," + (v.yes ? wrapSpecialCharacters(v.yes) : "");
     str = str + "," + (v.no ? wrapSpecialCharacters(v.no) : "");
-    flat.push(str.replace(/[,]{1,4}$/g, "")); // remove trailing commas
+    flat.push(str.replace(/,{1,4}$/g, "")); // remove trailing commas
   });
   return flat.join("\r\n");
 }
 
 function wrapSpecialCharacters(text: string): string {
   // Return if no special characters
-  if (typeof text !== "string" || !text.match(/[,\n\"]/g)) {
+  if (typeof text !== "string" || !text.match(/[,\n"]/g)) {
     return text;
   }
 
-  return "\"" + text.replace(/[\"]/g, "\"\"") + "\"";
+  return "\"" + text.replace(/"/g, "\"\"") + "\"";
 }
 
 export default router;

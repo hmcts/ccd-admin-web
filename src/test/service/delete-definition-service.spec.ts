@@ -23,7 +23,7 @@ describe("Test Delete Definition service", () => {
         jurisdictionId: "TEST",
       },
       serviceAuthToken: "serviceAuthToken",
-      session: { jurisdiction: "TEST" },
+      session: {jurisdiction: "TEST"},
     };
 
     const config = {
@@ -47,6 +47,26 @@ describe("Test Delete Definition service", () => {
       try {
         expect(res.status).to.equal(204);
         expect(res.text).to.equal(expectedResult);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    }).catch((err) => {
+      done(err);
+    });
+  });
+
+  it("should encode user-controlled path segments", (done) => {
+    req.body.jurisdictionId = "TEST/path";
+    req.body.definitionVersion = "1?draft=true";
+
+    nock("http://localhost:4451")
+      .delete("/api/draft/TEST%2Fpath/1%3Fdraft%3Dtrue")
+      .reply(204);
+
+    deleteDefinition(req).then((res) => {
+      try {
+        expect(res.status).to.equal(204);
         done();
       } catch (e) {
         done(e);

@@ -1,18 +1,21 @@
-import { Express, Logger } from "@hmcts/nodejs-logging";
+import {Express, Logger} from "@hmcts/nodejs-logging";
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as express from "express";
 import * as expressNunjucks from "express-nunjucks";
-import * as path from "path";
+import * as path from "node:path";
 import * as favicon from "serve-favicon";
 import * as config from "config";
-import { importAll } from "./import-all/index";
+import {importAll} from "./import-all/index";
+
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
 export const appTestWithAuthorizedAdminWebRoles: express.Express = express();
 appTestWithAuthorizedAdminWebRoles.locals.ENV = env;
 appTestWithAuthorizedAdminWebRoles.locals.elasticSearchReindexEnabled =
   String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true";
+
+appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 
 // Session
 appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy
@@ -30,14 +33,12 @@ const logger = Logger.getLogger("appTestWithAuthorizedAdminWebRoles");
 // view engine setup
 appTestWithAuthorizedAdminWebRoles.set("view engine", "html");
 appTestWithAuthorizedAdminWebRoles.set("views", [path.join(__dirname, "views"),
-path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
+  path.join(__dirname, "/../../node_modules/govuk_template_jinja/views/layouts/")]);
 
-appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 appTestWithAuthorizedAdminWebRoles.use(favicon(path.join(__dirname, "/public/img/favicon.ico")));
 appTestWithAuthorizedAdminWebRoles.use(bodyParser.json());
-appTestWithAuthorizedAdminWebRoles.use(bodyParser.urlencoded({ extended: false }));
+appTestWithAuthorizedAdminWebRoles.use(bodyParser.urlencoded({extended: false}));
 appTestWithAuthorizedAdminWebRoles.use(cookieParser());
-appTestWithAuthorizedAdminWebRoles.use(express.static(path.join(__dirname, "public")));
 
 expressNunjucks(appTestWithAuthorizedAdminWebRoles, {
   filters: {
