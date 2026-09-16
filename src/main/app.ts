@@ -47,10 +47,10 @@ const caching = {cacheControl: true, setHeaders: (res) => res.setHeader("Cache-C
 
 app.use(express.static(path.join(__dirname, "public"), caching));
 app.use("/assets", express.static("node_modules/govuk-frontend/dist/govuk/assets", caching));
-app.use("/js/jquery.min.js", express.static("node_modules/jquery/dist/jquery.min.js", caching));
-app.use("/js/jquery.validate.min.js", express.static("node_modules/jquery-validation/dist/jquery.validate.min.js", caching));
-app.use("/js/govuk-frontend.min.js", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js", caching));
-app.use("/stylesheets/govuk-frontend.min.css", express.static("node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css", caching));
+app.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery/dist"), caching));
+app.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery-validation/dist"), caching));
+app.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk"), caching));
+app.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk"), caching));
 app.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
 
 app.use(cookieSession({
