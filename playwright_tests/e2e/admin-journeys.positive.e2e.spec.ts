@@ -17,8 +17,8 @@ test.describe("authenticated CCD administrator journeys - positive", () => {
     await expect(adminWebPage.body).toHaveClass(/govuk-frontend-supported/);
     expect(await adminWebPage.staticAssetsLoad()).toBe(true);
     expect(await adminWebPage.govukFrontendAssetLoads()).toBe(true);
-    await expect(adminWebPage.govukButton).toHaveAttribute(
-      "data-govuk-button-init",
+    await expect(adminWebPage.govukServiceNavigation).toHaveAttribute(
+      "data-govuk-service-navigation-init",
       "",
     );
   });
