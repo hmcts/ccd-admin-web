@@ -5,16 +5,14 @@
 
   <script type="text/javascript">
 
-    const indexButtonId = '#index-btn'; 
+    const indexButtonId = '#index-btn';
     const indexResultId = '#index-result';
 
-    $(document).ready(function() {
-      $(indexButtonId).click(function() {
-        $.get(`{{caseTypesUrl}}`, function(caseTypes) { 
-          initIndicesCreation(caseTypes);
-        }).fail(function(error) {
-          $(indexResultId).append($(`<div style="color: red;">Error occurred getting case types : ${error.responseText}</div>`));
-        });
+    $(document).on('click', indexButtonId, function() {
+      $.get(`{{caseTypesUrl}}`, function(caseTypes) {
+        initIndicesCreation(caseTypes);
+      }).fail(function(error) {
+        $(indexResultId).append($(`<div style="color: red;">Error occurred getting case types : ${error.responseText}</div>`));
       });
     });
 
@@ -44,7 +42,7 @@
         $(indexResultId).append($(`<div style="color: red;">[${prefix}] Error occurred for case type '${currentCaseType}': ${error.responseText}</div>`));
       }).always(function() {
         createIndices(caseTypes, index + 1, completed);
-      });      
+      });
     }
 
   </script>

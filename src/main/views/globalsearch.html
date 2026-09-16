@@ -8,16 +8,13 @@
     const indexButtonId = '#index-btn';
     const indexResultId = '#index-result';
 
-    $(document).ready(function() {
-      $(indexButtonId).click(function() {
-        $(indexResultId).append($(`<div>[STARTING] Creating Global Search Indices</div>`));
+    $(document).on('click', indexButtonId, function() {
+      $(indexResultId).append($(`<div>[STARTING] Creating Global Search Indices</div>`));
 
-        $.post(`{{globalSearchIndexingUrl}}`, function() {
-          $(indexResultId).append($(`<div>[FINISHED] Processing complete</div>`));
-        }).fail(function(error) {
-          $(indexResultId).append($(`<div style="color: red;">Error occurred : ${error.responseText}</div>`));
-        });
-
+      $.post(`{{globalSearchIndexingUrl}}`, function() {
+        $(indexResultId).append($(`<div>[FINISHED] Processing complete</div>`));
+      }).fail(function(error) {
+        $(indexResultId).append($(`<div style="color: red;">Error occurred : ${error.responseText}</div>`));
       });
     });
 
