@@ -94,6 +94,7 @@ describe("Accessibility", () => {
     "WCAG2AA.Principle1.Guideline1_4.1_4_10.C32,C31,C33,C38,SCR34,G206"]);
   check("/not-found",[
     "WCAG2AA.Principle1.Guideline1_4.1_4_3.G145.Abs",
+    "WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs",
     "WCAG2AA.Principle3.Guideline3_1.3_1_1.H57.2",
     "WCAG2AA.Principle1.Guideline1_3.1_3_1.H49.Center",
     "WCAG2AA.Principle4.Guideline4_1.4_1_2.H91.InputText.Name",
