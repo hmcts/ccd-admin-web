@@ -19,14 +19,14 @@ test.describe("user-profile administration UI - negative", () => {
 
   });
 
-  test("validates a malformed IdAM email address", async ({ page, userProfilesPage }) => {
+  test("rejects a malformed IdAM email address", async ({ page, userProfilesPage }) => {
     await mockUserProfileFormNavigation(page);
     await userProfilesPage.openJurisdictionSelection();
 
     await userProfilesPage.idamIdInput.fill("not-an-email-address");
     await userProfilesPage.submitButton.click();
 
-    await expect(userProfilesPage.idamIdValidationError).toHaveText("Email address invalid");
+    await expect(page.locator(".error-summary")).toContainText("Please select a valid email address!");
     await expect(page).toHaveURL((url) => url.pathname === "/createuser");
   });
 
