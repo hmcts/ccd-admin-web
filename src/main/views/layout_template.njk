@@ -10,23 +10,18 @@
   <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
 {% endblock %}
 
-{% block skipLink %}
-<input id="currentUser" type="hidden" value="{{ user }}"/>
-<a class="govuk-service-navigation__link" href="/logout">
-  <button class="govuk-button govuk-button--warning logout" data-module="govuk-button">
-    Logout
-  </button>
-</a>
-{% endblock %}
-
 {% block header %}
   <header class="govuk-template__header {%- if headerClasses %} {{ headerClasses }}{% endif %}" {{- govukAttributes(headerAttributes)}}>
-    {% block headerStart %}{% endblock %}
+    {% block headerStart %}
+      <input id="currentUser" type="hidden" value="{{ user }}"/>
+    {% endblock %}
     {% block govukHeader %}
       {{ govukHeader() }}
     {% endblock %}
     {% include "components/menu.njk" %}
-    {% block headerEnd %}{% endblock %}
+    {% block headerEnd %}
+      <a class="govuk-button govuk-button--warning logout" href="/logout">Logout</a>
+    {% endblock %}
   </header>
 {% endblock %}
 
