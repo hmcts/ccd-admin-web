@@ -27,6 +27,28 @@ describe("deployed application smoke tests", () => {
     });
   });
 
+  [
+    { path: "/stylesheets/app.css", contentType: "text/css", expectedContent: "govuk-" },
+    { path: "/js/govuk-frontend.min.js", contentType: "javascript", expectedContent: "initAll" },
+    { path: "/js/jquery.min.js", contentType: "javascript", expectedContent: "jQuery" },
+    { path: "/js/jquery.validate.min.js", contentType: "javascript", expectedContent: "validate" },
+    { path: "/favicon.ico", contentType: "image/x-icon" },
+  ].forEach(({ path, contentType, expectedContent }) => {
+    it(`serves the deployed asset ${path}`, async () => {
+      const response = await request(testUrl)
+        .get(path)
+        .redirects(0);
+
+      expect(response.status).to.equal(200);
+      expect(response.headers["content-type"]).to.contain(contentType);
+      expect(response.body.length).to.be.greaterThan(0);
+
+      if (expectedContent) {
+        expect(response.text).to.contain(expectedContent);
+      }
+    });
+  });
+
   it("redirects unauthenticated users to IdAM with the expected OAuth parameters", async () => {
     const response = await request(testUrl)
       .get("/")
