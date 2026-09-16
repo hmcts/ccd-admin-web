@@ -41,10 +41,12 @@ describe("deployed application smoke tests", () => {
 
       expect(response.status).to.equal(200);
       expect(response.headers["content-type"]).to.contain(contentType);
-      expect(response.body.length).to.be.greaterThan(0);
 
       if (expectedContent) {
+        expect(response.text).to.be.a("string").and.not.empty;
         expect(response.text).to.contain(expectedContent);
+      } else {
+        expect(response.body).to.be.instanceOf(Buffer).and.not.empty;
       }
     });
   });
