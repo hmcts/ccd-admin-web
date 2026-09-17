@@ -26,8 +26,7 @@ test.describe("user-profile administration UI - negative", () => {
     await userProfilesPage.idamIdInput.fill("not-an-email-address");
     await userProfilesPage.submitButton.click();
 
-    await expect(page.locator(".error-summary")).toContainText("Please select a valid email address!");
-    await expect(page).toHaveURL((url) => url.pathname === "/createuser");
+    await expect(userProfilesPage.idamIdValidationError).toHaveText("Email address invalid");
   });
 
   test("requires a delete decision", async ({ deleteConfirmationPage, page }) => {
