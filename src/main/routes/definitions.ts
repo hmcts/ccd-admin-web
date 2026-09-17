@@ -1,11 +1,10 @@
 import config from "config";
-import path from "node:path";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { render } from "../util/render";
 import router from "./home";
 import { validate } from "../validators/validateJurisdiction";
 
-const definitionsPage = path.join("definition", "view-definitions");
+const definitionsPage = "definition/view-definitions";
 const errorPage = "error";
 const url = config.get<string>("adminWeb.definitions_url");
 
