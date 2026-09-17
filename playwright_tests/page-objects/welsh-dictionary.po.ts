@@ -15,6 +15,7 @@ export class WelshDictionaryPage {
 
   async open(): Promise<void> {
     await this.navigationLink.click();
+    await this.page.waitForLoadState("load");
   }
 
   async download(): Promise<void> {
