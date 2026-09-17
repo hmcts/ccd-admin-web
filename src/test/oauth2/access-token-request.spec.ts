@@ -15,7 +15,10 @@ describe("Access Token Request", () => {
   const TOKEN_ENDPOINT = "http://localhost:1234/oauth2/token";
   const REDIRECT_URN = "localhost/redirect/to";
   const REDIRECT_URL = "https://localhost/redirect/to";
+  const REDIRECT_URL_WITH_PORT = "https://localhost:3501/redirect/to";
+  const DISALLOWED_URI = "https://attacker.com/steal";
   const AUTH_CODE = "xyz789";
+  const REDIRECT_ALLOWLIST = "localhost,127.0.0.1";
 
   const REQUEST = sinonExpressMock.mockReq({
     query: {
@@ -27,6 +30,12 @@ describe("Access Token Request", () => {
     query: {
       code: AUTH_CODE,
       redirect_uri: REDIRECT_URL,
+    },
+  });
+  const REQUEST_WITH_PORT = sinonExpressMock.mockReq({
+    query: {
+      code: AUTH_CODE,
+      redirect_uri: REDIRECT_URL_WITH_PORT,
     },
   });
   const RESPONSE = {
@@ -47,6 +56,7 @@ describe("Access Token Request", () => {
     config = {
       get: sinon.stub(),
     };
+    config.get.withArgs("idam.oauth2.redirect_uri_allowlist").returns(REDIRECT_ALLOWLIST);
     fetchMockInstance = fetchMock.createInstance().post(`begin:${TOKEN_ENDPOINT}`, RESPONSE);
     fetch = fetchMockInstance.fetchHandler;
 
@@ -92,5 +102,38 @@ describe("Access Token Request", () => {
         done();
       })
       .catch((error) => done(new Error(error)));
+  });
+
+  it("should allow redirect URIs with an allowed hostname and port", (done) => {
+    config.get.withArgs("idam.oauth2.client_id").returns(CLIENT_ID);
+    config.get.withArgs("secrets.ccd.ccd-admin-web-oauth2-client-secret").returns(CLIENT_SECRET);
+    config.get.withArgs("idam.oauth2.token_endpoint").returns(TOKEN_ENDPOINT);
+
+    accessTokenRequest(REQUEST_WITH_PORT)
+      .then(() => {
+        const lastCall = fetchMockInstance.callHistory.lastCall();
+        expect(fetchMockInstance.callHistory.called()).to.be.true;
+        const requestedUrl = url.parse(lastCall.url, true);
+        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL_WITH_PORT);
+        done();
+      })
+      .catch((error) => done(new Error(error)));
+  });
+
+  it("should reject redirect URIs with disallowed hosts", async () => {
+    config.get.withArgs("idam.oauth2.client_id").returns(CLIENT_ID);
+    config.get.withArgs("secrets.ccd.ccd-admin-web-oauth2-client-secret").returns(CLIENT_SECRET);
+    config.get.withArgs("idam.oauth2.token_endpoint").returns(TOKEN_ENDPOINT);
+    const REQUEST_DISALLOWED = sinonExpressMock.mockReq({
+      query: { code: AUTH_CODE, redirect_uri: DISALLOWED_URI },
+    });
+    try {
+      await accessTokenRequest(REQUEST_DISALLOWED);
+      expect.fail("Expected error to be thrown");
+    } catch (error) {
+      expect(error.status).to.equal(400);
+      expect(error.error).to.equal("Bad Request");
+      expect(error.message).to.equal("Redirect URI is not permitted");
+    }
   });
 });
