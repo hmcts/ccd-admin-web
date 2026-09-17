@@ -29,6 +29,7 @@ export class UserProfilesPage {
 
   async openJurisdictionSelection(): Promise<void> {
     await this.jurisdictionNavigationLink.click();
+    await this.page.waitForLoadState("load");
   }
 
   async selectFirstCompleteWorkBasket(): Promise<{
