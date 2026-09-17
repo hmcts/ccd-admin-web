@@ -19,10 +19,12 @@ export class IndexManagementPage {
 
   async openElasticsearch(): Promise<void> {
     await this.elasticsearchLink.click();
+    await this.page.waitForLoadState("load");
   }
 
   async openGlobalSearch(): Promise<void> {
     await this.globalSearchLink.click();
+    await this.page.waitForLoadState("load");
   }
 
   async submit(): Promise<void> {

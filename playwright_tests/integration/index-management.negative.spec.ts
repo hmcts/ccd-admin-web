@@ -34,6 +34,7 @@ test.describe("mocked index-management UI states - negative", () => {
       await mockElasticsearchCaseTypesFailure(page, message, status);
 
       await indexManagementPage.openElasticsearch();
+      await expect(indexManagementPage.heading).toHaveText("Create Elasticsearch Indices");
       const failedCaseTypesResponse = page.waitForResponse((response) => {
         const url = new URL(response.url());
         return url.pathname === "/elasticsearch/case-types" && response.status() === status;
