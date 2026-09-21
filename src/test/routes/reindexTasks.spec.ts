@@ -1,21 +1,21 @@
 import * as chai from "chai";
-import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
-import { JSDOM } from "jsdom";
+import {appTestWithAuthorizedAdminWebRoles} from "../../main/app.test-admin-web-roles-authorized";
+import {JSDOM} from "jsdom";
 import * as sinonChai from "sinon-chai";
-import { app } from "../../main/app";
+import {app} from "../../main/app";
 import * as mock from "nock";
 import * as request from "supertest";
 import * as sinon from "sinon";
 import * as reindexTaskService from "../../main/service/reindex-task-service";
-import { get } from "config";
+import {get} from "config";
 import * as config from "config";
 
 const expect = chai.expect;
 chai.use(sinonChai);
 
 describe("test route Reindex Tasks", () => {
-    let getReindexTasksStub: sinon.SinonStub;
-    const mockTasks = [
+  let getReindexTasksStub: sinon.SinonStub;
+  const mockTasks = [
     {
       caseType: "CaseTypeA",
       deleteOldIndex: "false",
@@ -36,45 +36,45 @@ describe("test route Reindex Tasks", () => {
       startTime: "2025-10-30T14:05:59.102Z",
       status: "FAILED",
     }];
-    const paginatedMockTasks = Array.from({ length: 30 }, (_, index) => ({
-      caseType: `CaseType${index + 1}`,
-      deleteOldIndex: "false",
-      endTime: "2025-10-30T14:10:46.277Z",
-      exceptionMessage: "",
-      indexName: `casetype_cases-${index + 1}`,
-      jurisdiction: "JUR",
-      startTime: `2025-10-30T14:${(index + 1).toString().padStart(2, "0")}:40.448Z`,
-      status: "SUCCESS",
-      whoImported: "user@mail.com",
-    }));
-    const manyPaginatedMockTasks = Array.from({ length: 350 }, (_, index) => ({
-      caseType: `CaseType${index + 1}`,
-      deleteOldIndex: "false",
-      endTime: "2025-10-30T14:10:46.277Z",
-      exceptionMessage: "",
-      indexName: `casetype_cases-${index + 1}`,
-      jurisdiction: "JUR",
-      startTime: `2025-10-29T${Math.floor(index / 60).toString().padStart(2, "0")}:${(index % 60).toString().padStart(2, "0")}:40.448Z`,
-      status: "SUCCESS",
-      whoImported: "user@mail.com",
-    }));
+  const paginatedMockTasks = Array.from({length: 30}, (_, index) => ({
+    caseType: `CaseType${index + 1}`,
+    deleteOldIndex: "false",
+    endTime: "2025-10-30T14:10:46.277Z",
+    exceptionMessage: "",
+    indexName: `casetype_cases-${index + 1}`,
+    jurisdiction: "JUR",
+    startTime: `2025-10-30T14:${(index + 1).toString().padStart(2, "0")}:40.448Z`,
+    status: "SUCCESS",
+    whoImported: "user@mail.com",
+  }));
+  const manyPaginatedMockTasks = Array.from({length: 350}, (_, index) => ({
+    caseType: `CaseType${index + 1}`,
+    deleteOldIndex: "false",
+    endTime: "2025-10-30T14:10:46.277Z",
+    exceptionMessage: "",
+    indexName: `casetype_cases-${index + 1}`,
+    jurisdiction: "JUR",
+    startTime: `2025-10-29T${Math.floor(index / 60).toString().padStart(2, "0")}:${(index % 60).toString().padStart(2, "0")}:40.448Z`,
+    status: "SUCCESS",
+    whoImported: "user@mail.com",
+  }));
 
-    beforeEach(() => {
-        mock.cleanAll();
-        getReindexTasksStub = sinon.stub(reindexTaskService, "getReindexTasks");
-    });
+  beforeEach(() => {
+    mock.cleanAll();
+    getReindexTasksStub = sinon.stub(reindexTaskService, "getReindexTasks");
+  });
 
-    afterEach(() => {
-        sinon.restore();
-    });
+  afterEach(() => {
+    sinon.restore();
+  });
 
-    describe("on GET /reindex", () => {
+  describe("on GET /reindex", () => {
     it("should redirect to IdAM login page when not authenticated", () => {
-        return request(app)
+      return request(app)
         .get("/reindex")
         .then((res) => {
-            expect(res.statusCode).to.equal(302);
-            expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+          expect(res.statusCode).to.equal(302);
+          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
         });
     });
 
@@ -102,20 +102,20 @@ describe("test route Reindex Tasks", () => {
         .get("/reindex")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
-            expect(res.statusCode).to.equal(200);
-            const dom = new JSDOM(res.text);
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
 
-            const pageHeading = dom.window.document.querySelector(".heading-large");
-            expect(pageHeading?.textContent).to.include("Reindex");
+          const pageHeading = dom.window.document.querySelector(".heading-large");
+          expect(pageHeading?.textContent).to.include("Reindex");
 
-            const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
-            expect(rows[0].textContent).to.include("CaseTypeB"); // Sorted descending by startTime
+          const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
+          expect(rows[0].textContent).to.include("CaseTypeB"); // Sorted descending by startTime
 
-            const textContent = dom.window.document.body.textContent;
-            expect(textContent).to.include("CaseTypeA");
-            expect(textContent).to.include("CaseTypeB");
+          const textContent = dom.window.document.body.textContent;
+          expect(textContent).to.include("CaseTypeA");
+          expect(textContent).to.include("CaseTypeB");
         });
-  });
+    });
 
     it("should render filtered tasks when caseType query is selected", async () => {
       const filteredTasks = [mockTasks[1]];
@@ -124,24 +124,24 @@ describe("test route Reindex Tasks", () => {
       getReindexTasksStub.onSecondCall().resolves(filteredTasks);
 
       return request(appTestWithAuthorizedAdminWebRoles)
-      .get("/reindex?caseType=CaseTypeA")
-      .set("Cookie", "accessToken=ey123.ey456")
-      .then((res) => {
-        expect(res.statusCode).to.equal(200);
-        const dom = new JSDOM(res.text);
+        .get("/reindex?caseType=CaseTypeA")
+        .set("Cookie", "accessToken=ey123.ey456")
+        .then((res) => {
+          expect(res.statusCode).to.equal(200);
+          const dom = new JSDOM(res.text);
 
-        const select = dom.window.document.querySelector("#caseType");
-        expect(select).to.exist;
+          const select = dom.window.document.querySelector("#caseType");
+          expect(select).to.exist;
 
-        const selectedOption = dom.window.document.querySelector("option[selected]");
-        expect(selectedOption?.getAttribute("value")).to.equal("CaseTypeA");
+          const selectedOption = dom.window.document.querySelector("option[selected]");
+          expect(selectedOption?.getAttribute("value")).to.equal("CaseTypeA");
 
-        const bodyText = dom.window.document.body.textContent;
-        expect(bodyText).to.include("CaseTypeA");
+          const bodyText = dom.window.document.body.textContent;
+          expect(bodyText).to.include("CaseTypeA");
 
-        expect(getReindexTasksStub).to.have.been.calledTwice;
-        expect(getReindexTasksStub.secondCall.args[1]).to.equal("CaseTypeA");
-      });
+          expect(getReindexTasksStub).to.have.been.calledTwice;
+          expect(getReindexTasksStub.secondCall.args[1]).to.equal("CaseTypeA");
+        });
     });
 
     it("should render auto refresh toggle and client-side refresh script", async () => {
@@ -180,7 +180,7 @@ describe("test route Reindex Tasks", () => {
           const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
           const tableText = rows.map((row) => row.textContent || "").join(" ");
 
-          expect(rows.length).to.equal(25);
+          expect(rows).to.have.lengthOf(25);
           expect(tableText).to.include("CaseType30");
           expect(tableText).to.not.include("CaseType5");
 
@@ -205,7 +205,7 @@ describe("test route Reindex Tasks", () => {
           const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
           const tableText = rows.map((row) => row.textContent || "").join(" ");
 
-          expect(rows.length).to.equal(5);
+          expect(rows).to.have.lengthOf(5);
           expect(tableText).to.include("CaseType5");
           expect(tableText).to.not.include("CaseType30");
 
@@ -235,16 +235,16 @@ describe("test route Reindex Tasks", () => {
     });
 
     it("should render an error page when the service throws", async () => {
-        getReindexTasksStub.rejects(new Error("Error fetching reindex tasks (HTTP 500)"));
+      getReindexTasksStub.rejects(new Error("Error fetching reindex tasks (HTTP 500)"));
 
-        return request(appTestWithAuthorizedAdminWebRoles)
+      return request(appTestWithAuthorizedAdminWebRoles)
         .get("/reindex")
         .then((res) => {
-            expect(res.statusCode).to.equal(500);
-            const dom = new JSDOM(res.text);
+          expect(res.statusCode).to.equal(500);
+          const dom = new JSDOM(res.text);
 
-            const errorMessage = dom.window.document.body.textContent;
-            expect(errorMessage).to.include("Error fetching reindex tasks (HTTP 500)");
+          const errorMessage = dom.window.document.body.textContent;
+          expect(errorMessage).to.include("Error fetching reindex tasks (HTTP 500)");
         });
     });
   });

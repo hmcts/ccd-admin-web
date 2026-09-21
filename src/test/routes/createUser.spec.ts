@@ -1,9 +1,9 @@
-import { app } from "../../main/app";
-import { appTest } from "../../main/app.test";
-import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
-import { expect } from "chai";
-import { get } from "config";
-import { JSDOM } from "jsdom";
+import {app} from "../../main/app";
+import {appTest} from "../../main/app.test";
+import {appTestWithAuthorizedAdminWebRoles} from "../../main/app.test-admin-web-roles-authorized";
+import {expect} from "chai";
+import {get} from "config";
+import {JSDOM} from "jsdom";
 import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as request from "supertest";
@@ -138,7 +138,10 @@ describe("on Get /createuser", () => {
     return request(appTestWithAuthorizedAdminWebRoles)
       .get("/createuser")
       .set("Cookie", "accessToken=ey123.ey456")
-      .expect(400);
+      .expect(400)
+      .then((res) => {
+        expect(res.statusCode).to.equal(400);
+      });
   });
 });
 
