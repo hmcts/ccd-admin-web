@@ -1,5 +1,7 @@
 appInsights:
   enabled: false
+idam:
+  s2s_url: http://localhost:4502
 adminWeb:
   elastic_search_reindex_enabled: true
 secrets:
