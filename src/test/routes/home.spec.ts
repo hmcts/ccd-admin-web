@@ -1,6 +1,7 @@
 import { app } from "../../main/app";
 import { expect } from "chai";
-import { get } from "config";
+import * as config from "config";
+const get = config.get.bind(config);
 import * as idamServiceMock from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
 import * as mock from "nock";

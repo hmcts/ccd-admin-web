@@ -7,8 +7,8 @@ import * as mock from "nock";
 import * as request from "supertest";
 import * as sinon from "sinon";
 import * as reindexTaskService from "../../main/service/reindex-task-service";
-import { get } from "config";
 import * as config from "config";
+const get = config.get.bind(config);
 
 const expect = chai.expect;
 chai.use(sinonChai);

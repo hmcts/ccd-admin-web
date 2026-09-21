@@ -4,7 +4,8 @@ import * as idamServiceMock from "../http-mocks/idam";
 import { JSDOM } from "jsdom";
 import * as mock from "nock";
 import * as request from "supertest";
-import { get } from "config";
+import * as config from "config";
+const get = config.get.bind(config);
 
 describe("Jurisdiction page", () => {
   beforeEach(() => {
