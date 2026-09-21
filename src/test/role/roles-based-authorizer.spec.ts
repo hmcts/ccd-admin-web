@@ -19,6 +19,7 @@ describe("rolesBasedAuthorizer", () => {
 
     const config = {
       get: sinon.stub(),
+      has: sinon.stub().withArgs("security.roles_whitelist").returns(true),
     };
     config.get.withArgs("security.roles_whitelist").returns(whitelist);
 
