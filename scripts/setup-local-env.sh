@@ -22,6 +22,20 @@ fi
 export HTTPS_CERT_PATH="$secret_dir/localhost.crt"
 export HTTPS_KEY_PATH="$secret_dir/localhost.key"
 
+if [[ -z "${SESSION_KEYS:-}" ]]; then
+  if [[ ! -f "$secret_dir/session-keys.json" ]]; then
+    (
+      umask 077
+      session_key_one=$(openssl rand -hex 32)
+      session_key_two=$(openssl rand -hex 32)
+      printf '["%s","%s"]\n' "$session_key_one" "$session_key_two" > "$secret_dir/session-keys.json"
+    )
+  fi
+  chmod 600 "$secret_dir/session-keys.json"
+  SESSION_KEYS=$(cat "$secret_dir/session-keys.json")
+fi
+export SESSION_KEYS
+
 if [[ -z "${IDAM_ADMIN_WEB_SERVICE_KEY:-}" ]]; then
   if [[ -n "${ZSH_VERSION:-}" ]]; then
     read -r -s "IDAM_ADMIN_WEB_SERVICE_KEY?IDAM_ADMIN_WEB_SERVICE_KEY: "
@@ -42,4 +56,4 @@ if [[ -z "${IDAM_OAUTH2_AW_CLIENT_SECRET:-}" ]]; then
   export IDAM_OAUTH2_AW_CLIENT_SECRET
 fi
 
-echo "Local HTTPS environment configured for this shell."
+echo "Local HTTPS and session keys configured for this shell."
