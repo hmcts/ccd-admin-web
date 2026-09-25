@@ -4,6 +4,9 @@ adminWeb:
   elastic_search_reindex_enabled: true
 secrets:
   ccd:
+    session-keys:
+      - mocha-session-key-1
+      - mocha-session-key-2
     microservicekey-ccd-admin: AAAAAAAAAAAAAAAD
     ccd-admin-web-oauth2-client-secret: IIIIIIIIIIIIIIII
     AppInsightsInstrumentationKey: "some-key"
