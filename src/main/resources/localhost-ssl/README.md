@@ -1,5 +1,4 @@
 # SSL key and certificate (development only)
 
-This folder contains a private RSA key and a self-signed certificate. These resources are used for exposing
-the application via HTTPS in development environment. They must not be used in other environments,
-as their purpose is to provide consistency, not security.
+The certificate may be used for local development HTTPS. The private key is deliberately not stored in
+source control. Set `HTTPS_CERT_PATH` and `HTTPS_KEY_PATH` to locally managed files when HTTPS is required.
