@@ -25,7 +25,7 @@ describe("Jurisdiction page", () => {
 
     it("should return jurisdiction list", () => {
       idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      idamServiceMock.optionallyResolveRetrieveServiceToken();
 
       mock("http://localhost:4451")
         .get("/api/data/jurisdictions")

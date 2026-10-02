@@ -21,6 +21,8 @@ The following environment variables are required:
 | Name                                 | Default | Description                                                                                                                                                            |
 |--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ADMINWEB_IMPORT_URL                  | http://localhost:4451/import | URL of the Case Definition Store API `import` endpoint. default for the dockerised local instance.                                              |
+| SESSION_KEYS                         | - | JSON array of at least two unique session cookie signing keys, for example `["long-random-key-1","long-random-key-2"]`. In deployed environments `session-keys` Key Vault secret. |
+| ADMINWEB_UPLOAD_DICTIONARY_FILE_PATH | - | Path to local dir for upload.                                                                                                                                          |
 | APPINSIGHTS_INSTRUMENTATIONKEY       | - | Secret for Microsoft Insights logging, can be a dummy string in local.                                                                                                 |
 | IDAM_ADMIN_WEB_SERVICE_KEY           | - | Case Admin Web's IdAM S2S micro-service secret key. This must match the IdAM instance it's being run against.                                                          |
 | IDAM_HMCTS_ACCESS_URL                | http://localhost:9002 | Base URL for IdAM's HMCTS Acccess service (idam-hmcts-access). default for the dockerised local instance or tunnelled `dev` instance.              |
@@ -56,3 +58,13 @@ node server.js
 ### Accessing the service
 
 The application uses HTTP, port 3100 by default. Point your browser at http://localhost:3100 to login.
+
+### Deployed smoke tests
+
+The non-destructive Supertest smoke suite targets a running deployment through `TEST_URL`, as part of the CI or locally as required :
+
+```bash
+TEST_URL=http://localhost:3100 yarn test:smoke
+```
+
+The shared Jenkins pipeline supplies `TEST_URL` after deployment. Set `ADMINWEB_LOGIN_URL` as well when the test must assert a specific IdAM login endpoint.
