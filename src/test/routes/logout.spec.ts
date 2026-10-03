@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
+import { COOKIE_ACCESS_TOKEN, COOKIE_ID_TOKEN } from "../../main/routes/oauth2redirect";
 import fetchMock from "fetch-mock";
 import * as proxyquire from "proxyquire";
 import * as sinon from "sinon";
@@ -13,7 +13,9 @@ describe("logout", () => {
   const CLIENT_ID = "ccd_admin";
   const CLIENT_SECRET = "abc123def456";
   const ACCESS_TOKEN = "eycdjc7hf3478g4f37";
-  const LOGOUT_ENDPOINT = "http://localhost/session/:token";
+  const ID_TOKEN = "id-token-value";
+  const HMCTS_ACCESS_URL = "http://localhost:1234";
+  const LOGOUT_ENDPOINT = `${HMCTS_ACCESS_URL}/o/endSession?token=:token`;
 
   let config;
   let request;
@@ -29,11 +31,13 @@ describe("logout", () => {
     };
     config.get.withArgs("idam.oauth2.client_id").returns(CLIENT_ID);
     config.get.withArgs("secrets.ccd.ccd-admin-web-oauth2-client-secret").returns(CLIENT_SECRET);
-    config.get.withArgs("idam.oauth2.logout_endpoint").returns(LOGOUT_ENDPOINT);
+    config.get.withArgs("idam.hmcts_access_url").returns(HMCTS_ACCESS_URL);
+    config.get.withArgs("idam.web_public_url").returns(HMCTS_ACCESS_URL);
 
     request = sinonExpressMock.mockReq({
       cookies: {
         [COOKIE_ACCESS_TOKEN]: ACCESS_TOKEN,
+        [COOKIE_ID_TOKEN]: ID_TOKEN,
       },
       session: {},
     });
@@ -41,7 +45,7 @@ describe("logout", () => {
     next = sinon.stub();
 
     fetchMockInstance = fetchMock.createInstance()
-      .delete(LOGOUT_ENDPOINT.replace(":token", ACCESS_TOKEN), {});
+      .get(LOGOUT_ENDPOINT.replace(":token", ID_TOKEN), {});
     fetch = fetchMockInstance.fetchHandler;
 
     logout = proxyquire("../../main/routes/logout", {
@@ -55,11 +59,12 @@ describe("logout", () => {
       try {
         const lastCall = fetchMockInstance.callHistory.lastCall();
         expect(fetchMockInstance.callHistory.called(
-          LOGOUT_ENDPOINT.replace(":token", ACCESS_TOKEN))).to.be.true;
+          LOGOUT_ENDPOINT.replace(":token", ID_TOKEN))).to.be.true;
         expect(lastCall.options.headers.authorization).to.equal("Basic "
           + Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"));
         expect(next).not.to.be.called;
         expect(response.clearCookie).to.be.calledWith(COOKIE_ACCESS_TOKEN);
+        expect(response.clearCookie).to.be.calledWith(COOKIE_ID_TOKEN);
         expect(request.session).to.be.null;
         expect(response.redirect).to.be.calledWith(302, "/");
         done();
@@ -72,7 +77,7 @@ describe("logout", () => {
 
     expect(config.get).to.be.calledWith("idam.oauth2.client_id");
     expect(config.get).to.be.calledWith("secrets.ccd.ccd-admin-web-oauth2-client-secret");
-    expect(config.get).to.be.calledWith("idam.oauth2.logout_endpoint");
+    expect(config.get).to.be.calledWith("idam.web_public_url");
   });
 
   it("should return 400 error when cookies missing", () => {
