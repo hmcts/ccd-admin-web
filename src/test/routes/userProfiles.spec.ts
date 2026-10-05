@@ -7,6 +7,7 @@ import * as request from "supertest";
 import * as sinon from "sinon";
 
 describe("User profiles page", () => {
+  const TEST_SESSION_KEY = "test-session-key-1";
 
   beforeEach(() => {
     const config = {
@@ -18,8 +19,8 @@ describe("User profiles page", () => {
 
   describe("on GET /userprofiles", () => {
     it("should not return user profiles for given Jurisdiction without authorized roles", () => {
-      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
-      const sessionCookie = mockSession("session", "key1", { jurisdiction: "Mike" });
+      // Set jurisdiction in the appTest session object, signed with the test session key.
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, { jurisdiction: "Mike" });
 
       return request(appTest)
         .get("/userprofiles")
@@ -43,8 +44,8 @@ describe("User profiles page", () => {
           work_basket_default_state: "State 3",
         }]);
 
-      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
-      const sessionCookie = mockSession("session", "key1", { jurisdiction: "Mike" });
+      // Set jurisdiction in the appTest session object, which is stored as a cookie signed with the test session key.
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, { jurisdiction: "Mike" });
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/userprofiles")
@@ -58,7 +59,7 @@ describe("User profiles page", () => {
 
     it("should not return all user profiles if Jurisdiction is not present in session without authorized roles", () => {
       // Omit jurisdiction in the appTest session object
-      const sessionCookie = mockSession("session", "key1", {});
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, {});
 
       return request(appTest)
         .get("/userprofiles")
@@ -83,7 +84,7 @@ describe("User profiles page", () => {
         }]);
 
       // Omit jurisdiction in the appTest session object
-      const sessionCookie = mockSession("session", "key1", {});
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/userprofiles")

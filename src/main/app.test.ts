@@ -9,13 +9,14 @@ import { importAll } from "./import-all/index";
 
 const cookieSession = require("cookie-session");
 const env = process.env.NODE_ENV || "development";
+const testSessionKeys = ["test-session-key-1", "test-session-key-2"];
 export const appTest: express.Express = express();
 appTest.locals.ENV = env;
 
 // Session
 appTest.set("trust proxy", 1); // trust first proxy
 appTest.use(cookieSession({
-  keys: ["key1", "key2"],
+  keys: testSessionKeys,
   name: "session",
 }));
 
