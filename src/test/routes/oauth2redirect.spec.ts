@@ -61,8 +61,6 @@ describe("oauth2redirect", () => {
 
   describe("when OAuth2 state is not present", () => {
     it("should reject the callback and not set an accessToken cookie", () => {
-      idamServiceMock.resolveExchangeCode(token);
-
       return request(app)
         .get("/oauth2redirect")
         .then((res) => {
@@ -76,8 +74,6 @@ describe("oauth2redirect", () => {
 
   describe("when OAuth2 code is not present but state is valid", () => {
     it("should return 400 and not set an accessToken cookie", () => {
-      idamServiceMock.resolveExchangeCode(token);
-
       return createOauthSession()
         .then(({ sessionCookies, state }) => {
           return request(app)
