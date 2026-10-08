@@ -17,7 +17,9 @@ nodejs:
     ADMINWEB_AUTHORIZATION_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/idam/adminweb/authorization
     ADMINWEB_IMPORT_AUDITS_URL: http://ccd-definition-store-api-aat.service.core-compute-aat.internal/api/import-audits
     ADMINWEB_GET_DICTIONARY_URL: https://ts-translation-service-pr-226.preview.platform.hmcts.net/dictionary
-
+    IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
+    IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
+    SESSION_KEYS: '${SESSION_KEYS}'
 
 idam-pr:
   enabled: true
