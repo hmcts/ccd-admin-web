@@ -3,6 +3,7 @@ import * as config from "config";
 import { accessTokenRequest } from "../oauth2/access-token-request";
 
 export const COOKIE_ACCESS_TOKEN = "accessToken";
+export const COOKIE_ID_TOKEN = "idToken";
 const router = express.Router();
 
 export const oauth2redirect = (req, res, next) => {
@@ -13,6 +14,12 @@ export const oauth2redirect = (req, res, next) => {
       .replace("https://", "").split("?", 1)[0];
     accessTokenRequest(req, redirectUri)
       .then((result) => {
+        res.cookie(COOKIE_ID_TOKEN, result.id_token,
+          {
+            httpOnly: true,
+            maxAge: result.expires_in * 1000,
+            secure : config.get("security.secure_auth_cookie_enabled"),
+          });
         res.cookie(COOKIE_ACCESS_TOKEN, result.access_token,
           {
             httpOnly: true,
