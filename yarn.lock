@@ -2041,11 +2041,11 @@ __metadata:
   linkType: hard
 
 "@snyk/protect@npm:^1.1103.0":
-  version: 1.1307.2
-  resolution: "@snyk/protect@npm:1.1307.2"
+  version: 1.1307.4
+  resolution: "@snyk/protect@npm:1.1307.4"
   bin:
     snyk-protect: bin/snyk-protect
-  checksum: 10/eb9ddd917c6f2aea1c1b5530a513ca054b65cf7feb45c2257f0df35f79a067d4c7c3c13f9b52d1680a7f821440aa5513673ec3a336dae8b8b5beef13c29e95cc
+  checksum: 10/f9bbe49a4228f635d877f03a9878409e9b69a9245381719d7ec8b56555696a6e407f34cb12e4a3b0430f8c2056a6744bde8beef79f805a4b6e27fa606fee7f41
   languageName: node
   linkType: hard
 
@@ -3138,12 +3138,12 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^1.1.13":
-  version: 1.1.18
-  resolution: "brace-expansion@npm:1.1.18"
+  version: 1.1.21
+  resolution: "brace-expansion@npm:1.1.21"
   dependencies:
     balanced-match: "npm:^1.0.0"
     concat-map: "npm:0.0.1"
-  checksum: 10/b55a3c03239b8d2127c7cbb3408c9ad3a556a8c303bf3064df78bfb7c093160fc8f6e0a32e42a850a78eba12f29ccf6ef997690b9acf945d242c56c61c4aa977
+  checksum: 10/6c0ed34107cb3bd3f44c01d90ec8c01baa3ed75b7755617e2e5797b5908bbf20b313edf575612b200a783b84c7d1826aec2f7a2f03de9905bbfae5dc3dea6a95
   languageName: node
   linkType: hard
 
@@ -8606,9 +8606,9 @@ __metadata:
   linkType: hard
 
 "moment@npm:^2.29.4":
-  version: 2.30.1
-  resolution: "moment@npm:2.30.1"
-  checksum: 10/ae42d876d4ec831ef66110bdc302c0657c664991e45cf2afffc4b0f6cd6d251dde11375c982a5c0564ccc0fa593fc564576ddceb8c8845e87c15f58aa6baca69
+  version: 2.31.0
+  resolution: "moment@npm:2.31.0"
+  checksum: 10/fd3708d46f820c64fe1e064a60747533a55ee0aefd944490e18f08b2a83a5b6418bb4f42e1de47ef1f1a29f450c7ac41edd1fa6f940db30ded247c9717301b9f
   languageName: node
   linkType: hard
 
