@@ -3420,7 +3420,7 @@ __metadata:
     brace-expansion: "npm:^1.1.13"
     chai: "npm:^4.3.6"
     chai-as-promised: "npm:^8.0.0"
-    config: "npm:^2.0.1"
+    config: "npm:^4.4.2"
     cookie: "npm:^1.1.1"
     cookie-parser: "npm:^1.4.3"
     cookie-session: "npm:^2.0.0-beta.3"
@@ -3940,12 +3940,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"config@npm:^2.0.1":
-  version: 2.0.2
-  resolution: "config@npm:2.0.2"
+"config@npm:^4.4.2":
+  version: 4.4.2
+  resolution: "config@npm:4.4.2"
   dependencies:
-    json5: "npm:^1.0.1"
-  checksum: 10/3f5b9ca673125917d03b8d46b248bc3cb96c2e3a6d526bcc896e00329a951bf981eeda864e63297ed46a609a00d87d252ea7cb0610f847c2c1d0eb06dff53597
+    json5: "npm:^2.2.3"
+  checksum: 10/57c321f94d8893f3748daefc62923b806d8d79f1da12f448f5ee190c25aa75aed5c6e31f206c3dd0ea7a8f2d11d6737d24f92019509a5d2f4773156ede16e7de
   languageName: node
   linkType: hard
 

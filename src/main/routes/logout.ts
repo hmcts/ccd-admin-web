@@ -13,13 +13,14 @@ export const logout = (req, res, next) => {
     const options = {
       headers: {
         "Authorization": "Basic "
-          + Buffer.from(get("idam.oauth2.client_id") + ":" + get("secrets.ccd.ccd-admin-web-oauth2-client-secret"))
+          + Buffer.from(get<string>("idam.oauth2.client_id") + ":"
+            + get<string>("secrets.ccd.ccd-admin-web-oauth2-client-secret"))
             .toString("base64"),
         "Content-Type": "application/x-www-form-urlencoded",
       },
       method: "DELETE",
     };
-    fetch(get("idam.oauth2.logout_endpoint").replace(TOKEN_PLACEHOLDER, accessToken), options)
+    fetch(get<string>("idam.oauth2.logout_endpoint").replace(TOKEN_PLACEHOLDER, accessToken), options)
       .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
         // Delete the session

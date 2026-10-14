@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+require("./app-insights/app-insights")();
+
 import { Logger } from "@hmcts/nodejs-logging";
 import * as fs from "fs";
 import * as https from "https";
