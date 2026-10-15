@@ -717,33 +717,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fast-csv/format@npm:5.0.7":
-  version: 5.0.7
-  resolution: "@fast-csv/format@npm:5.0.7"
-  dependencies:
-    lodash.escaperegexp: "npm:^4.1.2"
-  checksum: 10/38253f12dab94d8cc1c907fbdd73f3b087fb5d14a731a8a6337d8e0f51d12fcaf1bde133759c52d42067889bc1b2797b06d60d2c5354d413989811acf19608a4
+"@fast-csv/format@npm:5.0.8":
+  version: 5.0.8
+  resolution: "@fast-csv/format@npm:5.0.8"
+  checksum: 10/157bfa370b14f9c32957a022f1e0a61a346bf22e6c1b7a4e7351c2cb46780f37a6307c20b11fa00fedc93ebd845ede3321cca8a6de752685ad490aea4297e524
   languageName: node
   linkType: hard
 
-"@fast-csv/parse@npm:5.0.7":
-  version: 5.0.7
-  resolution: "@fast-csv/parse@npm:5.0.7"
-  dependencies:
-    lodash.escaperegexp: "npm:^4.1.2"
-    lodash.groupby: "npm:^4.6.0"
-    lodash.uniq: "npm:^4.5.0"
-  checksum: 10/9edea70700dd4432b3204f1a0cad7fa40bdd07a86366424f8ecddb628c8e25241d6cc8067bb881f534d52400ac7c5b3ed945a4b873b7c5f99ca1bf390f0a116b
+"@fast-csv/parse@npm:5.0.8":
+  version: 5.0.8
+  resolution: "@fast-csv/parse@npm:5.0.8"
+  checksum: 10/f246ef7f3b66f2d54380fb468dd992ee0d19c0001f62ac437f42d79364de0df262c23a9ccecd9bf6ed1197bf7da735670c229c4844ed207a48b118054d9ec4f3
   languageName: node
   linkType: hard
 
 "@grpc/grpc-js@npm:^1.14.3":
-  version: 1.14.4
-  resolution: "@grpc/grpc-js@npm:1.14.4"
+  version: 1.14.5
+  resolution: "@grpc/grpc-js@npm:1.14.5"
   dependencies:
     "@grpc/proto-loader": "npm:^0.8.0"
     "@js-sdsl/ordered-map": "npm:^4.4.2"
-  checksum: 10/f9cdbd81e7388dc784c57274fcf6f4f4484da8968dd0975b97a14708d3fb117ae4a7bc2848e1bd1cc8b8ed9ee7a80ff131bfe728c85260da90a4e0b170e31ca9
+  checksum: 10/3be7fe0105c94e83e8a18b895fd534290cf3a26712940e95e0149b869da775a59551dafd60fd6c17213d3032b83fbfa64c6c2c9a0f569f6ef5968607174b7d79
   languageName: node
   linkType: hard
 
@@ -1052,6 +1046,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@opentelemetry/api-logs@npm:0.221.0":
+  version: 0.221.0
+  resolution: "@opentelemetry/api-logs@npm:0.221.0"
+  dependencies:
+    "@opentelemetry/api": "npm:^1.3.0"
+  checksum: 10/8f2f98c8ce62d2c8bbe1955700eb7ee97795bbf43395da835b6f3eacca775b44b8057b67145e6bed3854625334f2f39428bc34164b9794eb730f4383d71cdbaf
+  languageName: node
+  linkType: hard
+
 "@opentelemetry/api@npm:^1.3.0, @opentelemetry/api@npm:^1.9.0":
   version: 1.9.0
   resolution: "@opentelemetry/api@npm:1.9.0"
@@ -1107,14 +1110,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:2.11.0":
-  version: 2.11.0
-  resolution: "@opentelemetry/core@npm:2.11.0"
+"@opentelemetry/core@npm:2.12.0":
+  version: 2.12.0
+  resolution: "@opentelemetry/core@npm:2.12.0"
   dependencies:
     "@opentelemetry/semantic-conventions": "npm:^1.29.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 10/934e4c1b9628643365f0a1225734dd2e264e22960eb8b5e484627ffadb94fe4af6e573b4cd568174209c0c9b2a73217af9dfb2b03a97974ea77ab2563d5bb071
+  checksum: 10/2bbc02ad2e131d23061d24826fdd061b5f5527c16f482d05906dfa345373165c2ad6f90089593f30abfd3029d7488b618f029c831155225151b74dec71bf1746
   languageName: node
   linkType: hard
 
@@ -1359,15 +1362,15 @@ __metadata:
   linkType: hard
 
 "@opentelemetry/instrumentation-mysql@npm:^0.66.0":
-  version: 0.66.0
-  resolution: "@opentelemetry/instrumentation-mysql@npm:0.66.0"
+  version: 0.67.0
+  resolution: "@opentelemetry/instrumentation-mysql@npm:0.67.0"
   dependencies:
-    "@opentelemetry/instrumentation": "npm:^0.220.0"
+    "@opentelemetry/instrumentation": "npm:^0.221.0"
     "@opentelemetry/semantic-conventions": "npm:^1.33.0"
     "@types/mysql": "npm:2.15.27"
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 10/0e3d17d50b98f112b3ee2fc4b0a3b9ccb1ccaa8a8e516bcf872c131a9c9e623d18932a24bd7b2dbb5b685c6e3840980cb80c507edd9a92bd05d95efc96e1d89a
+  checksum: 10/7d7aab1c04e0f0fde08987728856dd7af31bd01ebcd65090e31ff87bb3d053333b69ce2624fed3086b51cf8566cefd69f5327f4fd05be5732e2814336f843f9e
   languageName: node
   linkType: hard
 
@@ -1438,6 +1441,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@opentelemetry/instrumentation@npm:^0.221.0":
+  version: 0.221.0
+  resolution: "@opentelemetry/instrumentation@npm:0.221.0"
+  dependencies:
+    "@opentelemetry/api-logs": "npm:0.221.0"
+    import-in-the-middle: "npm:^3.0.0"
+    require-in-the-middle: "npm:^8.0.0"
+  peerDependencies:
+    "@opentelemetry/api": ^1.3.0
+  checksum: 10/b7012dd7b56344decf78a3a62786559975f89d6c55602819089268cc6b6109b4cc617795f00b926bf46dfc15334579ae298e78fa865e6c46b0400bfae91971c2
+  languageName: node
+  linkType: hard
+
 "@opentelemetry/otlp-exporter-base@npm:0.220.0, @opentelemetry/otlp-exporter-base@npm:^0.220.0":
   version: 0.220.0
   resolution: "@opentelemetry/otlp-exporter-base@npm:0.220.0"
@@ -1492,13 +1508,13 @@ __metadata:
   linkType: hard
 
 "@opentelemetry/propagator-jaeger@npm:^2.9.0":
-  version: 2.11.0
-  resolution: "@opentelemetry/propagator-jaeger@npm:2.11.0"
+  version: 2.12.0
+  resolution: "@opentelemetry/propagator-jaeger@npm:2.12.0"
   dependencies:
-    "@opentelemetry/core": "npm:2.11.0"
+    "@opentelemetry/core": "npm:2.12.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 10/e69d4f5dccf452b0d9a59166b866225d4ff1f7aa8d10fae4300bd6b24992dad9f7f215157e1ba69461896b79aebed47ebf0b214119eaafeae4c734dd3d488444
+  checksum: 10/4fe5a0c0191fe83de7a7f3a8edcc99bc1804ea81fede247256362e86cea5a2457a75bc6080ba988bc524b05754a203f8bed183f2efb78b8953d21093211217fa
   languageName: node
   linkType: hard
 
@@ -2041,11 +2057,11 @@ __metadata:
   linkType: hard
 
 "@snyk/protect@npm:^1.1103.0":
-  version: 1.1307.4
-  resolution: "@snyk/protect@npm:1.1307.4"
+  version: 1.1308.0
+  resolution: "@snyk/protect@npm:1.1308.0"
   bin:
     snyk-protect: bin/snyk-protect
-  checksum: 10/f9bbe49a4228f635d877f03a9878409e9b69a9245381719d7ec8b56555696a6e407f34cb12e4a3b0430f8c2056a6744bde8beef79f805a4b6e27fa606fee7f41
+  checksum: 10/f9602055e4a59df043c4c68ad76f6d71ede10cad60bcc5aea121615a82b0f22eeae03d867a1769060c2dfcef1fb9e9a1cba63e2f2c4d20459728bb04fcd81066
   languageName: node
   linkType: hard
 
@@ -4556,8 +4572,8 @@ __metadata:
   linkType: hard
 
 "engine.io@npm:^6.2.1":
-  version: 6.6.10
-  resolution: "engine.io@npm:6.6.10"
+  version: 6.6.11
+  resolution: "engine.io@npm:6.6.11"
   dependencies:
     "@types/cors": "npm:^2.8.12"
     "@types/node": "npm:>=10.0.0"
@@ -4568,7 +4584,7 @@ __metadata:
     debug: "npm:~4.4.1"
     engine.io-parser: "npm:~5.2.1"
     ws: "npm:~8.21.0"
-  checksum: 10/4688cf49c66bf7ccf8be374560750a77b6be8767e64ea169d4664dabadde7bba734235452d41d2383801042c62c2ce71ec9fc0776db7902a5f826f6ff942626a
+  checksum: 10/9a0c538de41b6e77da86723153e43d5843b8c82925be23278c3effd2c4bff601f9d1cab88e13a9fc9ca0d6a146055565e31397f4f73e4d5c1a79079b7aa23045
   languageName: node
   linkType: hard
 
@@ -5256,12 +5272,12 @@ __metadata:
   linkType: hard
 
 "fast-csv@npm:^5.0.0":
-  version: 5.0.7
-  resolution: "fast-csv@npm:5.0.7"
+  version: 5.0.8
+  resolution: "fast-csv@npm:5.0.8"
   dependencies:
-    "@fast-csv/format": "npm:5.0.7"
-    "@fast-csv/parse": "npm:5.0.7"
-  checksum: 10/e4d42f386fc01b404d5affb4f0c519e681bc288017ddb407cddbf7274dddf19fcd4c878520303dabed9f60c70874edca74612af38f0c0498d31f53b88c10e9fa
+    "@fast-csv/format": "npm:5.0.8"
+    "@fast-csv/parse": "npm:5.0.8"
+  checksum: 10/35dcabc935b04a46fb85950e6115f91a5eb5678cde7b2b75643da52fa909b9a5b906f94708b604a240a1677663a666e8f4b6ab18b55deeedc0a60c2e6afa9544
   languageName: node
   linkType: hard
 
@@ -5652,12 +5668,12 @@ __metadata:
   linkType: hard
 
 "follow-redirects@npm:^1.15.5":
-  version: 1.16.0
-  resolution: "follow-redirects@npm:1.16.0"
+  version: 1.16.1
+  resolution: "follow-redirects@npm:1.16.1"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: 10/3fbe3d80b3b544c22705d837aa5d4a0d07a740d913534a2620b0a004c610af4148e3b58723536dd099aaa1c9d3a155964bde9665d6e5cb331460809a1fc572fd
+  checksum: 10/269c9f38e4bb413d7ab224fb5aa733118288a18e84d4d0a22821a850574624a55d45f2c6735fc09fc1cceedb6343a5539daf6d2dd70bce8980c8336d230a2f50
   languageName: node
   linkType: hard
 
@@ -7952,24 +7968,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.escaperegexp@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "lodash.escaperegexp@npm:4.1.2"
-  checksum: 10/6d99452b1cfd6073175a9b741a9b09ece159eac463f86f02ea3bee2e2092923fce812c8d2bf446309cc52d1d61bf9af51c8118b0d7421388e6cead7bd3798f0f
-  languageName: node
-  linkType: hard
-
 "lodash.flattendeep@npm:^4.4.0":
   version: 4.4.0
   resolution: "lodash.flattendeep@npm:4.4.0"
   checksum: 10/0d0b41d8d86999e8bea94905ac65347404d427aacddbc6654dc2f85905e27cd2b708139671ecea135fa6f0a17ed94b9d4cab8ce12b08eddcbb1ddd83952ee4c2
-  languageName: node
-  linkType: hard
-
-"lodash.groupby@npm:^4.6.0":
-  version: 4.6.0
-  resolution: "lodash.groupby@npm:4.6.0"
-  checksum: 10/98bd04e58ce4cebb2273010352508b5ea12025e94fcfd70c84c8082ef3b0689178e8e6dd53bff919f525fae9bd67b4aba228d606b75a967f30e84ec9610b5de1
   languageName: node
   linkType: hard
 
@@ -8065,13 +8067,6 @@ __metadata:
   version: 3.6.1
   resolution: "lodash.restparam@npm:3.6.1"
   checksum: 10/8bda0c7aaeac93da2b7e856bfeec8e6fdefb4d7eadfe6fd84775312a729fc1cb985636d922fe33b49f41aba135204962f4b853d7946105b7704102edb2bf6082
-  languageName: node
-  linkType: hard
-
-"lodash.uniq@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.uniq@npm:4.5.0"
-  checksum: 10/86246ca64ac0755c612e5df6d93cfe92f9ecac2e5ff054b965efbbb1d9a647b6310969e78545006f70f52760554b03233ad0103324121ae31474c20d5f7a2812
   languageName: node
   linkType: hard
 
@@ -9791,12 +9786,12 @@ __metadata:
   linkType: hard
 
 "proxy-addr@npm:^2.0.7":
-  version: 2.0.7
-  resolution: "proxy-addr@npm:2.0.7"
+  version: 2.0.8
+  resolution: "proxy-addr@npm:2.0.8"
   dependencies:
     forwarded: "npm:0.2.0"
     ipaddr.js: "npm:1.9.1"
-  checksum: 10/f24a0c80af0e75d31e3451398670d73406ec642914da11a2965b80b1898ca6f66a0e3e091a11a4327079b2b268795f6fa06691923fef91887215c3d0e8ea3f68
+  checksum: 10/6922b732c5625a9ba174c053bf3a750a80c87f19b7c62919f88ff01834eb80e2467834cfa72fc48b3a7ed6b3d18daadf773f6efb21db1c5fcc76d784509fcf1f
   languageName: node
   linkType: hard
 
