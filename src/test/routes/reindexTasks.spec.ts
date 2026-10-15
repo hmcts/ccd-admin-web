@@ -14,6 +14,8 @@ const expect = chai.expect;
 chai.use(sinonChai);
 
 describe("test route Reindex Tasks", () => {
+    let appServer: any;
+    let authorizedAppServer: any;
     let getReindexTasksStub: sinon.SinonStub;
     const mockTasks = [
     {
@@ -64,13 +66,27 @@ describe("test route Reindex Tasks", () => {
         getReindexTasksStub = sinon.stub(reindexTaskService, "getReindexTasks");
     });
 
+    before((done) => {
+      appServer = app.listen(0, "127.0.0.1", () => {
+        authorizedAppServer = appTestWithAuthorizedAdminWebRoles.listen(0, "127.0.0.1", done);
+      });
+    });
+
     afterEach(() => {
         sinon.restore();
     });
 
+    after((done) => {
+      if (!appServer || !authorizedAppServer) {
+        done();
+        return;
+      }
+      appServer.close(() => authorizedAppServer.close(done));
+    });
+
     describe("on GET /reindex", () => {
     it("should redirect to IdAM login page when not authenticated", () => {
-        return request(app)
+        return request(appServer)
         .get("/reindex")
         .then((res) => {
             expect(res.statusCode).to.equal(302);
@@ -83,7 +99,7 @@ describe("test route Reindex Tasks", () => {
       configGetStub.callThrough();
       configGetStub.withArgs("adminWeb.elastic_search_reindex_enabled").returns(false);
 
-      return request(appTestWithAuthorizedAdminWebRoles)
+      return request(authorizedAppServer)
         .get("/reindex")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
@@ -98,7 +114,7 @@ describe("test route Reindex Tasks", () => {
       getReindexTasksStub.onFirstCall().resolves(mockTasks);
       getReindexTasksStub.onSecondCall().resolves(mockTasks);
 
-      return request(appTestWithAuthorizedAdminWebRoles)
+      return request(authorizedAppServer)
         .get("/reindex")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
@@ -123,7 +139,7 @@ describe("test route Reindex Tasks", () => {
       getReindexTasksStub.onFirstCall().resolves(mockTasks);
       getReindexTasksStub.onSecondCall().resolves(filteredTasks);
 
-      return request(appTestWithAuthorizedAdminWebRoles)
+      return request(authorizedAppServer)
       .get("/reindex?caseType=CaseTypeA")
       .set("Cookie", "accessToken=ey123.ey456")
       .then((res) => {
@@ -148,7 +164,7 @@ describe("test route Reindex Tasks", () => {
       getReindexTasksStub.onFirstCall().resolves(mockTasks);
       getReindexTasksStub.onSecondCall().resolves(mockTasks);
 
-      return request(appTestWithAuthorizedAdminWebRoles)
+      return request(authorizedAppServer)
         .get("/reindex")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
@@ -171,7 +187,7 @@ describe("test route Reindex Tasks", () => {
       getReindexTasksStub.onFirstCall().resolves(paginatedMockTasks);
       getReindexTasksStub.onSecondCall().resolves(paginatedMockTasks);
 
-      return request(appTestWithAuthorizedAdminWebRoles)
+      return request(authorizedAppServer)
         .get("/reindex")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
@@ -196,7 +212,7 @@ describe("test route Reindex Tasks", () => {
       getReindexTasksStub.onFirstCall().resolves(paginatedMockTasks);
       getReindexTasksStub.onSecondCall().resolves(paginatedMockTasks);
 
-      return request(appTestWithAuthorizedAdminWebRoles)
+      return request(authorizedAppServer)
         .get("/reindex?caseType=CaseTypeA&page=2")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
@@ -218,7 +234,7 @@ describe("test route Reindex Tasks", () => {
       getReindexTasksStub.onFirstCall().resolves(manyPaginatedMockTasks);
       getReindexTasksStub.onSecondCall().resolves(manyPaginatedMockTasks);
 
-      return request(appTestWithAuthorizedAdminWebRoles)
+      return request(authorizedAppServer)
         .get("/reindex")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
@@ -237,7 +253,7 @@ describe("test route Reindex Tasks", () => {
     it("should render an error page when the service throws", async () => {
         getReindexTasksStub.rejects(new Error("Error fetching reindex tasks (HTTP 500)"));
 
-        return request(appTestWithAuthorizedAdminWebRoles)
+        return request(authorizedAppServer)
         .get("/reindex")
         .then((res) => {
             expect(res.statusCode).to.equal(500);

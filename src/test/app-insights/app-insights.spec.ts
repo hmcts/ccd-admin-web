@@ -7,7 +7,7 @@ const expect = chai.expect;
 chai.use(sinonChai);
 
 describe("App Insights", () => {
-  const instrumentationKey = "instrumentation-key";
+  const connectionString = "InstrumentationKey=instrumentation-key;IngestionEndpoint=https://example.invalid/";
   const roleName = "ccd-admin-web";
   const cloudRoleKey = "ai.cloud.role";
 
@@ -17,7 +17,7 @@ describe("App Insights", () => {
 
   const loadAppInsights = (enabled: boolean) => {
     config.get.withArgs("appInsights.enabled").returns(enabled);
-    config.get.withArgs("secrets.ccd.AppInsightsInstrumentationKey").returns(instrumentationKey);
+    config.get.withArgs("secrets.ccd.app-insights-connection-string").returns(connectionString);
     config.get.withArgs("appInsights.roleName").returns(roleName);
 
     return proxyquire.noCallThru()("../../main/app-insights/app-insights", {
@@ -76,7 +76,7 @@ describe("App Insights", () => {
     });
 
     it("configures and starts App Insights", () => {
-      expect(appInsights.setup).to.have.been.calledWith(instrumentationKey);
+      expect(appInsights.setup).to.have.been.calledWith(connectionString);
       Object.keys(setupChain).forEach((method) => expect(setupChain[method]).to.have.been.calledWith(true));
       expect(appInsights.defaultClient.context.tags[cloudRoleKey]).to.equal(roleName);
       expect(appInsights.defaultClient.addTelemetryProcessor).to.have.been.calledOnce;

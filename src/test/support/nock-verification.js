@@ -1,3 +1,5 @@
+process.env.ALLOW_CONFIG_MUTATIONS = "true";
+
 const nock = require("nock");
 const unusedMocks = [];
 

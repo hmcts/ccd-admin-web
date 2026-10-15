@@ -16,10 +16,6 @@ import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-f
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { importAll } from "./import-all/index";
 
-const enableAppInsights = require("./app-insights/app-insights");
-
-enableAppInsights();
-
 import { serviceFilter } from "./service/service-filter";
 import { COOKIE_ACCESS_TOKEN } from "./user/user-request-authorizer";
 const cookieSession = require("cookie-session");
@@ -78,7 +74,7 @@ expressNunjucks(app, {
 // Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
 app.enable("trust proxy");
 
-if (config.useCSRFProtection === true) {
+if (config.get<boolean>("useCSRFProtection") === true) {
   const csrfOptions = {
     cookie: {
       httpOnly: true,
