@@ -26,6 +26,7 @@ The following environment variables are required:
 | IDAM_LOGOUT_URL                      | - | URL of the IdAM Authentication Web `logout` page. `https://localhost:3501/login/logout` for the dockerised local instance.                                             |
 | IDAM_OAUTH2_TOKEN_ENDPOINT           | - | URL of the IdAM OAuth2 API endpoint for obtaining an OAuth2 token. `http://localhost:5000/oauth2/token` for the dockerised local instance or tunnelled `dev` instance. |
 | IDAM_OAUTH2_AW_CLIENT_SECRET         | - | Secret to be passed to IdAM when obtaining an OAuth2 token. This must match the IdAM instance it's being run against.                                                  |
+| SESSION_KEYS                         | - | JSON array of at least two unique session cookie signing keys, for example `["long-random-key-1","long-random-key-2"]`. In deployed environments this should come from the `session-keys` Key Vault secret. |
 | ADMINWEB_LOGIN_URL                   | - | URL of the IdAM Authentication Web `login` page. `https://localhost:3501/login` for the dockerised local instance.                                                     |
 | ADMINWEB_IMPORT_URL                  | - | URL of the Case Definition Store API `import` endpoint. `http://localhost:4451/import` for the dockerised local instance.                                              |
 | ADMINWEB_UPLOAD_DICTIONARY_FILE_PATH | - | Path to local dir for upload.                                                                                                                                          |
@@ -59,3 +60,13 @@ node server.js
 ### Accessing the service
 
 The application uses HTTP, port 3100 by default. Point your browser at http://localhost:3100 to login.
+
+### Deployed smoke tests
+
+The non-destructive Supertest smoke suite targets a running deployment through `TEST_URL`, as part of the CI or locally as required :
+
+```bash
+TEST_URL=http://localhost:3100 yarn test:smoke
+```
+
+The shared Jenkins pipeline supplies `TEST_URL` after deployment. Set `ADMINWEB_LOGIN_URL` as well when the test must assert a specific IdAM login endpoint.

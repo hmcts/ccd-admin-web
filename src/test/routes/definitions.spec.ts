@@ -1,14 +1,13 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
 import * as mock from "nock";
 import * as mockSession from "mock-session";
-import * as request from "supertest-session";
+import * as request from "supertest";
 import * as sinon from "sinon";
 
 describe("Definitions page", () => {
-  const CCD_IMPORT_ROLE = "ccd-import";
+  const TEST_SESSION_KEY = "test-session-key-1";
 
   beforeEach(() => {
     const config = {
@@ -20,12 +19,14 @@ describe("Definitions page", () => {
 
   describe("on GET /definitions", () => {
     it("should not return Definitions list for given Jurisdiction when not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
-        .reply(200, [{
+        .optionally()
+        .reply(() => {
+          backendCalled = true;
+          return [200, [{
           case_types: "Type1,Type2",
           data: {
             Field1: "Some value",
@@ -37,15 +38,17 @@ describe("Definitions page", () => {
             name: "Test",
           },
           status: "DRAFT",
-        }]);
+          }]];
+        });
 
-      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
-      const sessionCookie = mockSession("session", "key1", { jurisdiction: "TEST" });
+      // Set jurisdiction in the appTest session object, which is stored as a cookie signed with the test session key.
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, { jurisdiction: "TEST" });
 
       return request(appTest)
         .get("/definitions")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Type1,Type2");
           expect(res.text).not.to.contain("Draft definition");
@@ -54,8 +57,6 @@ describe("Definitions page", () => {
     });
 
     it("should return Definitions list for given Jurisdiction when authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
@@ -73,8 +74,8 @@ describe("Definitions page", () => {
           status: "DRAFT",
         }]);
 
-      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
-      const sessionCookie = mockSession("session", "key1", { jurisdiction: "TEST" });
+      // Set jurisdiction in the appTest session object, which is stored as a cookie signed with the test session key.
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, { jurisdiction: "TEST" });
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/definitions")
@@ -87,12 +88,14 @@ describe("Definitions page", () => {
     });
 
     it("should not return all Definitions list if Jurisdiction is not present in session when not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({})
-        .reply(200, [{
+        .optionally()
+        .reply(() => {
+          backendCalled = true;
+          return [200, [{
           case_types: "Type1,Type2",
           data: {
             Field1: "Some value",
@@ -104,15 +107,17 @@ describe("Definitions page", () => {
             name: "Test",
           },
           status: "DRAFT",
-        }]);
+          }]];
+        });
 
       // Omit jurisdiction in the appTest session object
-      const sessionCookie = mockSession("session", "key1", {});
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, {});
 
       return request(appTest)
         .get("/definitions")
         .set("Cookie", `accessToken=ey123.ey456;${sessionCookie}`)
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Type1,Type2");
           expect(res.text).not.to.contain("Draft definition");
@@ -121,8 +126,6 @@ describe("Definitions page", () => {
     });
 
     it("should return all Definitions list if Jurisdiction is not present in session when authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({})
@@ -141,7 +144,7 @@ describe("Definitions page", () => {
         }]);
 
       // Omit jurisdiction in the appTest session object
-      const sessionCookie = mockSession("session", "key1", {});
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/definitions")
@@ -156,12 +159,14 @@ describe("Definitions page", () => {
 
   describe("on POST /definitions", () => {
     it("should not return Definitions list when not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
-        .reply(200, [{
+        .optionally()
+        .reply(() => {
+          backendCalled = true;
+          return [200, [{
           case_types: "Type1,Type2",
           data: {
             Field1: "Some value",
@@ -173,7 +178,8 @@ describe("Definitions page", () => {
             name: "Test",
           },
           status: "DRAFT",
-        }]);
+          }]];
+        });
 
       return request(appTest)
         .post("/definitions")
@@ -182,6 +188,7 @@ describe("Definitions page", () => {
           jurisdictionName: "TEST",
         })
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Type1,Type2");
           expect(res.text).not.to.contain("Draft definition");
@@ -189,8 +196,6 @@ describe("Definitions page", () => {
     });
 
     it("should return Definitions list when authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
@@ -221,12 +226,15 @@ describe("Definitions page", () => {
         });
     });
     it("should not return error from the server when not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+      let backendCalled = false;
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
-        .replyWithError({ code: 500, text: "Server Error" });
+        .optionally()
+        .reply(() => {
+          backendCalled = true;
+          return [500, "Server Error"];
+        });
 
       return request(appTest)
         .post("/definitions")
@@ -235,17 +243,16 @@ describe("Definitions page", () => {
           jurisdictionName: "TEST",
         })
         .then((res) => {
+          expect(backendCalled).to.be.false;
           expect(res.status).to.equal(200);
         });
     });
 
-    it("should return error from the server when authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.resolveRetrieveServiceToken();
+    it("should return an error page for an HTTP 500 response when authorized", () => {
       mock("http://localhost:4451")
         .get("/api/drafts")
         .query({ jurisdiction: "TEST" })
-        .replyWithError({ code: 500, text: "Server Error" });
+        .reply(500, "Server Error");
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .post("/definitions")

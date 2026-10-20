@@ -1,5 +1,4 @@
 import { app } from "../../main/app";
-import * as cookie from "cookie";
 import * as chai from "chai";
 import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
 import { expect } from "chai";
@@ -29,6 +28,19 @@ describe("oauth2redirect", () => {
       });
   };
 
+  const parseSetCookie = (setCookieHeader: string): {[key: string]: string} => {
+    return setCookieHeader.split(";").reduce((cookies, cookiePart) => {
+      const separatorIndex = cookiePart.indexOf("=");
+      if (separatorIndex === -1) {
+        return cookies;
+      }
+
+      const name = cookiePart.substr(0, separatorIndex).trim();
+      cookies[name] = decodeURIComponent(cookiePart.substr(separatorIndex + 1).trim());
+      return cookies;
+    }, {} as {[key: string]: string});
+  };
+
   describe("when OAuth2 code is present", () => {
     it("should set an accessToken cookie and redirect to /", () => {
       return initialiseOAuthSession()
@@ -38,7 +50,7 @@ describe("oauth2redirect", () => {
           return agent.get(`/oauth2redirect?code=abc123&state=${state}`);
         })
         .then((res) => {
-          const cookies = res.get("Set-Cookie").map((_) => cookie.parse(_));
+          const cookies = res.get("Set-Cookie").map(parseSetCookie);
           expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.true;
           expect(res.headers.location).to.equal("/");
         });
@@ -50,7 +62,7 @@ describe("oauth2redirect", () => {
       return initialiseOAuthSession()
         .then(({ agent, state }) => agent.get(`/oauth2redirect?state=${state}`))
         .then((res) => {
-          const cookies = res.get("Set-Cookie").map((_) => cookie.parse(_));
+          const cookies = res.get("Set-Cookie").map(parseSetCookie);
           expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.false;
           expect(res.status).to.equal(500);
           expect(res.text).includes("Error: Unable to obtain access token - no OAuth2 code provided");
@@ -63,7 +75,7 @@ describe("oauth2redirect", () => {
       return initialiseOAuthSession()
         .then(({ agent }) => agent.get("/oauth2redirect?code=abc123&state=invalid-state"))
         .then((res) => {
-          const cookies = res.get("Set-Cookie").map((_) => cookie.parse(_));
+          const cookies = res.get("Set-Cookie").map(parseSetCookie);
           expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.false;
           expect(res.status).to.equal(400);
         });
@@ -101,21 +113,21 @@ describe("oauth2redirect", () => {
         getOAuthState: sinon.stub().withArgs(req).returns("valid-state"),
       };
 
-      oauth2redirect = proxyquire("../../main/routes/oauth2redirect", {
-        "../oauth2/access-token-request": accessTokenRequest,
+      oauth2redirect = proxyquire.noCallThru()("../../main/routes/oauth2redirect", {
+        "../oauth2/access-token-request": {accessTokenRequest},
         "../oauth2/oauth-state": oauthState,
         "config": config,
       }).oauth2redirect;
     });
 
-    xit("should set an accessToken cookie with the 'secure' flag enabled", (done) => {
+    it("should set an accessToken cookie with the 'secure' flag enabled", (done) => {
       config.get.withArgs("security.secure_auth_cookie_enabled").returns(true);
 
       res.redirect.callsFake(() => {
         try {
           expect(config.get).to.be.calledWith("security.secure_auth_cookie_enabled");
           expect(res.cookie).to.be.calledWith(COOKIE_ACCESS_TOKEN, TOKEN.access_token,
-            {httpOnly: true, maxAge: 28800000, secure: true});
+            {httpOnly: true, maxAge: TOKEN.expires_in * 1000, secure: true});
           expect(res.redirect).to.be.calledWith(302, "/");
           done();
         } catch (e) {
