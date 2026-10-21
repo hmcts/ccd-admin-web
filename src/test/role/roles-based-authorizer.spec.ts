@@ -43,4 +43,19 @@ describe("rolesBasedAuthorizer", () => {
       expect(rolesBasedAuthorizer(user)).to.be.false;
     });
   });
+
+  it("should use an empty array when the whitelist is empty", () => {
+    const authorize = proxyquire("../../main/role/roles-based-authorizer", {
+      "./whitelist-roles-authorizer": whitelistRolesAuthorizer,
+      "config": { get: sinon.stub().returns("") },
+    }).isUserAuthorized;
+
+    authorize(user);
+
+    sinon.assert.calledWithExactly(
+      whitelistRolesAuthorizer.isUserAuthorized,
+      user.roles,
+      [],
+    );
+  });
 });
