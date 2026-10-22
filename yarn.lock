@@ -9645,12 +9645,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"protobufjs@npm:protobufjs@8.7.2":
-  version: 8.7.2
-  resolution: "protobufjs@npm:8.7.2"
+"protobufjs@npm:protobufjs@8.8.1":
+  version: 8.8.1
+  resolution: "protobufjs@npm:8.8.1"
   dependencies:
     long: "npm:^5.3.2"
-  checksum: 10/868113c527dd57d8bb6f2ee2b561e895e68fecec0895fd859e6d232be9976dfd0a3c4a9083f7bc4af99a0eca1bcaec75092645a5b9bfeabf4fb196fdeee11c6a
+  checksum: 10/c002f70d4da8c4959f18cb1aebb289216dbb1b74da3d08a15a08881e077a1900e348b24fccbc1c7b6f8acc9240891740a30df826d2c14c42ef2c7a3f89896137
   languageName: node
   linkType: hard
 
