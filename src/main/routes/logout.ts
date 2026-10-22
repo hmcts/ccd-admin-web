@@ -1,15 +1,14 @@
-import { COOKIE_ACCESS_TOKEN } from "./oauth2redirect";
+import { COOKIE_ID_TOKEN, COOKIE_ACCESS_TOKEN } from "./oauth2redirect";
 import * as express from "express";
 import * as fetch from "node-fetch";
 import { get } from "config";
 
 const router = express.Router();
-const TOKEN_PLACEHOLDER = ":token";
 
 export const logout = (req, res, next) => {
-  const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];
+  const idToken = req.cookies && req.cookies[COOKIE_ID_TOKEN];
 
-  if (accessToken) {
+  if (idToken) {
     const options = {
       headers: {
         "Authorization": "Basic "
@@ -17,10 +16,11 @@ export const logout = (req, res, next) => {
             .toString("base64"),
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      method: "DELETE",
+      method: "GET",
     };
-    fetch(get("idam.oauth2.logout_endpoint").replace(TOKEN_PLACEHOLDER, accessToken), options)
+    fetch(get("idam.web_public_url") + "/o/endSession?token=" + idToken, options)
       .then(() => {
+        res.clearCookie(COOKIE_ID_TOKEN);
         res.clearCookie(COOKIE_ACCESS_TOKEN);
         // Delete the session
         req.session = null;
