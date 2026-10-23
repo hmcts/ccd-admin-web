@@ -59,7 +59,7 @@ nodejs:
         - session-keys
         - microservicekey-ccd-admin
         - ccd-admin-web-oauth2-client-secret
-        - AppInsightsInstrumentationKey
+        - name: app-insights-connection-string
 
 
 idam-pr:
