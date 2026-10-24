@@ -17,12 +17,7 @@ appTestWithAuthorizedAdminWebRoles.locals.ENV = env;
 appTestWithAuthorizedAdminWebRoles.locals.elasticSearchReindexEnabled =
   String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true";
 
-// Session
 appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy
-appTestWithAuthorizedAdminWebRoles.use(cookieSession({
-  keys: testSessionKeys,
-  name: "session",
-}));
 // setup logging of HTTP requests
 appTestWithAuthorizedAdminWebRoles.use(Express.accessLogger());
 
@@ -41,6 +36,12 @@ appTestWithAuthorizedAdminWebRoles.use("/js", express.static(path.join(process.c
 appTestWithAuthorizedAdminWebRoles.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTestWithAuthorizedAdminWebRoles.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTestWithAuthorizedAdminWebRoles.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
+
+// Session middleware follows static assets, which do not need session data.
+appTestWithAuthorizedAdminWebRoles.use(cookieSession({
+  keys: testSessionKeys,
+  name: "session",
+}));
 
 appTestWithAuthorizedAdminWebRoles.use(json());
 appTestWithAuthorizedAdminWebRoles.use(urlencoded({ extended: false }));

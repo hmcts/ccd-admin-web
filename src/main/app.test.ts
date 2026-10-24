@@ -13,12 +13,7 @@ const testSessionKeys = ["test-session-key-1", "test-session-key-2"];
 export const appTest: express.Express = express();
 appTest.locals.ENV = env;
 
-// Session
 appTest.set("trust proxy", 1); // trust first proxy
-appTest.use(cookieSession({
-  keys: testSessionKeys,
-  name: "session",
-}));
 
 // setup logging of HTTP requests
 appTest.use(Express.accessLogger());
@@ -38,6 +33,12 @@ appTest.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery-
 appTest.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTest.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTest.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
+
+// Session middleware follows static assets, which do not need session data.
+appTest.use(cookieSession({
+  keys: testSessionKeys,
+  name: "session",
+}));
 
 appTest.use(bodyParser.json());
 appTest.use(bodyParser.urlencoded({ extended: false }));
