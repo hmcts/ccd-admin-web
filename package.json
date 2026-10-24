@@ -218,7 +218,6 @@
     "minimist": "^1.2.6",
     "moment": "^2.29.4",
     "pathval": "^1.1.1",
-    "minimatch": "3.1.5",
     "engine.io": "^6.2.1",
     "json5": "^2.2.2",
     "decode-uri-component": "^0.5.0",
@@ -240,7 +239,6 @@
     "path-to-regexp": "^3.3.0",
     "body-parser": "^2.0.0",
     "on-headers": "^1.1.0",
-    "brace-expansion": "^1.1.13",
     "@opentelemetry/propagator-jaeger": "^2.9.0",
     "cookie": "^1.1.1",
     "diff": "^9.0.0"
