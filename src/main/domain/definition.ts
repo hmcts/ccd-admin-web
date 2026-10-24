@@ -1,9 +1,9 @@
 export class Definition {
   public jurisdictionId: string;
-  public caseTypes: string;
+  public caseTypes?: string;
   public description: string;
-  public version: number;
-  public status: string;
+  public version?: number;
+  public status?: string;
   public data: object;
   public author: string;
   constructor(jurisdictionId: string, description: string, data: string, author: string, caseTypes?: string,

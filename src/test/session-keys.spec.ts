@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import * as proxyquire from "proxyquire";
+import proxyquire from "proxyquire";
 
 const expect = chai.expect;
 

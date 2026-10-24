@@ -1,15 +1,15 @@
-import * as chai from "chai";
-import * as nock from "nock";
+import { expect, use } from "chai";
+import nock from "nock";
 import { JSDOM } from "jsdom";
-import * as sinonChai from "sinon-chai";
-import { get } from "config";
+import sinonChai from "sinon-chai";
+import config from "config";
 import { app } from "../../main/app";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as request from "supertest";
+import { resolveRetrieveUserFor, optionallyResolveRetrieveServiceToken } from "../http-mocks/idam";
+import request from "supertest";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("test route Welsh Dictionary", () => {
   const idamBase = "http://localhost:4451";
@@ -26,14 +26,14 @@ describe("test route Welsh Dictionary", () => {
         .get("/welshDictionary")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to
             .be.true;
         });
     });
 
     it("should not return Welsh Dictionary page when authenticated but not authorized", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.optionallyResolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      optionallyResolveRetrieveServiceToken();
       nock(idamBase)
         .get("/api/idam/adminweb/authorization")
         .reply(200, { canImportDefinition: true });
@@ -44,8 +44,8 @@ describe("test route Welsh Dictionary", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding").innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
           expect(dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
           const currentUserHiddenInput = dom.window.document
             .querySelector("#currentUser")
@@ -66,7 +66,7 @@ describe("test route Welsh Dictionary", () => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
           const result =
-            dom.window.document.querySelector(".heading-large").innerHTML;
+            dom.window.document.querySelector(".govuk-heading-l").innerHTML;
           expect(result).to.equal("Welsh Dictionary");
           const currentUserHiddenInput = dom.window.document
             .querySelector("#currentUser")
@@ -97,14 +97,14 @@ describe("test route Welsh Dictionary", () => {
         .get("/dictionary")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to
+          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to
             .be.true;
         });
     });
 
     it("should not return dictionary as utf-8 csv", () => {
-      idamServiceMock.resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
-      idamServiceMock.optionallyResolveRetrieveServiceToken();
+      resolveRetrieveUserFor("1", CCD_IMPORT_ROLE);
+      optionallyResolveRetrieveServiceToken();
       nock(idamBase)
         .get("/api/idam/adminweb/authorization")
         .reply(200, { canImportDefinition: true });

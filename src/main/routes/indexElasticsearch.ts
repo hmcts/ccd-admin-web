@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { getCaseTypes, createElasticIndex } from "../service/elastic-index-service";
 import { sanitize } from "../util/sanitize";
@@ -9,7 +9,7 @@ const elasticsearch = "elasticsearch";
 const caseTypesUrl = "/elasticsearch/case-types";
 const indexingUrl = "/elasticsearch/index";
 
-router.get(`/${elasticsearch}`, (req, res, next) => {
+router.get(`/${elasticsearch}`, (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     res.status(200);
     const responseContent: { [k: string]: any } = {};
@@ -23,7 +23,7 @@ router.get(`/${elasticsearch}`, (req, res, next) => {
   }
 });
 
-router.get(caseTypesUrl, (req, res, next) => {
+router.get(caseTypesUrl, (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     getCaseTypes(req).then((response) => {
       res.status(200).send(response.body);
@@ -36,7 +36,7 @@ router.get(caseTypesUrl, (req, res, next) => {
   }
 });
 
-router.post(indexingUrl, (req, res, next) => {
+router.post(indexingUrl, (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canImportDefinition) {
     createElasticIndex(req).then((response) => {
       res.status(200).send(response.body);
