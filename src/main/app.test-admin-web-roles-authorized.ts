@@ -11,14 +11,18 @@ import cookieSession from "cookie-session";
 
 
 const env = process.env.NODE_ENV || "development";
-export const appTestWithAuthorizedAdminWebRoles = express();
+const testSessionKeys = ["test-session-key-1", "test-session-key-2"];
+export const appTestWithAuthorizedAdminWebRoles: express.Express = express();
 appTestWithAuthorizedAdminWebRoles.locals.ENV = env;
 appTestWithAuthorizedAdminWebRoles.locals.elasticSearchReindexEnabled =
   String(config.get("adminWeb.elastic_search_reindex_enabled")) === "true";
 
 // Session
 appTestWithAuthorizedAdminWebRoles.set("trust proxy", 1); // trust first proxy
-
+appTestWithAuthorizedAdminWebRoles.use(cookieSession({
+  keys: testSessionKeys,
+  name: "session",
+}));
 // setup logging of HTTP requests
 appTestWithAuthorizedAdminWebRoles.use(Express.accessLogger());
 
@@ -37,11 +41,6 @@ appTestWithAuthorizedAdminWebRoles.use("/js", express.static(path.join(process.c
 appTestWithAuthorizedAdminWebRoles.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTestWithAuthorizedAdminWebRoles.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTestWithAuthorizedAdminWebRoles.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
-
-appTestWithAuthorizedAdminWebRoles.use(cookieSession({
-  keys: ["key1", "key2"],
-  name: "session",
-}));
 
 appTestWithAuthorizedAdminWebRoles.use(json());
 appTestWithAuthorizedAdminWebRoles.use(urlencoded({ extended: false }));

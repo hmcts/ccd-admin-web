@@ -9,6 +9,8 @@ import expressNunjucks from "express-nunjucks";
 import path from "node:path";
 import favicon from "serve-favicon";
 import { sanitize } from "./util/sanitize";
+import { getSessionKeys } from "./session-keys";
+
 import { authCheckerUserOnlyFilter } from "./user/auth-checker-user-only-filter";
 import { adminWebRoleAuthorizerFilter } from "./role/admin-web-role-authorizer-filter";
 import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
@@ -29,6 +31,11 @@ app.locals.elasticSearchReindexEnabled =
 
 // Session
 app.set("trust proxy", 1); // trust first proxy
+
+app.use(cookieSession({
+  keys: getSessionKeys(),
+  name: "session",
+}));
 
 // setup logging of HTTP requests
 app.use(Express.accessLogger());
@@ -52,11 +59,6 @@ app.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery-vali
 app.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk"), caching));
 app.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk"), caching));
 app.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
-
-app.use(cookieSession({
-  keys: ["key1", "key2"],
-  name: "session",
-}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

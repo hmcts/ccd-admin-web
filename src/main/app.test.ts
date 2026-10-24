@@ -9,11 +9,16 @@ import { importAll } from "./import-all/index";
 import cookieSession from "cookie-session";
 
 const env = process.env.NODE_ENV || "development";
+const testSessionKeys = ["test-session-key-1", "test-session-key-2"];
 export const appTest: express.Express = express();
 appTest.locals.ENV = env;
 
 // Session
 appTest.set("trust proxy", 1); // trust first proxy
+appTest.use(cookieSession({
+  keys: testSessionKeys,
+  name: "session",
+}));
 
 // setup logging of HTTP requests
 appTest.use(Express.accessLogger());
@@ -33,11 +38,6 @@ appTest.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery-
 appTest.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTest.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTest.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
-
-appTest.use(cookieSession({
-  keys: ["key1", "key2"],
-  name: "session",
-}));
 
 appTest.use(bodyParser.json());
 appTest.use(bodyParser.urlencoded({ extended: false }));

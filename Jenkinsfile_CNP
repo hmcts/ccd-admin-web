@@ -19,6 +19,7 @@ def secrets = [
     // loadVaultSecrets resolves the ${env} placeholder for each CNP environment.
     'ccd-${env}': [
         secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
+        secret('session-keys', 'SESSION_KEYS'),
         secret('storage-account-primary-connection-string', 'STORAGEACCOUNT_PRIMARY_CONNECTION_STRING'),
         secret('storage-account-secondary-connection-string', 'STORAGEACCOUNT_SECONDARY_CONNECTION_STRING'),
         secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_INSTRUMENTATION_KEY')
