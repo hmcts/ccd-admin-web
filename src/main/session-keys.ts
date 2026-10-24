@@ -10,7 +10,7 @@ export const getSessionKeys = (): string[] => {
     const configuredKeys = config.get<unknown>(SESSION_KEYS_CONFIG_PATH);
     sessionKeys = typeof configuredKeys === "string" ? JSON.parse(configuredKeys) : configuredKeys;
   } catch (error) {
-    throw new Error(`${SESSION_KEYS_ERROR} (${error instanceof Error ? error.message : error})`);
+    throw new Error(SESSION_KEYS_ERROR, { cause: error });
   }
 
   if (!Array.isArray(sessionKeys)
