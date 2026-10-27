@@ -1,11 +1,9 @@
-import * as chai from "chai";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
+import { expect, use, assert } from "chai";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 
-const assert = chai.assert;
-const expect = chai.expect;
-chai.use(sinonChai);
+use(sinonChai);
 
 describe("authCheckerUserOnlyFilter", () => {
 
@@ -45,7 +43,7 @@ describe("authCheckerUserOnlyFilter", () => {
 
     filter = proxyquire("../../main/user/auth-checker-user-only-filter", {
       "./user-request-authorizer": userRequestAuthorizer,
-      config,
+      "config": config,
     }).authCheckerUserOnlyFilter;
   });
 
@@ -90,7 +88,7 @@ describe("authCheckerUserOnlyFilter", () => {
 
     it("should redirect to the IdAM login URL", (done) => {
       res = {
-        redirect: (code, url) => {
+        redirect: (code: number, url: string) => {
           assert.equal(code, 302);
           assert.equal(url, completeUrl);
           done();

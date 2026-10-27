@@ -1,6 +1,6 @@
-import * as fetch from "node-fetch";
+import { fetch } from "../util/fetch";
 import { format } from "url";
-import { get } from "config";
+import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 
 const completeRedirectURI = (uri) => {
@@ -10,7 +10,11 @@ const completeRedirectURI = (uri) => {
   return uri;
 };
 
-export function accessTokenRequest(request, redirectUri = request.query.redirect_uri) {
+const idamWebPublicUrl: string = config.get<string>("idam.web_public_url");
+const idamOAuth2ClientId: string = config.get<string>("idam.oauth2.client_id");
+const idamOAuth2ClientSecret: string = config.get<string>("secrets.ccd.ccd-admin-web-oauth2-client-secret");
+
+export function accessTokenRequest(request, redirect_uri): Promise<any> {
 
   const options = {
     headers: {
@@ -19,14 +23,14 @@ export function accessTokenRequest(request, redirectUri = request.query.redirect
     method: "POST",
   };
   const params = {
-    client_id: get("idam.oauth2.client_id"),
-    client_secret: get("secrets.ccd.ccd-admin-web-oauth2-client-secret"),
+    client_id: idamOAuth2ClientId,
+    client_secret: idamOAuth2ClientSecret,
     code: request.query.code,
     grant_type: "authorization_code",
-    redirect_uri: completeRedirectURI(redirectUri),
+    redirect_uri: completeRedirectURI(redirect_uri),
   };
   const logger = Logger.getLogger(__filename);
-  return fetch(get("idam.web_public_url") + "/o/token" + format({ query: params }), options)
+  return fetch(idamWebPublicUrl + "/o/token" + format({ query: params }), options)
     .then((response) =>
       response.status === 200 ? response : response.text().then((text) => Promise.reject(new Error(text))))
     .then((response) => response.json())

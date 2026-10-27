@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import * as request from "supertest";
+import request from "supertest";
 
 describe("deployed application smoke tests", () => {
-  const testUrl = process.env.TEST_URL;
+  const testUrl = process.env.TEST_URL || "";
 
   before(() => {
     if (!testUrl) {
@@ -12,7 +12,7 @@ describe("deployed application smoke tests", () => {
     try {
       new URL(testUrl);
     } catch (error) {
-      throw new Error(`TEST_URL must be a valid absolute URL: ${testUrl}`);
+      throw new Error("TEST_URL must be a valid absolute URL: " + testUrl, { cause: error });
     }
   });
 
@@ -27,6 +27,30 @@ describe("deployed application smoke tests", () => {
     });
   });
 
+  [
+    { path: "/stylesheets/app.css", contentType: "text/css", expectedContent: "govuk-" },
+    { path: "/js/govuk-frontend.min.js", contentType: "javascript", expectedContent: "initAll" },
+    { path: "/js/jquery.min.js", contentType: "javascript", expectedContent: "jQuery" },
+    { path: "/js/jquery.validate.min.js", contentType: "javascript", expectedContent: "validate" },
+    { path: "/favicon.ico", contentType: "image/x-icon" },
+  ].forEach(({ path, contentType, expectedContent }) => {
+    it(`serves the deployed asset ${path}`, async () => {
+      const response = await request(testUrl)
+        .get(path)
+        .redirects(0);
+
+      expect(response.status).to.equal(200);
+      expect(response.headers["content-type"]).to.contain(contentType);
+
+      if (expectedContent) {
+        expect(response.text).to.be.a("string").and.not.empty;
+        expect(response.text).to.contain(expectedContent);
+      } else {
+        expect(response.body).to.be.instanceOf(Buffer).and.not.empty;
+      }
+    });
+  });
+
   it("redirects unauthenticated users to IdAM with the expected OAuth parameters", async () => {
     const response = await request(testUrl)
       .get("/")
@@ -36,7 +60,7 @@ describe("deployed application smoke tests", () => {
     expect(response.headers.location).to.be.a("string");
 
     const loginUrl = new URL(response.headers.location);
-    const redirectUri = loginUrl.searchParams.get("redirect_uri");
+    const redirectUri = loginUrl.searchParams.get("redirect_uri") || "";
     const expectedLoginUrl = process.env.ADMINWEB_LOGIN_URL;
 
     expect(loginUrl.searchParams.get("response_type")).to.equal("code");

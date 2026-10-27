@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { Logger } from "@hmcts/nodejs-logging";
-import * as fs from "fs";
-import * as https from "https";
-import * as path from "path";
+import fs from "fs";
+import https from "https";
+import path from "node:path";
 import { app } from "./app";
 
 const logger = Logger.getLogger("server");

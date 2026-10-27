@@ -1,12 +1,12 @@
 import { expect } from "chai";
-import * as request from "supertest";
+import request from "supertest";
 import { app } from "../../main/app";
-import * as config from "config";
-import * as mock from "nock";
+import config from "config";
+import mock from "nock";
 
-const webPublicUrl = config.get("idam.web_public_url");
-const hmctsAccessUrl = config.get("idam.hmcts_access_url");
-const s2sAuthServiceBaseUrl = config.get("idam.s2s_url");
+const webPublicUrl: string = config.get("idam.web_public_url");
+const hmctsAccessUrl: string = config.get("idam.hmcts_access_url");
+const s2sAuthServiceBaseUrl: string = config.get("idam.s2s_url");
 
 describe("health check", () => {
   beforeEach(() => {

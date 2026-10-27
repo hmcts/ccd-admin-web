@@ -1,6 +1,6 @@
-import * as config from "config";
-import * as mock from "nock";
-import * as HttpStatus from "http-status-codes";
+import config from "config";
+import mock from "nock";
+import HttpStatus from "http-status-codes";
 
 const hmctsAccessUrl = config.get("idam.web_public_url");
 const s2sAuthServiceBaseUrl = config.get("idam.s2s_url");

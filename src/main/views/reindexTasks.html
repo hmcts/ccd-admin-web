@@ -1,7 +1,5 @@
-{% extends "layout_template.html" %}
-{% from "macros/formElements.html" import errorDisplay %}
+{% extends "layout_template.njk" %}
 {% block content %}
-{% include "menu.html" %}
 
 <h2 class="heading-large padding">Reindexed Tasks</h2>
 <div class="grid-row">
@@ -9,23 +7,25 @@
 
         <div class="padding ngx-pagination">
             <form method="get" action="/reindex">
-                <div class="form-group">
-                    <label for="caseType" class="visually-hidden">Case Type</label>
-                    <select id="caseType" name="caseType" class="form-control">
+                <div class="govuk-form-group">
+                    <label for="caseType" class="govuk-label visually-hidden">Case Type</label>
+                    <select id="caseType" name="caseType" class="govuk-select">
                         <option value="">--Select a Case Type--</option>
                         {% for ct in caseTypes %}
                         <option value="{{ ct }}" {% if selectedCaseType == ct %}selected{% endif %}>{{ ct }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="button">Submit</button>
+                <div class="govuk-form-group">
+                    <button type="submit" class="govuk-button">Submit</button>
                 </div>
             </form>
-            <div class="form-group">
-                <div class="multiple-choice">
-                    <input id="autoRefreshToggle" name="autoRefreshToggle" type="checkbox">
-                    <label for="autoRefreshToggle">Auto Refresh (every 30 seconds)</label>
+            <div class="govuk-form-group">
+                <div class="govuk-checkboxes">
+                    <div class="govuk-checkboxes__item">
+                        <input id="autoRefreshToggle" name="autoRefreshToggle" type="checkbox" class="govuk-checkboxes__input">
+                        <label for="autoRefreshToggle" class="govuk-label govuk-checkboxes__label">Auto Refresh (every 30 seconds)</label>
+                    </div>
                 </div>
             </div>
 
@@ -37,33 +37,33 @@
 
             {% if tasks and tasks.length > 0 %}
             <table class="govuk-table">
-                <thead>
-                <tr>
-                    <th>Jurisdiction</th>
-                    <th>Case Type</th>
-                    <th>Old Index Deleted</th>
-                    <th>Index Name</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Duration (seconds)</th>
-                    <th>Status</th>
-                    <th>Exception Message</th>
-                    <th>Who Imported</th>
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__header">Jurisdiction</th>
+                    <th class="govuk-table__header">Case Type</th>
+                    <th class="govuk-table__header">Old Index Deleted</th>
+                    <th class="govuk-table__header">Index Name</th>
+                    <th class="govuk-table__header">Start Time</th>
+                    <th class="govuk-table__header">End Time</th>
+                    <th class="govuk-table__header">Duration (seconds)</th>
+                    <th class="govuk-table__header">Status</th>
+                    <th class="govuk-table__header">Exception Message</th>
+                    <th class="govuk-table__header">Who Imported</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="govuk-table__body">
                 {% for t in tasks %}
-                <tr>
-                    <td>{{ t.jurisdiction }}</td>
-                    <td>{{ t.caseType }}</td>
-                    <td>{{ t.deleteOldIndex }}</td>
-                    <td>{{ t.indexName }}</td>
-                    <td>{{ t.startTime }}</td>
-                    <td>{{ t.endTime or '-' }}</td>
-                    <td>{{ t.duration or '-' }}</td>
-                    <td>{{ t.status }}</td>
-                    <td>{{ t.exceptionMessage or '-' }}</td>
-                    <td>{{ t.whoImported or '-' }}</td>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">{{ t.jurisdiction }}</td>
+                    <td class="govuk-table__cell">{{ t.caseType }}</td>
+                    <td class="govuk-table__cell">{{ t.deleteOldIndex }}</td>
+                    <td class="govuk-table__cell">{{ t.indexName }}</td>
+                    <td class="govuk-table__cell">{{ t.startTime }}</td>
+                    <td class="govuk-table__cell">{{ t.endTime or '-' }}</td>
+                    <td class="govuk-table__cell">{{ t.duration or '-' }}</td>
+                    <td class="govuk-table__cell">{{ t.status }}</td>
+                    <td class="govuk-table__cell">{{ t.exceptionMessage or '-' }}</td>
+                    <td class="govuk-table__cell">{{ t.whoImported or '-' }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>

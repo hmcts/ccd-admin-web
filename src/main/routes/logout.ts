@@ -1,6 +1,6 @@
 import { COOKIE_ID_TOKEN, COOKIE_ACCESS_TOKEN } from "./oauth2redirect";
-import * as express from "express";
-import * as fetch from "node-fetch";
+import express from "express";
+import fetch from "node-fetch";
 import { get } from "config";
 
 const router = express.Router();

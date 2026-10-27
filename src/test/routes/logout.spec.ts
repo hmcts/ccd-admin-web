@@ -1,13 +1,13 @@
-import * as chai from "chai";
+import { expect, use } from "chai";
 import { COOKIE_ACCESS_TOKEN, COOKIE_ID_TOKEN } from "../../main/routes/oauth2redirect";
 import fetchMock from "fetch-mock";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
-import * as sinonExpressMock from "sinon-express-mock";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
+import { mockReq, mockRes } from "sinon-express-mock";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("logout", () => {
   const CLIENT_ID = "ccd_admin";
@@ -34,21 +34,21 @@ describe("logout", () => {
     config.get.withArgs("idam.hmcts_access_url").returns(HMCTS_ACCESS_URL);
     config.get.withArgs("idam.web_public_url").returns(HMCTS_ACCESS_URL);
 
-    request = sinonExpressMock.mockReq({
+    request = mockReq({
       cookies: {
         [COOKIE_ACCESS_TOKEN]: ACCESS_TOKEN,
         [COOKIE_ID_TOKEN]: ID_TOKEN,
       },
       session: {},
     });
-    response = sinonExpressMock.mockRes();
+    response = mockRes();
     next = sinon.stub();
 
     fetchMockInstance = fetchMock.createInstance()
       .get(LOGOUT_ENDPOINT.replace(":token", ID_TOKEN), {});
     fetch = fetchMockInstance.fetchHandler;
 
-    logout = proxyquire("../../main/routes/logout", {
+    logout = proxyquire.noCallThru()("../../main/routes/logout", {
       "config": config,
       "node-fetch": fetch,
     }).logout;
@@ -81,7 +81,7 @@ describe("logout", () => {
   });
 
   it("should return 400 error when cookies missing", () => {
-    request = sinonExpressMock.mockReq({});
+    request = mockReq({});
 
     logout(request, response, next);
 
@@ -94,7 +94,7 @@ describe("logout", () => {
   });
 
   it("should return 400 error when cookie `accessToken` is missing", () => {
-    request = sinonExpressMock.mockReq({
+    request = mockReq({
       cookies: {},
     });
 

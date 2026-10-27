@@ -10,7 +10,6 @@
 !.yarnrc.yml
 !.yarn/**
 
-!gulpfile.js
 !tsconfig.json
 
 !src/main/**

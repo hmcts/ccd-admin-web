@@ -1,6 +1,6 @@
-import * as express from "express";
-import * as config from "config";
-import * as healthcheck from "@hmcts/nodejs-healthcheck";
+import express from "express";
+import config from "config";
+import healthcheck from "@hmcts/nodejs-healthcheck";
 
 const env = process.env.NODE_ENV || "development";
 
