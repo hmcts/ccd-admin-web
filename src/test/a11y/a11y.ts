@@ -1,6 +1,5 @@
 import nock from "nock";
 import pa11y from "pa11y";
-import supertest from "supertest";
 import { Logger } from "@hmcts/nodejs-logging";
 import { app } from "../../main/app";
 import { expect } from "chai";
@@ -9,9 +8,10 @@ import { optionallyResolveRetrieveServiceToken, resolveRetrieveUserFor } from ".
 
 app.locals.csrf = "dummy-token";
 
-const agent = supertest(app);
 const logger = Logger.getLogger("a11y");
 const CCD_IMPORT_ROLE = "ccd-import";
+let server: ReturnType<typeof app.listen>;
+let baseUrl: string;
 
 export interface IIssue {
   type: string;
@@ -60,7 +60,7 @@ function check(uri: string, ignoreElements?: any[]): void {
             });
         }
 
-        const url = agent.get(uri).url;
+        const url = `${baseUrl}${uri}`;
         logger.info(`Running accessibility tests for ${url}`);
         issues = await runPa11y(url, ignoreElements || []);
       });
@@ -83,8 +83,27 @@ function ensureNoAccessibilityAlerts(issueType: string, issues: IIssue[]): void 
 }
 
 describe("Accessibility", () => {
-  after(() => {
+  before(async () => {
+    server = app.listen(0, "127.0.0.1");
+    await new Promise<void>((resolve, reject) => {
+      server.once("listening", resolve);
+      server.once("error", reject);
+    });
+
+    const address = server.address();
+    if (!address || typeof address === "string") {
+      throw new Error("Unable to determine accessibility test server address");
+    }
+    baseUrl = `http://127.0.0.1:${address.port}`;
+  });
+
+  after(async () => {
     nock.cleanAll();
+    if (server.listening) {
+      await new Promise<void>((resolve, reject) => {
+        server.close((error) => error ? reject(error) : resolve());
+      });
+    }
   });
 
   // testing accessibility of the home page
