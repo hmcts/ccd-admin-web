@@ -5,7 +5,7 @@ import { sanitize } from "../util/sanitize";
 const errorPage = "error";
 
 /* GET */
-router.get("/deleteitem", (req, res, next) => {
+router.get("/deleteitem", (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageDefinition) {
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;

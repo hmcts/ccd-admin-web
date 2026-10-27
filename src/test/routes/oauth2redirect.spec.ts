@@ -1,15 +1,14 @@
 import { app } from "../../main/app";
-import * as chai from "chai";
+import { expect, use } from "chai";
 import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
-import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as request from "supertest";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
+import { resolveExchangeCode } from "../http-mocks/idam";
+import request from "supertest";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 import * as sinonExpressMock from "sinon-express-mock";
 
-chai.use(sinonChai);
+use(sinonChai);
 
 describe("oauth2redirect", () => {
 
@@ -43,7 +42,7 @@ describe("oauth2redirect", () => {
 
   describe("when OAuth2 code is present", () => {
     it("should set an accessToken cookie and redirect to /", () => {
-      idamServiceMock.resolveExchangeCode(token);
+      resolveExchangeCode(token);
 
       return createOauthSession()
         .then(({ sessionCookies, state }) => {

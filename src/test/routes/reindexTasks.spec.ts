@@ -1,20 +1,15 @@
 import * as chai from "chai";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { JSDOM } from "jsdom";
-import * as sinonChai from "sinon-chai";
 import { app } from "../../main/app";
-import * as mock from "nock";
-import * as request from "supertest";
-import * as sinon from "sinon";
-import * as reindexTaskService from "../../main/service/reindex-task-service";
-import { get } from "config";
-import * as config from "config";
+import nock from "nock";
+import request from "supertest";
+import config from "config";
+import { optionallyResolveRetrieveServiceToken, resolveRetrieveUserFor } from "../http-mocks/idam";
 
 const expect = chai.expect;
-chai.use(sinonChai);
 
 describe("test route Reindex Tasks", () => {
-    let getReindexTasksStub: sinon.SinonStub;
     const mockTasks = [
     {
       caseType: "CaseTypeA",
@@ -60,12 +55,7 @@ describe("test route Reindex Tasks", () => {
     }));
 
     beforeEach(() => {
-        mock.cleanAll();
-        getReindexTasksStub = sinon.stub(reindexTaskService, "getReindexTasks");
-    });
-
-    afterEach(() => {
-        sinon.restore();
+        nock.cleanAll();
     });
 
     describe("on GET /reindex", () => {
@@ -74,29 +64,38 @@ describe("test route Reindex Tasks", () => {
         .get("/reindex")
         .then((res) => {
             expect(res.statusCode).to.equal(302);
-            expect(res.headers.location.startsWith(get("adminWeb.login_url"))).to.be.true;
+            expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
         });
     });
 
-    it("should return unauthorised when reindex feature is disabled", () => {
-      const configGetStub = sinon.stub(config, "get");
-      configGetStub.callThrough();
-      configGetStub.withArgs("adminWeb.elastic_search_reindex_enabled").returns(false);
+    it("should return unauthorised when user does not have import definition permission", () => {
+      resolveRetrieveUserFor("1", "ccd-import");
+      optionallyResolveRetrieveServiceToken();
 
-      return request(appTestWithAuthorizedAdminWebRoles)
+      nock("http://localhost:4451")
+        .get("/api/idam/adminweb/authorization")
+        .reply(200, [{}]);
+
+      return request(app)
         .get("/reindex")
         .set("Cookie", "accessToken=ey123.ey456")
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const errorHeading = dom.window.document.querySelector("h2.heading-large.padding")?.innerHTML;
-          expect(errorHeading).to.equal("Unauthorised role");
+          const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title")?.innerHTML;
+          expect(errorHeading).to.contain("Unauthorised role");
         });
     });
 
     it("should return the reindex page with all tasks when no caseType query param is provided", async () => {
-      getReindexTasksStub.onFirstCall().resolves(mockTasks);
-      getReindexTasksStub.onSecondCall().resolves(mockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ page: "0", size: "10000" })
+        .reply(200, mockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ page: "0", size: "25" })
+        .reply(200, mockTasks);
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/reindex")
@@ -120,8 +119,14 @@ describe("test route Reindex Tasks", () => {
     it("should render filtered tasks when caseType query is selected", async () => {
       const filteredTasks = [mockTasks[1]];
 
-      getReindexTasksStub.onFirstCall().resolves(mockTasks);
-      getReindexTasksStub.onSecondCall().resolves(filteredTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ page: "0", size: "10000" })
+        .reply(200, mockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ caseType: "CaseTypeA", page: "0", size: "25" })
+        .reply(200, filteredTasks);
 
       return request(appTestWithAuthorizedAdminWebRoles)
       .get("/reindex?caseType=CaseTypeA")
@@ -138,15 +143,18 @@ describe("test route Reindex Tasks", () => {
 
         const bodyText = dom.window.document.body.textContent;
         expect(bodyText).to.include("CaseTypeA");
-
-        expect(getReindexTasksStub).to.have.been.calledTwice;
-        expect(getReindexTasksStub.secondCall.args[1]).to.equal("CaseTypeA");
       });
     });
 
     it("should render auto refresh toggle and client-side refresh script", async () => {
-      getReindexTasksStub.onFirstCall().resolves(mockTasks);
-      getReindexTasksStub.onSecondCall().resolves(mockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ page: "0", size: "10000" })
+        .reply(200, mockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ page: "0", size: "25" })
+        .reply(200, mockTasks);
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/reindex")
@@ -168,8 +176,14 @@ describe("test route Reindex Tasks", () => {
     });
 
     it("should render only first page of tasks and show pagination when tasks exceed page size", async () => {
-      getReindexTasksStub.onFirstCall().resolves(paginatedMockTasks);
-      getReindexTasksStub.onSecondCall().resolves(paginatedMockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ page: "0", size: "10000" })
+        .reply(200, paginatedMockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ page: "0", size: "25" })
+        .reply(200, paginatedMockTasks);
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/reindex")
@@ -193,8 +207,14 @@ describe("test route Reindex Tasks", () => {
     });
 
     it("should render page 2 tasks and keep selected case type in pagination links", async () => {
-      getReindexTasksStub.onFirstCall().resolves(paginatedMockTasks);
-      getReindexTasksStub.onSecondCall().resolves(paginatedMockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ page: "0", size: "10000" })
+        .reply(200, paginatedMockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ caseType: "CaseTypeA", page: "1", size: "25" })
+        .reply(200, paginatedMockTasks);
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/reindex?caseType=CaseTypeA&page=2")
@@ -215,8 +235,14 @@ describe("test route Reindex Tasks", () => {
     });
 
     it("should render ellipsis in pagination when there are many pages", async () => {
-      getReindexTasksStub.onFirstCall().resolves(manyPaginatedMockTasks);
-      getReindexTasksStub.onSecondCall().resolves(manyPaginatedMockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ page: "0", size: "10000" })
+        .reply(200, manyPaginatedMockTasks);
+      nock("http://localhost:4451")
+        .get("/elastic-support/reindex/tasks")
+        .query({ page: "0", size: "25" })
+        .reply(200, manyPaginatedMockTasks);
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/reindex")
@@ -235,7 +261,14 @@ describe("test route Reindex Tasks", () => {
     });
 
     it("should render an error page when the service throws", async () => {
-        getReindexTasksStub.rejects(new Error("Error fetching reindex tasks (HTTP 500)"));
+        nock("http://localhost:4451")
+          .get("/elastic-support/reindex/tasks")
+          .query(true)
+          .reply(500, "Internal Server Error");
+        nock("http://localhost:4451")
+          .get("/elastic-support/reindex/tasks")
+          .query(true)
+          .reply(500, "Internal Server Error");
 
         return request(appTestWithAuthorizedAdminWebRoles)
         .get("/reindex")
@@ -244,7 +277,7 @@ describe("test route Reindex Tasks", () => {
             const dom = new JSDOM(res.text);
 
             const errorMessage = dom.window.document.body.textContent;
-            expect(errorMessage).to.include("Error fetching reindex tasks (HTTP 500)");
+            expect(errorMessage).to.include("Reindex fetch failed with HTTP 500");
         });
     });
   });
