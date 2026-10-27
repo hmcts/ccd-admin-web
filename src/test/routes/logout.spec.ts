@@ -80,31 +80,26 @@ describe("logout", () => {
     expect(config.get).to.be.calledWith("idam.web_public_url");
   });
 
-  it("should return 400 error when cookies missing", () => {
+  it("should return 302 redirect when cookies missing", () => {
     request = mockReq({});
 
     logout(request, response, next);
 
-    expect(response.redirect).not.to.be.called;
-    expect(next).to.be.calledWith({
-      error: "No auth token",
-      message: "No auth token to log out",
-      status: 400,
-    });
+    expect(response.redirect).to.be.calledWith(302, "/");
+    expect(next).not.to.be.called;
   });
 
-  it("should return 400 error when cookie `accessToken` is missing", () => {
+  it("should return 302 redirect when cookie `accessToken` is missing", () => {
     request = mockReq({
-      cookies: {},
+      cookies: {
+        [COOKIE_ACCESS_TOKEN]: ACCESS_TOKEN,
+      },
+      session: {},
     });
 
     logout(request, response, next);
 
-    expect(response.redirect).not.to.be.called;
-    expect(next).to.be.calledWith({
-      error: "No auth token",
-      message: "No auth token to log out",
-      status: 400,
-    });
+    expect(response.redirect).to.be.calledWith(302, "/");
+    expect(next).not.to.be.called;
   });
 });
