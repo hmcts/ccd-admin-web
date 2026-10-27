@@ -29,8 +29,11 @@ export const logout = (req, res, next) => {
       })
       .catch((err) => next(err));
   } else {
-    // Redirect to / (index), which will itself redirect to IdAM login page, as the user is not authenticated
-    res.redirect(302, "/");
+    next({
+      error: "No auth token",
+      message: "No auth token to log out",
+      status: 400,
+    });
   }
 };
 

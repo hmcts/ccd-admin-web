@@ -85,8 +85,12 @@ describe("logout", () => {
 
     logout(request, response, next);
 
-    expect(response.redirect).to.be.calledWith(302, "/");
-    expect(next).not.to.be.called;
+    expect(response.redirect).not.to.be.called;
+    expect(next).to.be.calledWith({
+      error: "No auth token",
+      message: "No auth token to log out",
+      status: 400,
+    });
   });
 
   it("should redirect after logout using the real configuration module", async () => {
@@ -119,7 +123,11 @@ describe("logout", () => {
 
     logout(request, response, next);
 
-    expect(response.redirect).to.be.calledWith(302, "/");
-    expect(next).not.to.be.called;
+    expect(response.redirect).not.to.be.called;
+    expect(next).to.be.calledWith({
+      error: "No auth token",
+      message: "No auth token to log out",
+      status: 400,
+    });
   });
 });
