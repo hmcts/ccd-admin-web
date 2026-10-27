@@ -89,6 +89,26 @@ describe("logout", () => {
     expect(next).not.to.be.called;
   });
 
+  it("should redirect after logout using the real configuration module", async () => {
+    const fetchStub = sinon.stub().resolves({});
+    const logoutWithRealConfig = proxyquire.noCallThru()("../../main/routes/logout", {
+      "node-fetch": fetchStub,
+    }).logout;
+
+    await new Promise<void>((resolve, reject) => {
+      response.redirect.callsFake(() => resolve());
+      next.callsFake(reject);
+      logoutWithRealConfig(request, response, next);
+    });
+
+    expect(fetchStub).to.be.calledOnce;
+    expect(response.clearCookie).to.be.calledWith(COOKIE_ACCESS_TOKEN);
+    expect(response.clearCookie).to.be.calledWith(COOKIE_ID_TOKEN);
+    expect(request.session).to.be.null;
+    expect(response.redirect).to.be.calledWith(302, "/");
+    expect(next).not.to.be.called;
+  });
+
   it("should return 302 redirect when cookie `accessToken` is missing", () => {
     request = mockReq({
       cookies: {

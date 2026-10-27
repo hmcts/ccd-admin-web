@@ -1,7 +1,7 @@
 import { COOKIE_ID_TOKEN, COOKIE_ACCESS_TOKEN } from "./oauth2redirect";
 import express from "express";
 import fetch from "node-fetch";
-import { get } from "config";
+import config from "config";
 
 const router = express.Router();
 
@@ -12,13 +12,13 @@ export const logout = (req, res, next) => {
     const options = {
       headers: {
         "Authorization": "Basic "
-          + Buffer.from(get("idam.oauth2.client_id") + ":" + get("secrets.ccd.ccd-admin-web-oauth2-client-secret"))
+          + Buffer.from(config.get("idam.oauth2.client_id") + ":" + config.get("secrets.ccd.ccd-admin-web-oauth2-client-secret"))
             .toString("base64"),
         "Content-Type": "application/x-www-form-urlencoded",
       },
       method: "GET",
     };
-    fetch(get("idam.web_public_url") + "/o/endSession?token=" + idToken, options)
+    fetch(config.get("idam.web_public_url") + "/o/endSession?token=" + idToken, options)
       .then(() => {
         res.clearCookie(COOKIE_ID_TOKEN);
         res.clearCookie(COOKIE_ACCESS_TOKEN);
