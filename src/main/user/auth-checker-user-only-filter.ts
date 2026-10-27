@@ -1,6 +1,7 @@
 import { authorize } from "./user-request-authorizer";
 import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
+import { randomBytes } from "crypto";
 
 export const authCheckerUserOnlyFilter = (req: any, res: any, next: any) => {
 
@@ -22,8 +23,9 @@ export const authCheckerUserOnlyFilter = (req: any, res: any, next: any) => {
       if (error.status === 403) {
         next(error);
       } else {
+        req.session.oauthState = randomBytes(32).toString("hex");
         res.redirect(302, `${adminWebLoginUrl}?response_type=code&client_id=` +
-          `${idamClientId}&redirect_uri=${REDIRECT_URI}`);
+          `${idamClientId}&redirect_uri=${REDIRECT_URI}&state=${encodeURIComponent(req.session.oauthState)}`);
       }
     });
 };
