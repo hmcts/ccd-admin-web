@@ -1,5 +1,5 @@
 import { authorize } from "./user-request-authorizer";
-import { config } from "config";
+import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
 import { randomBytes } from "crypto";
 
