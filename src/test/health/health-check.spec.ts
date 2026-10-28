@@ -1,8 +1,24 @@
 import { expect } from "chai";
 import request from "supertest";
 import { app } from "../../main/app";
+import config from "config";
+import mock from "nock";
+
+const webPublicUrl: string = config.get("idam.web_public_url");
+const hmctsAccessUrl: string = config.get("idam.hmcts_access_url");
+const s2sAuthServiceBaseUrl: string = config.get("idam.s2s_url");
 
 describe("health check", () => {
+  beforeEach(() => {
+    mock(webPublicUrl).get("/health").reply(200, { status: "UP" });
+    mock(hmctsAccessUrl).get("/health").reply(200, { status: "UP" });
+    mock(s2sAuthServiceBaseUrl).get("/health").reply(200, { status: "UP" });
+  });
+
+  afterEach(() => {
+    mock.cleanAll();
+  });
+
   it("should return 200 OK for health check", async () => {
     await request(app)
       .get("/health")

@@ -1,104 +1,110 @@
 import { expect, use } from "chai";
-import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
-import fetchMock from "fetch-mock";
+import { COOKIE_ACCESS_TOKEN, COOKIE_ID_TOKEN } from "../../main/routes/oauth2redirect";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import { mockReq, mockRes } from "sinon-express-mock";
 
-
 use(sinonChai);
 
 describe("logout", () => {
-  const CLIENT_ID = "ccd_admin";
-  const CLIENT_SECRET = "abc123def456";
-  const ACCESS_TOKEN = "eycdjc7hf3478g4f37";
-  const LOGOUT_ENDPOINT = "http://localhost/session/:token";
+  const ACCESS_TOKEN = "access-token-value";
+  const ID_TOKEN = "id-token-value";
+  const IDAM_URL = "https://idam.example.test";
+  const APPLICATION_HOST = "admin.example.test";
 
   let config;
   let request;
   let response;
-  let next;
-  let fetch;
-  let fetchMockInstance;
   let logout;
 
   beforeEach(() => {
-    config = {
-      get: sinon.stub(),
-    };
-    config.get.withArgs("idam.oauth2.client_id").returns(CLIENT_ID);
-    config.get.withArgs("secrets.ccd.ccd-admin-web-oauth2-client-secret").returns(CLIENT_SECRET);
-    config.get.withArgs("idam.oauth2.logout_endpoint").returns(LOGOUT_ENDPOINT);
-
+    config = { get: sinon.stub() };
+    config.get.withArgs("idam.web_public_url").returns(IDAM_URL);
     request = mockReq({
+      protocol: "https",
       cookies: {
         [COOKIE_ACCESS_TOKEN]: ACCESS_TOKEN,
+        [COOKIE_ID_TOKEN]: ID_TOKEN,
       },
       session: {},
     });
+    request.get = sinon.stub();
+    request.get.withArgs("host").returns(APPLICATION_HOST);
     response = mockRes();
-    next = sinon.stub();
-
-    fetch = fetchMock.delete(LOGOUT_ENDPOINT.replace(":token", ACCESS_TOKEN), {});
-
-    logout = proxyquire("../../main/routes/logout", {
+    logout = proxyquire.noCallThru()("../../main/routes/logout", {
       "config": config,
-      "node-fetch": fetch,
     }).logout;
   });
 
-  it("should call IdAM OAuth 2 logout endpoint with JWT token, and redirect to IdAM login page", (done) => {
-    response.redirect.callsFake(() => {
-      try {
-        const lastCall = fetchMockInstance.callHistory.lastCall();
-        expect(fetchMockInstance.callHistory.called(
-          LOGOUT_ENDPOINT.replace(":token", ACCESS_TOKEN))).to.be.true;
-        expect(lastCall.options.headers.authorization).to.equal("Basic "
-          + Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"));
-        expect(next).not.to.be.called;
-        expect(response.clearCookie).to.be.calledWith(COOKIE_ACCESS_TOKEN);
-        expect(request.session).to.be.null;
-        expect(response.redirect).to.be.calledWith(302, "/");
-        done();
-      } catch (e) {
-        done(e);
-      }
-    });
+  function redirectUrl(): URL {
+    expect(response.redirect).to.be.calledOnce;
+    expect(response.redirect.firstCall.args[0]).to.equal(302);
+    return new URL(response.redirect.firstCall.args[1]);
+  }
 
-    logout(request, response, next);
+  function expectLocalSessionCleared(): void {
+    expect(response.clearCookie).to.be.calledWith(COOKIE_ACCESS_TOKEN);
+    expect(response.clearCookie).to.be.calledWith(COOKIE_ID_TOKEN);
+    expect(request.session).to.be.null;
+    expect(response.clearCookie).to.be.calledBefore(response.redirect);
+  }
 
-    expect(config.get).to.be.calledWith("idam.oauth2.client_id");
-    expect(config.get).to.be.calledWith("secrets.ccd.ccd-admin-web-oauth2-client-secret");
-    expect(config.get).to.be.calledWith("idam.oauth2.logout_endpoint");
-    done();
+  it("should redirect the browser through IdAM logout and return to the application root", () => {
+    logout(request, response);
+
+    const url = redirectUrl();
+    expect(url.origin).to.equal(IDAM_URL);
+    expect(url.pathname).to.equal("/o/endSession");
+    expect(url.searchParams.get("token")).to.equal(ID_TOKEN);
+    expect(url.searchParams.get("post_logout_redirect_uri")).to.equal(`https://${APPLICATION_HOST}/`);
+    expect([...url.searchParams.keys()]).to.have.members(["token", "post_logout_redirect_uri"]);
+    expect(config.get).to.be.calledOnceWith("idam.web_public_url");
+    expectLocalSessionCleared();
   });
 
-  it("should return 400 error when cookies missing", () => {
-    request = mockReq({});
+  it("should URL-encode the ID token", () => {
+    request.cookies[COOKIE_ID_TOKEN] = "token+with/reserved?characters=&";
 
-    logout(request, response, next);
+    logout(request, response);
 
-    expect(response.redirect).not.to.be.called;
-    expect(next).to.be.calledWith({
-      error: "No auth token",
-      message: "No auth token to log out",
-      status: 400,
-    });
+    expect(redirectUrl().searchParams.get("token")).to.equal(request.cookies[COOKIE_ID_TOKEN]);
   });
 
-  it("should return 400 error when cookie `accessToken` is missing", () => {
-    request = mockReq({
-      cookies: {},
-    });
+  it("should clear local authentication and visit IdAM when the ID token is missing", () => {
+    delete request.cookies[COOKIE_ID_TOKEN];
 
-    logout(request, response, next);
+    logout(request, response);
 
-    expect(response.redirect).not.to.be.called;
-    expect(next).to.be.calledWith({
-      error: "No auth token",
-      message: "No auth token to log out",
-      status: 400,
-    });
+    expect(redirectUrl().searchParams.has("token")).to.be.false;
+    expectLocalSessionCleared();
+  });
+
+  it("should visit IdAM logout when cookies are missing", () => {
+    delete request.cookies;
+
+    logout(request, response);
+
+    expect(redirectUrl().origin).to.equal(IDAM_URL);
+    expect(redirectUrl().searchParams.has("token")).to.be.false;
+    expectLocalSessionCleared();
+  });
+
+  it("should preserve the application protocol and port in the return URL", () => {
+    request.protocol = "http";
+    request.get.withArgs("host").returns("localhost:3100");
+
+    logout(request, response);
+
+    expect(redirectUrl().searchParams.get("post_logout_redirect_uri")).to.equal("http://localhost:3100/");
+  });
+
+  it("should redirect using the real configuration module", () => {
+    const logoutWithRealConfig = proxyquire.noCallThru()("../../main/routes/logout", {}).logout;
+
+    logoutWithRealConfig(request, response);
+
+    expect(redirectUrl().pathname).to.equal("/o/endSession");
+    expectLocalSessionCleared();
   });
 });

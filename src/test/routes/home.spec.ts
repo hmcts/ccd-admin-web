@@ -20,7 +20,7 @@ describe("Home page", () => {
         .get("/")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(config.get("adminWeb.login_url"))).to.be.true;
+          expect(res.headers.location.startsWith(config.get("idam.web_public_url"))).to.be.true;
         });
     });
 
