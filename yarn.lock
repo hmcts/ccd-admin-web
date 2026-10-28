@@ -3064,12 +3064,12 @@ __metadata:
   linkType: hard
 
 "@types/sinon-chai@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@types/sinon-chai@npm:4.0.0"
+  version: 4.0.1
+  resolution: "@types/sinon-chai@npm:4.0.1"
   dependencies:
     "@types/chai": "npm:*"
     "@types/sinon": "npm:*"
-  checksum: 10/b93f81dbb73e6f7319f3077dece80bbfca4fdd2b512b07f81fb3ee2e1a2e517fc497c6f91880118b7dcce1a281d53bca1e75cb53a5dcef9188df92c3a6405475
+  checksum: 10/61e29bb8122f2c07eb8eacc6bf258ee3a6aa05ce45a6ab9c0acb2af913ae65bb481890b159527a12679498563b91f331ca90dd0f8000aa06c586da855f1b74d2
   languageName: node
   linkType: hard
 
