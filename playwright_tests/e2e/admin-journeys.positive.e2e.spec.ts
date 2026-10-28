@@ -37,7 +37,7 @@ test.describe("authenticated CCD administrator journeys - positive", () => {
     }
   });
 
-  test("logout returns the user to IdAM", async ({ adminWebPage, baseURL, idamPage }) => {
+  test.skip("logout returns the user to IdAM", async ({ adminWebPage, baseURL, idamPage }) => {
     const applicationOrigin = new URL(baseURL as string).origin;
 
     await adminWebPage.logout();

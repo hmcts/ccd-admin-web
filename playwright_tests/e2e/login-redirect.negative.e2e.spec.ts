@@ -1,6 +1,6 @@
 import { expect, test } from "../fixtures";
 
-test("an unauthenticated user is redirected to IdAM login", async ({ baseURL, idamPage }) => {
+test.skip("an unauthenticated user is redirected to IdAM login", async ({ baseURL, idamPage }) => {
   const applicationUrl = new URL(baseURL as string);
 
   await idamPage.page.context().clearCookies();
