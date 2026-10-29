@@ -43,7 +43,7 @@ test.describe("authenticated CCD administrator journeys - positive", () => {
     await adminWebPage.logout();
 
     await expect(idamPage.page).toHaveURL((url) =>
-      url.origin !== applicationOrigin && url.pathname.includes("/login"),
+      url.origin !== applicationOrigin && url.pathname.includes("/enter-email"),
     );
     await idamPage.usernameInput.waitFor({ state: "visible" });
   });
