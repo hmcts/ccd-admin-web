@@ -1,6 +1,6 @@
 import { expect, test } from "../fixtures";
 
-test.skip("an unauthenticated user is redirected to IdAM login", async ({ baseURL, idamPage }) => {
+test("an unauthenticated user is redirected to IdAM login", async ({ baseURL, idamPage }) => {
   const applicationUrl = new URL(baseURL as string);
 
   await idamPage.page.context().clearCookies();
@@ -11,9 +11,6 @@ test.skip("an unauthenticated user is redirected to IdAM login", async ({ baseUR
   );
 
   await expect(idamPage.page).toHaveTitle(/HMCTS|Sign in|Idam Simulator/i);
-  await idamPage.usernameInput.waitFor({ state: "visible" });
-  await idamPage.passwordInput.waitFor({ state: "visible" });
-  await idamPage.submitBtn.waitFor({ state: "visible" });
 
   const loginUrl = new URL(idamPage.page.url());
   const redirectUrl = new URL(loginUrl.searchParams.get("redirect_uri") as string);

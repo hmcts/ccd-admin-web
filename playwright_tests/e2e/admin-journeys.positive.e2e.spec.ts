@@ -37,16 +37,14 @@ test.describe("authenticated CCD administrator journeys - positive", () => {
     }
   });
 
-  test.skip("logout returns the user to IdAM", async ({ adminWebPage, baseURL, idamPage }) => {
+  test("logout returns the user to IdAM", async ({ adminWebPage, baseURL, idamPage }) => {
     const applicationOrigin = new URL(baseURL as string).origin;
 
     await adminWebPage.logout();
 
     await expect(idamPage.page).toHaveURL((url) =>
-      url.origin !== applicationOrigin && url.pathname.includes("/login"),
+      url.origin !== applicationOrigin && url.pathname.includes("/enter-email"),
     );
     await idamPage.usernameInput.waitFor({ state: "visible" });
-    await idamPage.passwordInput.waitFor({ state: "visible" });
-    await idamPage.submitBtn.waitFor({ state: "visible" });
   });
 });
