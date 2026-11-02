@@ -7,7 +7,7 @@ test("an unauthenticated user is redirected to IdAM login", async ({ baseURL, id
   await idamPage.page.goto("/", { waitUntil: "domcontentloaded" });
 
   await expect(idamPage.page).toHaveURL((url) =>
-    url.origin !== applicationUrl.origin && url.pathname.includes("/login"),
+    url.origin !== applicationUrl.origin && url.pathname.includes("/enter-email"),
   );
 
   await expect(idamPage.page).toHaveTitle(/HMCTS|Sign in|Idam Simulator/i);
