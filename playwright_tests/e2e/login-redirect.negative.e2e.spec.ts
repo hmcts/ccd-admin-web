@@ -3,17 +3,30 @@ import { expect, test } from "../fixtures";
 test("an unauthenticated user is redirected to IdAM login", async ({ baseURL, idamPage }) => {
   const applicationUrl = new URL(baseURL as string);
 
-  await idamPage.page.context().clearCookies();
-  await idamPage.page.goto("/", { waitUntil: "domcontentloaded" });
+  let response;
+  let loginUrl: URL;
+  let redirectUri: URL;
 
-  await expect(idamPage.page).toHaveURL((url) =>
-    url.origin !== applicationUrl.origin && url.pathname.includes("/enter-email"),
-  );
+  await test.step("clear the browser session", async () => {
+    await idamPage.page.context().clearCookies();
+  });
 
-  await expect(idamPage.page).toHaveTitle(/HMCTS|Sign in|Idam Simulator/i);
+  await test.step("capture the unauthenticated redirect", async () => {
+    response = await idamPage.page.request.get("/", { maxRedirects: 0 });
+    const location = response.headers().location;
 
-  const loginUrl = new URL(idamPage.page.url());
+    expect(response.status()).toBe(302);
+    expect(location).toBeTruthy();
 
-  expect(loginUrl.searchParams.get("response_type")).toBe("code");
-  expect(loginUrl.searchParams.get("client_id")).toBeTruthy();
+    loginUrl = new URL(location as string);
+    redirectUri = new URL(loginUrl.searchParams.get("redirect_uri") as string);
+  });
+
+  await test.step("validate the OAuth redirect parameters", async () => {
+    expect(loginUrl.origin).not.toBe(applicationUrl.origin);
+    expect(loginUrl.searchParams.get("response_type")).toBe("code");
+    expect(loginUrl.searchParams.get("client_id")).toBeTruthy();
+    expect(redirectUri.origin).toBe(applicationUrl.origin);
+    expect(redirectUri.pathname).toBe("/oauth2redirect");
+  });
 });
