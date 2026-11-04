@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node22/tsconfig.json",
+  "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
     "alwaysStrict": true,
     "noImplicitAny": false, // This is temporary until we can fix all the implicit any errors in the codebase
