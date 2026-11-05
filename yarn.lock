@@ -6095,9 +6095,9 @@ __metadata:
   linkType: hard
 
 "ip-address@npm:^10.3.1":
-  version: 10.7.5
-  resolution: "ip-address@npm:10.7.5"
-  checksum: 10/30e328a30851fa944260acd6a618c9a32e7a8f16ff033bab0e7da46beb8572fc9c77514a57e777ba9e0c4e571bab24842c10d2bab96b2856ab602e4ecdd669e1
+  version: 10.7.6
+  resolution: "ip-address@npm:10.7.6"
+  checksum: 10/16b2604753400f8eedb17d482f9cdbb6e8ca6dac31bcb6fa6984e6098091ac58acd92990cc4d09a9ee96936b6ab19fd60e5622f4add52bd7d2465969a04e2ca9
   languageName: node
   linkType: hard
 
