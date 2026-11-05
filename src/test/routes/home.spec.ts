@@ -38,6 +38,22 @@ describe("Home page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
+          const footer = dom.window.document.querySelector("footer.govuk-template__footer.app-footer");
+          const footerComponent = footer?.querySelector(".govuk-footer");
+          const footerCrown = footerComponent?.querySelector(".govuk-width-container .govuk-footer__crown");
+          expect(footer).to.exist;
+          expect(footerComponent).to.exist;
+          expect(footerCrown).to.exist;
+          expect(footerComponent?.querySelector(".govuk-footer__meta")).to.exist;
+          expect(footerComponent?.querySelector(".govuk-footer__licence-logo")).to.exist;
+          expect(footerComponent?.querySelector(".govuk-footer__copyright-logo")).to.exist;
+          const genericHeader = dom.window.document.querySelector(".govuk-generic-header");
+          expect(genericHeader).not.to.be.null;
+          expect(genericHeader?.querySelector(".govuk-generic-header__homepage-link")?.textContent?.trim()).to.equal("CCD Admin Web");
+          expect(dom.window.document.querySelector(".govuk-header")).to.be.null;
+          expect(dom.window.document.querySelector('link[rel="icon"]')).to.be.null;
+          expect(dom.window.document.querySelector('link[rel="mask-icon"]')).to.be.null;
+          expect(dom.window.document.querySelector('meta[name="theme-color"]')?.getAttribute("content")).to.equal("#0b0c0c");
           const result = dom.window.document.querySelector("h1.govuk-heading-xl").innerHTML;
           expect(result).to.equal("Welcome to CCD Admin Web");
         });

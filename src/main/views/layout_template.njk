@@ -1,5 +1,7 @@
 {% extends "govuk/template.njk" %}
 
+{% set themeColor = "#0b0c0c" %}
+
 {% block pageTitle %}
   CCD Admin Web
 {% endblock %}
@@ -10,19 +12,31 @@
   <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
 {% endblock %}
 
+{% block headIcons %}{% endblock %}
+
 {% block header %}
   <header class="govuk-template__header {%- if headerClasses %} {{ headerClasses }}{% endif %}" {{- govukAttributes(headerAttributes)}}>
     {% block headerStart %}
       <input id="currentUser" type="hidden" value="{{ user }}"/>
     {% endblock %}
-    {% block govukHeader %}
-      {{ govukHeader() }}
-    {% endblock %}
+    {% set params = {
+      url: "/",
+      logoText: "CCD Admin Web",
+      classes: "app-generic-header"
+    } %}
+    {% include "govuk/components/generic-header/template.njk" %}
     {% include "components/menu.njk" %}
     {% block headerEnd %}
       <a class="govuk-button govuk-button--warning logout" href="/logout">Logout</a>
     {% endblock %}
   </header>
+{% endblock %}
+
+{% block footer %}
+  <footer class="govuk-template__footer app-footer">
+    {% set params = {} %}
+    {% include "govuk/components/footer/template.njk" %}
+  </footer>
 {% endblock %}
 
 {% block bodyEnd %}

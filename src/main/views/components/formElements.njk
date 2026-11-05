@@ -105,7 +105,7 @@
 {% macro yesNoRadioHeading(legend, name, field, yes, no, hint = '', targetYes = '', targetNo = '', screenReader = '') %}
     <div id="{{ name }}" class="govuk-form-group {{ 'govuk-form-group-error' if field.error }}">
         <fieldset class="inline">
-            <legend class="govuk-fieldset__legend--xl">{{ legend | safe }}</legend>
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">{{ legend | safe }}</legend>
             {% if hint %}
                 <p class="text form-hint">{{ hint | safe }}</p>
             {% endif %}
