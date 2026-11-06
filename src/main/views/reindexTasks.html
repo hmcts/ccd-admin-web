@@ -1,8 +1,10 @@
 {% extends "layout_template.njk" %}
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
+{% from "components/formElements.njk" import errorSummary %}
 {% block content %}
 
 <h1 class="govuk-heading-l">Reindexed Tasks</h1>
+{{ errorSummary(error) }}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -30,11 +32,6 @@
                 </div>
             </div>
 
-            {% if error %}
-            <div class="error-summary govuk-error-message">
-                {{ error }}
-            </div>
-            {% endif %}
         </div>
     </div>
 </div>

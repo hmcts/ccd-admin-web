@@ -1,5 +1,5 @@
 {% extends "layout_template.njk" %}
-{% from "components/formElements.njk" import yesNoRadioHeading %}
+{% from "components/formElements.njk" import errorSummary, yesNoRadioHeading %}
 {% from "components/csrf.njk" import csrfProtection %}
 {% block page_title %}
   Confirm Delete {{ headingItem }}
@@ -10,11 +10,7 @@
 {% endblock %}
 {% block content %}
   <h1 class="govuk-heading-l">Confirm Delete {{ headingItem }}</h1>
-  {% if (error) %}
-    <div class="error-summary govuk-error-message">
-      {{ error.text }}
-    </div>
-  {% endif %}
+  {{ errorSummary(error) }}
   <div class="padding">
     <form id="confirmdelete" name="confirmdelete" method="POST" action="/delete{{ itemToDelete }}">
       {% if (itemToDelete === "user") %}

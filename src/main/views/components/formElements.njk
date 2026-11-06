@@ -1,3 +1,22 @@
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% macro errorSummary(error) -%}
+    {% if error %}
+        {% set errorText = error %}
+        {% if error.text %}
+            {% set errorText = error.text %}
+        {% elif error.message %}
+            {% set errorText = error.message %}
+        {% elif error.error %}
+            {% set errorText = error.error %}
+        {% endif %}
+        {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: errorText }]
+        }) }}
+    {% endif %}
+{%- endmacro %}
+
 {% macro errorsFor(name, error) -%}
     {% if error %}
         <p id="{{ name }}-error" class="govuk-error-message">
@@ -6,6 +25,8 @@
                 {{ error.text | safe }}
             {% elif error.error %}
                 {{ error.error | safe }}
+            {% else %}
+                {{ error }}
             {% endif %}
         </p>
     {% endif %}
