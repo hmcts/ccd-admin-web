@@ -3762,7 +3762,7 @@ __metadata:
     fetch-mock: "npm:^12.6.0"
     formidable: "npm:^3.5.4"
     globals: "npm:^17.12.0"
-    govuk-frontend: "npm:^5.14.0"
+    govuk-frontend: "npm:^6.4.0"
     helmet: "npm:^8.3.0"
     http-status-codes: "npm:^2.3.0"
     jquery: "npm:^4.0.0"
@@ -5805,10 +5805,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:^5.14.0":
-  version: 5.14.0
-  resolution: "govuk-frontend@npm:5.14.0"
-  checksum: 10/be321340f49306e3dada63c67888b7947e36d60dce839c9d7f0c97932cda26a848c1fc664d48bb1d85494b7d28a3e99b2df6391dfc1bcbab905f529a2faa6788
+"govuk-frontend@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "govuk-frontend@npm:6.4.0"
+  checksum: 10/e98a24d8e68626154775b5f84478ad12d144c1c4822d539faaf608bb3b60862d4786f6ac5f195893439b38bdb23c8177826768beb9cb793d8f8edb43e74a4e6f
   languageName: node
   linkType: hard
 

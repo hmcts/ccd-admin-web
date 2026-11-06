@@ -1,6 +1,6 @@
 {% extends "layout_template.njk" %}
 {% from "components/csrf.njk" import csrfProtection %}
-{% from "components/formElements.njk" import successBanner %}
+{% from "components/formElements.njk" import errorSummary, successBanner %}
 
 {% block page_title %}
   Definitions
@@ -14,12 +14,12 @@
 
 {% block content %}
   {{ successBanner(success) }}
-  {% if error %}
-    <div class="error-summary govuk-error-message">
-      {{error.text}}
+  {{ errorSummary(error) }}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full govuk-!-text-align-right">
+      <a href="/createdefinition" class="govuk-button" data-module="govuk-button">Create Definition</a>
     </div>
-  {% endif %}
-  <a href="/createdefinition" class="govuk-button rightAlign" data-module="govuk-button">Create Definition</a>
+  </div>
 
   <table class="govuk-table">
     <thead class="govuk-table__head">

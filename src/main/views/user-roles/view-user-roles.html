@@ -1,6 +1,6 @@
 {% extends "layout_template.njk" %}
 {% from "components/csrf.njk" import csrfProtection %}
-{% from "components/formElements.njk" import successBanner %}
+{% from "components/formElements.njk" import errorSummary, successBanner %}
 
 {% block page_title %}
   User Roles
@@ -15,12 +15,12 @@
 
 {% block content %}
 {{ successBanner(success) }}
-{% if (error)%}
-  <div class="error-summary govuk-error-message">
-    {{error.text}}
+{{ errorSummary(error) }}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full govuk-!-text-align-right">
+    <a href="/create-user-role-form?save=create" class="govuk-button" data-module="govuk-button">Create User Role</a>
   </div>
-{% endif %}
-<a href="/create-user-role-form?save=create" class="govuk-button rightAlign" data-module="govuk-button">Create User Role</a>
+</div>
 
 <table class="govuk-table">
   <thead class="govuk-table__head">
