@@ -12,7 +12,10 @@
   <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
 {% endblock %}
 
-{% block headIcons %}{% endblock %}
+{% block headIcons %}
+  <link rel="icon" sizes="48x48" href="/favicon.ico">
+  <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="{{ themeColor }}">
+{% endblock %}
 
 {% block header %}
   <header class="govuk-template__header {%- if headerClasses %} {{ headerClasses }}{% endif %}" {{- govukAttributes(headerAttributes)}}>

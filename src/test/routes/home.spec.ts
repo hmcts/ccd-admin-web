@@ -51,8 +51,8 @@ describe("Home page", () => {
           expect(genericHeader).not.to.be.null;
           expect(genericHeader?.querySelector(".govuk-generic-header__homepage-link")?.textContent?.trim()).to.equal("CCD Admin Web");
           expect(dom.window.document.querySelector(".govuk-header")).to.be.null;
-          expect(dom.window.document.querySelector('link[rel="icon"]')).to.be.null;
-          expect(dom.window.document.querySelector('link[rel="mask-icon"]')).to.be.null;
+          expect(dom.window.document.querySelector('link[rel="icon"][href="/favicon.ico"]')).not.to.be.null;
+          expect(dom.window.document.querySelector('link[rel="mask-icon"]')?.getAttribute("color")).to.equal("#0b0c0c");
           expect(dom.window.document.querySelector('meta[name="theme-color"]')?.getAttribute("content")).to.equal("#0b0c0c");
           const result = dom.window.document.querySelector("h1.govuk-heading-xl").innerHTML;
           expect(result).to.equal("Welcome to CCD Admin Web");
