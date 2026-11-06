@@ -1,14 +1,15 @@
 {% extends "layout_template.njk" %}
+{% from "govuk/components/pagination/macro.njk" import govukPagination %}
 {% block content %}
 
-<h2 class="heading-large padding">Reindexed Tasks</h2>
-<div class="grid-row">
-    <div class="column-two-thirds padding">
+<h1 class="govuk-heading-l">Reindexed Tasks</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-        <div class="padding ngx-pagination">
+        <div class="ngx-pagination">
             <form method="get" action="/reindex">
                 <div class="govuk-form-group">
-                    <label for="caseType" class="govuk-label visually-hidden">Case Type</label>
+                    <label for="caseType" class="govuk-label govuk-visually-hidden">Case Type</label>
                     <select id="caseType" name="caseType" class="govuk-select">
                         <option value="">--Select a Case Type--</option>
                         {% for ct in caseTypes %}
@@ -34,87 +35,72 @@
                 {{ error }}
             </div>
             {% endif %}
-
-            {% if tasks and tasks.length > 0 %}
-            <table class="govuk-table">
-                <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th class="govuk-table__header">Jurisdiction</th>
-                    <th class="govuk-table__header">Case Type</th>
-                    <th class="govuk-table__header">Old Index Deleted</th>
-                    <th class="govuk-table__header">Index Name</th>
-                    <th class="govuk-table__header">Start Time</th>
-                    <th class="govuk-table__header">End Time</th>
-                    <th class="govuk-table__header">Duration (seconds)</th>
-                    <th class="govuk-table__header">Status</th>
-                    <th class="govuk-table__header">Exception Message</th>
-                    <th class="govuk-table__header">Who Imported</th>
-                </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                {% for t in tasks %}
-                <tr class="govuk-table__row">
-                    <td class="govuk-table__cell">{{ t.jurisdiction }}</td>
-                    <td class="govuk-table__cell">{{ t.caseType }}</td>
-                    <td class="govuk-table__cell">{{ t.deleteOldIndex }}</td>
-                    <td class="govuk-table__cell">{{ t.indexName }}</td>
-                    <td class="govuk-table__cell">{{ t.startTime }}</td>
-                    <td class="govuk-table__cell">{{ t.endTime or '-' }}</td>
-                    <td class="govuk-table__cell">{{ t.duration or '-' }}</td>
-                    <td class="govuk-table__cell">{{ t.status }}</td>
-                    <td class="govuk-table__cell">{{ t.exceptionMessage or '-' }}</td>
-                    <td class="govuk-table__cell">{{ t.whoImported or '-' }}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            {% if pagination and pagination.showPagination %}
-            <nav class="govuk-pagination" role="navigation" aria-label="Pagination">
-                {% if pagination.hasPrevious %}
-                <div class="govuk-pagination__prev">
-                    <a class="govuk-link govuk-pagination__link" href="/reindex?caseType={{ selectedCaseType | urlencode }}&page={{ pagination.previousPage }}" rel="prev">
-                        Previous
-                    </a>
-                </div>
-                {% endif %}
-
-                <ul class="govuk-pagination__list">
-                    {% for pageNumber in pagination.pages %}
-                    {% if pageNumber == "..." %}
-                    <li class="govuk-pagination__item">...</li>
-                    {% else %}
-                    <li class="govuk-pagination__item {% if pageNumber == pagination.currentPage %}govuk-pagination__item--current{% endif %}">
-                        <a class="govuk-link govuk-pagination__link" href="/reindex?caseType={{ selectedCaseType | urlencode }}&page={{ pageNumber }}" aria-label="Page {{ pageNumber }}">
-                            {{ pageNumber }}
-                        </a>
-                    </li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-
-                {% if pagination.hasNext %}
-                <div class="govuk-pagination__next">
-                    <a class="govuk-link govuk-pagination__link" href="/reindex?caseType={{ selectedCaseType | urlencode }}&page={{ pagination.nextPage }}" rel="next">
-                        Next
-                    </a>
-                </div>
-                {% endif %}
-            </nav>
-            {% endif %}
-            {% else %}
-            <table class="govuk-table">
-                <thead>
-                <tr>
-                    <th>
-                        <div class="boldcontents">No reindex tasks found</div>
-                    </th>
-                </tr>
-                </thead>
-            </table>
-            {% endif %}
         </div>
     </div>
 </div>
+
+{% if tasks and tasks.length > 0 %}
+<div class="app-reindex-table-container" role="region" aria-label="Reindexed tasks table" tabindex="0">
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header">Jurisdiction</th>
+                <th class="govuk-table__header">Case Type</th>
+                <th class="govuk-table__header">Old Index Deleted</th>
+                <th class="govuk-table__header">Index Name</th>
+                <th class="govuk-table__header">Start Time</th>
+                <th class="govuk-table__header">End Time</th>
+                <th class="govuk-table__header">Duration (seconds)</th>
+                <th class="govuk-table__header">Status</th>
+                <th class="govuk-table__header">Exception Message</th>
+                <th class="govuk-table__header">Who Imported</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            {% for t in tasks %}
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">{{ t.jurisdiction }}</td>
+                <td class="govuk-table__cell">{{ t.caseType }}</td>
+                <td class="govuk-table__cell">{{ t.deleteOldIndex }}</td>
+                <td class="govuk-table__cell">{{ t.indexName }}</td>
+                <td class="govuk-table__cell">{{ t.startTime }}</td>
+                <td class="govuk-table__cell">{{ t.endTime or '-' }}</td>
+                <td class="govuk-table__cell">{{ t.duration or '-' }}</td>
+                <td class="govuk-table__cell">{{ t.status }}</td>
+                <td class="govuk-table__cell">{{ t.exceptionMessage or '-' }}</td>
+                <td class="govuk-table__cell">{{ t.whoImported or '-' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if pagination and pagination.showPagination %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        {{ govukPagination({
+            classes: "app-reindex-pagination govuk-!-margin-top-3",
+            items: pagination.items,
+            next: pagination.next,
+            previous: pagination.previous
+        }) }}
+    </div>
+</div>
+{% endif %}
+{% else %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <table class="govuk-table">
+            <thead>
+            <tr>
+                <th>
+                    <div class="boldcontents">No reindex tasks found</div>
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+{% endif %}
 <script type="text/javascript">
     (function() {
         var REFRESH_KEY = "reindexAutoRefreshEnabled";

@@ -5,8 +5,8 @@
 
 {% block content %}
   <h1 class="govuk-heading-l">Jurisdiction Search</h1>
-  <div class="govuk-grid-row padding">
-    <div class="govuk-grid-column-two-thirds padding">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       <form id="selectJurisdiction" action="/{{ destination }}" method="post">
         {{ csrfProtection(csrfToken) }}
         {{ serverList(jurisdictions, "jurisdictionName", "true") }}

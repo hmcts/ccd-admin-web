@@ -87,28 +87,19 @@ hr {
   }
 }
 
-.govuk-pagination {
-  display: flex;
-  align-items: center;
+.app-reindex-pagination {
   justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
-  width: 100%;
 }
 
-.govuk-pagination__list {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  gap: 8px;
-}
+// match GOV.UK content gutters while letting the wide task table use the viewport.
+.app-reindex-table-container {
+  width: calc(100vw - 30px);
+  max-width: none;
+  margin-left: calc(50% - 50vw + 15px);
+  overflow-x: auto;
 
-.govuk-pagination__item {
-  margin: 0;
-}
-
-.govuk-pagination__item--current .govuk-pagination__link {
-  font-weight: 700;
-  text-decoration: none;
+  @media (min-width: 40.0625em) {
+    width: calc(100vw - 60px);
+    margin-left: calc(50% - 50vw + 30px);
+  }
 }
