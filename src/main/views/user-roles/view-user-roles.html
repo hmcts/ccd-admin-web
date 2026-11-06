@@ -16,7 +16,11 @@
 {% block content %}
 {{ successBanner(success) }}
 {{ errorSummary(error) }}
-<a href="/create-user-role-form?save=create" class="govuk-button rightAlign" data-module="govuk-button">Create User Role</a>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full govuk-!-text-align-right">
+    <a href="/create-user-role-form?save=create" class="govuk-button" data-module="govuk-button">Create User Role</a>
+  </div>
+</div>
 
 <table class="govuk-table">
   <thead class="govuk-table__head">

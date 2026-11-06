@@ -15,7 +15,11 @@
 {% block content %}
   {{ successBanner(success) }}
   {{ errorSummary(error) }}
-  <a href="/createdefinition" class="govuk-button rightAlign" data-module="govuk-button">Create Definition</a>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full govuk-!-text-align-right">
+      <a href="/createdefinition" class="govuk-button" data-module="govuk-button">Create Definition</a>
+    </div>
+  </div>
 
   <table class="govuk-table">
     <thead class="govuk-table__head">

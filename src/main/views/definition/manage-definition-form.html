@@ -62,7 +62,7 @@
 {% block content %}
   <h1 class="govuk-heading-l">{{ heading }}</h1>
 
-  <div class="padding">
+  <div class="govuk-!-static-padding-4">
     {{ errorSummary(error) }}
 
     <form id="createdefinitionform" name="createdefinitionform" method="POST" action="/createdefinition">
@@ -91,7 +91,7 @@
         </div>
         <div class="govuk-button-group">
           <button type="submit" class="govuk-button" data-module="govuk-button">{{submitButtonText}}</button>
-          <a href="/definitions" class="govuk-button govuk-button--warning">Cancel</a>
+          <a href="/definitions" class="govuk-button govuk-button--secondary">Cancel</a>
         </div>
     </form>
   </div>

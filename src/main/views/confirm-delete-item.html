@@ -11,7 +11,7 @@
 {% block content %}
   <h1 class="govuk-heading-l">Confirm Delete {{ headingItem }}</h1>
   {{ errorSummary(error) }}
-  <div class="padding">
+  <div class="govuk-!-static-padding-4">
     <form id="confirmdelete" name="confirmdelete" method="POST" action="/delete{{ itemToDelete }}">
       {% if (itemToDelete === "user") %}
         <input id="idamId" name="idamId" type="hidden" value="{{ idamId }}"/>
