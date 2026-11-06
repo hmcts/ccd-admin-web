@@ -1,6 +1,5 @@
 @use "govuk-frontend/dist/govuk" as * with (
   $govuk-assets-path: "/assets/",
-  $govuk-font-family: ("Helvetica Neue", Helvetica, Arial, sans-serif),
   $govuk-functional-colours: (
     brand: #0b0c0c,
     surface-background: #f3f2f1,
