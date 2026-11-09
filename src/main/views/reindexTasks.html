@@ -70,17 +70,13 @@
     </table>
 </div>
 {% if pagination and pagination.showPagination %}
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        {% set govukPaginationParams = {
-            classes: "app-reindex-pagination govuk-!-margin-top-3",
-            items: pagination.items,
-            next: pagination.next,
-            previous: pagination.previous
-        } %}
-        {{ govukPaginationParams | govukPagination | safe }}
-    </div>
-</div>
+{% set govukPaginationParams = {
+    classes: "app-reindex-pagination govuk-!-margin-top-3",
+    items: pagination.items,
+    next: pagination.next,
+    previous: pagination.previous
+} %}
+{{ govukPaginationParams | govukPagination | safe }}
 {% endif %}
 {% else %}
 <div class="govuk-grid-row">
