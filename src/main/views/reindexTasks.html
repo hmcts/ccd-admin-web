@@ -1,10 +1,8 @@
 {% extends "layout_template.njk" %}
-{% from "govuk/components/pagination/macro.njk" import govukPagination %}
-{% from "components/formElements.njk" import errorSummary %}
 {% block content %}
 
 <h1 class="govuk-heading-l">Reindexed Tasks</h1>
-{{ errorSummary(error) }}
+{{ error | govukErrorSummary | safe }}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -74,12 +72,13 @@
 {% if pagination and pagination.showPagination %}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        {{ govukPagination({
+        {% set govukPaginationParams = {
             classes: "app-reindex-pagination govuk-!-margin-top-3",
             items: pagination.items,
             next: pagination.next,
             previous: pagination.previous
-        }) }}
+        } %}
+        {{ govukPaginationParams | govukPagination | safe }}
     </div>
 </div>
 {% endif %}

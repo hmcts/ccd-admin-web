@@ -1,5 +1,4 @@
 {% extends "layout_template.njk" %}
-{% from "../components/formElements.njk" import errorSummary %}
 {% from "../components/csrf.njk" import csrfProtection %}
 {% block page_title %}
   {{ heading }}
@@ -63,7 +62,7 @@
   <h1 class="govuk-heading-l">{{ heading }}</h1>
 
   <div class="govuk-!-static-padding-4">
-    {{ errorSummary(error) }}
+    {{ error | govukErrorSummary | safe }}
 
     <form id="createdefinitionform" name="createdefinitionform" method="POST" action="/createdefinition">
 

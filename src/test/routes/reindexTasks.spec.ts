@@ -276,6 +276,8 @@ describe("test route Reindex Tasks", () => {
             const dom = new JSDOM(res.text);
 
             const errorMessage = dom.window.document.body.textContent;
+            const errorSummary = dom.window.document.querySelector(".govuk-error-summary");
+            expect(errorSummary).to.exist;
             expect(errorMessage).to.include("Reindex fetch failed with HTTP 500");
         });
     });

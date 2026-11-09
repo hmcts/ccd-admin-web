@@ -1,5 +1,5 @@
 {% extends "layout_template.njk" %}
-{% from "../components/formElements.njk" import dropdown, errorSummary %}
+{% from "../components/formElements.njk" import dropdown %}
 {% from "../components/csrf.njk" import csrfProtection %}
 {% block page_title %}
   {{ heading }}
@@ -126,7 +126,7 @@
   <h1 class="govuk-heading-l">{{ heading }}</h1>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      {{ errorSummary(error) }}
+      {{ error | govukErrorSummary | safe }}
 
       <form id="createuserform" name="createuserform" method="POST" action="/createuser">
 

@@ -1,6 +1,6 @@
 {% extends "layout_template.njk" %}
 {% from "components/csrf.njk" import csrfProtection %}
-{% from "components/formElements.njk" import errorSummary, successBanner %}
+{% from "components/formElements.njk" import successBanner %}
 
 {% block page_title %}
   User Profiles
@@ -15,7 +15,7 @@
 
 {% block content %}
   {{ successBanner(success) }}
-  {{ errorSummary(error) }}
+  {{ error | govukErrorSummary | safe }}
   {% if adminWebAuthorization and adminWebAuthorization.canManageUserProfile %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full govuk-!-text-align-right">
