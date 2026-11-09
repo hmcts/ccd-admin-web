@@ -1,6 +1,7 @@
 import { type Page } from "@playwright/test";
 import nunjucks from "nunjucks";
 import path from "node:path";
+import { registerGovukNunjucksFilters } from "../../../src/main/util/govuk-nunjucks-filters";
 
 const fixtureJurisdiction = {
   id: "PLAYWRIGHT",
@@ -20,6 +21,7 @@ const templateEnvironment = new nunjucks.Environment(new nunjucks.FileSystemLoad
   path.join(process.cwd(), "node_modules/govuk-frontend/dist"),
   path.join(process.cwd(), "lib"),
 ]));
+registerGovukNunjucksFilters(templateEnvironment);
 
 interface FormNavigationOptions {
   destination: "definitions" | "userprofiles";
@@ -30,16 +32,24 @@ interface FormNavigationOptions {
 
 async function mockFormNavigation(page: Page, options: FormNavigationOptions): Promise<void> {
   const applicationOrigin = new URL(page.url()).origin;
-  const renderedForm = templateEnvironment.render(options.template, {
-    adminWebAuthorization: {
-      canManageDefinition: true,
-      canManageUserProfile: true,
-    },
-    csrfToken: "playwright-csrf-token",
-    currentjurisdiction: fixtureJurisdiction.id,
-    jurisdictions: JSON.stringify(JSON.stringify([fixtureJurisdiction])),
-    user: "playwright-form-fixture",
-    ...options.templateData,
+  const renderedForm = await new Promise<string>((resolve, reject) => {
+    templateEnvironment.render(options.template, {
+      adminWebAuthorization: {
+        canManageDefinition: true,
+        canManageUserProfile: true,
+      },
+      csrfToken: "playwright-csrf-token",
+      currentjurisdiction: fixtureJurisdiction.id,
+      jurisdictions: JSON.stringify(JSON.stringify([fixtureJurisdiction])),
+      user: "playwright-form-fixture",
+      ...options.templateData,
+    }, (error, result) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(result ?? "");
+    });
   });
   const formHtml = renderedForm.replace(
     "</head>",
