@@ -10,26 +10,8 @@
 
     $(document).ready(function() {
 
-      $('#createdefinitionform').validate({ // initialize the plugin
-        onkeyup: function(element) {$(element).valid()},
+      window.ccdAdminInitializeValidation('#createdefinitionform', {
         onclick: false,
-        onfocusout: false,
-        errorPlacement: function (error, element) {
-          error.insertBefore(element);
-        },
-        errorElement : 'div',
-        errorElementClass: 'error',
-        errorClass: 'govuk-error-message',
-        highlight: function(element) {
-          var inputErrorClass = element.tagName.toLowerCase() === 'select' ? 'govuk-select--error' : 'govuk-input--error';
-          $(element).addClass(inputErrorClass);
-          $(element).closest('.govuk-form-group').addClass('govuk-form-group--error');
-        },
-        unhighlight: function(element) {
-          var inputErrorClass = element.tagName.toLowerCase() === 'select' ? 'govuk-select--error' : 'govuk-input--error';
-          $(element).removeClass(inputErrorClass);
-          $(element).closest('.govuk-form-group').removeClass('govuk-form-group--error');
-        },
         rules: {
           description: {
             required: true
