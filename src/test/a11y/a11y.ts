@@ -30,7 +30,7 @@ async function runPa11y(url: string, ignoreElements: any[]): Promise<IIssue[]> {
       Authorization: "abc",
       Cookie: `${COOKIE_ACCESS_TOKEN}=ABC`,
     },
-    // Ignore GOV.UK template assets outside our control, including the decorative footer crown SVG.
+    // Ignore GovUK template elements that are outside the team's control from a11y tests
     hideElements: "#logo, .logo, .copyright, link[rel=mask-icon], .govuk-visually-hidden, .govuk-footer__crown",
     ignore: ignoreElements,
     includeWarnings: true,
