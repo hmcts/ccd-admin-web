@@ -1,8 +1,8 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as mock from "nock";
-import * as request from "supertest";
+import mock from "nock";
+import request from "supertest";
 
 describe("Confirm Delete page", () => {
   describe("on POST /deleterole when unauthorized", () => {
@@ -16,7 +16,8 @@ describe("Confirm Delete page", () => {
                 .then((res) => {
                     expect(res.statusCode).to.equal(200);
                     expect(res.headers.location).to.be.undefined;
-                    expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+                    expect(res.text).to.contain("Unauthorised role");
+                    expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
                 });
         });
         it("should redirect to the Roles list when No is chosen", () => {
@@ -28,13 +29,13 @@ describe("Confirm Delete page", () => {
                 .then((res) => {
                   expect(res.statusCode).to.equal(200);
                   expect(res.headers.location).to.be.undefined;
-                  expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+                  expect(res.text).to.contain("Unauthorised role");
+                  expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
                 });
         });
 
         it("should redirect to the Roles list when Yes is chosen", () => {
             let backendCalled = false;
-
             mock("http://localhost:4451")
                 .delete("/api/user-role")
                 .query({ role: "test-role" })
@@ -52,7 +53,8 @@ describe("Confirm Delete page", () => {
                   expect(backendCalled).to.be.false;
                   expect(res.statusCode).to.equal(200);
                   expect(res.headers.location).to.be.undefined;
-                  expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+                  expect(res.text).to.contain("Unauthorised role");
+                  expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
                 });
         });
 
@@ -76,7 +78,8 @@ describe("Confirm Delete page", () => {
                   expect(backendCalled).to.be.false;
                   expect(res.statusCode).to.equal(200);
                   expect(res.headers.location).to.be.undefined;
-                  expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+                  expect(res.text).to.contain("Unauthorised role");
+                  expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
                 });
         });
     });

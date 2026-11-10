@@ -1,19 +1,20 @@
-import * as config from "config";
-import * as request from "superagent";
-const { Readable } = require("stream");
-const csv = require("fast-csv");
+import config from "config";
+import request from "superagent";
+import { Readable } from "stream";
+import { parseStream } from "fast-csv";
 
 export function buildTranslationsJson(data) {
-  let translations = "";
-  for (const element of data) {
-      if (translations.length > 0) { translations += ","; }
-      translations += rowToTranslationJson(element);
-  }
-  return translations;
+  return data
+    .map((element) => rowToTranslationJson(element))
+    .filter((translation) => translation.length > 0)
+    .join(",");
 }
 
 export function rowToTranslationJson(element) {
   let translation = "";
+  if (!element?.[0] || !JSON.stringify(element[0])) {
+    return "";
+  }
   translation += JSON.stringify(element[0]) + ":{";
   translation += "\"translation\":" + JSON.stringify(element[1] ? element[1] : "");
   if (element[2]) {
@@ -27,9 +28,8 @@ export function rowToTranslationJson(element) {
 
 export function getRowDataArrayFromCsv(stream) {
     return new Promise((resolve, reject) => {
-        const data = [];
-        csv
-            .parseStream(stream, {headers : false})
+        const data: any [] = [];
+        parseStream(stream, {headers : false})
             .on("error", reject)
             .on("data", (row) => data.push(row))
             .on("end", () => resolve(data));
@@ -37,7 +37,7 @@ export function getRowDataArrayFromCsv(stream) {
 }
 
 export async function uploadTranslations(req) {
-  const url = config.get("adminWeb.welsh_translation_get_dictionary_url");
+  const url = config.get<string>("adminWeb.welsh_translation_get_dictionary_url");
   const headers = {
       "Accept": "application/json",
       "Authorization": req.accessToken,

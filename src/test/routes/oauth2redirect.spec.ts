@@ -1,15 +1,14 @@
 import { app } from "../../main/app";
-import * as chai from "chai";
+import { expect, use } from "chai";
 import { COOKIE_ACCESS_TOKEN } from "../../main/routes/oauth2redirect";
-import { expect } from "chai";
-import * as idamServiceMock from "../http-mocks/idam";
-import * as request from "supertest";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
-import * as sinonExpressMock from "sinon-express-mock";
+import { resolveExchangeCode } from "../http-mocks/idam";
+import request from "supertest";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
+import { mockReq, mockRes } from "sinon-express-mock";
 
-chai.use(sinonChai);
+use(sinonChai);
 
 describe("oauth2redirect", () => {
 
@@ -45,7 +44,7 @@ describe("oauth2redirect", () => {
     it("should set an accessToken cookie and redirect to /", () => {
       return initialiseOAuthSession()
         .then(({ agent, state }) => {
-          idamServiceMock.resolveExchangeCode(token);
+          resolveExchangeCode(token);
 
           return agent.get(`/oauth2redirect?code=abc123&state=${state}`);
         })
@@ -102,9 +101,9 @@ describe("oauth2redirect", () => {
         get: sinon.stub(),
       };
 
-      req = sinonExpressMock.mockReq();
+      req = mockReq();
       req.query = {code: "code", redirect_uri: "https://localhost:5000", state: "valid-state"};
-      res = sinonExpressMock.mockRes();
+      res = mockRes();
       next = sinon.stub();
       accessTokenRequest = sinon.stub();
       accessTokenRequest.withArgs(req).returns(Promise.resolve(TOKEN));

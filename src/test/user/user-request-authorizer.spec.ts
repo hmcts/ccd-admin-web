@@ -1,11 +1,11 @@
-import * as chai from "chai";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
-import * as userReqAuth from "../../main/user/user-request-authorizer";
+import { expect, use } from "chai";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
+import { COOKIE_ACCESS_TOKEN } from "../../main/user/user-request-authorizer";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("UserRequestAuthorizer", () => {
   describe("authorize", () => {
@@ -18,7 +18,7 @@ describe("UserRequestAuthorizer", () => {
       roles: [ROLE_1],
     };
     const COOKIES = {
-      [userReqAuth.COOKIE_ACCESS_TOKEN]: "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNW91NWFi",
+      [COOKIE_ACCESS_TOKEN]: "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNW91NWFi",
     };
 
     let request;
@@ -85,7 +85,7 @@ describe("UserRequestAuthorizer", () => {
 
       userRequestAuthorizer.authorize(request)
         .then(() => {
-          expect(userResolver.getTokenDetails).to.have.been.calledWith(COOKIES[userReqAuth.COOKIE_ACCESS_TOKEN]);
+          expect(userResolver.getTokenDetails).to.have.been.calledWith(COOKIES[COOKIE_ACCESS_TOKEN]);
           done();
         })
         .catch(() => done(new Error("Promise should have been resolved")));
@@ -96,7 +96,7 @@ describe("UserRequestAuthorizer", () => {
 
       userRequestAuthorizer.authorize(request)
         .then(() => {
-          expect(request.accessToken).to.equal(`Bearer ${COOKIES[userReqAuth.COOKIE_ACCESS_TOKEN]}`);
+          expect(request.accessToken).to.equal(`Bearer ${COOKIES[COOKIE_ACCESS_TOKEN]}`);
           done();
         })
         .catch(() => done(new Error("Promise should have been resolved")));

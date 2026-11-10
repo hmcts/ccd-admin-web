@@ -1,8 +1,12 @@
-import * as config from "config";
-import * as request from "superagent";
+import config from "config";
+import request from "superagent";
 import { Logger } from "@hmcts/nodejs-logging";
 
 const logger = Logger.getLogger(__filename);
+
+module.exports = {
+  getReindexTasks,
+};
 
 export function getReindexTasks(req, caseType?: string, page?: number, size?: number) {
   const url = new URL(config.get("adminWeb.reindex_tasks_url"));

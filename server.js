@@ -18,5 +18,4 @@ for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, RETRY_DELAY_MS);
 }
 
-require('ts-node/register');
 require('./src/main/server');
