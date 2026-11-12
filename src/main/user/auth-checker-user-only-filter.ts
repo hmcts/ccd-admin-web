@@ -1,6 +1,7 @@
 import { authorize } from "./user-request-authorizer";
 import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
+import { setOAuthState } from "../oauth2/oauth-state";
 
 export const authCheckerUserOnlyFilter = (req: any, res: any, next: any) => {
 
@@ -23,8 +24,9 @@ export const authCheckerUserOnlyFilter = (req: any, res: any, next: any) => {
       if (error.status === 403) {
         next(error);
       } else {
+        const state = setOAuthState(req);
         res.redirect(302, `${idamWebPublicUrl}/o/authorize?response_type=code&client_id=` +
-          `${idamClientId}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}`);
+          `${idamClientId}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}&state=${encodeURIComponent(state)}`);
       }
     });
 };

@@ -13,6 +13,20 @@ use(sinonChai);
 describe("oauth2redirect", () => {
 
   const token = "ey123.ey456";
+  const initialiseOAuthSession = () => {
+    const agent = request.agent(app);
+
+    return agent
+      .get("/")
+      .then((res) => {
+        const state = new URL(res.headers.location).searchParams.get("state");
+
+        expect(state).to.be.a("string");
+
+        return { agent, state };
+      });
+  };
+
   const parseSetCookie = (setCookieHeader: string): {[key: string]: string} => {
     return setCookieHeader.split(";").reduce((cookies, cookiePart) => {
       const separatorIndex = cookiePart.indexOf("=");
@@ -28,10 +42,12 @@ describe("oauth2redirect", () => {
 
   describe("when OAuth2 code is present", () => {
     it("should set an accessToken cookie and redirect to /", () => {
-      resolveExchangeCode(token);
+      return initialiseOAuthSession()
+        .then(({ agent, state }) => {
+          resolveExchangeCode(token);
 
-      return request(app)
-        .get("/oauth2redirect?code=abc123")
+          return agent.get(`/oauth2redirect?code=abc123&state=${state}`);
+        })
         .then((res) => {
           const cookies = res.get("Set-Cookie").map(parseSetCookie);
           expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.true;
@@ -42,14 +58,25 @@ describe("oauth2redirect", () => {
 
   describe("when OAuth2 code is not present", () => {
     it("should not set an accessToken cookie", () => {
-
-      return request(app)
-        .get("/oauth2redirect")
+      return initialiseOAuthSession()
+        .then(({ agent, state }) => agent.get(`/oauth2redirect?state=${state}`))
         .then((res) => {
           const cookies = res.get("Set-Cookie").map(parseSetCookie);
           expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.false;
           expect(res.status).to.equal(500);
           expect(res.text).includes("Error: Unable to obtain access token - no OAuth2 code provided");
+        });
+    });
+  });
+
+  describe("when OAuth2 state is invalid", () => {
+    it("should reject the request before exchanging the code", () => {
+      return initialiseOAuthSession()
+        .then(({ agent }) => agent.get("/oauth2redirect?code=abc123&state=invalid-state"))
+        .then((res) => {
+          const cookies = res.get("Set-Cookie").map(parseSetCookie);
+          expect(cookies.some((c) => c[`${COOKIE_ACCESS_TOKEN}`] === token)).to.be.false;
+          expect(res.status).to.equal(400);
         });
     });
   });
@@ -66,6 +93,7 @@ describe("oauth2redirect", () => {
     let next;
     let config;
     let accessTokenRequest;
+    let oauthState;
     let oauth2redirect;
 
     beforeEach(() => {
@@ -74,14 +102,19 @@ describe("oauth2redirect", () => {
       };
 
       req = mockReq();
-      req.query = {code: "code", redirect_uri: "https://localhost:5000"};
+      req.query = {code: "code", redirect_uri: "https://localhost:5000", state: "valid-state"};
       res = mockRes();
       next = sinon.stub();
       accessTokenRequest = sinon.stub();
       accessTokenRequest.withArgs(req).returns(Promise.resolve(TOKEN));
+      oauthState = {
+        clearOAuthState: sinon.stub(),
+        getOAuthState: sinon.stub().withArgs(req).returns("valid-state"),
+      };
 
       oauth2redirect = proxyquire.noCallThru()("../../main/routes/oauth2redirect", {
         "../oauth2/access-token-request": {accessTokenRequest},
+        "../oauth2/oauth-state": oauthState,
         "config": config,
       }).oauth2redirect;
     });
@@ -102,6 +135,20 @@ describe("oauth2redirect", () => {
       });
 
       oauth2redirect(req, res, next);
+    });
+
+    it("should reject requests with a mismatched state", () => {
+      req.query.state = "unexpected-state";
+
+      oauth2redirect(req, res, next);
+
+      expect(oauthState.clearOAuthState).to.have.been.calledWith(req);
+      expect(accessTokenRequest).not.to.have.been.called;
+      expect(next).to.have.been.called;
+
+      const error = next.firstCall.args[0];
+      expect(error.message).to.equal("Invalid OAuth2 state parameter");
+      expect(error.status).to.equal(400);
     });
 
   });
