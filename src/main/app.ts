@@ -17,6 +17,7 @@ import { Helmet, IConfig as HelmetConfig } from "./modules/helmet";
 import { importAll } from "./import-all/index";
 import enableAppInsights from "./app-insights/app-insights";
 import { serviceFilter } from "./service/service-filter";
+import { registerGovukNunjucksFilters } from "./util/govuk-nunjucks-filters";
 import { COOKIE_ACCESS_TOKEN } from "./user/user-request-authorizer";
 import cookieSession from "cookie-session";
 
@@ -50,7 +51,7 @@ app.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery/dist
 app.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery-validation/dist"), caching));
 app.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk"), caching));
 app.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk"), caching));
-app.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
+app.use(favicon(path.join("src", "favicon.ico")));
 
 // Session
 app.set("trust proxy", 1); // trust first proxy
@@ -65,7 +66,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 new Helmet(config.get<HelmetConfig>("security")).enableFor(app);
 
-expressNunjucks(app, {
+const nunjucks = expressNunjucks(app, {
   filters: {
     split: (str, separator) => {
       return str.split(separator);
@@ -77,6 +78,7 @@ expressNunjucks(app, {
   lstripBlocks: undefined,
   tags: undefined,
 });
+registerGovukNunjucksFilters(nunjucks.env);
 
 // Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
 app.enable("trust proxy");

@@ -1,5 +1,7 @@
 {% extends "govuk/template.njk" %}
 
+{% set themeColor = "#0b0c0c" %}
+
 {% block pageTitle %}
   CCD Admin Web
 {% endblock %}
@@ -8,6 +10,12 @@
   <link rel="stylesheet" media="all" href="/stylesheets/app.css"/>
   <script type="text/javascript" src="/js/jquery.min.js"></script>
   <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+  <script type="text/javascript" src="/javascripts/govuk-validation.js"></script>
+{% endblock %}
+
+{% block headIcons %}
+  <link rel="icon" sizes="48x48" href="/favicon.ico">
+  <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="{{ themeColor }}">
 {% endblock %}
 
 {% block header %}
@@ -15,14 +23,24 @@
     {% block headerStart %}
       <input id="currentUser" type="hidden" value="{{ user }}"/>
     {% endblock %}
-    {% block govukHeader %}
-      {{ govukHeader() }}
-    {% endblock %}
+    {% set params = {
+      url: "/",
+      logoText: "CCD Admin Web",
+      classes: "app-generic-header"
+    } %}
+    {% include "govuk/components/generic-header/template.njk" %}
     {% include "components/menu.njk" %}
     {% block headerEnd %}
       <a class="govuk-button govuk-button--warning logout" href="/logout">Logout</a>
     {% endblock %}
   </header>
+{% endblock %}
+
+{% block footer %}
+  <footer class="govuk-template__footer app-footer">
+    {% set params = {} %}
+    {% include "govuk/components/footer/template.njk" %}
+  </footer>
 {% endblock %}
 
 {% block bodyEnd %}

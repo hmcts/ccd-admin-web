@@ -15,12 +15,12 @@
 
 {% block content %}
 {{ successBanner(success) }}
-{% if (error)%}
-  <div class="error-summary govuk-error-message">
-    {{error.text}}
+{{ error | govukErrorSummary | safe }}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full govuk-!-text-align-right">
+    <a href="/create-user-role-form?save=create" class="govuk-button" data-module="govuk-button">Create User Role</a>
   </div>
-{% endif %}
-<a href="/create-user-role-form?save=create" class="govuk-button rightAlign" data-module="govuk-button">Create User Role</a>
+</div>
 
 <table class="govuk-table">
   <thead class="govuk-table__head">

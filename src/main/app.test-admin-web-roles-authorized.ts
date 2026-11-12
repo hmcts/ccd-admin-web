@@ -8,6 +8,7 @@ import favicon from "serve-favicon";
 import config from "config";
 import { importAll } from "./import-all/index";
 import cookieSession from "cookie-session";
+import { registerGovukNunjucksFilters } from "./util/govuk-nunjucks-filters";
 
 
 const env = process.env.NODE_ENV || "development";
@@ -35,7 +36,7 @@ appTestWithAuthorizedAdminWebRoles.use("/js", express.static(path.join(process.c
 appTestWithAuthorizedAdminWebRoles.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery-validation/dist")));
 appTestWithAuthorizedAdminWebRoles.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTestWithAuthorizedAdminWebRoles.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
-appTestWithAuthorizedAdminWebRoles.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
+appTestWithAuthorizedAdminWebRoles.use(favicon(path.join("src", "favicon.ico")));
 
 // Session middleware follows static assets, which do not need session data.
 appTestWithAuthorizedAdminWebRoles.use(cookieSession({
@@ -47,7 +48,7 @@ appTestWithAuthorizedAdminWebRoles.use(json());
 appTestWithAuthorizedAdminWebRoles.use(urlencoded({ extended: false }));
 appTestWithAuthorizedAdminWebRoles.use(cookieParser());
 
-expressNunjucks(appTestWithAuthorizedAdminWebRoles, {
+const nunjucks = expressNunjucks(appTestWithAuthorizedAdminWebRoles, {
   filters: {
     split: (str, separator) => {
       return str.split(separator);
@@ -59,6 +60,7 @@ expressNunjucks(appTestWithAuthorizedAdminWebRoles, {
   lstripBlocks: undefined,
   tags: undefined,
 });
+registerGovukNunjucksFilters(nunjucks.env);
 
 // Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
 appTestWithAuthorizedAdminWebRoles.enable("trust proxy");

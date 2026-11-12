@@ -7,6 +7,7 @@ import path from "node:path";
 import favicon from "serve-favicon";
 import { importAll } from "./import-all/index";
 import cookieSession from "cookie-session";
+import { registerGovukNunjucksFilters } from "./util/govuk-nunjucks-filters";
 
 const env = process.env.NODE_ENV || "development";
 const testSessionKeys = ["test-session-key-1", "test-session-key-2"];
@@ -32,7 +33,7 @@ appTest.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery/
 appTest.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery-validation/dist")));
 appTest.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTest.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
-appTest.use(favicon(path.join("node_modules", "govuk-frontend", "dist", "govuk", "assets", "images", "favicon.ico")));
+appTest.use(favicon(path.join("src", "favicon.ico")));
 
 // Session middleware follows static assets, which do not need session data.
 appTest.use(cookieSession({
@@ -44,7 +45,7 @@ appTest.use(bodyParser.json());
 appTest.use(bodyParser.urlencoded({ extended: false }));
 appTest.use(cookieParser());
 
-expressNunjucks(appTest, {
+const nunjucks = expressNunjucks(appTest, {
   filters: {
     split: (str, separator) => {
       return str.split(separator);
@@ -56,6 +57,7 @@ expressNunjucks(appTest, {
   lstripBlocks: undefined,
   tags: undefined,
 });
+registerGovukNunjucksFilters(nunjucks.env);
 
 // Allow application to work correctly behind a proxy (needed to pick up correct request protocol)
 appTest.enable("trust proxy");

@@ -14,12 +14,12 @@
 
 {% block content %}
   {{ successBanner(success) }}
-  {% if error %}
-    <div class="error-summary govuk-error-message">
-      {{error.text}}
+  {{ error | govukErrorSummary | safe }}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full govuk-!-text-align-right">
+      <a href="/createdefinition" class="govuk-button" data-module="govuk-button">Create Definition</a>
     </div>
-  {% endif %}
-  <a href="/createdefinition" class="govuk-button rightAlign" data-module="govuk-button">Create Definition</a>
+  </div>
 
   <table class="govuk-table">
     <thead class="govuk-table__head">

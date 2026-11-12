@@ -83,6 +83,19 @@ router.get("/reindex", async (req, res) => {
       ? tasks
       : tasks.slice(startIndex, startIndex + DEFAULT_PAGE_SIZE);
     const pages = getPaginationPages(currentPage, totalPages);
+    const getPageUrl = (page: number) =>
+      `/reindex?caseType=${encodeURIComponent(caseType || "")}&page=${page}`;
+    const paginationItems = pages.map((pageNumber) => {
+      if (typeof pageNumber === "string") {
+        return { ellipsis: true };
+      }
+
+      return {
+        current: pageNumber === currentPage,
+        href: getPageUrl(pageNumber),
+        number: pageNumber,
+      };
+    });
 
     const responseContent: { [k: string]: any } = {};
     responseContent.adminWebAuthorization = req.adminWebAuthorization;
@@ -101,6 +114,9 @@ router.get("/reindex", async (req, res) => {
       showPagination: totalPages > 1,
       totalItems,
       totalPages,
+      items: paginationItems,
+      next: currentPage < totalPages ? { href: getPageUrl(currentPage + 1) } : undefined,
+      previous: currentPage > 1 ? { href: getPageUrl(currentPage - 1) } : undefined,
     };
     res.status(200).render("reindexTasks", responseContent);
   } catch (error) {
