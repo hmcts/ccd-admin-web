@@ -2454,10 +2454,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/node22@npm:^22.0.6":
-  version: 22.0.6
-  resolution: "@tsconfig/node22@npm:22.0.6"
-  checksum: 10/a74c1bf95086b80e8436da7e3e710bebab4c35ab7cf99348ae68c8fab6032387516e9e9b80a868908c570c5af937e0a75821fc994e14a0495e04c5fab04d3c63
+"@tsconfig/node24@npm:^24.0.0":
+  version: 24.0.6
+  resolution: "@tsconfig/node24@npm:24.0.6"
+  checksum: 10/71dda851caf234c911be4e60def5f69de3e0f2583a4c015451c6f773c89fe6d8e727af4d9e41bdd85d2dcfd5b08fc692f7e40fbd8841b1f3cc7b3209655e7919
   languageName: node
   linkType: hard
 
@@ -3720,7 +3720,7 @@ __metadata:
     "@hmcts/properties-volume": "npm:^1.4.1"
     "@playwright/test": "npm:^1.62.1"
     "@snyk/protect": "npm:^1.1307.0"
-    "@tsconfig/node22": "npm:^22.0.6"
+    "@tsconfig/node24": "npm:^24.0.0"
     "@types/body-parser": "npm:^1.19.6"
     "@types/chai-as-promised": "npm:^8.0.2"
     "@types/cookie-parser": "npm:^1.4.10"

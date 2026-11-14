@@ -81,7 +81,7 @@
     "@eslint/js": "^10.0.1",
     "@hmcts/playwright-common": "1.1.7",
     "@playwright/test": "^1.62.1",
-    "@tsconfig/node22": "^22.0.6",
+    "@tsconfig/node24": "^24.0.0",
     "@types/body-parser": "^1.19.6",
     "@types/chai-as-promised": "^8.0.2",
     "@types/cookie-parser": "^1.4.10",
