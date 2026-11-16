@@ -35,7 +35,7 @@
 </div>
 
 {% if tasks and tasks.length > 0 %}
-<div class="app-reindex-table-container" role="region" aria-label="Reindexed tasks table" tabindex="0">
+<div class="app-reindex-table-container" role="region" aria-label="Reindexed tasks table" tabindex="0"> <!-- //NOSONAR: S6845 - keyboard focus is required to scroll the overflow region (WCAG 2.1.1). -->
     <table class="govuk-table">
         <thead class="govuk-table__head">
             <tr class="govuk-table__row">
