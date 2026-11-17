@@ -9,10 +9,11 @@ export const authCheckerUserOnlyFilter = (req: any, res: any, next: any) => {
   // let originalUrl = req.originalUrl;
   // originalUrl += req.originalUrl.endsWith("/") ? "" : "/";
   const REDIRECT_URI = encodeURIComponent(`${req.protocol}://${req.get("host")}${PATH_OAUTH2_REDIRECT}`);
+  const SCOPE = encodeURIComponent(config.get("idam.oauth2.scope"));
   req.authentication = {};
   const logger = Logger.getLogger(__filename);
 
-  const adminWebLoginUrl: string = config.get<string>("adminWeb.login_url");
+  const idamWebPublicUrl: string = config.get<string>("idam.web_public_url");
   const idamClientId: string = config.get<string>("idam.oauth2.client_id");
 
   authorize(req)

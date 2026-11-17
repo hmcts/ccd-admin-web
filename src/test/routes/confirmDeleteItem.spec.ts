@@ -8,8 +8,6 @@ import { JSDOM } from "jsdom";
 import request from "supertest";
 import sinon from "sinon";
 
-const loginUrl = config.get<string>("adminWeb.login_url");
-
 describe("Confirm Delete page", () => {
   beforeEach(() => {
     const config = {
@@ -27,7 +25,7 @@ describe("Confirm Delete page", () => {
         .get("/deleteitem")
         .then((res) => {
           expect(res.statusCode).to.equal(302);
-          expect(res.headers.location.startsWith(loginUrl)).to.be.true;
+          expect(res.headers.location.startsWith(config.get("idam.web_public_url"))).to.be.true;
         });
     });
 
