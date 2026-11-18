@@ -1,8 +1,6 @@
-version: '2'
-
 services:
   # TODO: change this name to match the name of your app
-  expressjs-template:
+  ccd-admin-web:
     build:
       context: .
       args:

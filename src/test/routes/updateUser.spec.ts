@@ -1,8 +1,8 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as mock from "nock";
-import * as request from "supertest";
+import mock from "nock";
+import request from "supertest";
 
 describe("on POST /updateuser", () => {
 
@@ -29,7 +29,8 @@ describe("on POST /updateuser", () => {
                 expect(res.statusCode).to.equal(200);
                 expect(res.text).not.to.contain("Jurisdiction 1");
                 expect(res.text).not.to.contain("Jurisdiction 2");
-                expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+                expect(res.text).to.contain("Unauthorised role");
+                expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
             });
     });
 

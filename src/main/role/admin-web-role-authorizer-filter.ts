@@ -1,12 +1,12 @@
-import * as config from "config";
+import config from "config";
 import Debug from "debug";
 import { fetch } from "../service/get-service";
 import { Logger } from "@hmcts/nodejs-logging";
 
 const logger = Logger.getLogger(__filename);
-const url = config.get("adminWeb.authorization_url");
+const url = config.get<string>("adminWeb.authorization_url");
 
-export const adminWebRoleAuthorizerFilter = (req, res, next) => {
+export const adminWebRoleAuthorizerFilter = (req: any, res: any, next: any) => {
 
   const debug = Debug("ccd-admin-web:admin-web-role-authorizer-filter");
   req.adminWebAuthorization = {};

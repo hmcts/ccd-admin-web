@@ -1,4 +1,4 @@
-const nock = require("nock");
+import nock from "nock";
 const unusedMocks = [];
 
 afterEach(function() {

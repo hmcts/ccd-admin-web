@@ -16,10 +16,13 @@ def component = 'admin-web'
 def adminWebDevelopPr = 'PR-325' // This doesn't change frequently, but when it does, only change this value.
 
 def secrets = [
+    // loadVaultSecrets resolves the ${env} placeholder for each CNP environment.
     'ccd-${env}': [
         secret('ccd-admin-web-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
+        secret('session-keys', 'SESSION_KEYS'),
         secret('storage-account-primary-connection-string', 'STORAGEACCOUNT_PRIMARY_CONNECTION_STRING'),
         secret('storage-account-secondary-connection-string', 'STORAGEACCOUNT_SECONDARY_CONNECTION_STRING'),
+        secret('AppInsightsInstrumentationKey', 'APP_INSIGHTS_INSTRUMENTATION_KEY')
     ],
     's2s-${env}': [
         secret('microservicekey-ccd-admin', 'IDAM_SERVICE_KEY'),
@@ -40,7 +43,42 @@ def vaultOverrides = [
     'spreview': 'saat'
 ]
 
-env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
+def publishPlaywrightReports(def pipelineSteps) {
+    pipelineSteps.junit allowEmptyResults: true,
+        keepLongStdio: true,
+        testResults: 'functional-output/e2e/results.xml'
+
+    pipelineSteps.archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/e2e/artifacts/**/*'
+
+    pipelineSteps.publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/e2e/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright E2E Test Report'
+    ]
+
+    pipelineSteps.junit allowEmptyResults: true,
+        keepLongStdio: true,
+        testResults: 'functional-output/integration/results.xml'
+
+    pipelineSteps.archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'functional-output/integration/artifacts/**/*'
+
+    pipelineSteps.publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'functional-output/integration/html',
+        reportFiles          : 'index.html',
+        reportName           : 'Playwright Integration Test Report'
+    ]
+}
+
+env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+env.FUNCTIONAL_TESTS_WORKERS='3'
 
 withPipeline('nodejs', product, component) {
     onMaster {
@@ -72,25 +110,43 @@ withPipeline('nodejs', product, component) {
     }
 
     afterAlways('test') {
-        steps.junit allowEmptyResults: true, testResults: 'test-output/**/*result.xml'
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-output/**,coverage/**'
-        steps.publishHTML target: [
-            allowMissing: true,
-            alwaysLinkToLastBuild: true,
-            keepAll: true,
-            reportDir: 'test-output',
-            reportFiles: 'unit.html',
-            reportName: 'Unit Test Report'
-        ]
-        steps.publishHTML target: [
-            allowMissing: true,
-            alwaysLinkToLastBuild: true,
-            keepAll: true,
-            reportDir: 'coverage/lcov-report',
-            reportFiles: 'index.html',
-            reportName: 'Unit Test Coverage'
-        ]
+    
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "mochawesome-report",
+        reportFiles          : "unit.html",
+        reportName           : "Unit Test Report"
+      ]
+    
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "mochawesome-report",
+        reportFiles          : "a11y.html",
+        reportName           : "Accessibility Test Report"
+      ]
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "coverage/lcov-report",
+        reportFiles          : "index.html",
+        reportName           : "Code Coverage Report"
+      ]
     }
+
+    afterAlways('functionalTest:preview') {
+        publishPlaywrightReports(steps)
+    }
+
+    afterAlways('functionalTest:aat') {
+        publishPlaywrightReports(steps)
+    }
+
 
     afterAlways('fortify-scan') {
         steps.publishHTML target: [
@@ -105,13 +161,13 @@ withPipeline('nodejs', product, component) {
 
     ['preview', 'aat', 'prod', 'demo', 'perftest', 'ithc'].each { testEnvironment ->
         afterAlways("smoketest:${testEnvironment}") {
-            steps.junit allowEmptyResults: true, testResults: 'smoke-output/**/*result.xml'
-            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**'
+            steps.junit allowEmptyResults: true, testResults: 'mochawesome-report/**/*result.xml'
+            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'mochawesome-report/**'
             steps.publishHTML target: [
                 allowMissing: true,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: 'smoke-output',
+                reportDir: 'mochawesome-report',
                 reportFiles: 'smoke.html',
                 reportName: "Smoke Test Report - ${testEnvironment}"
             ]

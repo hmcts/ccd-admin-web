@@ -1,11 +1,11 @@
-import * as chai from "chai";
-import * as nock from "nock";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
+import { expect, use } from "chai";
+import nock from "nock";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 
-const expect = chai.expect;
-chai.use(sinonChai);
+
+use(sinonChai);
 
 describe("globalSearchIndexService::createGlobalSearchIndex", () => {
 
@@ -26,7 +26,7 @@ describe("globalSearchIndexService::createGlobalSearchIndex", () => {
     config.get.withArgs("adminWeb.global_search_index_url").returns(indexingUrl);
 
     createGlobalSearchIndex = proxyquire("../../main/service/global-search-index-service", {
-      config,
+      "config": config,
     }).createGlobalSearchIndex;
   });
 

@@ -1,10 +1,6 @@
-import * as chai from "chai";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
-
-const expect = chai.expect;
-chai.use(sinonChai);
+import { expect } from "chai";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
 
 describe("App Insights", () => {
   const instrumentationKey = "instrumentation-key";
@@ -60,7 +56,7 @@ describe("App Insights", () => {
   it("does not initialise App Insights when it is disabled", () => {
     const enableAppInsights = loadAppInsights(false);
 
-    enableAppInsights();
+    enableAppInsights.default();
 
     expect(appInsights.setup).not.to.have.been.called;
     expect(appInsights.start).not.to.have.been.called;
@@ -71,7 +67,7 @@ describe("App Insights", () => {
 
     beforeEach(() => {
       const enableAppInsights = loadAppInsights(true);
-      enableAppInsights();
+      enableAppInsights.default();
       telemetryProcessor = appInsights.defaultClient.addTelemetryProcessor.firstCall.args[0];
     });
 
