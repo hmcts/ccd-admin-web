@@ -16,19 +16,6 @@
 $fa-font-path: './node_modules/font-awesome/fonts';
 $nta-font-path: './node_modules/govuk-frontend/dist/govuk/assets/fonts';
 
-.govuk-template__footer.app-footer {
-  padding: 0;
-  background-color: #f3f2f1;
-}
-
-.govuk-template__footer.app-footer .govuk-footer {
-  color: #0b0c0c;
-  background-color: #f3f2f1;
-  border-top-color: #1d70b8;
-  font-size: 1rem;
-  line-height: 1.25;
-}
-
 .logout {
   float: right;
   margin-top: 10px;

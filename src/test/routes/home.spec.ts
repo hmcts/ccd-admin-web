@@ -38,7 +38,7 @@ describe("Home page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const footer = dom.window.document.querySelector("footer.govuk-template__footer.app-footer");
+          const footer = dom.window.document.querySelector("footer.govuk-template__footer");
           const footerComponent = footer?.querySelector(".govuk-footer");
           const footerCrown = footerComponent?.querySelector(".govuk-width-container .govuk-footer__crown");
           expect(footer).to.exist;
