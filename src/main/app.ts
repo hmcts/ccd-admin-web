@@ -51,7 +51,7 @@ app.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery/dist
 app.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery-validation/dist"), caching));
 app.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk"), caching));
 app.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk"), caching));
-app.use(favicon(path.join("src", "favicon.ico")));
+app.use(favicon(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk/assets/images/favicon.ico")));
 
 // Session
 app.set("trust proxy", 1); // trust first proxy

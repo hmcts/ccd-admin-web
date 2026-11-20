@@ -36,7 +36,7 @@ appTestWithAuthorizedAdminWebRoles.use("/js", express.static(path.join(process.c
 appTestWithAuthorizedAdminWebRoles.use("/js", express.static(path.join(process.cwd(), "node_modules/jquery-validation/dist")));
 appTestWithAuthorizedAdminWebRoles.use("/js", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
 appTestWithAuthorizedAdminWebRoles.use("/stylesheets", express.static(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk")));
-appTestWithAuthorizedAdminWebRoles.use(favicon(path.join("src", "favicon.ico")));
+appTestWithAuthorizedAdminWebRoles.use(favicon(path.join(process.cwd(), "node_modules/govuk-frontend/dist/govuk/assets/images/favicon.ico")));
 
 // Session middleware follows static assets, which do not need session data.
 appTestWithAuthorizedAdminWebRoles.use(cookieSession({
