@@ -31,7 +31,7 @@ async function runPa11y(url: string, ignoreElements: any[]): Promise<IIssue[]> {
       Cookie: `${COOKIE_ACCESS_TOKEN}=ABC`,
     },
     // Ignore GovUK template elements that are outside the team's control from a11y tests
-    hideElements: "#logo, .logo, .copyright, link[rel=mask-icon], .govuk-visually-hidden",
+    hideElements: "#logo, .logo, .copyright, link[rel=mask-icon], .govuk-visually-hidden, .govuk-footer__crown",
     ignore: ignoreElements,
     includeWarnings: true,
     threshold: 9,

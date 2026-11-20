@@ -6,7 +6,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form action="/manageWelshDictionary" method="post" enctype="multipart/form-data">
-        <div class="govuk-form-group">
+        <div class="govuk-form-group{% if error %} govuk-form-group--error{% endif %}">
           {% if not error %}
             <p class="govuk-body">Choose a csv file containing translations in one of the following formats :</p>
             <ul class="govuk-list govuk-list--bullet">
@@ -14,15 +14,13 @@
               <li>"englishPhrase","welshPhrase","yesOrNo","yes","no"</li>
             </ul>
           {% endif %}
-          {% if error %}
-            <div class="error-summary govuk-error-message">
-              {{ errorsFor("file", error) }}
-            </div>
-          {% endif %}
           <label class="govuk-label" for="file">
             Upload a .csv file
           </label>
-          <input class="govuk-file-upload" type="file" id="file" name="file" accept=".csv"/>
+          {% if error %}
+            {{ errorsFor("file", error) }}
+          {% endif %}
+          <input class="govuk-file-upload{% if error %} govuk-file-upload--error{% endif %}" type="file" id="file" name="file" accept=".csv"{% if error %} aria-describedby="file-error"{% endif %}/>
         </div>
         {% if adminWebAuthorization.canLoadWelshTranslation or adminWebAuthorization.canManageWelshTranslation %}
           <div class="govuk-form-group">

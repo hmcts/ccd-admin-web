@@ -45,7 +45,7 @@ describe("Confirm Delete page", () => {
           const dom = new JSDOM(res.text);
           const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
           expect(errorHeading).to.contain("Unauthorised role");
-          expect(dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
+          expect(dom.window.document.querySelector(".govuk-fieldset__legend--m")).to.be.null;
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
           expect(currentUserHiddenInput).not.to.be.empty;
           const user = JSON.parse(currentUserHiddenInput);
@@ -77,7 +77,7 @@ describe("Confirm Delete page", () => {
           const dom = new JSDOM(res.text);
           const errorHeading = dom.window.document.querySelector("h1.govuk-error-summary__title").innerHTML;
           expect(errorHeading).to.contain("Unauthorised role");
-          expect(dom.window.document.querySelector(".govuk-fieldset__legend--xl")).to.be.null;
+          expect(dom.window.document.querySelector(".govuk-fieldset__legend--m")).to.be.null;
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
           expect(currentUserHiddenInput).not.to.be.empty;
           const user = JSON.parse(currentUserHiddenInput);
@@ -98,7 +98,7 @@ describe("Confirm Delete page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const result = dom.window.document.querySelector(".govuk-fieldset__legend--xl").innerHTML;
+          const result = dom.window.document.querySelector(".govuk-fieldset__legend--m").innerHTML;
           expect(result).to.equal("Are you sure you would like to delete user anas@yahoo.com?");
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
           expect(currentUserHiddenInput).not.to.be.empty;
@@ -120,7 +120,7 @@ describe("Confirm Delete page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const result = dom.window.document.querySelector(".govuk-fieldset__legend--xl").innerHTML;
+          const result = dom.window.document.querySelector(".govuk-fieldset__legend--m").innerHTML;
           expect(result).to.equal("Are you sure you would like to delete the selected definition?");
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
           expect(currentUserHiddenInput).not.to.be.empty;
@@ -139,7 +139,7 @@ describe("Confirm Delete page", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const result = dom.window.document.querySelector(".govuk-fieldset__legend--xl").innerHTML;
+          const result = dom.window.document.querySelector(".govuk-fieldset__legend--m").innerHTML;
           expect(result).to.equal("Are you sure you would like to delete role TEST-ROLE?");
           const currentUserHiddenInput = dom.window.document.querySelector("#currentUser").getAttribute("value");
           expect(currentUserHiddenInput).not.to.be.empty;
