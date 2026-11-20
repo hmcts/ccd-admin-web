@@ -38,11 +38,7 @@ describe("authCheckerUserOnlyFilter", () => {
     };
 
     oauthState = {
-      setOAuthState: sinon.stub().callsFake((request) => {
-        request.session.oauthState = state;
-
-        return state;
-      }),
+      setOAuthState: sinon.stub().returns(state),
     };
 
     const config = {
@@ -105,7 +101,6 @@ describe("authCheckerUserOnlyFilter", () => {
           try {
             assert.equal(code, 302);
             assert.equal(url, completeUrl);
-            expect(req.session.oauthState).to.equal(state);
             expect(oauthState.setOAuthState).to.have.been.calledWith(req);
             done();
           } catch (e) {
