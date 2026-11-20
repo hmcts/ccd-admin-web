@@ -1,11 +1,12 @@
 @use "govuk-frontend/dist/govuk" as * with (
-  $govuk-assets-path: "/assets/",
-  $govuk-functional-colours: (
-    brand: #0b0c0c,
-    surface-background: #f3f2f1,
-    surface-border: #b1b4b6
-  )
+  $govuk-assets-path: "/assets/"
 );
+
+@media screen {
+  .app-generic-header {
+    background-color: var(--govuk-brand-colour);
+  }
+}
 
 .govuk-header .govuk-header__homepage-link:not(:focus),
 .app-generic-header .govuk-generic-header__homepage-link:not(:focus) {
