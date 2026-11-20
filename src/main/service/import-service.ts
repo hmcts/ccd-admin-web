@@ -1,9 +1,9 @@
-import * as config from "config";
+import config from "config";
 import { Logger } from "@hmcts/nodejs-logging";
-import * as request from "superagent";
+import request from "superagent";
 
 export function uploadFile(req) {
-  const url = config.get("adminWeb.import_url");
+  const url = config.get<string>("adminWeb.import_url");
   const headers = {
     Authorization: req.accessToken,
     ServiceAuthorization: req.serviceAuthToken,

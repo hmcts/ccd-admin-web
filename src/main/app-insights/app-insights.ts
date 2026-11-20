@@ -1,7 +1,7 @@
-const config = require("config");
-const appInsights = require("applicationinsights");
+import config from "config";
+import { setup, defaultClient, start } from "applicationinsights";
 
-const enabled = config.get("appInsights.enabled");
+const enabled = config.get<boolean>("appInsights.enabled");
 
 function fineGrainedSampling(envelope) {
   if (
@@ -16,21 +16,21 @@ function fineGrainedSampling(envelope) {
 
 const enableAppInsights = () => {
   if (enabled) {
-    const appInsightsKey = config.get("secrets.ccd.AppInsightsInstrumentationKey");
-    const appInsightsRoleName = config.get("appInsights.roleName");
-    appInsights.setup(appInsightsKey)
+    const appInsightsKey = config.get<string>("secrets.ccd.AppInsightsInstrumentationKey");
+    const appInsightsRoleName = config.get<string>("appInsights.roleName");
+    setup(appInsightsKey)
       .setAutoDependencyCorrelation(true)
       .setAutoCollectRequests(true)
-      .setAutoCollectPerformance(true)
+      .setAutoCollectPerformance(true, null)
       .setAutoCollectExceptions(true)
       .setAutoCollectDependencies(true)
       .setAutoCollectConsole(true)
       .setUseDiskRetryCaching(true)
       .setSendLiveMetrics(true);
-    appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = appInsightsRoleName;
-    appInsights.defaultClient.addTelemetryProcessor(fineGrainedSampling);
-    appInsights.start();
+    defaultClient.context.tags[defaultClient.context.keys.cloudRole] = appInsightsRoleName;
+    defaultClient.addTelemetryProcessor(fineGrainedSampling);
+    start();
   }
 };
 
-module.exports = enableAppInsights;
+export default enableAppInsights;

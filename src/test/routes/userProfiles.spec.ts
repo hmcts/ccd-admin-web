@@ -1,12 +1,16 @@
 import { appTest } from "../../main/app.test";
 import { appTestWithAuthorizedAdminWebRoles } from "../../main/app.test-admin-web-roles-authorized";
 import { expect } from "chai";
-import * as mock from "nock";
-import * as mockSession from "mock-session";
-import * as request from "supertest";
-import * as sinon from "sinon";
+import { resolveRetrieveUserFor, optionallyResolveRetrieveServiceToken } from "../http-mocks/idam";
+import mock from "nock";
+import mockSession from "mock-session";
+import request from "supertest-session";
+import sinon from "sinon";
 
 describe("User profiles page", () => {
+  const TEST_SESSION_KEY = "test-session-key-1";
+
+  const CCD_IMPORT_ROLE = "ccd-import";
 
   beforeEach(() => {
     const config = {
@@ -18,8 +22,8 @@ describe("User profiles page", () => {
 
   describe("on GET /userprofiles", () => {
     it("should not return user profiles for given Jurisdiction without authorized roles", () => {
-      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
-      const sessionCookie = mockSession("session", "key1", { jurisdiction: "Mike" });
+      // Set jurisdiction in the appTest session object, signed with the test session key.
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, { jurisdiction: "Mike" });
 
       return request(appTest)
         .get("/userprofiles")
@@ -28,7 +32,8 @@ describe("User profiles page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Case Type 3");
           expect(res.text).not.to.contain("Jurisdiction 3");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          expect(res.text).to.contain("Unauthorised role");
+          expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
     });
 
@@ -43,8 +48,8 @@ describe("User profiles page", () => {
           work_basket_default_state: "State 3",
         }]);
 
-      // Set jurisdiction in the appTest session object, which is stored as a cookie (signed with "key1", as in appTest)
-      const sessionCookie = mockSession("session", "key1", { jurisdiction: "Mike" });
+      // Set jurisdiction in the appTest session object, which is stored as a cookie signed with the test session key.
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, { jurisdiction: "Mike" });
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/userprofiles")
@@ -57,8 +62,9 @@ describe("User profiles page", () => {
     });
 
     it("should not return all user profiles if Jurisdiction is not present in session without authorized roles", () => {
+
       // Omit jurisdiction in the appTest session object
-      const sessionCookie = mockSession("session", "key1", {});
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, {});
 
       return request(appTest)
         .get("/userprofiles")
@@ -67,7 +73,8 @@ describe("User profiles page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Case Type 3");
           expect(res.text).not.to.contain("Jurisdiction 3");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          expect(res.text).to.contain("Unauthorised role");
+          expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
     });
 
@@ -83,7 +90,7 @@ describe("User profiles page", () => {
         }]);
 
       // Omit jurisdiction in the appTest session object
-      const sessionCookie = mockSession("session", "key1", {});
+      const sessionCookie = mockSession("session", TEST_SESSION_KEY, {});
 
       return request(appTestWithAuthorizedAdminWebRoles)
         .get("/userprofiles")
@@ -98,6 +105,7 @@ describe("User profiles page", () => {
 
   describe("on POST /userprofiles", () => {
     it("should not return user profiles list without authorized roles", () => {
+
       return request(appTest)
         .post("/userprofiles")
         .set("Cookie", "accessToken=ey123.ey456")
@@ -108,7 +116,8 @@ describe("User profiles page", () => {
           expect(res.statusCode).to.equal(200);
           expect(res.text).not.to.contain("Case Type 3");
           expect(res.text).not.to.contain("Jurisdiction 3");
-          expect(res.text).to.contain("<h2 class=\"heading-large padding\">Unauthorised role</h2>");
+          expect(res.text).to.contain("Unauthorised role");
+          expect(res.text).to.contain("<h1 class=\"govuk-error-summary__title\">");
       });
     });
 
@@ -155,6 +164,7 @@ describe("User profiles page", () => {
     });
 
     it("should not call /users if user is not authorized", () => {
+
       let usersApiCalled = false;
       mock("http://localhost:4453")
         .get("/users")
@@ -176,6 +186,5 @@ describe("User profiles page", () => {
           expect(usersApiCalled).to.be.false;
         });
     });
-
   });
 });

@@ -1,8 +1,8 @@
-import * as express from "express";
+import express from "express";
 import { error_unauthorized_role } from "../util/error_unauthorized_role";
 import { uploadTranslations } from "../service/manage-welsh-dictionary-service";
 import { sanitize } from "../util/sanitize";
-import * as multer from "multer";
+import multer from "multer";
 const errorPage = "error";
 const welshDictionary = "manageWelshDictionary";
 const router = express.Router();
@@ -59,7 +59,7 @@ export function doGetWelshDictionary(req) {
     }
     return responseContent;
 }
-router.post(`/${welshDictionary}`, (req, res) => {
+router.post(`/${welshDictionary}`, (req: any, res: any) => {
     if (req.adminWebAuthorization &&
     (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
           upload(req, res, (err) => {
@@ -77,7 +77,7 @@ router.post(`/${welshDictionary}`, (req, res) => {
         res.render(errorPage, error_unauthorized_role(req));
     }
 });
-router.get(`/${welshDictionary}`, (req, res) => {
+router.get(`/${welshDictionary}`, (req: any, res: any) => {
     if (req.adminWebAuthorization &&
     (req.adminWebAuthorization.canLoadWelshTranslation || req.adminWebAuthorization.canManageWelshTranslation)) {
         res.status(200);

@@ -9,7 +9,7 @@ const errorPage = "error";
 /**
  * Delete user profile based on IdAM ID
  */
-router.post("/deleteuser", (req, res, next) => {
+router.post("/deleteuser", (req: any, res: any, next: any) => {
   if (req.adminWebAuthorization && req.adminWebAuthorization.canManageUserRole) {
     if (req.body.deleteItem === "Yes") {
       deleteSessionVariables(req);

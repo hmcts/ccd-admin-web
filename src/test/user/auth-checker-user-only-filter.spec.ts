@@ -1,11 +1,9 @@
-import * as chai from "chai";
-import * as proxyquire from "proxyquire";
-import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
+import { expect, use, assert } from "chai";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 
-const assert = chai.assert;
-const expect = chai.expect;
-chai.use(sinonChai);
+use(sinonChai);
 
 describe("authCheckerUserOnlyFilter", () => {
 
@@ -14,8 +12,9 @@ describe("authCheckerUserOnlyFilter", () => {
   };
   const loginUrl = "http://idam.login";
   const clientId = "ccd_admin";
+  const scope = "testscope";
   const redirectUri = encodeURIComponent("http://localhost/oauth2redirect");
-  const completeUrl = `${loginUrl}?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+  const completeUrl = `${loginUrl}/o/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
 
   let req;
   let res;
@@ -37,12 +36,14 @@ describe("authCheckerUserOnlyFilter", () => {
     const config = {
       get: sinon.stub(),
     };
-    config.get.withArgs("adminWeb.login_url").returns(loginUrl);
+    config.get.withArgs("idam.hmcts_access_url").returns(loginUrl);
+    config.get.withArgs("idam.web_public_url").returns(loginUrl);
     config.get.withArgs("idam.oauth2.client_id").returns(clientId);
+    config.get.withArgs("idam.oauth2.scope").returns(scope);
 
     filter = proxyquire("../../main/user/auth-checker-user-only-filter", {
       "./user-request-authorizer": userRequestAuthorizer,
-      config,
+      "config": config,
     }).authCheckerUserOnlyFilter;
   });
 
@@ -87,7 +88,7 @@ describe("authCheckerUserOnlyFilter", () => {
 
     it("should redirect to the IdAM login URL", (done) => {
       res = {
-        redirect: (code, url) => {
+        redirect: (code: number, url: string) => {
           assert.equal(code, 302);
           assert.equal(url, completeUrl);
           done();
