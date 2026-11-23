@@ -3770,6 +3770,7 @@ __metadata:
     mock-session: "npm:^0.0.5"
     multer: "npm:^2.3.0"
     nock: "npm:^14.0.17"
+    node-cache: "npm:^5.1.2"
     node-fetch: "npm:^3.3.2"
     nunjucks: "npm:^3.2.4"
     nyc: "npm:^18.0.0"
@@ -3982,6 +3983,13 @@ __metadata:
     strip-ansi: "npm:^7.1.0"
     wrap-ansi: "npm:^9.0.0"
   checksum: 10/df43d8d1c6e3254cbb64b1905310d5f6672c595496a3cbe76946c6d24777136886470686f2772ac9edfe547a74bb70e8017530b3554715aee119efd7752fc0d9
+  languageName: node
+  linkType: hard
+
+"clone@npm:2.x":
+  version: 2.1.2
+  resolution: "clone@npm:2.1.2"
+  checksum: 10/d9c79efba655f0bf601ab299c57eb54cbaa9860fb011aee9d89ed5ac0d12df1660ab7642fddaabb9a26b7eff0e117d4520512cb70798319ff5d30a111b5310c2
   languageName: node
   linkType: hard
 
@@ -7477,6 +7485,15 @@ __metadata:
   dependencies:
     node-gyp: "npm:latest"
   checksum: 10/ee1e1ed6284a2f8cd1d59ac6175ecbabf8978dcf570345e9a8095a9d0a2b9ced591074ae77f9009287b00c402352b38aa9322a34f2199cdc9f567b842a636b94
+  languageName: node
+  linkType: hard
+
+"node-cache@npm:^5.1.2":
+  version: 5.1.2
+  resolution: "node-cache@npm:5.1.2"
+  dependencies:
+    clone: "npm:2.x"
+  checksum: 10/6ac71a9e65fdd8940883c3c188de4888ff592f5bf52e4d42436c49e2a575d635e7327acea490c49fa7c01d5fa81f7b6e060fd35cf6f6ec401fbd5f77a3ebeecf
   languageName: node
   linkType: hard
 

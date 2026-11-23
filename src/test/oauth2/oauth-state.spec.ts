@@ -1,16 +1,16 @@
 import { expect } from "chai";
 import sinon from "sinon";
-import {
-  consumeOAuthState,
-  OAUTH_STATE_TTL_MS,
-  setOAuthState,
-} from "../../main/oauth2/oauth-state";
+import proxyquire from "proxyquire";
+import { OAUTH_STATE_TTL_MS } from "../../main/oauth2/oauth-state";
 
 describe("OAuth state transactions", () => {
   let clock;
+  let setOAuthState;
+  let consumeOAuthState;
 
   beforeEach(() => {
-    clock = sinon.useFakeTimers({ toFake: ["Date"] });
+    clock = sinon.useFakeTimers({ toFake: ["Date", "setTimeout", "clearTimeout"] });
+    ({ setOAuthState, consumeOAuthState } = proxyquire("../../main/oauth2/oauth-state", {}));
   });
 
   afterEach(() => {
@@ -96,5 +96,24 @@ describe("OAuth state transactions", () => {
     expect(consumeOAuthState({ session: null }, state)).to.be.false;
     expect(consumeOAuthState(otherBrowser, state)).to.be.false;
     expect(consumeOAuthState(owner, state)).to.be.true;
+  });
+
+  it("should reject new logins at capacity without invalidating pending transactions", () => {
+    const owner = {};
+    const state = setOAuthState(owner);
+    for (let index = 1; index < 10000; index += 1) {
+      setOAuthState({});
+    }
+    expect(() => setOAuthState({})).to.throw("Cache max keys amount exceeded");
+    expect(consumeOAuthState(owner, state)).to.be.true;
+    expect(() => setOAuthState({})).not.to.throw();
+  });
+
+  it("should automatically reclaim expired capacity without callbacks", () => {
+    for (let index = 0; index < 10000; index += 1) {
+      setOAuthState({});
+    }
+    clock.tick(OAUTH_STATE_TTL_MS + 60000);
+    expect(() => setOAuthState({})).not.to.throw();
   });
 });
