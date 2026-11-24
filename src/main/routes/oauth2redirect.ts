@@ -1,12 +1,20 @@
 import express from "express";
 import config from "config";
 import { accessTokenRequest } from "../oauth2/access-token-request";
+import { consumeOAuthState } from "../oauth2/oauth-state";
 
 export const COOKIE_ACCESS_TOKEN = "accessToken";
 export const COOKIE_ID_TOKEN = "idToken";
 const router = express.Router();
 
 export const oauth2redirect = (req: any, res: any, next: any) => {
+  if (!consumeOAuthState(req, req.query.state)) {
+    const error: any = new Error("Invalid OAuth2 state parameter");
+    error.status = 400;
+
+    return next(error);
+  }
+
   if (req.query.code && req.query.code !== "") {
     // On successfully obtaining a token, the redirect should go back to ourselves.
     // Note: This *must not* include any query string.
