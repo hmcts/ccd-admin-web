@@ -25,8 +25,9 @@ export const authCheckerUserOnlyFilter = (req: any, res: any, next: any) => {
         next(error);
       } else {
         req.session.oauthState = randomBytes(32).toString("hex");
-        res.redirect(302, `${adminWebLoginUrl}?response_type=code&client_id=` +
-          `${idamClientId}&redirect_uri=${REDIRECT_URI}&state=${encodeURIComponent(req.session.oauthState)}`);
+        res.redirect(302, `${idamWebPublicUrl}/o/authorize?response_type=code&client_id=` +
+          `${idamClientId}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}` +
+          `&state=${encodeURIComponent(req.session.oauthState)}`);
       }
     });
 };
