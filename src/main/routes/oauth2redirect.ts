@@ -35,6 +35,7 @@ export const oauth2redirect = (req: any, res: any, next: any) => {
       .replace("https://", "").split("?", 1)[0];
     accessTokenRequest(req, redirectUri)
       .then((result) => {
+        delete req.session.forceLogin;
         res.cookie(COOKIE_ID_TOKEN, result.id_token,
           {
             httpOnly: true,

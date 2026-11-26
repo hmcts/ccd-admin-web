@@ -25,9 +25,10 @@ export const authCheckerUserOnlyFilter = (req: any, res: any, next: any) => {
         next(error);
       } else {
         req.session.oauthState = randomBytes(32).toString("hex");
+        const prompt = req.session.forceLogin ? "&prompt=login" : "";
         res.redirect(302, `${idamWebPublicUrl}/o/authorize?response_type=code&client_id=` +
           `${idamClientId}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}` +
-          `&state=${encodeURIComponent(req.session.oauthState)}`);
+          `&state=${encodeURIComponent(req.session.oauthState)}${prompt}`);
       }
     });
 };

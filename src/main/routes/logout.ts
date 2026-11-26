@@ -9,7 +9,8 @@ export const logout = async (req, res, next) => {
   const idToken = req.cookies && req.cookies[COOKIE_ID_TOKEN];
   res.clearCookie(COOKIE_ID_TOKEN);
   res.clearCookie(COOKIE_ACCESS_TOKEN);
-  req.session = null;
+  // Replace the authenticated session and require credentials even if IdAM still has an SSO cookie.
+  req.session = { forceLogin: true };
 
   try {
     if (idToken) {

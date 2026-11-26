@@ -31,7 +31,7 @@ describe("logout", () => {
         [COOKIE_ACCESS_TOKEN]: ACCESS_TOKEN,
         [COOKIE_ID_TOKEN]: ID_TOKEN,
       },
-      session: {},
+      session: { adminWebAuthorization: { canImport: true }, oauthState: "old-state" },
     });
     response = mockRes();
     next = sinon.stub();
@@ -45,7 +45,7 @@ describe("logout", () => {
   function expectLocalSessionCleared(): void {
     expect(response.clearCookie).to.be.calledWith(COOKIE_ACCESS_TOKEN);
     expect(response.clearCookie).to.be.calledWith(COOKIE_ID_TOKEN);
-    expect(request.session).to.be.null;
+    expect(request.session).to.deep.equal({ forceLogin: true });
   }
 
   it("should complete IdAM logout with a 204 and redirect the browser to the application root", async () => {
