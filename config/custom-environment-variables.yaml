@@ -13,6 +13,7 @@ idam:
   service_name: IDAM_SERVICE_NAME
   oauth2:
     client_id: IDAM_OAUTH2_CLIENT_ID
+    redirect_uri_allowlist: IDAM_OAUTH2_REDIRECT_URI_ALLOWLIST
     scope: IDAM_OAUTH2_SCOPE
 adminWeb:
   import_url: ADMINWEB_IMPORT_URL

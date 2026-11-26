@@ -22,6 +22,7 @@ idam:
   service_name: ccd_admin
   oauth2:
     client_id: ccd_admin
+    redirect_uri_allowlist: "localhost,127.0.0.1"
     scope: 'openid profile roles'
 adminWeb:
   import_url: http://localhost:4451/import
