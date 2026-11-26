@@ -6,6 +6,8 @@
                 {{ error.text | safe }}
             {% elif error.error %}
                 {{ error.error | safe }}
+            {% else %}
+                {{ error }}
             {% endif %}
         </p>
     {% endif %}
@@ -77,11 +79,11 @@
 {%- endmacro %}
 
 {% macro radioButton(value, label, name, field, dataTarget = '', screenReader = '') -%}
-    <div class="multiple-choice" data-target="{{ dataTarget }}">
-        <input id="{{ name }}_{{ value }}" type="radio" name="{{ name }}" value="{{ value }}" {{ 'checked=checked ' if field.value === value }}/>
-        <label for="{{ name }}_{{ value }}">
+    <div class="govuk-radios__item" data-target="{{ dataTarget }}">
+        <input class="govuk-radios__input" id="{{ name }}_{{ value }}" type="radio" name="{{ name }}" value="{{ value }}" {{ 'checked ' if field.value === value }}/>
+        <label class="govuk-label govuk-radios__label" for="{{ name }}_{{ value }}">
             {%- if screenReader -%}
-                <span class="visually-hidden">{{ screenReader | safe }}</span>
+                <span class="govuk-visually-hidden">{{ screenReader | safe }}</span>
             {%- endif -%}
             {{ label | safe }}
         </label>
@@ -90,28 +92,42 @@
 
 
 {% macro yesNoRadio(label = '', hint, name, field, yes, no) -%}
-    <div id="{{ name }}" class="govuk-form-group {{ 'govuk-form-group-error' if field.error }}">
-        <fieldset class="inline">
-            <legend class="govuk-label text">{{ label | safe }}</legend>
-            <p class="form-hint text">{{ hint | safe }}</p>
+    {% set describedBy = name + '-hint' if hint else '' %}
+    {% if field.error %}
+        {% set describedBy = (describedBy + ' ' if describedBy else '') + name + '-error' %}
+    {% endif %}
+    <div id="{{ name }}" class="govuk-form-group {{ 'govuk-form-group--error' if field.error }}">
+        <fieldset class="govuk-fieldset" {% if describedBy %}aria-describedby="{{ describedBy }}"{% endif %}>
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ label | safe }}</legend>
+            {% if hint %}
+                <div id="{{ name }}-hint" class="govuk-hint">{{ hint | safe }}</div>
+            {% endif %}
             {{ errorsFor(name, field) }}
-            {{ radioButton('Yes', yes, name, field) }}
-            {{ radioButton('No', no, name, field) }}
+            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                {{ radioButton('Yes', yes, name, field) }}
+                {{ radioButton('No', no, name, field) }}
+            </div>
         </fieldset>
     </div>
 {%- endmacro %}
 
 
 {% macro yesNoRadioHeading(legend, name, field, yes, no, hint = '', targetYes = '', targetNo = '', screenReader = '') %}
-    <div id="{{ name }}" class="govuk-form-group {{ 'govuk-form-group-error' if field.error }}">
-        <fieldset class="inline">
-            <legend class="govuk-fieldset__legend--xl">{{ legend | safe }}</legend>
+    {% set describedBy = name + '-hint' if hint else '' %}
+    {% if field.error %}
+        {% set describedBy = (describedBy + ' ' if describedBy else '') + name + '-error' %}
+    {% endif %}
+    <div id="{{ name }}" class="govuk-form-group {{ 'govuk-form-group--error' if field.error }}">
+        <fieldset class="govuk-fieldset" {% if describedBy %}aria-describedby="{{ describedBy }}"{% endif %}>
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ legend | safe }}</legend>
             {% if hint %}
-                <p class="text form-hint">{{ hint | safe }}</p>
+                <div id="{{ name }}-hint" class="govuk-hint">{{ hint | safe }}</div>
             {% endif %}
             {{ errorsFor(name, field) }}
-            {{ radioButton('Yes', yes, name, field, targetYes, screenReader) }}
-            {{ radioButton('No', no, name, field, targetNo, screenReader) }}
+            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                {{ radioButton('Yes', yes, name, field, targetYes, screenReader) }}
+                {{ radioButton('No', no, name, field, targetNo, screenReader) }}
+            </div>
         </fieldset>
     </div>
 {% endmacro %}

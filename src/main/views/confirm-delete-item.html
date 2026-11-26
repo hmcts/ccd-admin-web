@@ -10,12 +10,8 @@
 {% endblock %}
 {% block content %}
   <h1 class="govuk-heading-l">Confirm Delete {{ headingItem }}</h1>
-  {% if (error) %}
-    <div class="error-summary govuk-error-message">
-      {{ error.text }}
-    </div>
-  {% endif %}
-  <div class="padding">
+  {{ error | govukErrorSummary | safe }}
+  <div class="govuk-!-static-padding-4">
     <form id="confirmdelete" name="confirmdelete" method="POST" action="/delete{{ itemToDelete }}">
       {% if (itemToDelete === "user") %}
         <input id="idamId" name="idamId" type="hidden" value="{{ idamId }}"/>
@@ -36,7 +32,7 @@
             yes = 'Yes',
             no = 'No'
         ) }}
-      <button type="submit" class="button" value="Submit">Submit</button>
+      <button type="submit" class="govuk-button" data-module="govuk-button" value="Submit">Submit</button>
     </form>
   </div>
 {% endblock %}

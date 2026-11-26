@@ -104,7 +104,7 @@ describe("test route Reindex Tasks", () => {
             expect(res.statusCode).to.equal(200);
             const dom = new JSDOM(res.text);
 
-            const pageHeading = dom.window.document.querySelector(".heading-large");
+            const pageHeading = dom.window.document.querySelector(".govuk-heading-l");
             expect(pageHeading?.textContent).to.include("Reindex");
 
             const rows = [...dom.window.document.querySelectorAll("table tbody tr")];
@@ -250,9 +250,8 @@ describe("test route Reindex Tasks", () => {
         .then((res) => {
           expect(res.statusCode).to.equal(200);
           const dom = new JSDOM(res.text);
-          const paginationText = dom.window.document.querySelector(".govuk-pagination__list")?.textContent || "";
-
-          expect(paginationText).to.include("...");
+          const ellipsis = dom.window.document.querySelector(".govuk-pagination__item--ellipsis");
+          expect(ellipsis).to.exist;
 
           const lastPageLink = [...dom.window.document.querySelectorAll(".govuk-pagination__list a")]
             .find((link) => link.textContent?.trim() === "14");
@@ -277,6 +276,8 @@ describe("test route Reindex Tasks", () => {
             const dom = new JSDOM(res.text);
 
             const errorMessage = dom.window.document.body.textContent;
+            const errorSummary = dom.window.document.querySelector(".govuk-error-summary");
+            expect(errorSummary).to.exist;
             expect(errorMessage).to.include("Reindex fetch failed with HTTP 500");
         });
     });
