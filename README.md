@@ -20,6 +20,14 @@ The following environment variables are required:
 
 | Name                                 | Default | Description                                                                                                                                                            |
 |--------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| IDAM_BASE_URL                        | - | Base URL for IdAM's User API service (idam-app). `http://localhost:5000` for the dockerised local instance or tunnelled `dev` instance.                                |
+| IDAM_S2S_URL                         | - | Base URL for IdAM's S2S API service (service-auth-provider). `http://localhost:4502` for the dockerised local instance or tunnelled `dev` instance.                    |
+| **IDAM_ADMIN_WEB_SERVICE_KEY**       | - | **Required outside CCD Docker.** Case Admin Web's IdAM S2S micro-service secret key; it must match the IdAM instance in use. CCD Docker injects it automatically.       |
+| IDAM_LOGOUT_URL                      | - | URL of the IdAM Authentication Web `logout` page. `https://localhost:3501/login/logout` for the dockerised local instance.                                             |
+| IDAM_OAUTH2_TOKEN_ENDPOINT           | - | URL of the IdAM OAuth2 API endpoint for obtaining an OAuth2 token. `http://localhost:5000/oauth2/token` for the dockerised local instance or tunnelled `dev` instance. |
+| IDAM_OAUTH2_AW_CLIENT_SECRET         | - | Secret to be passed to IdAM when obtaining an OAuth2 token. This must match the IdAM instance it's being run against.                                                  |
+| SESSION_KEYS                         | - | JSON array of at least two unique session cookie signing keys, for example `["long-random-key-1","long-random-key-2"]`. In deployed environments this should come from the `session-keys` Key Vault secret. |
+| ADMINWEB_LOGIN_URL                   | - | URL of the IdAM Authentication Web `login` page. `https://localhost:3501/login` for the dockerised local instance.                                                     |
 | ADMINWEB_IMPORT_URL                  | http://localhost:4451/import | URL of the Case Definition Store API `import` endpoint. default for the dockerised local instance.                                              |
 | SESSION_KEYS                         | - | JSON array of at least two unique session cookie signing keys, for example `["long-random-key-1","long-random-key-2"]`. In deployed environments `session-keys` Key Vault secret. |
 | ADMINWEB_UPLOAD_DICTIONARY_FILE_PATH | - | Path to local dir for upload.                                                                                                                                          |
@@ -29,6 +37,9 @@ The following environment variables are required:
 | IDAM_PUBLIC_WEB_URL                  | http://localhost:9002 | Base URL for IdAM's public web service (idam-public-web). default for the dockerised local instance or tunnelled `dev` instance.                   |
 | IDAM_S2S_URL                         | http://localhost:4502 | Base URL for IdAM's S2S API service (service-auth-provider). default for the dockerised local instance or tunnelled `dev` instance.                |
 | IDAM_OAUTH2_AW_CLIENT_SECRET         | - | Secret to be passed to IdAM when obtaining an OAuth2 token. This must match the IdAM instance it's being run against.                                                  |
+
+`IDAM_OAUTH2_AW_CLIENT_SECRET` is **required outside CCD Docker** and must match the
+IdAM instance in use. CCD Docker injects it automatically.
 
 ### Building
 
@@ -41,9 +52,29 @@ Setup styles:
 yarn setup
 ```
 
-### Running
+### Testing
 
-Start the application by executing the following command:
+Run the tests with the test configuration:
+```bash
+NODE_ENV=mocha yarn test
+```
+
+### Running locally
+
+When running outside the CCD Docker stack, set the required environment variables above
+to values supplied by the matching IdAM environment; do not invent or commit secret values.
+For local HTTPS, set `HTTPS_CERT_PATH` and `HTTPS_KEY_PATH` to locally managed certificate
+files. Keep your own IdAM secret values:
+```bash
+source ./scripts/setup-local-env.sh
+```
+
+The setup script preserves an existing `SESSION_KEYS` value. Otherwise, it generates
+two random signing keys and reuses them from `.local-secrets/session-keys.json`
+(or `LOCAL_SECRET_DIR` when set). This file is restricted to your user and the default
+`.local-secrets` directory is ignored by Git.
+
+Then start the application:
 ```bash
 yarn start
 ```
