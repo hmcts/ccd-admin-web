@@ -212,7 +212,6 @@
     "@snyk/snyk-docker-pull": "^3.7.2",
     "follow-redirects": "^1.15.5",
     "copy-props": "^4.0.0",
-    "ajv@npm:^4.7.0": "npm:^8.0.0",
     "ajv@npm:^6.14.0": "npm:ajv@6.15.0",
     "ajv@npm:^8.0.0": "npm:^8.0.0",
     "minimist": "^1.2.6",
