@@ -124,7 +124,7 @@ app.use((err, req, res, next) => {
 
   res.status(err.status || 500);
   const responseContent: { [k: string]: any } = {};
-  responseContent.adminWebAuthorization = req.session.adminWebAuthorization;
+  responseContent.adminWebAuthorization = req.session?.adminWebAuthorization;
   if (req.authentication) {
     responseContent.user = sanitize(JSON.stringify(req.authentication.user));
   }
